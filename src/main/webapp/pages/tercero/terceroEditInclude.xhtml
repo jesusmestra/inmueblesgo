@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+
+    <p:outputPanel styleClass="ui-fluid">
+
+        <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
+
+
+
+
+            <h:outputLabel value="#{messages.field_label_tercero_tipoIdentificacion}:" for="tipoIdentificacionSelectInput" rendered="#{not hideTipoIdentificacionSelectInput}"/>
+            <h:panelGroup rendered="#{not hideTipoIdentificacionSelectInput}">
+                <p:selectOneMenu value="#{terceroBean.tercero.tipoIdentificacion}"
+                                 id="tipoIdentificacionSelectInput">
+                    <f:selectItem noSelectionOption="true" itemLabel="" />
+                    <f:selectItems value="#{terceroBean.tipoIdentificacions}" 
+                                   var="tipoIdentificacion" 
+                                   itemLabel="#{tipoIdentificacion.nombre}"
+                                   itemValue="#{tipoIdentificacion}" />
+                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{terceroBean.tipoIdentificacions}" />
+
+                </p:selectOneMenu>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{not hideTipoIdentificacionSelectInput}">
+
+                <p:commandButton icon="ui-icon-plusthick" title="#{messages.label_create}"
+                                 action="#{tipoIdentificacionBean.prepareNewTipoIdentificacion()}"
+                                 update=":createTipoIdentificacionFromEditDialog"
+                                 resetValues="true"
+                                 oncomplete="PF('createTipoIdentificacionFromEditDialogWidget').show()"
+                                 rendered="#{applicationBean.componentExists('createTipoIdentificacionFromEditDialog')}"
+                                 style="vertical-align:top;" partialSubmit="true" process="@this">
+                </p:commandButton>
+
+                <p:message for="tipoIdentificacionSelectInput" display="icon" rendered="#{not hideTipoIdentificacionSelectInput}"/>
+            </h:panelGroup>            
+
+            <h:outputLabel value="#{messages.field_label_tercero_identificacion}:" for="identificacionEditInput" />
+            <p:inputText value="#{terceroBean.tercero.identificacion}" id="identificacionEditInput" 
+                         label="#{messages.field_label_tercero_identificacion}" />
+            <p:message for="identificacionEditInput" display="icon" />
+
+
+
+            <h:outputLabel value="#{messages.field_label_tercero_apellido1}:" for="apellido1EditInput" />
+            <p:inputText value="#{terceroBean.tercero.apellido1}" id="apellido1EditInput" 
+                         label="#{messages.field_label_tercero_apellido1}" />
+            <p:message for="apellido1EditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_tercero_apellido2}:" for="apellido2EditInput" />
+            <p:inputText value="#{terceroBean.tercero.apellido2}" id="apellido2EditInput" 
+                         label="#{messages.field_label_tercero_apellido2}" />
+            <p:message for="apellido2EditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_tercero_nombres}:" for="nombresEditInput" />
+            <p:inputText value="#{terceroBean.tercero.nombres}" id="nombresEditInput" 
+                         label="#{messages.field_label_tercero_nombres}" />
+            <p:message for="nombresEditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_tercero_direccion}:" for="direccionEditInput" />
+            <p:inputText value="#{terceroBean.tercero.direccion}" id="direccionEditInput" 
+                         label="#{messages.field_label_tercero_direccion}" />
+            <p:message for="direccionEditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_tercero_telefono}:" for="telefonoEditInput" />
+            <p:inputText value="#{terceroBean.tercero.telefono}" id="telefonoEditInput" 
+                         label="#{messages.field_label_tercero_telefono}" />
+            <p:message for="telefonoEditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_tercero_email}:" for="emailEditInput" />
+            <p:inputText value="#{terceroBean.tercero.email}" id="emailEditInput" 
+                         label="#{messages.field_label_tercero_email}" />
+            <p:message for="emailEditInput" display="icon" />
+
+
+
+
+        </p:panelGrid>
+
+    </p:outputPanel>
+</html>

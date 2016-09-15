@@ -1,0 +1,81 @@
+{
+  "info1": "======================================================================================================",
+  "info2": "= This Project was generated with generjee. http://generjee.com                                      =",
+  "info3": "= You can import this file into the generjee tool, then change the project model and generate again. =",
+  "info4": "======================================================================================================",
+  "entities": [
+    {
+      "name": "TipoIdentificacion",
+      "id": 1,
+      "lookupField": 0,
+      "lazyLoading": true,
+      "fields": [
+        {
+          "id": 0,
+          "name": "id",
+          "type": "Autoincremented ID",
+          "editable": false,
+          "showInTable": false,
+          "required": true
+        },
+        {
+          "id": 1,
+          "name": "descripcion",
+          "type": "String",
+          "editable": true,
+          "showInTable": true,
+          "stringLength": "200",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "Tercero",
+      "id": 2,
+      "lookupField": 0,
+      "exportable": true,
+      "lazyLoading": true,
+      "fields": [
+        {
+          "id": 0,
+          "name": "id",
+          "type": "Autoincremented ID",
+          "editable": false,
+          "showInTable": false,
+          "required": true
+        },
+        {
+          "id": 1,
+          "name": "nombres",
+          "type": "String",
+          "editable": true,
+          "showInTable": true,
+          "stringLength": "200",
+          "required": false
+        },
+        {
+          "id": 2,
+          "name": "tipoIdentificacion",
+          "type": "Relation",
+          "editable": true,
+          "showInTable": true,
+          "referenceType": "n:1",
+          "referenceEntity": "TipoIdentificacion"
+        }
+      ]
+    }
+  ],
+  "appSettings": {
+    "generjeeversion": "1.0",
+    "appName": "inmueblesgo",
+    "package": "com.j2km.inmueblesgo",
+    "masterDetailsStyle": "1",
+    "dataListStyle": "1",
+    "pfTheme": "omega",
+    "runtarget": "as",
+    "layer": {
+      "rest": true
+    }
+  },
+  "guid": "cd07e61e-4091-48ce-8eaa-28beda5afbe7"
+}

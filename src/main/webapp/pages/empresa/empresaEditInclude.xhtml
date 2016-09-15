@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+
+    <p:outputPanel styleClass="ui-fluid">
+
+        <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
+
+
+
+
+            <h:outputLabel value="#{messages.field_label_empresa_poblado}:" for="pobladoSelectInput" rendered="#{not hidePobladoSelectInput}"/>
+            <h:panelGroup rendered="#{not hidePobladoSelectInput}">
+                <p:selectOneMenu value="#{empresaBean.empresa.poblado}"
+                                 id="pobladoSelectInput">
+                    <f:selectItem noSelectionOption="true" itemLabel="" />
+                    <f:selectItems value="#{empresaBean.poblados}" 
+                                   var="poblado" 
+                                   itemLabel="#{poblado.nombre}"
+                                   itemValue="#{poblado}" />
+                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{empresaBean.poblados}" />
+
+                </p:selectOneMenu>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{not hidePobladoSelectInput}">
+
+                <p:commandButton icon="ui-icon-plusthick" title="#{messages.label_create}"
+                                 action="#{pobladoBean.prepareNewPoblado()}"
+                                 update=":createPobladoFromEditDialog"
+                                 resetValues="true"
+                                 oncomplete="PF('createPobladoFromEditDialogWidget').show()"
+                                 rendered="#{applicationBean.componentExists('createPobladoFromEditDialog')}"
+                                 style="vertical-align:top;" partialSubmit="true" process="@this">
+                </p:commandButton>
+
+                <p:message for="pobladoSelectInput" display="icon" rendered="#{not hidePobladoSelectInput}"/>
+            </h:panelGroup>            
+
+            <h:outputLabel value="#{messages.field_label_empresa_nit}:" for="nitEditInput" />
+            <p:inputText value="#{empresaBean.empresa.nit}" id="nitEditInput" 
+                         label="#{messages.field_label_empresa_nit}" />
+            <p:message for="nitEditInput" display="icon" />
+
+
+            <h:outputLabel value="#{messages.field_label_empresa_nombre}:" for="nombreEditInput" />
+            <p:inputText value="#{empresaBean.empresa.nombre}" id="nombreEditInput" 
+                         label="#{messages.field_label_empresa_nombre}" />
+            <p:message for="nombreEditInput" display="icon" />
+
+
+            <h:outputLabel value="#{messages.field_label_empresa_direccion}:" for="direccionEditInput" />
+            <p:inputText value="#{empresaBean.empresa.direccion}" id="direccionEditInput" 
+                         label="#{messages.field_label_empresa_direccion}" />
+            <p:message for="direccionEditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_empresa_telefono}:" for="telefonoEditInput" />
+            <p:inputText value="#{empresaBean.empresa.telefono}" id="telefonoEditInput" 
+                         label="#{messages.field_label_empresa_telefono}" />
+            <p:message for="telefonoEditInput" display="icon" />
+
+
+            <h:outputLabel value="#{messages.field_label_empresa_email}:" for="emailEditInput" />
+            <p:inputText value="#{empresaBean.empresa.email}" id="emailEditInput" 
+                         label="#{messages.field_label_empresa_email}" />
+            <p:message for="emailEditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_empresa_emailPass}:" for="emailPassEditInput" />
+            <p:inputText value="#{empresaBean.empresa.emailPass}" id="emailPassEditInput" 
+                         label="#{messages.field_label_empresa_emailPass}" />
+            <p:message for="emailPassEditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_empresa_emailHost}:" for="emailHostEditInput" />
+            <p:inputText value="#{empresaBean.empresa.emailHost}" id="emailHostEditInput" 
+                         label="#{messages.field_label_empresa_emailHost}" />
+            <p:message for="emailHostEditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_empresa_emailPort}:" for="emailPortEditInput" />
+            <p:inputText value="#{empresaBean.empresa.emailPort}" id="emailPortEditInput" 
+                         label="#{messages.field_label_empresa_emailPort}" />
+            <p:message for="emailPortEditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_empresa_logo}:" for="logoEditInput" />
+            <p:inputText value="#{empresaBean.empresa.logo}" id="logoEditInput" 
+                         label="#{messages.field_label_empresa_logo}" />
+            <p:message for="logoEditInput" display="icon" />
+
+
+
+        </p:panelGrid>
+
+    </p:outputPanel>
+</html>
