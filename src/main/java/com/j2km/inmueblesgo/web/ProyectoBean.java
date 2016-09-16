@@ -1,11 +1,11 @@
 package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.EmpresaEntity;
-import com.j2km.inmueblesgo.domain.PobladoEntity;
-import com.j2km.inmueblesgo.domain.TerceroEntity;
+import com.j2km.inmueblesgo.domain.OfertaEntity;
+import com.j2km.inmueblesgo.domain.ProyectoEntity;
 import com.j2km.inmueblesgo.service.EmpresaService;
-import com.j2km.inmueblesgo.service.PobladoService;
-import com.j2km.inmueblesgo.service.TerceroService;
+import com.j2km.inmueblesgo.service.OfertaService;
+import com.j2km.inmueblesgo.service.ProyectoService;
 import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
@@ -22,43 +22,42 @@ import javax.inject.Named;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
 
-@Named("empresaBean")
+@Named("proyectoBean")
 @ViewScoped
-public class EmpresaBean implements Serializable {
+public class ProyectoBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Logger logger = Logger.getLogger(EmpresaBean.class.getName());
+    private static final Logger logger = Logger.getLogger(ProyectoBean.class.getName());
     
-    private GenericLazyDataModel<EmpresaEntity> lazyModel;
+    private GenericLazyDataModel<ProyectoEntity> lazyModel;
     
-    private EmpresaEntity empresa;
+    private ProyectoEntity proyecto;
+    
+    @Inject
+    private ProyectoService proyectoService;
+    
+    @Inject
+    private OfertaService ofertaService;
+    
+    private List<OfertaEntity> allOfertasList;
+    
     
     @Inject
     private EmpresaService empresaService;
     
-    @Inject
-    private PobladoService pobladoService;
+    private List<EmpresaEntity> allEmpresasList;    
     
-    private List<PobladoEntity> allPobladosList;
-
-    @Inject
-    private TerceroService representanteService;
-    
-    private List<TerceroEntity> allRepresentantesList;
-
-
-    
-    public void prepareNewEmpresa() {
+    public void prepareNewProyecto() {
         reset();
-        this.empresa = new EmpresaEntity();
+        this.proyecto = new ProyectoEntity();
         // set any default values now, if you need
-        // Example: this.empresa.setAnything("test");
+        // Example: this.proyecto.setAnything("test");
     }
 
-    public GenericLazyDataModel<EmpresaEntity> getLazyModel() {
+    public GenericLazyDataModel<ProyectoEntity> getLazyModel() {
         if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(empresaService);
+            this.lazyModel = new GenericLazyDataModel<>(proyectoService);
         }
         return this.lazyModel;
     }
@@ -69,11 +68,11 @@ public class EmpresaBean implements Serializable {
         
         try {
             
-            if (empresa.getId() != null) {
-                empresa = empresaService.update(empresa);
+            if (proyecto.getId() != null) {
+                proyecto = proyectoService.update(proyecto);
                 message = "message_successfully_updated";
             } else {
-                empresa = empresaService.save(empresa);
+                proyecto = proyectoService.save(proyecto);
                 message = "message_successfully_created";
             }
         } catch (OptimisticLockException e) {
@@ -99,7 +98,7 @@ public class EmpresaBean implements Serializable {
         String message;
         
         try {
-            empresaService.delete(empresa);
+            proyectoService.delete(proyecto);
             message = "message_successfully_deleted";
             reset();
         } catch (Exception e) {
@@ -113,60 +112,61 @@ public class EmpresaBean implements Serializable {
         return null;
     }
     
-    public void onDialogOpen(EmpresaEntity empresa) {
+    public void onDialogOpen(ProyectoEntity proyecto) {
         reset();
-        this.empresa = empresa;
+        this.proyecto = proyecto;
     }
     
     public void reset() {
-        empresa = null;
+        proyecto = null;
 
-        allPobladosList = null;
-        allRepresentantesList = null;
+        allOfertasList = null;
+         allEmpresasList = null;
         
     }
 
-    // Get a List of all poblado
-    public List<PobladoEntity> getPoblados() {
-        if (this.allPobladosList == null) {
-            this.allPobladosList = pobladoService.findAllPobladoEntities();
+    // Get a List of all oferta
+    public List<OfertaEntity> getOfertas() {
+        if (this.allOfertasList == null) {
+            this.allOfertasList = ofertaService.findAllOfertaEntities();
         }
-        return this.allPobladosList;
+        return this.allOfertasList;
     }
     
-    // Update poblado of the current empresa
-    public void updatePoblado(PobladoEntity poblado) {
-        this.empresa.setPoblado(poblado);
-        // Maybe we just created and assigned a new poblado. So reset the allPobladoList.
-        allPobladosList = null;
+    // Update oferta of the current proyecto
+    public void updateOferta(OfertaEntity oferta) {
+        this.proyecto.setOferta(oferta);
+        // Maybe we just created and assigned a new oferta. So reset the allOfertaList.
+        allOfertasList = null;
     }
     
-    
-    // Get a List of all terceros
-    public List<TerceroEntity> getRepresentantes() {
-        if (this.allRepresentantesList == null) {
-            this.allRepresentantesList = representanteService.findAllTerceroEntities();
+     // Get a List of all oferta
+    public List<EmpresaEntity> getEmpresas() {
+        if (this.allEmpresasList == null) {
+            this.allEmpresasList = empresaService.findAllEmpresaEntities();
         }
-        return this.allRepresentantesList;
+        return this.allEmpresasList;
     }
     
-    // Update terceros of the current empresa
-    public void updateRepresentante(TerceroEntity representante) {
-        this.empresa.setRepresentante(representante);
-        // Maybe we just created and assigned a new poblado. So reset the allReprentanteList.
-        allRepresentantesList = null;
+    // Update empresa of the current proyecto
+    public void updateempresa(EmpresaEntity empresa) {
+        this.proyecto.setEmpresa(empresa);
+        // Maybe we just created and assigned a new empresa. So reset the allEmpresaList.
+        allEmpresasList = null;
     }
     
     
-    public EmpresaEntity getEmpresa() {
-        if (this.empresa == null) {
-            prepareNewEmpresa();
+    
+    
+    public ProyectoEntity getProyecto() {
+        if (this.proyecto == null) {
+            prepareNewProyecto();
         }
-        return this.empresa;
+        return this.proyecto;
     }
     
-    public void setEmpresa(EmpresaEntity empresa) {
-        this.empresa = empresa;
+    public void setProyecto(ProyectoEntity proyecto) {
+        this.proyecto = proyecto;
     }
     
 }

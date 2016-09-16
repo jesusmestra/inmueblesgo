@@ -41,6 +41,41 @@
                 <p:message for="pobladoSelectInput" display="icon" rendered="#{not hidePobladoSelectInput}"/>
             </h:panelGroup>            
 
+            
+            
+            <h:outputLabel value="#{messages.field_label_empresa_representante}:" for="representanteSelectInput" rendered="#{not hideRepresentanteSelectInput}"/>
+            <h:panelGroup rendered="#{not hideRepresentanteSelectInput}">
+                <p:selectOneMenu value="#{empresaBean.empresa.representante}"
+                                 id="representanteSelectInput">
+                    <f:selectItem noSelectionOption="true" itemLabel="" />
+                    <f:selectItems value="#{empresaBean.representantes}" 
+                                   var="representante" 
+                                   itemLabel="#{representante.nombres}"
+                                   itemValue="#{representante}" />
+                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{empresaBean.representantes}" />
+
+                </p:selectOneMenu>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{not hideRepresentanteSelectInput}">
+
+                <p:commandButton icon="ui-icon-plusthick" title="#{messages.label_create}"
+                                 action="#{terceroBean.prepareNewTercero()}"
+                                 update=":createRepresentanteFromEditDialog"
+                                 resetValues="true"
+                                 oncomplete="PF('createRepresentanteFromEditDialogWidget').show()"
+                                 rendered="#{applicationBean.componentExists('createRepresentanteFromEditDialog')}"
+                                 style="vertical-align:top;" partialSubmit="true" process="@this">
+                </p:commandButton>
+
+                <p:message for="representanteSelectInput" display="icon" rendered="#{not hideRepresentanteSelectInput}"/>
+            </h:panelGroup>             
+            
+            
+            
+            
+            
+            
+            
             <h:outputLabel value="#{messages.field_label_empresa_nit}:" for="nitEditInput" />
             <p:inputText value="#{empresaBean.empresa.nit}" id="nitEditInput" 
                          label="#{messages.field_label_empresa_nit}" />

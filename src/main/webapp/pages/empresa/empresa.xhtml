@@ -30,6 +30,22 @@
                         <p:columnToggler datasource="empresaTable" trigger="toggler" />
                     </f:facet>
 
+                    <p:column headerText="#{messages.field_label_empresa_representante}" sortBy="#{empresa.representante}" filterBy="#{empresa.representante}">
+                        <f:facet name="filter">
+                            <p:selectOneMenu  id="representanteFilter"
+                                              style="width:145px;"
+                                              onchange="PF('empresaTable').filter(); return false;">
+                                <f:selectItem noSelectionOption="true" itemLabel="" />
+                                <f:selectItems itemLabel="#{representante.nombres}"
+                                               value="#{empresaBean.representantes}" 
+                                               var="representante" 
+                                               itemValue="#{representante}" />
+                                <o:converter converterId="omnifaces.SelectItemsConverter" list="#{empresaBean.representantes}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{empresa.representante.nombres}" />
+                    </p:column>
+
                     <p:column headerText="#{messages.field_label_empresa_poblado}" sortBy="#{empresa.poblado}" filterBy="#{empresa.poblado}">
                         <f:facet name="filter">
                             <p:selectOneMenu  id="pobladoFilter"
@@ -45,6 +61,8 @@
                         </f:facet>
                         <h:outputText value="#{empresa.poblado.nombre}" />
                     </p:column>            
+
+
 
                     <p:column  headerText="#{messages.field_label_empresa_nit}" sortBy="#{empresa.nit}" filterBy="#{empresa.nit}">
                         <f:facet name="filter">
@@ -210,6 +228,33 @@
                     </h:form>
                 </p:outputPanel>
             </p:dialog>
+
+            <p:dialog dynamic="true" id="createRepresentanteFromEditDialog"
+                      header="#{messages.dialog_empresa_create_representante}" modal="true"
+                      widgetVar="createRepresentanteFromEditDialogWidget" maximizable="true">
+                <p:ajax event="close" listener="#{terceroBean.reset}" />
+                <p:outputPanel id="createRepresentantePanel">
+                    <h:form id="createRepresentanteForm">
+                        <ui:include src="/pages/tercero/terceroEditInclude.xhtml">
+                            <ui:param name="hideEmpresaSelectInput" value="true" />
+                        </ui:include>
+                        <div style="text-align: center; margin: 10px">
+                            <p:commandButton
+                                action="#{empresaBean.updateRepresentante(terceroBean.tercero)}"
+                                value="#{messages.label_save}" icon="ui-icon-disk"
+                                actionListener="#{terceroBean.persist}"
+                                update=":editEmpresaForm:representanteSelectInput :createRepresentantePanel :growlForm:growl"
+                                oncomplete="if(!args.validationFailed) PF('createRepresentanteFromEditDialogWidget').hide()" />
+                            <p:commandButton value="#{messages.label_close}"
+                                             icon="ui-icon-close"
+                                             onclick="PF('createRepresentanteFromEditDialogWidget').hide()"
+                                             type="button" />
+                        </div>
+                    </h:form>
+                </p:outputPanel>
+            </p:dialog>            
+
+
 
         </ui:define>
     </ui:composition>

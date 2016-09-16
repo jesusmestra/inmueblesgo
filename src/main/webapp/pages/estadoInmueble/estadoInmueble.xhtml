@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+    <ui:composition template="/templates/layout.xhtml">
+        <ui:define name="content">
+
+            <h:form prependId="false" id="estadoInmuebleDataForm" onkeypress="if (event.keyCode == 13) {
+                return false;
+            }">
+
+                <p:dataTable id="estadoInmuebleTable" value="#{estadoInmuebleBean.lazyModel}" var="estadoInmueble" resizableColumns="true" paginator="true"
+                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
+                             paginatorPosition="bottom" widgetVar="estadoInmuebleTable" emptyMessage="#{messages.label_no_records_found}"
+                             reflow="true">
+
+                    <f:facet name="header" >
+
+                        <p:commandButton value="#{messages.create_new_estadoInmueble}" icon="ui-icon-plusthick" action="#{estadoInmuebleBean.prepareNewEstadoInmueble()}"
+                                         resetValues="true" update=":editEstadoInmuebleDialog" oncomplete="PF('editEstadoInmuebleDialogWidget').show()"
+                                         style="float:left" />
+
+                        <p:commandButton id="toggler" type="button" value="#{messages.table_select_columns}" icon="ui-icon-calculator" />
+                        <p:columnToggler datasource="estadoInmuebleTable" trigger="toggler" />
+                    </f:facet>
+
+                    <p:column  headerText="#{messages.field_label_estadoInmueble_codigo}" sortBy="#{estadoInmueble.codigo}" filterBy="#{estadoInmueble.codigo}">
+                        <f:facet name="filter">
+                            <p:inputText id="codigoFilter"
+                                         onkeypress="if (event.keyCode == 13) {
+                                    PF('estadoInmuebleTable').filter();
+                                    updateCodigoFilter();
+                                    return false;
+                                }" >
+                                <p:remoteCommand name="updateCodigoFilter" update="estadoInmuebleTable:codigoFilter" />
+                            </p:inputText>
+                        </f:facet>
+                        <h:outputText value="#{estadoInmueble.codigo}" />
+                    </p:column>
+
+                    <p:column  headerText="#{messages.field_label_estadoInmueble_nombre}" sortBy="#{estadoInmueble.nombre}" filterBy="#{estadoInmueble.nombre}">
+                        <f:facet name="filter">
+                            <p:inputText id="nombreFilter"
+                                         onkeypress="if (event.keyCode == 13) {
+                                    PF('estadoInmuebleTable').filter();
+                                    updateNombreFilter(); return false;
+                                }" >
+                                <p:remoteCommand name="updateNombreFilter" update="estadoInmuebleTable:nombreFilter" />
+                            </p:inputText>
+                        </f:facet>
+                        <h:outputText value="#{estadoInmueble.nombre}" />
+                    </p:column>
+
+
+                    <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
+
+                        <p:commandButton icon="ui-icon-zoomin" update=":viewEstadoInmuebleDialog" oncomplete="PF('viewEstadoInmuebleDialogWidget').show()" title="#{messages.label_view}">
+                            <f:setPropertyActionListener value="#{estadoInmueble}" target="#{estadoInmuebleBean.estadoInmueble}" />
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-pencil" update=":editEstadoInmuebleDialog"
+                                         resetValues="true" 
+                                         action="#{estadoInmuebleBean.onDialogOpen(estadoInmueble)}"
+                                         oncomplete="PF('editEstadoInmuebleDialogWidget').show()"
+                                         title="#{messages.label_edit}" >
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-close" 
+                                         oncomplete="PF('deleteEstadoInmuebleDialogWidget').show()"
+                                         title="#{messages.label_delete}" >
+                            <f:setPropertyActionListener value="#{estadoInmueble}"
+                                                         target="#{estadoInmuebleBean.estadoInmueble}" />
+                        </p:commandButton>
+
+                    </p:column>
+
+                </p:dataTable>
+
+            </h:form>
+
+            <p:confirmDialog id="deleteEstadoInmuebleDialog" widgetVar="deleteEstadoInmuebleDialogWidget"
+                             header="#{messages.label_confirm_deletion}"
+                             severity="alarm">
+                <f:facet name="message"><h:outputText value="#{messages.label_delete_record}" escape="false"/></f:facet>
+                <p:outputPanel>
+                    <h:form>
+                        <div style="text-align: center; margin:10px">
+                            <p:commandButton value="#{messages.label_yes}" action="#{estadoInmuebleBean.delete}" update=":estadoInmuebleDataForm :growlForm:growl" oncomplete="PF('deleteEstadoInmuebleDialogWidget').hide()" />
+                            <p:commandButton value="#{messages.label_no}" onclick="PF('deleteEstadoInmuebleDialogWidget').hide()" type="button" />
+                        </div>
+                    </h:form>
+                </p:outputPanel>
+            </p:confirmDialog>
+
+            <p:dialog dynamic="true" id="editEstadoInmuebleDialog" header="#{messages.label_estadoInmueble_caption}"
+                      modal="true" widgetVar="editEstadoInmuebleDialogWidget" maximizable="true">
+                <p:ajax event="close" listener="#{estadoInmuebleBean.reset}"/>
+                <h:form id="editEstadoInmuebleForm" >
+                    <p:outputPanel id="estadoInmuebleEditPanel">
+                        <ui:include src="/pages/estadoInmueble/estadoInmuebleEditInclude.xhtml"/>
+                        <div style="text-align: center; margin:10px">
+                            <p:commandButton value="#{messages.label_save}"
+                                             icon="ui-icon-disk" action="#{estadoInmuebleBean.persist}"
+                                             update=":editEstadoInmuebleForm:estadoInmuebleEditPanel :estadoInmuebleDataForm :growlForm:growl"
+                                             oncomplete="if(!args.validationFailed) PF('editEstadoInmuebleDialogWidget').hide()" />
+                            <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('editEstadoInmuebleDialogWidget').hide()" type="button" />
+                        </div>
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog dynamic="true" id="viewEstadoInmuebleDialog" header="#{messages.label_estadoInmueble_caption}" modal="true" widgetVar="viewEstadoInmuebleDialogWidget" maximizable="true">
+                <p:ajax event="close" listener="#{estadoInmuebleBean.reset}" />
+                <h:form id="viewEstadoInmuebleForm">
+                    <ui:include src="/pages/estadoInmueble/estadoInmuebleViewInclude.xhtml"/>
+                    <div style="text-align: center; margin:10px">
+                        <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('viewEstadoInmuebleDialogWidget').hide()" type="button" />
+                    </div>
+                </h:form>
+            </p:dialog>
+
+        </ui:define>
+    </ui:composition>
+</html>

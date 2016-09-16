@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+
+        <p:outputPanel styleClass="ui-fluid">
+
+            <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
+            
+                <h:outputLabel value="#{messages.field_label_oferta_nombre}:" for="nombreEditInput" />
+                <p:inputText value="#{ofertaBean.oferta.nombre}" id="nombreEditInput" 
+                             label="#{messages.field_label_oferta_nombre}" />
+                <p:message for="nombreEditInput" display="icon" />
+
+
+ 
+                <h:outputLabel value="#{messages.field_label_oferta_valorSeparacion}:" for="valorSeparacionEditInput" />
+                <p:inputText value="#{ofertaBean.oferta.valorSeparacion}" id="valorSeparacionEditInput" 
+                             label="#{messages.field_label_oferta_valorSeparacion}" />
+                <p:message for="valorSeparacionEditInput" display="icon" />
+                
+                 
+                <h:outputLabel value="#{messages.field_label_oferta_porcentaje}:" for="porcentajeEditInput" />
+                <p:inputText value="#{ofertaBean.oferta.porcentaje}" id="porcentajeEditInput" 
+                             label="#{messages.field_label_oferta_porcentaje}" />
+                <p:message for="porcentajeEditInput" display="icon" />
+                
+                 
+                <h:outputLabel value="#{messages.field_label_oferta_numeroCuotas}:" for="numeroCuotasEditInput" />
+                <p:inputText value="#{ofertaBean.oferta.numeroCuotas}" id="numeroCuotasEditInput" 
+                             label="#{messages.field_label_oferta_numeroCuotas}" />
+                <p:message for="numeroCuotasEditInput" display="icon" />
+                
+                 
+                <h:outputLabel value="#{messages.field_label_oferta_periodicidad}:" for="periodicidadEditInput" />
+                <p:inputText value="#{ofertaBean.oferta.periodicidad}" id="periodicidadEditInput" 
+                             label="#{messages.field_label_oferta_periodicidad}" />
+                <p:message for="periodicidadEditInput" display="icon" />
+                
+        
+                
+                
+            </p:panelGrid>
+
+        </p:outputPanel>
+</html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+
+    <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2" >
+
+        <h:outputText value="#{messages.field_label_inmueble_proyecto}:" />
+        <h:outputText value="#{inmuebleBean.inmueble.proyecto.nombre}" />
+
+
+        <h:outputText value="#{messages.field_label_inmueble_estadoInmueble}:" />
+        <h:outputText value="#{inmuebleBean.inmueble.estadoInmueble.nombre}" />
+
+        <h:outputText value="#{messages.field_label_inmueble_numero}:" />
+        <h:outputText value="#{inmuebleBean.inmueble.numero}" />
+
+        <h:outputText value="#{messages.field_label_inmueble_area}:" />
+        <h:outputText value="#{inmuebleBean.inmueble.area}" />
+
+        <h:outputText value="#{messages.field_label_inmueble_valorMetroCuadrado}:" />
+        <h:outputText value="#{inmuebleBean.inmueble.valorMetroCuadrado}" />
+
+        <h:outputText value="#{messages.field_label_inmueble_incremento}:" />
+        <h:outputText value="#{inmuebleBean.inmueble.incremento}" />
+
+        <h:outputText value="#{messages.field_label_inmueble_valorSeparacion}:" />
+        <h:outputText value="#{inmuebleBean.inmueble.valorSeparacion}" />
+
+        <h:outputText value="#{messages.field_label_inmueble_valorTotal}:" />
+        <h:outputText value="#{inmuebleBean.inmueble.valorTotal}" />
+
+    </h:panelGrid>
+</html>

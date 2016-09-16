@@ -2,6 +2,7 @@ package com.j2km.inmueblesgo.service;
 
 import com.j2km.inmueblesgo.domain.EmpresaEntity;
 import com.j2km.inmueblesgo.domain.PobladoEntity;
+import com.j2km.inmueblesgo.domain.TerceroEntity;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -51,6 +52,13 @@ public class EmpresaService extends BaseService<EmpresaEntity> implements Serial
         return entityManager.createQuery("SELECT o FROM Empresa o WHERE o.poblado = :poblado", EmpresaEntity.class).setParameter("poblado", poblado).getResultList();
     }
 
+    @Transactional
+    public List<EmpresaEntity> findEmpresasByRepresentante(TerceroEntity representante) {
+        return entityManager.createQuery("SELECT o FROM Empresa o WHERE o.representante = :representante", EmpresaEntity.class).setParameter("representante", representante).getResultList();
+    }
+    
+    
+    
     // This is the central method called by the DataTable
     @Override
     @Transactional
@@ -62,6 +70,8 @@ public class EmpresaService extends BaseService<EmpresaEntity> implements Serial
 
         // Can be optimized: We need this join only when poblado filter is set
         query.append(" LEFT OUTER JOIN o.poblado poblado");
+        
+        query.append(" LEFT OUTER JOIN o.representante representante");
 
         String nextConnective = " WHERE";
 
@@ -94,6 +104,11 @@ public class EmpresaService extends BaseService<EmpresaEntity> implements Serial
                         queryParameters.put("poblado", filters.get(filterProperty));
                         break;
 
+                    case "representante":
+                        query.append(nextConnective).append(" o.representante = :representante");
+                        queryParameters.put("representante", filters.get(filterProperty));
+                        break;
+                        
                 }
 
                 nextConnective = " AND";
