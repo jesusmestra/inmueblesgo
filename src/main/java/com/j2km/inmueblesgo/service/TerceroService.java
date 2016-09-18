@@ -52,6 +52,17 @@ public class TerceroService extends BaseService<TerceroEntity> implements Serial
         return entityManager.createQuery("SELECT o FROM Tercero o WHERE o.tipoIdentificacion = :tipoIdentificacion", TerceroEntity.class).setParameter("tipoIdentificacion", tipoIdentificacion).getResultList();
     }
 
+    @Transactional
+    public TerceroEntity findByIdentificacion(String identificacion) {
+
+        List<TerceroEntity> lista = entityManager.createQuery("SELECT o FROM Tercero o WHERE o.identificacion = :identificacion", TerceroEntity.class).setParameter("identificacion", identificacion).getResultList();
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        }
+
+        return lista.get(0);
+    }
+
     // This is the central method called by the DataTable
     @Override
     @Transactional

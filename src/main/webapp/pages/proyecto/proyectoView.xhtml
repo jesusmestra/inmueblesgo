@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+    <ui:composition template="/templates/layout.xhtml">
+        <ui:define name="content">
+
+            <f:metadata>
+                <f:viewParam name="id" value="#{proyectoBean.proyecto}" converter="#{genericEntityConverter}" />
+            </f:metadata>
+
+            <p:outputPanel id="proyectoViewPanel" >
+                <h:form id="viewProductExampleForm">
+                    <ui:include src="/pages/proyecto/proyectoViewInclude.xhtml"/>
+                    <div style="margin:10px">
+                        <p:commandButton value="#{messages.label_close}" 
+                                         icon="ui-icon-close" 
+                                         action="/pages/proyecto/proyecto?faces-redirect=true" 
+                                         immediate="true"/>
+                    </div>
+                </h:form>
+                
+                </p:outputPanel>
+                <h:form prependId="false" id="inmuebleDataForm" onkeypress="if (event.keyCode == 13) {
+                        return false;
+                    }">
+
+
+
+                    <p:dataTable id="inmuebleTable" value="#{inmuebleService.findInmueblesByProyecto(proyectoBean.proyecto)}" 
+                                 var="inmueble" resizableColumns="true" paginator="true"
+                                 paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
+                                 paginatorPosition="bottom" widgetVar="inmuebleTable" emptyMessage="#{messages.label_no_records_found}"
+                                 reflow="true">
+
+                        <f:facet name="header" >
+                        <p:commandButton value="#{messages.create_new_inmueble}" 
+                                         icon="ui-icon-plusthick" 
+                                         action="#{inmuebleBean.onDialogGenerarInmuebles(inmueble)}"
+                                         resetValues="true" 
+                                         update=":editInmuebleMasiveDialog" 
+                                         oncomplete="PF('editInmuebleMasiveDialogWidget').show()"
+                                         style="float:left" />
+                            
+                            
+                            
+                            <p:commandButton id="toggler" type="button" value="#{messages.table_select_columns}" icon="ui-icon-calculator" />
+                            <p:columnToggler datasource="inmuebleTable" trigger="toggler" />
+                        </f:facet>
+
+
+                        <p:column headerText="#{messages.field_label_inmueble_proyecto}" >
+                            <h:outputText value="#{inmueble.proyecto.nombre}" />
+                        </p:column>                     
+
+
+                        <p:column headerText="#{messages.field_label_inmueble_estadoInmueble}" sortBy="#{inmueble.estadoInmueble}" >
+                            <h:outputText value="#{inmueble.estadoInmueble.nombre}" />
+                        </p:column>            
+
+                        <p:column  headerText="#{messages.field_label_inmueble_numero}" sortBy="#{inmueble.numero}" >
+                            <h:outputText value="#{inmueble.numero}" />
+                        </p:column>                
+
+                        <p:column  headerText="#{messages.field_label_inmueble_area}" sortBy="#{inmueble.area}" >
+                            <h:outputText value="#{inmueble.area}" />
+                        </p:column>  
+
+
+                        <p:column  headerText="#{messages.field_label_inmueble_valorMetroCuadrado}" sortBy="#{inmueble.valorMetroCuadrado}" >
+                            <h:outputText value="#{inmueble.valorMetroCuadrado}" />
+                        </p:column>  
+
+
+                        <p:column  headerText="#{messages.field_label_inmueble_incremento}" sortBy="#{inmueble.incremento}" >
+                            <h:outputText value="#{inmueble.incremento}" />
+                        </p:column> 
+
+
+                        <p:column  headerText="#{messages.field_label_inmueble_valorSeparacion}" sortBy="#{inmueble.valorSeparacion}" >
+                            <h:outputText value="#{inmueble.valorSeparacion}" />
+                        </p:column>                     
+
+
+
+                        <p:column  headerText="#{messages.field_label_inmueble_valorTotal}" sortBy="#{inmueble.valorTotal}">
+                            <h:outputText value="#{inmueble.valorTotal}" />
+                        </p:column>                      
+
+
+                        <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
+                        <p:commandButton icon="ui-icon-pencil" update=":editInmuebleDialog"
+                                         resetValues="true" 
+                                         action="#{inmuebleBean.onDialogOpen(inmueble)}"
+                                         oncomplete="PF('editInmuebleDialogWidget').show()"
+                                         title="#{messages.label_edit}" >
+                        </p:commandButton>
+
+                           
+                        </p:column>
+
+                    </p:dataTable>
+
+
+            
+
+            <p:dialog dynamic="true" id="editInmuebleDialog" header="#{messages.label_inmueble_caption}"
+                      modal="true" widgetVar="editInmuebleDialogWidget" maximizable="true">
+                <p:ajax event="close" listener="#{inmuebleBean.reset}"/>
+                <h:form id="editInmuebleForm" >
+                    <p:outputPanel id="inmuebleEditPanel">
+                        <ui:include src="/pages/inmueble/inmuebleEditInclude.xhtml"/>
+                        <div style="text-align: center; margin:10px">
+                            <p:commandButton value="#{messages.label_save}"
+                                             icon="ui-icon-disk" action="#{inmuebleBean.persist}"
+                                             update=":editInmuebleForm:inmuebleEditPanel :inmuebleDataForm :growlForm:growl"
+                                             oncomplete="if(!args.validationFailed) PF('editInmuebleDialogWidget').hide()" />
+                            <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('editInmuebleDialogWidget').hide()" type="button" />
+                        </div>
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog dynamic="true" id="editInmuebleMasiveDialog" header="#{messages.label_inmueble_caption}"
+                      modal="true" widgetVar="editInmuebleMasiveDialogWidget" maximizable="true">
+                <p:ajax event="close" listener="#{inmuebleBean.reset}"/>
+                <h:form id="editInmuebleMasiveForm" >
+                    <p:outputPanel id="inmuebleMasiveEditPanel">
+                        <ui:include src="/pages/inmueble/inmuebleMasiveEditInclude.xhtml"/>
+                        <div style="text-align: center; margin:10px">
+                            <p:commandButton value="Genracion" actionListener="#{inmuebleBean.generacionMasiva}"/>
+                            
+                            <p:commandButton value="#{messages.label_save}"
+                                             icon="ui-icon-disk" action="#{inmuebleBean.generacionMasiva}"
+                                             update=":editInmuebleMasiveForm:inmuebleMasiveEditPanel :inmuebleDataForm :growlForm:growl"
+                                             oncomplete="if(!args.validationFailed) PF('editInmuebleMasiveDialogWidget').hide()" />
+                            <p:commandButton value="#{messages.label_close}" 
+                                             icon="ui-icon-close" onclick="PF('editInmuebleMasiveDialogWidget').hide()" type="button" />
+                        </div>
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>          
+
+        </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

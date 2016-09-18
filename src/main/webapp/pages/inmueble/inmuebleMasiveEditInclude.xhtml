@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+
+    <p:outputPanel styleClass="ui-fluid">
+CREANDO INMUEBLES MASIVAMENTE
+        <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
+
+            <h:outputLabel value="#{messages.field_label_inmueble_proyecto}:" for="proyectoSelectInput" rendered="#{not hideProyectoSelectInput}"/>
+            <h:panelGroup rendered="#{not hideProyectoSelectInput}">
+                <p:selectOneMenu value="#{inmuebleBean.inmueble.proyecto}"
+                                 id="proyectoSelectInput">
+                    <f:selectItem noSelectionOption="true" itemLabel="" />
+                    <f:selectItems value="#{inmuebleBean.proyectos}" 
+                                   var="proyecto" 
+                                   itemLabel="#{proyecto.nombre}"
+                                   itemValue="#{proyecto}" />
+                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{inmuebleBean.proyectos}" />
+
+                </p:selectOneMenu>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{not hideProyectoSelectInput}">
+
+                <p:commandButton icon="ui-icon-plusthick" title="#{messages.label_create}"
+                                 action="#{proyectoBean.prepareNewProyecto()}"
+                                 update=":createProyectoFromEditDialog"
+                                 resetValues="true"
+                                 oncomplete="PF('createProyectoFromEditDialogWidget').show()"
+                                 rendered="#{applicationBean.componentExists('createProyectoFromEditDialog')}"
+                                 style="vertical-align:top;" partialSubmit="true" process="@this">
+                </p:commandButton>
+
+                <p:message for="proyectoSelectInput" display="icon" rendered="#{not hideProyectoSelectInput}"/>
+            </h:panelGroup>
+
+
+            <h:outputLabel value="#{messages.field_label_inmueble_estadoInmueble}:" for="estadoInmuebleSelectInput" rendered="#{not hideEstadoInmuebleSelectInput}"/>
+            <h:panelGroup rendered="#{not hideEstadoInmuebleSelectInput}">
+                <p:selectOneMenu value="#{inmuebleBean.inmueble.estadoInmueble}"
+                                 id="estadoInmuebleSelectInput">
+                    <f:selectItem noSelectionOption="true" itemLabel="" />
+                    <f:selectItems value="#{inmuebleBean.estadoInmuebles}" 
+                                   var="estadoInmueble" 
+                                   itemLabel="#{estadoInmueble.nombre}"
+                                   itemValue="#{estadoInmueble}" />
+                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{inmuebleBean.estadoInmuebles}" />
+
+                </p:selectOneMenu>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{not hideEstadoInmuebleSelectInput}">
+
+                <p:commandButton icon="ui-icon-plusthick" title="#{messages.label_create}"
+                                 action="#{estadoInmuebleBean.prepareNewEstadoInmueble()}"
+                                 update=":createEstadoInmuebleFromEditDialog"
+                                 resetValues="true"
+                                 oncomplete="PF('createEstadoInmuebleFromEditDialogWidget').show()"
+                                 rendered="#{applicationBean.componentExists('createEstadoInmuebleFromEditDialog')}"
+                                 style="vertical-align:top;" partialSubmit="true" process="@this">
+                </p:commandButton>
+
+                <p:message for="estadoInmuebleSelectInput" display="icon" rendered="#{not hideEstadoInmuebleSelectInput}"/>
+            </h:panelGroup>            
+
+            <h:outputLabel value="#{messages.field_label_inmueble_cantidadInmuebles}:" for="cantidadInmueblesEditInput" />
+            <p:inputText value="#{inmuebleBean.cantidadInmuebles}" id="cantidadInmueblesEditInput" 
+                         label="#{messages.field_label_inmueble_cantidadInmuebles}" />
+            <p:message for="cantidadInmueblesEditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_inmueble_numero}:" for="numeroEditInput" />
+            <p:inputText value="#{inmuebleBean.inmueble.numero}" id="numeroEditInput" 
+                         label="#{messages.field_label_inmueble_numero}" />
+            <p:message for="numeroEditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_inmueble_area}:" for="areaEditInput" />
+            <p:inputText value="#{inmuebleBean.inmueble.area}" id="areaEditInput" 
+                         label="#{messages.field_label_inmueble_area}" />
+            <p:message for="areaEditInput" display="icon" />            
+
+
+            <h:outputLabel value="#{messages.field_label_inmueble_valorMetroCuadrado}:" for="valorMetroCuadradoEditInput" />
+            <p:inputText value="#{inmuebleBean.inmueble.valorMetroCuadrado}" id="valorMetroCuadradoEditInput" 
+                         label="#{messages.field_label_inmueble_valorMetroCuadrado}" />
+            <p:message for="valorMetroCuadradoEditInput" display="icon" />
+
+
+            <h:outputLabel value="#{messages.field_label_inmueble_incremento}:" for="incrementoEditInput" />
+            <p:inputText value="#{inmuebleBean.inmueble.incremento}" id="incrementoEditInput" 
+                         label="#{messages.field_label_inmueble_incremento}" />
+            <p:message for="incrementoEditInput" display="icon" />
+
+
+            <h:outputLabel value="#{messages.field_label_inmueble_valorSeparacion}:" for="valorSeparacionEditInput" />
+            <p:inputText value="#{inmuebleBean.inmueble.valorSeparacion}" id="valorSeparacionEditInput" 
+                         label="#{messages.field_label_inmueble_valorSeparacion}" />
+            <p:message for="valorSeparacionEditInput" display="icon" />          
+
+            <h:outputLabel value="#{messages.field_label_inmueble_valorTotal}:" for="valorTotalEditInput" />
+            <p:inputText value="#{inmuebleBean.inmueble.valorTotal}" id="valorTotalEditInput" 
+                         label="#{messages.field_label_inmueble_valorTotal}" />
+            <p:message for="valorTotalEditInput" display="icon" />
+
+
+        </p:panelGrid>
+
+    </p:outputPanel>
+</html>

@@ -77,6 +77,19 @@ public class ProyectoService extends BaseService<ProyectoEntity> implements Seri
     }    
     
     
+    
+    
+@Transactional
+    public ProyectoEntity findByCodigo(String codigo) {
+
+        List<ProyectoEntity> lista = entityManager.createQuery("SELECT o FROM Proyecto o WHERE o.codigo = :codigo", ProyectoEntity.class).setParameter("codigo", codigo).getResultList();
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        }
+
+        return lista.get(0);
+    }
+    
     // This is the central method called by the DataTable
     @Override
     @Transactional

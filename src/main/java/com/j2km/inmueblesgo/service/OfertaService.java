@@ -41,6 +41,18 @@ public class OfertaService extends BaseService<OfertaEntity> implements Serializ
         //  SI SE VA A ELIMINAR MUNICIPIOS Y POBLADOS EN CASCADA this.cutAllTipoIdentificacionTercerosAssignments(tipoIdentificacion);
     }
 
+    @Transactional
+    public OfertaEntity findByNombre(String nombre) {
+
+        List<OfertaEntity> lista = entityManager.createQuery("SELECT o FROM Oferta o WHERE o.nombre = :nombre", OfertaEntity.class).setParameter("nombre", nombre).getResultList();
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        }
+
+        return lista.get(0);
+    }
+
+
     /*
     SI SE VA A ELIMINAR MUNICIPIOS Y POBLADOS EN CASCADA    
     // Remove all assignments from all tercero a tipoIdentificacion. Called before delete a tipoIdentificacion.

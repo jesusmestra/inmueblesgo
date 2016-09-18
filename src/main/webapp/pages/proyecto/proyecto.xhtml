@@ -98,6 +98,12 @@
 
                     <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
 
+                        <p:commandButton action="#{'/pages/proyecto/proyectoView?faces-redirect=true&amp;id='.concat(proyecto.id)}"
+                                         icon="ui-icon-zoomin"
+                                         title="#{messages.label_view}" />
+
+
+
                         <p:commandButton icon="ui-icon-zoomin" update=":viewProyectoDialog" oncomplete="PF('viewProyectoDialogWidget').show()" title="#{messages.label_view}">
                             <f:setPropertyActionListener value="#{proyecto}" target="#{proyectoBean.proyecto}" />
                         </p:commandButton>

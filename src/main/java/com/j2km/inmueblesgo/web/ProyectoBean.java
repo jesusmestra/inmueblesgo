@@ -156,8 +156,6 @@ public class ProyectoBean implements Serializable {
     }
     
     
-    
-    
     public ProyectoEntity getProyecto() {
         if (this.proyecto == null) {
             prepareNewProyecto();
@@ -168,5 +166,9 @@ public class ProyectoBean implements Serializable {
     public void setProyecto(ProyectoEntity proyecto) {
         this.proyecto = proyecto;
     }
+    
+    
+    
+    
     
 }

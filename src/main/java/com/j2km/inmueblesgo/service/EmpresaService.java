@@ -56,9 +56,17 @@ public class EmpresaService extends BaseService<EmpresaEntity> implements Serial
     public List<EmpresaEntity> findEmpresasByRepresentante(TerceroEntity representante) {
         return entityManager.createQuery("SELECT o FROM Empresa o WHERE o.representante = :representante", EmpresaEntity.class).setParameter("representante", representante).getResultList();
     }
-    
-    
-    
+
+    @Transactional
+    public EmpresaEntity findByNit(String nit) {
+        List<EmpresaEntity> lista = entityManager.createQuery("SELECT o FROM Empresa o WHERE o.nit = :nit", EmpresaEntity.class).setParameter("nit", nit).getResultList();
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        }
+
+        return lista.get(0);
+    }
+
     // This is the central method called by the DataTable
     @Override
     @Transactional
@@ -70,7 +78,7 @@ public class EmpresaService extends BaseService<EmpresaEntity> implements Serial
 
         // Can be optimized: We need this join only when poblado filter is set
         query.append(" LEFT OUTER JOIN o.poblado poblado");
-        
+
         query.append(" LEFT OUTER JOIN o.representante representante");
 
         String nextConnective = " WHERE";
@@ -108,7 +116,7 @@ public class EmpresaService extends BaseService<EmpresaEntity> implements Serial
                         query.append(nextConnective).append(" o.representante = :representante");
                         queryParameters.put("representante", filters.get(filterProperty));
                         break;
-                        
+
                 }
 
                 nextConnective = " AND";
