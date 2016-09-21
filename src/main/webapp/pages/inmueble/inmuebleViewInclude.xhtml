@@ -20,19 +20,35 @@
         <h:outputText value="#{inmuebleBean.inmueble.numero}" />
 
         <h:outputText value="#{messages.field_label_inmueble_area}:" />
-        <h:outputText value="#{inmuebleBean.inmueble.area}" />
+        <h:outputText value="#{inmuebleBean.inmueble.area}" >
+        <f:convertNumber currencySymbol="" groupingUsed="true"
+                                maxFractionDigits="2" type="currency" />
+        </h:outputText>
+            
 
         <h:outputText value="#{messages.field_label_inmueble_valorMetroCuadrado}:" />
-        <h:outputText value="#{inmuebleBean.inmueble.valorMetroCuadrado}" />
+        <h:outputText value="#{inmuebleBean.inmueble.valorMetroCuadrado}" >
+        <f:convertNumber currencySymbol="$" groupingUsed="true"
+                                maxFractionDigits="2" type="currency" />
+        </h:outputText>
 
         <h:outputText value="#{messages.field_label_inmueble_incremento}:" />
-        <h:outputText value="#{inmuebleBean.inmueble.incremento}" />
+        <h:outputText value="#{inmuebleBean.inmueble.incremento}" >
+        <f:convertNumber currencySymbol="$" groupingUsed="true"
+                                maxFractionDigits="2" type="currency" />
+        </h:outputText>
 
         <h:outputText value="#{messages.field_label_inmueble_valorSeparacion}:" />
-        <h:outputText value="#{inmuebleBean.inmueble.valorSeparacion}" />
+        <h:outputText value="#{inmuebleBean.inmueble.valorSeparacion}" >
+        <f:convertNumber currencySymbol="$" groupingUsed="true"
+                                maxFractionDigits="2" type="currency" />
+        </h:outputText>
 
         <h:outputText value="#{messages.field_label_inmueble_valorTotal}:" />
-        <h:outputText value="#{inmuebleBean.inmueble.valorTotal}" />
+        <h:outputText value="#{inmuebleBean.inmueble.valorTotal}" >
+        <f:convertNumber currencySymbol="$" groupingUsed="true"
+                                maxFractionDigits="2" type="currency" />
+        </h:outputText>
 
     </h:panelGrid>
 </html>

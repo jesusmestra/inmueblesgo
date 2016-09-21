@@ -19,6 +19,7 @@
                 <h:form id="viewProductExampleForm">
                     <ui:include src="/pages/inmueble/inmuebleViewInclude.xhtml"/>
                     <div style="margin:10px">
+                        #{inmuebleBean.inmueble}
                     </div>
                 </h:form>
 
@@ -27,87 +28,96 @@
             <h:form>
                 <p:outputPanel>
 
-                     <p:outputPanel styleClass="ui-fluid">
+                    <p:outputPanel styleClass="ui-fluid">
 
-            <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
-       
+                        <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
 
-                 <h:outputLabel value="Tercero:" for="terceroSelectInput" />
-                        <h:panelGroup >
-                            <p:selectOneMenu value="#{negociacionBean.negociacion.tercero}"
-                                             id="terceroSelectInput">
-                                <f:selectItem noSelectionOption="true" itemLabel="" />
-                                <f:selectItems value="#{negociacionBean.allTerceroList}" 
-                                               var="tercero" 
-                                               itemLabel="#{tercero.nombres}"
-                                               itemValue="#{tercero}" />
-                                <o:converter converterId="omnifaces.SelectItemsConverter" list="#{negociacionBean.allTerceroList}" />
 
-                            </p:selectOneMenu>
-                        </h:panelGroup>
-                        <p:message for="terceroSelectInput" display="icon" />
+                            <h:outputLabel value="Tercero:" for="terceroSelectInput" />
+                            <h:panelGroup >
+                                <p:selectOneMenu value="#{negociacionBean.negociacion.tercero}"
+                                                 id="terceroSelectInput">
+                                    <f:selectItem noSelectionOption="true" itemLabel="" />
+                                    <f:selectItems value="#{negociacionBean.allTerceroList}" 
+                                                   var="tercero" 
+                                                   itemLabel="#{tercero.nombres}"
+                                                   itemValue="#{tercero}" />
+                                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{negociacionBean.allTerceroList}" />
 
+                                </p:selectOneMenu>
+                            </h:panelGroup>
+                            <p:message for="terceroSelectInput" display="icon" />
+
+
+                            <h:outputLabel value="Oferta:" for="ofertaSelectInput" />
+                            <h:panelGroup >
+                                <p:selectOneMenu value="#{negociacionBean.negociacion.oferta}"
+                                                 id="ofertaSelectInput"
+
+                                                 >
+
+                                    <p:ajax update="pnlGrd_numOfLbl" listener="#{negociacionBean.cambioOfetra(inmuebleBean.inmueble)}" />
+
+                                    <f:selectItem noSelectionOption="true" itemLabel="" />
+                                    <f:selectItems value="#{negociacionBean.allOfertaList}" 
+                                                   var="oferta" 
+                                                   itemLabel="#{oferta.nombre}"
+                                                   itemValue="#{oferta}" 
+                                                   />
+
+                                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{negociacionBean.allOfertaList}" />
+
+                                </p:selectOneMenu>
+                            </h:panelGroup>
+                            <p:message for="ofertaSelectInput" display="icon" />
+
+                            <p:outputPanel rendered="#{false}">
+                                <h:outputLabel  value="#{messages.field_label_negociacion_codigo}:" for="codigoEditInput" />
+                                <p:inputText value="#{negociacionBean.negociacion.codigo}" id="codigoEditInput" 
+                                             label="#{messages.field_label_negociacion_codigo}" />
+                                <p:message for="codigoEditInput" display="icon" />
+
+                                <h:outputLabel value="#{messages.field_label_negociacion_nombre}:" for="nombreEditInput" />
+                                <p:inputText value="#{negociacionBean.negociacion.nombre}" id="nombreEditInput" 
+                                             label="#{messages.field_label_negociacion_nombre}" />
+                                <p:message for="nombreEditInput" display="icon" />
+
+                            </p:outputPanel>
+
+                        </p:panelGrid>
+
+                        <p:commandButton actionListener="#{negociacionBean.grabarPlanPago}" value="Grabar"/>
                         
-                        <h:outputLabel value="Oferta:" for="ofertaSelectInput" />
-                        <h:panelGroup >
-                            <p:selectOneMenu value="#{negociacionBean.negociacion.oferta}"
-                                             id="ofertaSelectInput"
-                                             
-                                             >
-                                
-                                <p:ajax update="pnlGrd_numOfLbl" listener="#{negociacionBean.cambioOfetra}" />
-                                
-                                <f:selectItem noSelectionOption="true" itemLabel="" />
-                                <f:selectItems value="#{negociacionBean.allOfertaList}" 
-                                               var="oferta" 
-                                               itemLabel="#{oferta.nombre}"
-                                               itemValue="#{oferta}" 
-                                               />
-                                
-                                <o:converter converterId="omnifaces.SelectItemsConverter" list="#{negociacionBean.allOfertaList}" />
+                        <p:dataTable id="pnlGrd_numOfLbl" rowIndexVar="i"   var="planPago" value="#{negociacionBean.allPlanPagosListNegociacion}">
+                                <p:column headerText="Numero Cuota">
+                                    <p:inputText value="#{planPago.numeroCuota}" id="numeroCuotaEditInput_#{i}" 
+                                                 label="#{messages.field_label_negociacion_nombre}" />
+                                </p:column>
+                                <p:column headerText="Fecha pactada">
+                                    <p:inputText value="#{planPago.fechaPactada}" id="fechaPactadaEditInput_#{i}" 
+                                                 label="#{messages.field_label_negociacion_nombre}" />
+                                </p:column>
+                                <p:column headerText="Valor">
+                                    <p:inputText value="#{planPago.valorPactado}" id="valorEditInput_#{i}" 
+                                                 label="#{messages.field_label_negociacion_nombre}" />
+                                </p:column>
+                                <p:column headerText="Observacion">
+                                    <p:inputText value="#{planPago.observacion}" id="observacionEditInput_#{i}" 
+                                                 label="#{messages.field_label_negociacion_nombre}" />
+                                </p:column>
 
-                            </p:selectOneMenu>
-                        </h:panelGroup>
-                        <p:message for="ofertaSelectInput" display="icon" />
+
+                            </p:dataTable>
                         
-                        <p:outputPanel rendered="#{false}">
-                        <h:outputLabel  value="#{messages.field_label_negociacion_codigo}:" for="codigoEditInput" />
-                        <p:inputText value="#{negociacionBean.negociacion.codigo}" id="codigoEditInput" 
-                                     label="#{messages.field_label_negociacion_codigo}" />
-                        <p:message for="codigoEditInput" display="icon" />
-
-                        <h:outputLabel value="#{messages.field_label_negociacion_nombre}:" for="nombreEditInput" />
-                        <p:inputText value="#{negociacionBean.negociacion.nombre}" id="nombreEditInput" 
-                                     label="#{messages.field_label_negociacion_nombre}" />
-                        <p:message for="nombreEditInput" display="icon" />
-
                     </p:outputPanel>
-                    </p:panelGrid>
-
                 </p:outputPanel>
-                    </p:outputPanel>
-                
-                
-  
-              <p:panelGrid id="pnlGrd_numOfLbl" style="align:center; width:100%;" >
-                      <p:column width="50%">
-                <p:outputLabel value="Cuota ${negociacionBean.cantidadCuotas}" />
-                </p:column>
-                  
-                       <c:forEach var="i" begin="1" end="${negociacionBean.cantidadCuotas}" >
-<p:row>
-    <p:column width="50%">
-        <p:outputLabel value="Cuota ${i}" />
-    </p:column>
-    <p:column width="50%">
-        <p:inputText id="inputTxt_${i}" style="width:150px;" />
-    </p:column>
-</p:row>
-</c:forEach>
-                  
 
-            </p:panelGrid>
                 
+
+
+
+
+
 
             </h:form>
 

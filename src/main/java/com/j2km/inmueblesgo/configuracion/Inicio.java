@@ -187,7 +187,7 @@ public class Inicio {
         if (oferta == null){
             oferta = new OfertaEntity();
             oferta.setNombre("Plan 30/70 18");
-            oferta.setNumeroCuotas("18");
+            oferta.setNumeroCuotas(18);
             oferta.setPeriodicidad("30");
             oferta.setPorcentaje(30.0);
             oferta.setValorSeparacion(5000000.0);
@@ -199,7 +199,7 @@ public class Inicio {
         if (oferta == null){
             oferta = new OfertaEntity();
             oferta.setNombre("Plan 40/70 12");
-            oferta.setNumeroCuotas("12");
+            oferta.setNumeroCuotas(12);
             oferta.setPeriodicidad("30");
             oferta.setPorcentaje(40.0);
             oferta.setValorSeparacion(10000000.0);

@@ -126,7 +126,7 @@
                     <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
 
                         <p:commandButton action="#{'/pages/proyecto/minegociacion?faces-redirect=true&amp;id='.concat(inmueble.id)}"
-                                         actionListener="#{negociacionBean.prepareNewNegociacion}"
+                                         actionListener="#{negociacionBean.nuevaNegociacion(inmueble.id)}"
                                          icon="ui-icon-zoomin"
                                          title="#{messages.label_view}" />
 
