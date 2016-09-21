@@ -175,10 +175,9 @@ public class InmuebleBean implements Serializable {
         this.inmueble = inmueble;
     }
 
-    public void onDialogGenerarInmuebles(InmuebleEntity inmueble) {
+    public void onDialogGenerarInmuebles() {
         System.out.println("Iniciando la generacion masiva.....");
         this.cantidadInmuebles = 0;
-        this.inmueble = inmueble;
     }
 
     public String generacionMasiva() {
@@ -187,6 +186,9 @@ public class InmuebleBean implements Serializable {
 
         try {
             // PROCEDEMOS A CREAR UNA MASIVA DE INMUEBLES    
+            
+            
+            
             System.out.println("Generacion masiva creada");
             message = "message_successfully_created";
         } catch (OptimisticLockException e) {
