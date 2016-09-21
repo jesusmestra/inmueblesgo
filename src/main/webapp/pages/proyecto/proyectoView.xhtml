@@ -22,27 +22,26 @@
                                          icon="ui-icon-close" 
                                          action="/pages/proyecto/proyecto?faces-redirect=true" 
                                          immediate="true"/>
-                    </div>
-                </h:form>
-
-            </p:outputPanel>
-            
-            <h:form id="principal">
-                
-                                     <p:commandButton icon="ui-icon-plusthick" value="Nuevo" 
+                        <p:commandButton icon="ui-icon-plusthick" value="Generacion Masiva" 
                                          oncomplete="PF('editInmuebleMasiveDialogWidget').show();"                
                                          actionListener="#{inmuebleBean.onDialogGenerarInmuebles()}"
                                          update=":inmuebleMasiveDataForm"
                                          />
-</h:form>
-                
-                                 <p:dialog id="inmuebleMasiveDataForm" appendTo="@(body)" widgetVar="editInmuebleMasiveDialogWidget" header="Nuevo Proyecto" modal="true" 
-                              resizable="false" closeOnEscape="true" draggable="false">
-                        <h:form id="editInmuebleMasiveForm">
-                            <h:panelGrid columns="2">
-                                 <p:outputPanel id="inmuebleMasiveEditPanel">
-                                <ui:include src="/pages/inmueble/inmuebleMasiveEditInclude.xhtml"/>
-                                <div style="text-align: center; margin:10px">
+                    </div>
+            </h:form>
+            </p:outputPanel>
+
+
+
+            
+
+            <p:dialog id="inmuebleMasiveDataForm" appendTo="@(body)" widgetVar="editInmuebleMasiveDialogWidget" header="Nuevo Proyecto" modal="true" 
+                      resizable="false" closeOnEscape="true" draggable="false">
+                <h:form id="editInmuebleMasiveForm">
+                    <h:panelGrid columns="2">
+                        <p:outputPanel id="inmuebleMasiveEditPanel">
+                            <ui:include src="/pages/inmueble/inmuebleMasiveEditInclude.xhtml"/>
+                            <div style="text-align: center; margin:10px">
                                 <p:commandButton value="#{messages.label_save}"
                                                  icon="ui-icon-disk" action="#{inmuebleBean.generacionMasiva}"
                                                  update=":editInmuebleMasiveForm:inmuebleMasiveEditPanel :inmuebleMasiveDataForm :growlForm:growl"
@@ -50,18 +49,18 @@
                                 <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('editInmuebleMasiveDialogWidget').hide()" type="button" />
                             </div>
                         </p:outputPanel>
-                                
-                            </h:panelGrid>
-                        </h:form>
 
-                    </p:dialog>   
-            
-            
-            
-            
-           <h:form prependId="false" id="inmuebleDataForm" onkeypress="if (event.keyCode == 13) {
-                            return false;
-                        }">
+                    </h:panelGrid>
+                </h:form>
+
+            </p:dialog>   
+
+
+
+
+            <h:form prependId="false" id="inmuebleDataForm" onkeypress="if (event.keyCode == 13) {
+                        return false;
+                    }">
 
 
 
@@ -73,7 +72,10 @@
                              reflow="true">
 
                     <f:facet name="header" >
-                        
+
+                        <p:commandButton value="#{messages.create_new_inmueble}" icon="ui-icon-plusthick" action="#{inmuebleBean.prepareNewInmueble()}"
+                                         resetValues="true" update=":editInmuebleDialog" oncomplete="PF('editInmuebleDialogWidget').show()"
+                                         style="float:left" />
 
 
 
@@ -123,7 +125,8 @@
 
                     <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
 
-                        <p:commandButton action="#{'/pages/proyecto/negociacion?faces-redirect=true&amp;id='.concat(inmueble.id)}"
+                        <p:commandButton action="#{'/pages/proyecto/minegociacion?faces-redirect=true&amp;id='.concat(inmueble.id)}"
+                                         actionListener="#{negociacionBean.prepareNewNegociacion}"
                                          icon="ui-icon-zoomin"
                                          title="#{messages.label_view}" />
 

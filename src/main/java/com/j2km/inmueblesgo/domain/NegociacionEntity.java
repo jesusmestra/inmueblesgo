@@ -7,6 +7,7 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -24,6 +25,15 @@ public class NegociacionEntity extends BaseEntity implements Serializable {
     @Basic
     private String nombre;
 
+    @OneToOne(targetEntity = InmuebleEntity.class)
+    private InmuebleEntity inmueble;
+
+    @OneToOne(targetEntity = TerceroEntity.class)
+    private TerceroEntity tercero;
+
+    @OneToOne(targetEntity = OfertaEntity.class)
+    private OfertaEntity oferta;
+
     public String getCodigo() {
         return this.codigo;
     }
@@ -38,6 +48,30 @@ public class NegociacionEntity extends BaseEntity implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public InmuebleEntity getInmueble() {
+        return this.inmueble;
+    }
+
+    public void setInmueble(InmuebleEntity inmueble) {
+        this.inmueble = inmueble;
+    }
+
+    public TerceroEntity getTercero() {
+        return this.tercero;
+    }
+
+    public void setTercero(TerceroEntity tercero) {
+        this.tercero = tercero;
+    }
+
+    public OfertaEntity getOferta() {
+        return this.oferta;
+    }
+
+    public void setOferta(OfertaEntity oferta) {
+        this.oferta = oferta;
     }
 
 }

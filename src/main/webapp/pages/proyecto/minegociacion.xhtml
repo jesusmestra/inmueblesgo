@@ -51,12 +51,19 @@
                         <h:outputLabel value="Oferta:" for="ofertaSelectInput" />
                         <h:panelGroup >
                             <p:selectOneMenu value="#{negociacionBean.negociacion.oferta}"
-                                             id="ofertaSelectInput">
+                                             id="ofertaSelectInput"
+                                             
+                                             >
+                                
+                                <p:ajax update="pnlGrd_numOfLbl" listener="#{negociacionBean.cambioOfetra}" />
+                                
                                 <f:selectItem noSelectionOption="true" itemLabel="" />
                                 <f:selectItems value="#{negociacionBean.allOfertaList}" 
                                                var="oferta" 
                                                itemLabel="#{oferta.nombre}"
-                                               itemValue="#{oferta}" />
+                                               itemValue="#{oferta}" 
+                                               />
+                                
                                 <o:converter converterId="omnifaces.SelectItemsConverter" list="#{negociacionBean.allOfertaList}" />
 
                             </p:selectOneMenu>
@@ -82,6 +89,27 @@
                 
                 
   
+              <p:panelGrid id="pnlGrd_numOfLbl" style="align:center; width:100%;" >
+                      <p:column width="50%">
+                <p:outputLabel value="Cuota ${negociacionBean.cantidadCuotas}" />
+                </p:column>
+                  
+                       <c:forEach var="i" begin="1" end="${negociacionBean.cantidadCuotas}" >
+<p:row>
+    <p:column width="50%">
+        <p:outputLabel value="Cuota ${i}" />
+    </p:column>
+    <p:column width="50%">
+        <p:inputText id="inputTxt_${i}" style="width:150px;" />
+    </p:column>
+</p:row>
+</c:forEach>
+                  
+
+            </p:panelGrid>
+                
+
+            </h:form>
 
 
 

@@ -104,7 +104,7 @@
 
 
 
-                        <p:commandButton icon="ui-icon-zoomin" update=":viewProyectoDialog" oncomplete="PF('viewProyectoDialogWidget').show()" title="#{messages.label_view}">
+                        <p:commandButton rendered="#{false}" icon="ui-icon-zoomin" update=":viewProyectoDialog" oncomplete="PF('viewProyectoDialogWidget').show()" title="#{messages.label_view}">
                             <f:setPropertyActionListener value="#{proyecto}" target="#{proyectoBean.proyecto}" />
                         </p:commandButton>
 

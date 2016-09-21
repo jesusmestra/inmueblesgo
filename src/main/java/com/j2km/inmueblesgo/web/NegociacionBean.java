@@ -1,11 +1,16 @@
 package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.NegociacionEntity;
+import com.j2km.inmueblesgo.domain.OfertaEntity;
+import com.j2km.inmueblesgo.domain.TerceroEntity;
 import com.j2km.inmueblesgo.service.NegociacionService;
+import com.j2km.inmueblesgo.service.OfertaService;
+import com.j2km.inmueblesgo.service.TerceroService;
 import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,10 +37,52 @@ public class NegociacionBean implements Serializable {
     @Inject
     private NegociacionService negociacionService;
     
+    @Inject
+    private TerceroService terceroService;
+    
+    private List<TerceroEntity> allTerceroList;
+    
+    private List<OfertaEntity> allOfertaList;
+    
+    @Inject
+    private OfertaService ofertaService;
+    
+    private int cantidadCuotas;
+
+    public int getCantidadCuotas() {
+        return cantidadCuotas;
+    }
+
+    public void setCantidadCuotas(int cantidadCuotas) {
+        this.cantidadCuotas = cantidadCuotas;
+    }
+    
+    
+
+    public List<TerceroEntity> getAllTerceroList() {
+        return allTerceroList;
+    }
+
+    public void setAllTerceroList(List<TerceroEntity> allTerceroList) {
+        this.allTerceroList = allTerceroList;
+    }
+
+    public List<OfertaEntity> getAllOfertaList() {
+        return allOfertaList;
+    }
+
+    public void setAllOfertaList(List<OfertaEntity> allOfertaList) {
+        this.allOfertaList = allOfertaList;
+    }
+    
+    
     
     public void prepareNewNegociacion() {
         reset();
         this.negociacion = new NegociacionEntity();
+        this.allTerceroList =  terceroService.findAllTerceroEntities();
+        this.allOfertaList =  ofertaService.findAllOfertaEntities();
+        this.cantidadCuotas = 0;
         // set any default values now, if you need
         // Example: this.tercero.setAnything("test");
     }
@@ -120,6 +167,16 @@ public class NegociacionBean implements Serializable {
     
     public void setNegociacion(NegociacionEntity negociacion) {
         this.negociacion = negociacion;
+    }
+    
+    public void  cambioOfetra(){
+        System.out.println("Cambiando oferta.....");
+        System.out.println("Oferta sel..."+this.negociacion.getOferta().getNumeroCuotas());
+        if(this.negociacion.getOferta() !=null)
+            this.cantidadCuotas = this.negociacion.getOferta().getNumeroCuotas();;
+        
+        
+        
     }
     
 }

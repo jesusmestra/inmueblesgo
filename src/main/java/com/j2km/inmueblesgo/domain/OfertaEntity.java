@@ -30,7 +30,7 @@ public class OfertaEntity extends BaseEntity implements Serializable {
 
     @Column(name = "ofer_numero_cuotas")
     @Basic
-    private String numeroCuotas;
+    private Integer numeroCuotas;
 
     @Column(name = "ofer_periodicidad")
     @Basic
@@ -60,11 +60,11 @@ public class OfertaEntity extends BaseEntity implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getNumeroCuotas() {
+    public Integer getNumeroCuotas() {
         return this.numeroCuotas;
     }
 
-    public void setNumeroCuotas(String numeroCuotas) {
+    public void setNumeroCuotas(Integer numeroCuotas) {
         this.numeroCuotas = numeroCuotas;
     }
 
