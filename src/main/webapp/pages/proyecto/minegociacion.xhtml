@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+    <ui:composition template="/templates/layout.xhtml">
+        <ui:define name="content">
+
+            <f:metadata>
+                <f:viewParam name="id" value="#{inmuebleBean.inmueble}" converter="#{genericEntityConverter}" />
+            </f:metadata>
+
+            <p:outputPanel id="proyectoViewPanel" >
+                <h:form id="viewProductExampleForm">
+                    <ui:include src="/pages/inmueble/inmuebleViewInclude.xhtml"/>
+                    <div style="margin:10px">
+                    </div>
+                </h:form>
+
+            </p:outputPanel>
+
+            <h:form>
+                <p:outputPanel>
+
+                     <p:outputPanel styleClass="ui-fluid">
+
+            <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
+       
+
+                 <h:outputLabel value="Tercero:" for="terceroSelectInput" />
+                        <h:panelGroup >
+                            <p:selectOneMenu value="#{negociacionBean.negociacion.tercero}"
+                                             id="terceroSelectInput">
+                                <f:selectItem noSelectionOption="true" itemLabel="" />
+                                <f:selectItems value="#{negociacionBean.allTerceroList}" 
+                                               var="tercero" 
+                                               itemLabel="#{tercero.nombres}"
+                                               itemValue="#{tercero}" />
+                                <o:converter converterId="omnifaces.SelectItemsConverter" list="#{negociacionBean.allTerceroList}" />
+
+                            </p:selectOneMenu>
+                        </h:panelGroup>
+                        <p:message for="terceroSelectInput" display="icon" />
+
+                        
+                        <h:outputLabel value="Oferta:" for="ofertaSelectInput" />
+                        <h:panelGroup >
+                            <p:selectOneMenu value="#{negociacionBean.negociacion.oferta}"
+                                             id="ofertaSelectInput">
+                                <f:selectItem noSelectionOption="true" itemLabel="" />
+                                <f:selectItems value="#{negociacionBean.allOfertaList}" 
+                                               var="oferta" 
+                                               itemLabel="#{oferta.nombre}"
+                                               itemValue="#{oferta}" />
+                                <o:converter converterId="omnifaces.SelectItemsConverter" list="#{negociacionBean.allOfertaList}" />
+
+                            </p:selectOneMenu>
+                        </h:panelGroup>
+                        <p:message for="ofertaSelectInput" display="icon" />
+                        
+                        <p:outputPanel rendered="#{false}">
+                        <h:outputLabel  value="#{messages.field_label_negociacion_codigo}:" for="codigoEditInput" />
+                        <p:inputText value="#{negociacionBean.negociacion.codigo}" id="codigoEditInput" 
+                                     label="#{messages.field_label_negociacion_codigo}" />
+                        <p:message for="codigoEditInput" display="icon" />
+
+                        <h:outputLabel value="#{messages.field_label_negociacion_nombre}:" for="nombreEditInput" />
+                        <p:inputText value="#{negociacionBean.negociacion.nombre}" id="nombreEditInput" 
+                                     label="#{messages.field_label_negociacion_nombre}" />
+                        <p:message for="nombreEditInput" display="icon" />
+
+                    </p:outputPanel>
+                    </p:panelGrid>
+
+                </p:outputPanel>
+                    </p:outputPanel>
+
+            </h:form>
+
+
+
+
+
+
+
+
+
+        </ui:define>
+    </ui:composition>
+</html>
