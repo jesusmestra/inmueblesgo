@@ -15,12 +15,18 @@ import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.sql.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -34,11 +40,11 @@ public class NegociacionBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final Logger logger = Logger.getLogger(NegociacionBean.class.getName());
-    
+
     private GenericLazyDataModel<NegociacionEntity> lazyModel;
-    
+
     private NegociacionEntity negociacion;
-    
+
     @Inject
     private NegociacionService negociacionService;
     @Inject
@@ -47,20 +53,19 @@ public class NegociacionBean implements Serializable {
     private OfertaService ofertaService;
     @Inject
     private PlanPagoService planPagoService;
-    
+
     @Inject
     private InmuebleService inmuebleService;
-    
+
     private InmuebleBean inmuebleBean;
-    
+
     private int cantidadCuotas;
 
     private List<TerceroEntity> allTerceroList;
     private List<OfertaEntity> allOfertaList;
     private List<PlanPagoEntity> allPlanPagosListNegociacion;
-    
+
     private InmuebleEntity inmuebleInstance;
-    
 
     public List<PlanPagoEntity> getAllPlanPagosListNegociacion() {
         return allPlanPagosListNegociacion;
@@ -69,9 +74,7 @@ public class NegociacionBean implements Serializable {
     public void setAllPlanPagosListNegociacion(List<PlanPagoEntity> allPlanPagosListNegociacion) {
         this.allPlanPagosListNegociacion = allPlanPagosListNegociacion;
     }
-    
-    
-    
+
     public int getCantidadCuotas() {
         return cantidadCuotas;
     }
@@ -79,7 +82,6 @@ public class NegociacionBean implements Serializable {
     public void setCantidadCuotas(int cantidadCuotas) {
         this.cantidadCuotas = cantidadCuotas;
     }
-    
 
     public List<TerceroEntity> getAllTerceroList() {
         return allTerceroList;
@@ -96,14 +98,16 @@ public class NegociacionBean implements Serializable {
     public void setAllOfertaList(List<OfertaEntity> allOfertaList) {
         this.allOfertaList = allOfertaList;
     }
-    
-    
-    
+
     public void prepareNewNegociacion() {
         reset();
         this.negociacion = new NegociacionEntity();
-        this.allTerceroList =  terceroService.findAllTerceroEntities();
-        this.allOfertaList =  ofertaService.findAllOfertaEntities();
+
+        Calendar cal = Calendar.getInstance();
+        this.negociacion.setFecha(cal.getTime());
+        
+        this.allTerceroList = terceroService.findAllTerceroEntities();
+        this.allOfertaList = ofertaService.findAllOfertaEntities();
         this.cantidadCuotas = 0;
         this.allPlanPagosListNegociacion = null;
         // set any default values now, if you need
@@ -111,14 +115,13 @@ public class NegociacionBean implements Serializable {
     }
 
     public void nuevaNegociacion(Long inmuebleId) {
-        
-        System.out.println("Seleccionado inmueble...."+inmuebleId);
+
+        System.out.println("Seleccionado inmueble...." + inmuebleId);
         reset();
-        
-        
+
         this.negociacion = new NegociacionEntity();
-        this.allTerceroList =  terceroService.findAllTerceroEntities();
-        this.allOfertaList =  ofertaService.findAllOfertaEntities();
+        this.allTerceroList = terceroService.findAllTerceroEntities();
+        this.allOfertaList = ofertaService.findAllOfertaEntities();
         this.cantidadCuotas = 0;
         this.allPlanPagosListNegociacion = null;
         // set any default values now, if you need
@@ -131,13 +134,13 @@ public class NegociacionBean implements Serializable {
         }
         return this.lazyModel;
     }
-    
+
     public String persist() {
 
         String message;
-        
+
         try {
-            
+
             if (negociacion.getId() != null) {
                 negociacion = negociacionService.update(negociacion);
                 message = "message_successfully_updated";
@@ -156,17 +159,17 @@ public class NegociacionBean implements Serializable {
             // Set validationFailed to keep the dialog open
             FacesContext.getCurrentInstance().validationFailed();
         }
-        
+
         FacesMessage facesMessage = MessageFactory.getMessage(message);
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        
+
         return null;
     }
-    
+
     public String delete() {
-        
+
         String message;
-        
+
         try {
             negociacionService.delete(negociacion);
             message = "message_successfully_deleted";
@@ -178,88 +181,125 @@ public class NegociacionBean implements Serializable {
             FacesContext.getCurrentInstance().validationFailed();
         }
         FacesContext.getCurrentInstance().addMessage(null, MessageFactory.getMessage(message));
-        
+
         return null;
     }
-    
+
     public void onDialogOpen(NegociacionEntity negociacion) {
         reset();
         this.negociacion = negociacion;
     }
-    
+
     public void reset() {
         negociacion = null;
 
         //allTipoIdentificacionsList = null;
-        
     }
 
-    
-    
     public NegociacionEntity getNegociacion() {
         if (this.negociacion == null) {
             prepareNewNegociacion();
         }
         return this.negociacion;
     }
-    
+
     public void setNegociacion(NegociacionEntity negociacion) {
         this.negociacion = negociacion;
     }
-    
-    public void  cambioOfetra(InmuebleEntity inmueble){
 
-        System.out.println("Cambiando negociacion");
+    public void cambioFecha(InmuebleEntity inmueble) {
+       
         
-        
-        if (this.negociacion.getId() !=null){
+        if (this.negociacion.getId() != null) {
             allPlanPagosListNegociacion = planPagoService.findPlanPagoByNegociacion(this.negociacion);
-        }else{
-            System.out.println("Iniciando cambio de la negociacion");
-            //PlanPagoEntity entidad = null;
+        } else if (allPlanPagosListNegociacion != null) {
+
+            Calendar cal = new GregorianCalendar();
+            cal.setTime(this.negociacion.getFecha());
+            System.out.println("agahs"+cal);
+            int i = 0;
             
-            allPlanPagosListNegociacion = new ArrayList<PlanPagoEntity>();
-            
-            System.out.println("Inicial"+inmueble);
-            Double inicial = inmueble.getValorSeparacion();
-            System.out.println("valor inmueble");
-            Double valorInmueble = inmueble.getValorTotal();
-            System.out.println("Inicio porcentaje oferta");
-            Double porcentaje = this.negociacion.getOferta().getPorcentaje();
-            System.out.println("valor porcentaje");
-            Double valorPorcentaje = (valorInmueble * porcentaje)/100;
-            System.out.println("valor restante");
-            Double valorRestante = valorPorcentaje - inicial;
-            System.out.println("valor cuotas");
-            Double valorCuotas = valorRestante / this.negociacion.getOferta().getNumeroCuotas();
-            System.out.println("Inicio ciclo");
-            
-            for (int i = 0; i < this.negociacion.getOferta().getNumeroCuotas(); i++) {
+            for (PlanPagoEntity entidad : this.allPlanPagosListNegociacion) {
+                if (i == 0) {
+                    entidad.setFechaPactada(cal.getTime());
+                } else {
+                    cal.add(Calendar.MONTH, 1);
+                    entidad.setFechaPactada(cal.getTime());
+                }
+                i = i+1;
                 
+            }
+
+        }
+    }
+
+    public void cambioOfetra(InmuebleEntity inmueble) {
+
+        if (this.negociacion.getId() != null) {
+            allPlanPagosListNegociacion = planPagoService.findPlanPagoByNegociacion(this.negociacion);
+        } else {
+            allPlanPagosListNegociacion = new ArrayList<PlanPagoEntity>();
+
+            Double inicial = inmueble.getValorSeparacion();
+            Double valorInmueble = inmueble.getValorTotal();
+            Double porcentaje = this.negociacion.getOferta().getPorcentaje();
+            Double valorPorcentaje = (valorInmueble * porcentaje) / 100;
+            Double valorRestante = valorPorcentaje - inicial;
+            Double valorCuotas = valorRestante / this.negociacion.getOferta().getNumeroCuotas();
+
+            Calendar cal = Calendar.getInstance();
+            
+            System.out.println("Inicial"+cal);
+            System.out.println("Inicial Fecha"+this.negociacion.getInmueble());
+            
+            
+            cal.setTime(this.negociacion.getFecha());
+            
+            System.out.println("Asignada"+cal);
+
+            for (int i = 0; i < this.negociacion.getOferta().getNumeroCuotas(); i++) {
+
                 PlanPagoEntity entidad = new PlanPagoEntity();
-                if (i == 0){
+                if (i == 0) {
                     entidad.setValorPactado(inicial);
-                }else{
+                    entidad.setFechaPactada(cal.getTime());
+                } else {
+                    cal.add(Calendar.MONTH, 1);
+                    entidad.setFechaPactada(cal.getTime());
                     entidad.setValorPactado(valorCuotas);
                 }
                 entidad.setNegociacion(this.negociacion);
                 entidad.setNumeroCuota(i);
                 allPlanPagosListNegociacion.add(entidad);
-                System.out.println("Saliendo....");
             }
         }
-        
-        
+
     }
-    
-    public void grabarPlanPago(){
+
+    public String grabarPlanPago() {
         System.out.println("Iniciando grabacion del plan de pago....");
-        
-        for (PlanPagoEntity  plan : this.allPlanPagosListNegociacion) {
-            System.out.println("Cuota...."+plan.getNumeroCuota());
-            
+
+        String message;
+        message = "message_successfully_created";
+
+        for (PlanPagoEntity plan : this.allPlanPagosListNegociacion) {
+            System.out.println("Cuota...." + plan.getNumeroCuota());
+
         }
+
+        if (true) {
+            //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Datos no grabados"));
+
+            FacesContext.getCurrentInstance().validationFailed();
+            // ERORRO
+
+        }
+
+        FacesMessage facesMessage = MessageFactory.getMessage(message);
+        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+
+        return null;
+
     }
-    
-    
+
 }

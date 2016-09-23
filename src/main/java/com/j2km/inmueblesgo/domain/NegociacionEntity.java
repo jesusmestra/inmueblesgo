@@ -4,6 +4,7 @@
 package com.j2km.inmueblesgo.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,6 +25,10 @@ public class NegociacionEntity extends BaseEntity implements Serializable {
     @Column(name = "neg_nombre")
     @Basic
     private String nombre;
+
+    @Column(name = "neg_fecha")
+    @Basic
+    private Date fecha;
 
     @OneToOne(targetEntity = InmuebleEntity.class)
     private InmuebleEntity inmueble;
@@ -48,6 +53,14 @@ public class NegociacionEntity extends BaseEntity implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public Date getFecha() {
+        return this.fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public InmuebleEntity getInmueble() {

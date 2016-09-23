@@ -437,7 +437,7 @@
         </jpa:nq>
         <jpa:table name="plan_pago"/>
     </jpa:entity>
-    <jpa:entity name="Oferta" xre="false" compositePrimaryKeyClass="OfertaEntityPK" abs="false" class="OfertaEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1472592050688">
+    <jpa:entity name="Oferta" xre="false" compositePrimaryKeyClass="OfertaEntityPK" abs="false" class="OfertaEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472592050688">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -483,7 +483,7 @@
         </jpa:nq>
         <jpa:table name="oferta"/>
     </jpa:entity>
-    <jpa:entity name="Negociacion" xre="false" compositePrimaryKeyClass="NegociacionEntityPK" abs="false" class="NegociacionEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472592325680">
+    <jpa:entity name="Negociacion" xre="false" compositePrimaryKeyClass="NegociacionEntityPK" abs="false" class="NegociacionEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1472592325680">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -495,6 +495,10 @@
             <jpa:basic attribute-type="String" visibile="true" name="nombre" id="_147403454420143">
                 <jpa:bv/>
                 <jpa:column name="neg_nombre" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" visibile="true" name="fecha" id="_147466231428345">
+                <jpa:bv/>
+                <jpa:column name="neg_fecha" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
             </jpa:basic>
             <jpa:one-to-one own="true" optional="true" primaryKey="false" connected-entity-id="_1472591379182" visibile="true" name="inmueble" id="_147447131196243"/>
             <jpa:one-to-one own="true" optional="true" primaryKey="false" connected-entity-id="_1470328576795259" visibile="true" name="tercero" id="_147447133580344"/>
@@ -508,6 +512,9 @@
         </jpa:nq>
         <jpa:nq e="false" name="NegociacionEntity.findByNombre">
             <jpa:query>Select n from NegociacionEntity n where n.nombre=:nombre</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="NegociacionEntity.findByFecha">
+            <jpa:query>Select n from NegociacionEntity n where n.fecha=:fecha</jpa:query>
         </jpa:nq>
         <jpa:table name="negociacion"/>
     </jpa:entity>
@@ -565,7 +572,7 @@
                 <Bounds x="419.0" y="278.0" width="151.0" height="135.0"/>
             </shape>
             <shape elementRef="_1472592325680">
-                <Bounds x="1018.0" y="324.0" width="182.0" height="147.0"/>
+                <Bounds x="1018.0" y="324.0" width="182.0" height="167.0"/>
             </shape>
             <shape elementRef="_1473857903171">
                 <Bounds x="247.0" y="-296.0" width="172.0" height="86.0"/>
