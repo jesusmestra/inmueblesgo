@@ -208,5 +208,9 @@ public class InmuebleBean implements Serializable {
 
         return null;
     }
+    
+    public void valorTotal() {
+        this.inmueble.setValorTotal(this.inmueble.getIncremento() + (this.inmueble.getValorMetroCuadrado() * this.inmueble.getArea()));
+    }
 
 }

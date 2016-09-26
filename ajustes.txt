@@ -8,3 +8,6 @@ Generación Masiva: por piso
 Creacion de inmuebles:
 	incremento -> se le suma al valor final del inmueble
 	colocar el piso del inmueble
+
+
+Lugar de expedicion tercero.

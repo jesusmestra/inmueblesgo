@@ -17,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity(name = "Tercero")
 @Table(name = "tercero")
-//@NamedQuery(name = "TerceroEntity.findByIdentificacion", query = "Select t from TerceroEntity t WHERE t.identificacion=:identificacion")
+@NamedQuery(name = "TerceroEntity.findByIdentificacion", query = "Select t from Tercero t WHERE t.identificacion=:identificacion")
 public class TerceroEntity extends BaseEntity implements Serializable {
 
     @Column(name = "ter_apellido2")
@@ -48,9 +48,13 @@ public class TerceroEntity extends BaseEntity implements Serializable {
     @Basic
     private String nombres;
 
-    @ManyToOne(optional=true)
+    @ManyToOne(targetEntity = TipoIdentificacionEntity.class)
     @JoinColumn(name = "TIPO_IDENTIFICACION_ID", referencedColumnName = "ID")
     private TipoIdentificacionEntity tipoIdentificacion;
+
+    @ManyToOne(targetEntity = PobladoEntity.class)
+    @JoinColumn(name = "LUGAR_EXPEDICION_ID")
+    private PobladoEntity lugarExpedicion;
 
     public String getApellido2() {
         return this.apellido2;
@@ -114,6 +118,14 @@ public class TerceroEntity extends BaseEntity implements Serializable {
 
     public void setTipoIdentificacion(TipoIdentificacionEntity tipoIdentificacion) {
         this.tipoIdentificacion = tipoIdentificacion;
+    }
+
+    public PobladoEntity getLugarExpedicion() {
+        return this.lugarExpedicion;
+    }
+
+    public void setLugarExpedicion(PobladoEntity lugarExpedicion) {
+        this.lugarExpedicion = lugarExpedicion;
     }
 
 }

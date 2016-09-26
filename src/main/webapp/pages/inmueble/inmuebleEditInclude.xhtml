@@ -75,19 +75,25 @@
 
             <h:outputLabel value="#{messages.field_label_inmueble_area}:" for="areaEditInput" />
             <p:inputText value="#{inmuebleBean.inmueble.area}" id="areaEditInput" 
-                         label="#{messages.field_label_inmueble_area}" />
+                         label="#{messages.field_label_inmueble_area}">
+                <p:ajax event="keyup" listener="#{inmuebleBean.valorTotal()}" update="valorTotalEditInput"/>
+            </p:inputText>
             <p:message for="areaEditInput" display="icon" />            
 
 
             <h:outputLabel value="#{messages.field_label_inmueble_valorMetroCuadrado}:" for="valorMetroCuadradoEditInput" />
             <p:inputText value="#{inmuebleBean.inmueble.valorMetroCuadrado}" id="valorMetroCuadradoEditInput" 
-                         label="#{messages.field_label_inmueble_valorMetroCuadrado}" />
+                         label="#{messages.field_label_inmueble_valorMetroCuadrado}">
+                <p:ajax event="keyup" listener="#{inmuebleBean.valorTotal()}" update="valorTotalEditInput"/>
+            </p:inputText>
             <p:message for="valorMetroCuadradoEditInput" display="icon" />
 
 
             <h:outputLabel value="#{messages.field_label_inmueble_incremento}:" for="incrementoEditInput" />
             <p:inputText value="#{inmuebleBean.inmueble.incremento}" id="incrementoEditInput" 
-                         label="#{messages.field_label_inmueble_incremento}" />
+                         label="#{messages.field_label_inmueble_incremento}">
+                <p:ajax event="keyup" listener="#{inmuebleBean.valorTotal()}" update="valorTotalEditInput"/>
+            </p:inputText>
             <p:message for="incrementoEditInput" display="icon" />
 
 

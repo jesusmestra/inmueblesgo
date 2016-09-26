@@ -111,7 +111,7 @@
         </jpa:attributes>
         <jpa:table name="sec_permiso"/>
     </jpa:entity>
-    <jpa:entity name="Tercero" xre="false" compositePrimaryKeyClass="TerceroEntityPK" abs="false" class="TerceroEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576795259">
+    <jpa:entity name="Tercero" xre="false" compositePrimaryKeyClass="TerceroEntityPK" abs="false" class="TerceroEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576795259">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -147,10 +147,12 @@
             <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1470328576847309" visibile="true" name="tipoIdentificacion" id="_1470328576795261">
                 <jpa:join-column name="TIPO_IDENTIFICACION_ID" rc="ID" unique="false" nullable="true" insertable="true" updatable="true" column-definition="" table=""/>
             </jpa:many-to-one>
-            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1470328576771250" visibile="true" name="lugarExpedicion" id="_147481403213846"/>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1470328576771250" visibile="true" name="lugarExpedicion" id="_147481403213846">
+                <jpa:join-column name="LUGAR_EXPEDICION_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
         </jpa:attributes>
         <jpa:nq e="true" name="TerceroEntity.findByIdentificacion">
-            <jpa:query>Select t from TerceroEntity t WHERE t.identificacion=:identificacion</jpa:query>
+            <jpa:query>Select t from Tercero t WHERE t.identificacion=:identificacion</jpa:query>
         </jpa:nq>
         <jpa:table name="tercero"/>
     </jpa:entity>
@@ -484,7 +486,7 @@
         </jpa:nq>
         <jpa:table name="oferta"/>
     </jpa:entity>
-    <jpa:entity name="Negociacion" xre="false" compositePrimaryKeyClass="NegociacionEntityPK" abs="false" class="NegociacionEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1472592325680">
+    <jpa:entity name="Negociacion" xre="false" compositePrimaryKeyClass="NegociacionEntityPK" abs="false" class="NegociacionEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472592325680">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -543,7 +545,7 @@
                 <Bounds x="1383.0" y="308.0" width="153.0" height="106.0"/>
             </shape>
             <shape elementRef="_1470328576795259">
-                <Bounds x="307.0" y="560.0" width="164.0" height="227.0"/>
+                <Bounds x="305.0" y="560.0" width="164.0" height="227.0"/>
             </shape>
             <shape elementRef="_1470328576816274">
                 <Bounds x="197.0" y="182.0" width="157.0" height="267.0"/>

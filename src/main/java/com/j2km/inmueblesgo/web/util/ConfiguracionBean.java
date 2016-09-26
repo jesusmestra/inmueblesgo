@@ -38,8 +38,7 @@ public class ConfiguracionBean implements Serializable{
         
         if(divipola.getContents().length == 0) {
             FacesMessage facesMessage = MessageFactory.getMessage("message_archivo_vacio");
-            FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-         
+            FacesContext.getCurrentInstance().addMessage(null, facesMessage);         
         }else{
             configuracion.cargarDivipola(divipola);
         }

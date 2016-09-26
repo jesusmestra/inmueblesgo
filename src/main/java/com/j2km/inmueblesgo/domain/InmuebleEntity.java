@@ -117,6 +117,6 @@ public class InmuebleEntity extends BaseEntity implements Serializable {
 
     public void setEstadoInmueble(EstadoInmuebleEntity estadoInmueble) {
         this.estadoInmueble = estadoInmueble;
-    }
+    }   
 
 }
