@@ -10,14 +10,14 @@
     <ui:composition template="/templates/layout.xhtml">
         <ui:define name="content">
 
-                           <h:form >
+                <h:form enctype="multipart/form-data">
+                    
                     Seleccina el archivo de la DIVIPOLA:
                     <br/>                   
-                    <p:fileUpload value="#{configuracionBean.divipola}"   mode="simple" skinSimple="true"/>
+                    <p:fileUpload value="#{configuracionBean.divipola}" mode="simple" skinSimple="true"/>
                     <br/>
                     <h:commandButton action="#{configuracionBean.cargarDivipola()}" value="Upload File" />
                 </h:form>    
-
 
         </ui:define>
     </ui:composition>
