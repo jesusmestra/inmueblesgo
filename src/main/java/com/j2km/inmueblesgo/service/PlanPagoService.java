@@ -47,7 +47,7 @@ public class PlanPagoService extends BaseService<PlanPagoEntity> implements Seri
     }
 
     @Transactional
-    public List<PlanPagoEntity> findPlanPagoByNegociacion(NegociacionEntity negociacion) {
+    public List<PlanPagoEntity> findAllPlanPagoByNegociacion(NegociacionEntity negociacion) {
         return entityManager.createQuery("SELECT o FROM PlanPago o WHERE o.negociacion = :negociacion", PlanPagoEntity.class).setParameter("negociacion", negociacion).getResultList();
     }
 

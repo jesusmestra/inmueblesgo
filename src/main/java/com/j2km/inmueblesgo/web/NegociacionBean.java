@@ -16,17 +16,14 @@ import com.j2km.inmueblesgo.web.util.MessageFactory;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.sql.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ComponentSystemEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -100,12 +97,13 @@ public class NegociacionBean implements Serializable {
     }
 
     public void prepareNewNegociacion() {
+        System.out.println("prepareNewNegociacion...");
         reset();
+        
         this.negociacion = new NegociacionEntity();
-
         Calendar cal = Calendar.getInstance();
         this.negociacion.setFecha(cal.getTime());
-        
+
         this.allTerceroList = terceroService.findAllTerceroEntities();
         this.allOfertaList = ofertaService.findAllOfertaEntities();
         this.cantidadCuotas = 0;
@@ -113,19 +111,37 @@ public class NegociacionBean implements Serializable {
         // set any default values now, if you need
         // Example: this.tercero.setAnything("test");
     }
+    
+    @PostConstruct
+    public void init(){
+        System.out.println("Iniciando");//+this.inmuebleBean.getInmueble());
+        
+        
+    }
 
     public void nuevaNegociacion(Long inmuebleId) {
 
         System.out.println("Seleccionado inmueble...." + inmuebleId);
-        reset();
 
-        this.negociacion = new NegociacionEntity();
+        reset();
+        InmuebleEntity inmuebleInstance = null;
+        
+        this.negociacion = negociacionService.findByInmueble(inmuebleInstance);
+    
+        if (this.negociacion == null){
+            this.negociacion = new NegociacionEntity();
+            Calendar cal = Calendar.getInstance();
+            this.negociacion.setFecha(cal.getTime());
+            this.cantidadCuotas = 0;
+            this.allPlanPagosListNegociacion = null;
+        }else{
+            this.allPlanPagosListNegociacion = planPagoService.findAllPlanPagoByNegociacion(this.negociacion);
+            this.cantidadCuotas = allPlanPagosListNegociacion.size();
+        }
+        
+        
         this.allTerceroList = terceroService.findAllTerceroEntities();
         this.allOfertaList = ofertaService.findAllOfertaEntities();
-        this.cantidadCuotas = 0;
-        this.allPlanPagosListNegociacion = null;
-        // set any default values now, if you need
-        // Example: this.tercero.setAnything("test");
     }
 
     public GenericLazyDataModel<NegociacionEntity> getLazyModel() {
@@ -208,17 +224,15 @@ public class NegociacionBean implements Serializable {
     }
 
     public void cambioFecha(InmuebleEntity inmueble) {
-       
-        
+
         if (this.negociacion.getId() != null) {
-            allPlanPagosListNegociacion = planPagoService.findPlanPagoByNegociacion(this.negociacion);
+            allPlanPagosListNegociacion = planPagoService.findAllPlanPagoByNegociacion(this.negociacion);
         } else if (allPlanPagosListNegociacion != null) {
 
             Calendar cal = new GregorianCalendar();
             cal.setTime(this.negociacion.getFecha());
-            System.out.println("agahs"+cal);
             int i = 0;
-            
+
             for (PlanPagoEntity entidad : this.allPlanPagosListNegociacion) {
                 if (i == 0) {
                     entidad.setFechaPactada(cal.getTime());
@@ -226,8 +240,8 @@ public class NegociacionBean implements Serializable {
                     cal.add(Calendar.MONTH, 1);
                     entidad.setFechaPactada(cal.getTime());
                 }
-                i = i+1;
-                
+                i = i + 1;
+
             }
 
         }
@@ -236,7 +250,7 @@ public class NegociacionBean implements Serializable {
     public void cambioOfetra(InmuebleEntity inmueble) {
 
         if (this.negociacion.getId() != null) {
-            allPlanPagosListNegociacion = planPagoService.findPlanPagoByNegociacion(this.negociacion);
+            allPlanPagosListNegociacion = planPagoService.findAllPlanPagoByNegociacion(this.negociacion);
         } else {
             allPlanPagosListNegociacion = new ArrayList<PlanPagoEntity>();
 
@@ -248,14 +262,8 @@ public class NegociacionBean implements Serializable {
             Double valorCuotas = valorRestante / this.negociacion.getOferta().getNumeroCuotas();
 
             Calendar cal = Calendar.getInstance();
-            
-            System.out.println("Inicial"+cal);
-            System.out.println("Inicial Fecha"+this.negociacion.getInmueble());
-            
-            
+
             cal.setTime(this.negociacion.getFecha());
-            
-            System.out.println("Asignada"+cal);
 
             for (int i = 0; i < this.negociacion.getOferta().getNumeroCuotas(); i++) {
 
@@ -276,30 +284,46 @@ public class NegociacionBean implements Serializable {
 
     }
 
-    public String grabarPlanPago() {
-        System.out.println("Iniciando grabacion del plan de pago....");
+    public String grabarPlanPago(InmuebleEntity inmueble) {
 
         String message;
         message = "message_successfully_created";
+        FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, MessageFactory.getMessageString(message), null);
+
+                
+        Double sumaPagos = 0.0;
 
         for (PlanPagoEntity plan : this.allPlanPagosListNegociacion) {
-            System.out.println("Cuota...." + plan.getNumeroCuota());
-
+            sumaPagos = sumaPagos + plan.getValorPactado();
         }
 
-        if (true) {
+        if (sumaPagos > inmueble.getValorTotal()) {
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Datos no grabados"));
-
-            FacesContext.getCurrentInstance().validationFailed();
             // ERORRO
-
+            message = "message_error_suma_pago_pactado";
+            facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageFactory.getMessageString(message), null);
+        }else{
+            
+            this.negociacion.setInmueble(inmueble);
+            if (this.negociacion.getId()==null){
+                negociacionService.save(this.negociacion);
+            }else{
+                negociacionService.update(this.negociacion);
+            }
+            
+            for (PlanPagoEntity plan : this.allPlanPagosListNegociacion) {
+                sumaPagos = sumaPagos + plan.getValorPactado();
+                if (plan.getId()==null){
+                    planPagoService.save(plan);
+                }else{
+                    planPagoService.update(plan);
+                }
+            }
+            message = "message_successfully_created";
         }
-
-        FacesMessage facesMessage = MessageFactory.getMessage(message);
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-
+        
+        FacesContext.getCurrentInstance().addMessage("Mensaje", facesMessage);
         return null;
-
     }
 
 }
