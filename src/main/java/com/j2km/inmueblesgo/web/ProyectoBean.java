@@ -167,8 +167,4 @@ public class ProyectoBean implements Serializable {
         this.proyecto = proyecto;
     }
     
-    
-    
-    
-    
 }

@@ -8,15 +8,18 @@ package com.j2km.inmueblesgo.service;
 import com.j2km.inmueblesgo.domain.DepartamentoEntity;
 import com.j2km.inmueblesgo.domain.MunicipioEntity;
 import com.j2km.inmueblesgo.domain.PobladoEntity;
+import com.j2km.inmueblesgo.web.util.MessageFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import javax.ejb.Stateless;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.servlet.http.Part;
+import org.primefaces.model.UploadedFile;
 
 @Stateless
 public class ConfiguracionService{
@@ -32,13 +35,14 @@ public class ConfiguracionService{
     @Inject
     private PobladoService pf;
 
-    public void cargarDivipola(Part divipola) {
+    public void cargarDivipola(UploadedFile divipola) { 
+        
         
         System.out.println("Inicianco el cargue...");
         
         if (df.findAllDepartamentoEntities().isEmpty()) {
             System.out.println("En blanco..."+divipola);
-            try (InputStream is = divipola.getInputStream()) {
+            try (InputStream is = divipola.getInputstream()) {
                 System.out.println("Lectura de archivo...");
                 BufferedReader br = new BufferedReader(new InputStreamReader(is, "ISO-8859-3"));
                 String line;
