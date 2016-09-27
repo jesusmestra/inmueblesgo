@@ -15,7 +15,7 @@ import javax.persistence.Table;
  */
 @Entity(name = "Departamento")
 @Table(name = "departamento")
-//@NamedQuery(name = "DepartamentoEntity.findByCodigo", query = "Select e from DepartamentoEntity e WHERE e.codigo = :codigo")
+@NamedQuery(name = "DepartamentoEntity.findByCodigo", query = "Select e from Departamento e WHERE e.codigo = :codigo")
 public class DepartamentoEntity extends BaseEntity implements Serializable {
 
     @Column(name = "dpto_codigo")

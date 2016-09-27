@@ -1,7 +1,9 @@
 package com.j2km.inmueblesgo.web;
 
+import com.j2km.inmueblesgo.domain.DepartamentoEntity;
 import com.j2km.inmueblesgo.domain.MunicipioEntity;
 import com.j2km.inmueblesgo.domain.PobladoEntity;
+import com.j2km.inmueblesgo.service.DepartamentoService;
 import com.j2km.inmueblesgo.service.MunicipioService;
 import com.j2km.inmueblesgo.service.PobladoService;
 import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
@@ -39,6 +41,15 @@ public class PobladoBean implements Serializable {
     private MunicipioService municipioService;
     
     private List<MunicipioEntity> allMunicipiosList;
+    
+    
+    private DepartamentoEntity departamento;
+    
+    private List<DepartamentoEntity> allDepartamentosList;
+    
+    @Inject
+    private DepartamentoService departamentoService;
+    
     
     public void prepareNewPoblado() {
         reset();
@@ -141,5 +152,24 @@ public class PobladoBean implements Serializable {
     public void setPoblado(PobladoEntity poblado) {
         this.poblado = poblado;
     }
+
+    public DepartamentoEntity getDepartamento() {
+        return departamento;
+    }
+
+    public void setDepartamento(DepartamentoEntity departamento) {
+        this.departamento = departamento;
+    }
+    
+
+    public List<DepartamentoEntity> getDepartamentos(){
+        if (this.allDepartamentosList == null){
+             this.allDepartamentosList = departamentoService.findAllDepartamentoEntities();
+        }
+        
+        return this.allDepartamentosList;
+    
+    }
+    
     
 }

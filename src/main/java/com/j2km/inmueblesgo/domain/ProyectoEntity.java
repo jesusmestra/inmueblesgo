@@ -17,7 +17,7 @@ import javax.persistence.Table;
  */
 @Entity(name = "Proyecto")
 @Table(name = "proyecto")
-//@NamedQuery(name = "ProyectoEntity.findByEmpresa", query = "Select p from ProyectoEntity p WHERE p.empresa.id = :empresa_id")
+@NamedQuery(name = "ProyectoEntity.findByEmpresa", query = "Select p from Proyecto p WHERE p.empresa.id = :empresa_id")
 public class ProyectoEntity extends BaseEntity implements Serializable {
 
     @Column(name = "proyecto_nombre", unique = true)
@@ -28,10 +28,6 @@ public class ProyectoEntity extends BaseEntity implements Serializable {
     @Basic
     private String codigo;
 
-    @ManyToOne(targetEntity = PlanPagoEntity.class)
-    @JoinColumn(name = "PLANPAGO_ID")
-    private PlanPagoEntity planPago;
-
     @ManyToOne(targetEntity = EmpresaEntity.class)
     @JoinColumn(name = "EMPRESA_ID")
     private EmpresaEntity empresa;
@@ -39,6 +35,10 @@ public class ProyectoEntity extends BaseEntity implements Serializable {
     @ManyToOne(targetEntity = OfertaEntity.class)
     @JoinColumn(name = "OFERTA_ID")
     private OfertaEntity oferta;
+
+    @ManyToOne(targetEntity = PobladoEntity.class)
+    @JoinColumn(name = "POBLADO_ID")
+    private PobladoEntity poblado;
 
     public String getNombre() {
         return this.nombre;
@@ -56,14 +56,6 @@ public class ProyectoEntity extends BaseEntity implements Serializable {
         this.codigo = codigo;
     }
 
-    public PlanPagoEntity getPlanPago() {
-        return this.planPago;
-    }
-
-    public void setPlanPago(PlanPagoEntity planPago) {
-        this.planPago = planPago;
-    }
-
     public EmpresaEntity getEmpresa() {
         return this.empresa;
     }
@@ -78,6 +70,14 @@ public class ProyectoEntity extends BaseEntity implements Serializable {
 
     public void setOferta(OfertaEntity oferta) {
         this.oferta = oferta;
+    }
+
+    public PobladoEntity getPoblado() {
+        return this.poblado;
+    }
+
+    public void setPoblado(PobladoEntity poblado) {
+        this.poblado = poblado;
     }
 
 }

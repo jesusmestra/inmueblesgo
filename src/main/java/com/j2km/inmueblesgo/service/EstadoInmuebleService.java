@@ -120,5 +120,16 @@ public class EstadoInmuebleService extends BaseService<EstadoInmuebleEntity> imp
         return lista.get(0);
     }
     
+
+    @Transactional
+    public EstadoInmuebleEntity findByNombre(String nombre) {
+        List<EstadoInmuebleEntity> lista = entityManager.createQuery("SELECT o FROM EstadoInmueble o WHERE o.nombre = :nombre", EstadoInmuebleEntity.class).setParameter("nombre", nombre).getResultList();
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        }
+
+        return lista.get(0);
+    }
+
     
 }

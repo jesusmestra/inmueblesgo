@@ -2,7 +2,6 @@ package com.j2km.inmueblesgo.service;
 
 import com.j2km.inmueblesgo.domain.EmpresaEntity;
 import com.j2km.inmueblesgo.domain.OfertaEntity;
-import com.j2km.inmueblesgo.domain.PlanPagoEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -54,18 +53,6 @@ public class ProyectoService extends BaseService<ProyectoEntity> implements Seri
     }
 
     
-        @Transactional
-    public List<ProyectoEntity> findAvailablePlanPago(PlanPagoEntity planPago) {
-        return entityManager.createQuery("SELECT o FROM Proyecto o WHERE o.planPago IS NULL", ProyectoEntity.class).getResultList();
-    }
-
-    @Transactional
-    public List<ProyectoEntity> findProyectosByPlanPago(PlanPagoEntity planPago) {
-        return entityManager.createQuery("SELECT o FROM Proyecto o WHERE o.planPago = :planPago", ProyectoEntity.class).setParameter("planPago", planPago).getResultList();
-    }
-    
-    
-    
    @Transactional
     public List<ProyectoEntity> findAvailableEmpresa(EmpresaEntity empresa) {
         return entityManager.createQuery("SELECT o FROM Proyecto o WHERE o.empresa IS NULL", ProyectoEntity.class).getResultList();
@@ -101,7 +88,6 @@ public class ProyectoService extends BaseService<ProyectoEntity> implements Seri
 
         // Can be optimized: We need this join only when tipoIdentificacion filter is set
         query.append(" LEFT OUTER JOIN o.oferta oferta");
-        query.append(" LEFT OUTER JOIN o.planPago planPago");
         query.append(" LEFT OUTER JOIN o.empresa empresa");
 
         String nextConnective = " WHERE";
@@ -133,11 +119,6 @@ public class ProyectoService extends BaseService<ProyectoEntity> implements Seri
                     case "oferta":
                         query.append(nextConnective).append(" o.oferta = :oferta");
                         queryParameters.put("oferta", filters.get(filterProperty));
-                        break;
-
-                    case "planPago":
-                        query.append(nextConnective).append(" o.planPago = :planPago");
-                        queryParameters.put("planPago", filters.get(filterProperty));
                         break;
 
                     case "empresa":

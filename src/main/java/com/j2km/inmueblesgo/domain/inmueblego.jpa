@@ -3,28 +3,18 @@
     <jpa:mapped-superclass xre="false" compositePrimaryKeyClass="BaseEntityPK" abs="false" class="BaseEntity" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1473857903171">
         <jpa:ts e="true"/>
         <jpa:hc e="true">
-            <jpa:post>int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;</jpa:post>
+            <jpa:a>_147385920495571</jpa:a>
+            <jpa:post></jpa:post>
         </jpa:hc>
         <jpa:eq e="true">
-            <jpa:post>if (this == obj) {
-    		return true;
-    	} else if (obj == null) {
-            return false;
-        } else if (obj.getClass() != this.getClass()) {
-            return false;
-        } else if (this.id != null &amp;&amp; this.id.equals(((BaseEntity) obj).id)) {
-            return true;
-        } else {
-            return false;
-        }</jpa:post>
+            <jpa:a>_147385920495571</jpa:a>
+            <jpa:post></jpa:post>
         </jpa:eq>
         <jpa:attributes>
             <jpa:id attribute-type="Long" visibile="true" name="id" id="_147385920495571">
                 <jpa:bv/>
                 <jpa:column unique="true" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
-                <jpa:generated-value strategy="AUTO"/>
+                <jpa:generated-value strategy="IDENTITY"/>
             </jpa:id>
             <jpa:version attribute-type="int" visibile="true" name="version" id="_1473861855720340">
                 <jpa:bv/>
@@ -37,10 +27,16 @@
             <jpa:query>Select b from BaseEntity b where b.version=:version</jpa:query>
         </jpa:nq>
     </jpa:mapped-superclass>
-    <jpa:entity name="Departamento" xre="false" compositePrimaryKeyClass="DepartamentoEntityPK" abs="false" class="DepartamentoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576758242">
+    <jpa:entity name="Departamento" xre="false" compositePrimaryKeyClass="DepartamentoEntityPK" abs="false" class="DepartamentoEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576758242">
         <jpa:ts e="true"/>
-        <jpa:hc e="true"/>
-        <jpa:eq e="true"/>
+        <jpa:hc e="true">
+            <jpa:post>hash = 0;
+hash += (id != null ? id.hashCode() : 0);
+</jpa:post>
+        </jpa:hc>
+        <jpa:eq e="true">
+            <jpa:post></jpa:post>
+        </jpa:eq>
         <jpa:attributes>
             <jpa:basic attribute-type="String" visibile="true" name="codigo" id="_1470328576758243">
                 <jpa:bv/>
@@ -52,7 +48,7 @@
             </jpa:basic>
         </jpa:attributes>
         <jpa:nq e="true" name="DepartamentoEntity.findByCodigo">
-            <jpa:query>Select e from DepartamentoEntity e WHERE e.codigo = :codigo</jpa:query>
+            <jpa:query>Select e from Departamento e WHERE e.codigo = :codigo</jpa:query>
         </jpa:nq>
         <jpa:table name="departamento"/>
     </jpa:entity>
@@ -111,7 +107,7 @@
         </jpa:attributes>
         <jpa:table name="sec_permiso"/>
     </jpa:entity>
-    <jpa:entity name="Tercero" xre="false" compositePrimaryKeyClass="TerceroEntityPK" abs="false" class="TerceroEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576795259">
+    <jpa:entity name="Tercero" xre="false" compositePrimaryKeyClass="TerceroEntityPK" abs="false" class="TerceroEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576795259">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -372,16 +368,16 @@
             </jpa:basic>
             <jpa:basic attribute-type="String" visibile="true" name="codigo" id="_1474037654525217">
                 <jpa:bv/>
-                <jpa:column name="proyecto_codigo" unique="false" nullable="true" insertable="true" updatable="true" length="255"/>
+                <jpa:column name="proyecto_codigo" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
             </jpa:basic>
-            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1472591773752" visibile="true" name="planPago" id="_147259203637863">
-                <jpa:join-column name="PLANPAGO_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
-            </jpa:many-to-one>
             <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1470328576816274" visibile="true" name="empresa" id="_147259223889771">
                 <jpa:join-column name="EMPRESA_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
             </jpa:many-to-one>
             <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1472592050688" visibile="true" name="oferta" id="_147259224898072">
                 <jpa:join-column name="OFERTA_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1470328576771250" visibile="true" name="poblado" id="_147500122789192">
+                <jpa:join-column name="POBLADO_ID" rc="" unique="false" nullable="true" insertable="true" updatable="true" column-definition="" table=""/>
             </jpa:many-to-one>
         </jpa:attributes>
         <jpa:nq e="false" name="ProyectoEntity.findAll">
@@ -391,7 +387,7 @@
             <jpa:query>Select p from ProyectoEntity p where p.nombre=:nombre</jpa:query>
         </jpa:nq>
         <jpa:nq e="true" name="ProyectoEntity.findByEmpresa">
-            <jpa:query>Select p from ProyectoEntity p WHERE p.empresa.id = :empresa_id</jpa:query>
+            <jpa:query>Select p from Proyecto p WHERE p.empresa.id = :empresa_id</jpa:query>
         </jpa:nq>
         <jpa:nq e="false" name="ProyectoEntity.findByCodigo">
             <jpa:query>Select p from ProyectoEntity p where p.codigo=:codigo</jpa:query>
@@ -533,7 +529,7 @@
     <jpa:diagram>
         <plane elementRef="_1470328576751241">
             <shape elementRef="_1470328576758242">
-                <Bounds x="-82.0" y="-18.0" width="199.0" height="75.0"/>
+                <Bounds x="-95.0" y="-95.0" width="199.0" height="75.0"/>
             </shape>
             <shape elementRef="_1470328576765246">
                 <Bounds x="1408.0" y="182.0" width="151.0" height="106.0"/>

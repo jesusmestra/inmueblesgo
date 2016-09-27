@@ -40,7 +40,7 @@ public abstract class BaseEntity implements Serializable {
     public void setVersion(int version) {
         this.version = version;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;

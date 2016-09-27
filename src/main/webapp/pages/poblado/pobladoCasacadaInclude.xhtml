@@ -12,8 +12,7 @@
         <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
 
 
-
-            <h:outputLabel value="#{messages.field_label_poblado_departamento}:" for="departamentoSelectInput" 
+        <h:outputLabel value="#{messages.field_label_poblado_departamento}:" for="departamentoSelectInput" 
                rendered="#{not hideDepartamentoSelectInput}"/>
             <h:panelGroup rendered="#{not hideDepartamentoSelectInput}">
                 <p:selectOneMenu value="#{pobladoBean.departamento}"
@@ -39,16 +38,11 @@
                 </p:commandButton>
 
                 <p:message for="departamentoSelectInput" display="icon" rendered="#{not hideDepartamentoSelectInput}"/>
-            </h:panelGroup>  
+            </h:panelGroup>            
             
             
             
-            
-            
-            
-            
-            
-            
+
 
             <h:outputLabel value="#{messages.field_label_poblado_municipio}:" for="municipioSelectInput" rendered="#{not hideMunicipioSelectInput}"/>
             <h:panelGroup rendered="#{not hideMunicipioSelectInput}">

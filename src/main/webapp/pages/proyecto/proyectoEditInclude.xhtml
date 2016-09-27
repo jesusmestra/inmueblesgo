@@ -79,6 +79,36 @@
             
             
             
+<h:outputLabel value="#{messages.field_label_proyecto_poblado}:" for="pobladoSelectInput" 
+               rendered="#{not hidePobladoSelectInput}"/>
+            <h:panelGroup rendered="#{not hidePobladoSelectInput}">
+                <p:selectOneMenu value="#{proyectoBean.proyecto.poblado}"
+                                 id="pobladoSelectInput">
+                    <f:selectItem noSelectionOption="true" itemLabel="" />
+                    <f:selectItems value="#{proyectoBean.poblados}" 
+                                   var="poblado" 
+                                   itemLabel="#{poblado.nombre}"
+                                   itemValue="#{poblado}" />
+                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.poblados}" />
+
+                </p:selectOneMenu>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{not hidePobladoSelectInput}">
+
+                <p:commandButton icon="ui-icon-plusthick" title="#{messages.label_create}"
+                                 action="#{empresaBean.prepareNewEmpresa()}"
+                                 update=":createEmpresaFromEditDialog"
+                                 resetValues="true"
+                                 oncomplete="PF('createEmpresaFromEditDialogWidget').show()"
+                                 rendered="#{applicationBean.componentExists('createEmpresaFromEditDialog')}"
+                                 style="vertical-align:top;" partialSubmit="true" process="@this">
+                </p:commandButton>
+
+                <p:message for="empresaSelectInput" display="icon" rendered="#{not hideEmpresaSelectInput}"/>
+            </h:panelGroup>            
+            
+            
+            
 
         </p:panelGrid>
 

@@ -1,10 +1,14 @@
 package com.j2km.inmueblesgo.web;
 
+import com.j2km.inmueblesgo.domain.DepartamentoEntity;
 import com.j2km.inmueblesgo.domain.EmpresaEntity;
 import com.j2km.inmueblesgo.domain.OfertaEntity;
+import com.j2km.inmueblesgo.domain.PobladoEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
+import com.j2km.inmueblesgo.service.DepartamentoService;
 import com.j2km.inmueblesgo.service.EmpresaService;
 import com.j2km.inmueblesgo.service.OfertaService;
+import com.j2km.inmueblesgo.service.PobladoService;
 import com.j2km.inmueblesgo.service.ProyectoService;
 import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
@@ -44,9 +48,21 @@ public class ProyectoBean implements Serializable {
     
     
     @Inject
+    private PobladoService pobladoService;
+
+    private List<PobladoEntity> allPobladosList;
+    
+    @Inject
     private EmpresaService empresaService;
     
-    private List<EmpresaEntity> allEmpresasList;    
+    private List<EmpresaEntity> allEmpresasList;   
+    
+    
+    private List<DepartamentoEntity> departamentoList;
+    @Inject
+    private DepartamentoService departamentoService;
+    
+    
     
     public void prepareNewProyecto() {
         reset();
@@ -121,8 +137,8 @@ public class ProyectoBean implements Serializable {
         proyecto = null;
 
         allOfertasList = null;
-         allEmpresasList = null;
-        
+        allEmpresasList = null;
+        allPobladosList = null;
     }
 
     // Get a List of all oferta
@@ -154,6 +170,23 @@ public class ProyectoBean implements Serializable {
         // Maybe we just created and assigned a new empresa. So reset the allEmpresaList.
         allEmpresasList = null;
     }
+
+    // Get a List of all oferta
+    public List<PobladoEntity> getPoblados() {
+        if (this.allPobladosList == null) {
+            this.allPobladosList = pobladoService.findAllPobladoEntities();
+        }
+        return this.allPobladosList;
+    }
+    
+    // Update oferta of the current proyecto
+    public void updatePoblado(PobladoEntity poblado) {
+        this.proyecto.setPoblado(poblado);
+        // Maybe we just created and assigned a new oferta. So reset the allOfertaList.
+        allPobladosList = null;
+    }
+
+
     
     
     public ProyectoEntity getProyecto() {

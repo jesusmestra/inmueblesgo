@@ -74,7 +74,7 @@ public class NegociacionService extends BaseService<NegociacionEntity> implement
 
     @Transactional
     public NegociacionEntity findByInmueble(InmuebleEntity inmueble) {
-        
+        System.out.println("Buscando el inmueble....");
         List<NegociacionEntity> lista = entityManager.createQuery("SELECT o FROM Negociacion o WHERE o.inmueble = :inmueble", NegociacionEntity.class).setParameter("inmueble", inmueble).getResultList();
         if (lista == null || lista.isEmpty()) {
             return null;
