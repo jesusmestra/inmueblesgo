@@ -16,31 +16,25 @@
 
             <h:outputLabel value="#{messages.field_label_empresa_poblado}:" for="pobladoSelectInput" rendered="#{not hidePobladoSelectInput}"/>
             <h:panelGroup rendered="#{not hidePobladoSelectInput}">
-                <!--
-                <h:inputHidden value="#{empresaBean.empresa.poblado}" id="pobladoSelectInput"/>
-                -->
-                <h:outputText value="#{empresaBean.municipioBusqueda.codigo} | #{empresaBean.municipioBusqueda.nombre}" id="pobladoSelectInput1"/>
-                
                 <p:selectOneMenu value="#{empresaBean.empresa.poblado}"
                                  id="pobladoSelectInput">
                     <f:selectItem noSelectionOption="true" itemLabel="" />
-                    <f:selectItems value="#{empresaBean.allPobladosList}" 
+                    <f:selectItems value="#{empresaBean.poblados}" 
                                    var="poblado" 
                                    itemLabel="#{poblado.nombre}"
                                    itemValue="#{poblado}" />
-                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{empresaBean.allPobladosList}"/>
+                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{empresaBean.poblados}" />
 
                 </p:selectOneMenu>
-                
             </h:panelGroup>
             <h:panelGroup rendered="#{not hidePobladoSelectInput}">
 
-                <p:commandButton icon="ui-icon-search" title="#{messages.label_create}"
-                                 action="#{pobladoBean.onBuscarPoblado}"
-                                 update=":buscarPobladoFromEditDialog"
+                <p:commandButton icon="ui-icon-plusthick" title="#{messages.label_create}"
+                                 action="#{pobladoBean.prepareNewPoblado()}"
+                                 update=":createPobladoFromEditDialog"
                                  resetValues="true"
-                                 oncomplete="PF('buscarPobladoFromEditDialogWidget').show()"
-                                 rendered="#{applicationBean.componentExists('buscarPobladoFromEditDialog')}"
+                                 oncomplete="PF('createPobladoFromEditDialogWidget').show()"
+                                 rendered="#{applicationBean.componentExists('createPobladoFromEditDialog')}"
                                  style="vertical-align:top;" partialSubmit="true" process="@this">
                 </p:commandButton>
 

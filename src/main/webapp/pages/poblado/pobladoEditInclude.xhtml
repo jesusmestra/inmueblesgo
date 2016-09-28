@@ -18,6 +18,9 @@
             <h:panelGroup rendered="#{not hideDepartamentoSelectInput}">
                 <p:selectOneMenu value="#{pobladoBean.departamento}"
                                  id="departamentoSelectInput">
+                    <p:ajax update="municipioSelectInput" 
+                                            listener="#{pobladoBean.onCamiarDepartamento}" />
+                    
                     <f:selectItem noSelectionOption="true" itemLabel="" />
                     <f:selectItems value="#{pobladoBean.departamentos}" 
                                    var="departamento" 
@@ -50,7 +53,8 @@
             
             
 
-            <h:outputLabel value="#{messages.field_label_poblado_municipio}:" for="municipioSelectInput" rendered="#{not hideMunicipioSelectInput}"/>
+            <h:outputLabel value="#{messages.field_label_poblado_municipio}:" 
+                           for="municipioSelectInput" rendered="#{not hideMunicipioSelectInput}"/>
             <h:panelGroup rendered="#{not hideMunicipioSelectInput}">
                 <p:selectOneMenu value="#{pobladoBean.poblado.municipio}"
                                  id="municipioSelectInput">
@@ -77,6 +81,15 @@
                 <p:message for="municipioSelectInput" display="icon" rendered="#{not hideMunicipioSelectInput}"/>
             </h:panelGroup>            
 
+            
+            
+            
+            
+            
+            
+            
+            
+            
             <h:outputLabel value="#{messages.field_label_poblado_codigo}:" for="codigoEditInput" />
             <p:inputText value="#{pobladoBean.poblado.codigo}" id="codigoEditInput" 
                          label="#{messages.field_label_poblado_codigo}" />

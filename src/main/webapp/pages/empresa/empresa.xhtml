@@ -13,6 +13,15 @@
             <h:form prependId="false" id="empresaDataForm" onkeypress="if (event.keyCode == 13) {
                         return false;
                     }">
+                                <p:commandButton icon="ui-icon-search" title="#{messages.label_create}"
+                                 action="#{pobladoBean.onBuscarPoblado}"
+                                 update=":buscarPobladoFromEditDialog"
+                                 resetValues="true"
+                                 oncomplete="PF('buscarPobladoFromEditDialogWidget').show()"
+                                 rendered="#{applicationBean.componentExists('buscarPobladoFromEditDialog')}"
+                                 style="vertical-align:top;" partialSubmit="true" process="@this">
+                </p:commandButton>
+
 
                 <p:dataTable id="empresaTable" value="#{empresaBean.lazyModel}" var="empresa" resizableColumns="true" paginator="true"
                              paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -48,6 +57,14 @@
 
                     <p:column headerText="#{messages.field_label_empresa_poblado}" sortBy="#{empresa.poblado}" filterBy="#{empresa.poblado}">
                         <f:facet name="filter">
+
+<!--     -->
+
+                          
+
+<!--     -->
+
+
                             <p:selectOneMenu  id="pobladoFilter"
                                               style="width:145px;"
                                               onchange="PF('empresaTable').filter(); return false;">
@@ -204,31 +221,60 @@
                 </h:form>
             </p:dialog>
 
-            <p:dialog dynamic="true" id="createPobladoFromEditDialog"
+
+            <p:dialog dynamic="true" id="buscarPobladoFromEditDialog"
                       header="#{messages.dialog_empresa_create_poblado}" modal="true"
-                      widgetVar="createPobladoFromEditDialogWidget" maximizable="true">
-                <p:ajax event="close" listener="#{pobladoBean.reset}" />
-                <p:outputPanel id="createPobladoPanel">
-                    <h:form id="createPobladoForm">
-                        <ui:include src="/pages/poblado/pobladoEditInclude.xhtml">
+                      widgetVar="buscarPobladoFromEditDialogWidget" maximizable="true">
+                <p:ajax event="close" listener="#{pobladoBean.resetBusqueda}" />
+                <p:outputPanel id="buscarPobladoPanel">
+                    <h:form id="buscarPobladoForm">
+                        <ui:include src="/pages/poblado/pobladoBuscarInclude.xhtml">
                             <ui:param name="hideEmpresaSelectInput" value="true" />
                         </ui:include>
                         <div style="text-align: center; margin: 10px">
                             <p:commandButton
-                                action="#{empresaBean.updatePoblado(pobladoBean.poblado)}"
+                                action="#{empresaBean.updateListaPoblado(pobladoBean.allPobladosList, pobladoBean.municipioBusqueda)}"
                                 value="#{messages.label_save}" icon="ui-icon-disk"
-                                actionListener="#{pobladoBean.persist}"
-                                update=":editEmpresaForm:pobladoSelectInput :createPobladoPanel :growlForm:growl"
-                                oncomplete="if(!args.validationFailed) PF('createPobladoFromEditDialogWidget').hide()" />
+                                update=":editEmpresaForm:pobladoSelectInput :editEmpresaForm:pobladoSelectInput1 :empresaTable:pobladoFilter :growlForm:growl"
+                                oncomplete="if(!args.validationFailed) PF('buscarPobladoFromEditDialogWidget').hide()" />
                             <p:commandButton value="#{messages.label_close}"
                                              icon="ui-icon-close"
-                                             onclick="PF('createPobladoFromEditDialogWidget').hide()"
+                                             onclick="PF('buscarPobladoFromEditDialogWidget').hide()"
                                              type="button" />
                         </div>
                     </h:form>
                 </p:outputPanel>
-            </p:dialog>
+            </p:dialog>            
 
+
+
+
+            <!--
+                        <p:dialog dynamic="true" id="createPobladoFromEditDialog"
+                                  header="#{messages.dialog_empresa_create_poblado}" modal="true"
+                                  widgetVar="createPobladoFromEditDialogWidget" maximizable="true">
+                            <p:ajax event="close" listener="#{pobladoBean.reset}" />
+                            <p:outputPanel id="createPobladoPanel">
+                                <h:form id="createPobladoForm">
+                                    <ui:include src="/pages/poblado/pobladoEditInclude.xhtml">
+                                        <ui:param name="hideEmpresaSelectInput" value="true" />
+                                    </ui:include>
+                                    <div style="text-align: center; margin: 10px">
+                                        <p:commandButton
+                                            action="#{empresaBean.updatePoblado(pobladoBean.poblado)}"
+                                            value="#{messages.label_save}" icon="ui-icon-disk"
+                                            actionListener="#{pobladoBean.persist}"
+                                            update=":editEmpresaForm:pobladoSelectInput :createPobladoPanel :growlForm:growl"
+                                            oncomplete="if(!args.validationFailed) PF('createPobladoFromEditDialogWidget').hide()" />
+                                        <p:commandButton value="#{messages.label_close}"
+                                                         icon="ui-icon-close"
+                                                         onclick="PF('createPobladoFromEditDialogWidget').hide()"
+                                                         type="button" />
+                                    </div>
+                                </h:form>
+                            </p:outputPanel>
+                        </p:dialog>
+            -->
             <p:dialog dynamic="true" id="createRepresentanteFromEditDialog"
                       header="#{messages.dialog_empresa_create_representante}" modal="true"
                       widgetVar="createRepresentanteFromEditDialogWidget" maximizable="true">
