@@ -199,5 +199,9 @@ public class EmpresaBean implements Serializable {
     }
 
     
+     public void updateSelectRepresentante(TerceroEntity tercero) {
+        this.empresa.setRepresentante(tercero);
+    }
+    
     
 }

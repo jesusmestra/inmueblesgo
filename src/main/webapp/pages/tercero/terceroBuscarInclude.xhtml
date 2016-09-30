@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+
+    <p:outputPanel styleClass="ui-fluid">
+
+        <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
+
+
+                      
+            <h:outputLabel value="#{messages.field_label_tercero_identificacion}:" for="identificacionEditInput" />
+            <p:inputText value="#{terceroBean.terceroBuscar.identificacion}" id="identificacionEditInput" 
+                         label="#{messages.field_label_tercero_identificacion}" 
+                                         onkeypress="if (event.keyCode == 13) {
+                                                      buscarTercero(); 
+                                                     return false;
+                                                 }" >
+                        <p:remoteCommand name="buscarTercero" 
+                                         actionListener="#{terceroBean.buscarTercero}" 
+                                         update="identificacionEditInput"/>
+                         
+                         
+                </p:inputText>                          
+                         
+            <p:message for="identificacionEditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_tercero_apellido1}:" for="apellido1EditInput" />
+            <p:inputText value="#{terceroBean.terceroBuscar.apellido1}" id="apellido1EditInput" 
+                         label="#{messages.field_label_tercero_apellido1}" />
+            <p:message for="apellido1EditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_tercero_apellido2}:" for="apellido2EditInput" />
+            <p:inputText value="#{terceroBean.terceroBuscar.apellido2}" id="apellido2EditInput" 
+                         label="#{messages.field_label_tercero_apellido2}" />
+            <p:message for="apellido2EditInput" display="icon" />
+
+            <h:outputLabel value="#{messages.field_label_tercero_nombres}:" for="nombresEditInput" />
+            <p:inputText value="#{terceroBean.terceroBuscar.nombres}" id="nombresEditInput" 
+                         label="#{messages.field_label_tercero_nombres}" />
+            <p:message for="nombresEditInput" display="icon" />
+
+
+        </p:panelGrid>
+
+
+        <p:dataTable id="terceroTable" value="#{terceroBean.allTercerosBuscar}" var="tercero" resizableColumns="true" paginator="true"
+                     paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
+                     paginatorPosition="bottom" widgetVar="terceroTable" emptyMessage="#{messages.label_no_records_found}"
+                     reflow="true">
+            <f:facet name="header" >
+
+            </f:facet>
+
+            <p:column headerText="#{messages.field_label_tercero_tipoIdentificacion}" sortBy="#{tercero.tipoIdentificacion}" filterBy="#{tercero.tipoIdentificacion}">
+                <h:outputText value="#{tercero.identificacion}" />
+            </p:column>              
+
+        </p:dataTable>
+
+    </p:outputPanel>
+</html>

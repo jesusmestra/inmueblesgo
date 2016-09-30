@@ -234,7 +234,7 @@
                         <div style="text-align: center; margin: 10px">
                             <p:commandButton
                                 action="#{empresaBean.updateListaPoblado(pobladoBean.allPobladosList, pobladoBean.municipioBusqueda)}"
-                                value="#{messages.label_save}" icon="ui-icon-disk"
+                                value="#{messages.label_seleccionar}" icon="ui-icon-disk"
                                 update=":editEmpresaForm:pobladoSelectInput :editEmpresaForm:pobladoSelectInput1 :empresaTable:pobladoFilter :growlForm:growl"
                                 oncomplete="if(!args.validationFailed) PF('buscarPobladoFromEditDialogWidget').hide()" />
                             <p:commandButton value="#{messages.label_close}"
@@ -249,6 +249,32 @@
 
 
 
+            <p:dialog dynamic="true" id="buscarTerceroFromEditDialog"
+                      header="#{messages.dialog_empresa_create_representante}" modal="true"
+                      widgetVar="buscarTerceroFromEditDialogWidget" maximizable="true">
+                <p:ajax event="close" listener="#{terceroBean.resetBusqueda}" />
+                <p:outputPanel id="buscarTerceroPanel">
+                    <h:form id="buscarTerceroForm">
+                        <ui:include src="/pages/tercero/terceroBuscarInclude.xhtml">
+                            <ui:param name="hideEmpresaSelectInput" value="true" />
+                        </ui:include>
+                        <div style="text-align: center; margin: 10px">
+                            <p:commandButton
+                                action="#{empresaBean.updateSelectRepresentante(terceroBean.terceroBuscar)}"
+                                value="#{messages.label_seleccionar}" icon="ui-icon-disk"
+                                update=":editEmpresaForm:representanteSelectInput :growlForm:growl"
+                                oncomplete="if(!args.validationFailed) PF('buscarTerceroFromEditDialogWidget').hide()" />
+                            <p:commandButton value="#{messages.label_close}"
+                                             icon="ui-icon-close"
+                                             onclick="PF('buscarTerceroFromEditDialogWidget').hide()"
+                                             type="button" />
+                        </div>
+                    </h:form>
+                </p:outputPanel>
+            </p:dialog>                 
+            
+            
+            
             <!--
                         <p:dialog dynamic="true" id="createPobladoFromEditDialog"
                                   header="#{messages.dialog_empresa_create_poblado}" modal="true"

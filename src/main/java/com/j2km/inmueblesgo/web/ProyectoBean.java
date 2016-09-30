@@ -33,37 +33,33 @@ public class ProyectoBean implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private static final Logger logger = Logger.getLogger(ProyectoBean.class.getName());
-    
+
     private GenericLazyDataModel<ProyectoEntity> lazyModel;
-    
+
     private ProyectoEntity proyecto;
-    
+
     @Inject
     private ProyectoService proyectoService;
-    
+
     @Inject
     private OfertaService ofertaService;
-    
+
     private List<OfertaEntity> allOfertasList;
-    
-    
+
     @Inject
     private PobladoService pobladoService;
 
     private List<PobladoEntity> allPobladosList;
-    
+
     @Inject
     private EmpresaService empresaService;
-    
-    private List<EmpresaEntity> allEmpresasList;   
-    
-    
+
+    private List<EmpresaEntity> allEmpresasList;
+
     private List<DepartamentoEntity> departamentoList;
     @Inject
     private DepartamentoService departamentoService;
-    
-    
-    
+
     public void prepareNewProyecto() {
         reset();
         this.proyecto = new ProyectoEntity();
@@ -77,13 +73,13 @@ public class ProyectoBean implements Serializable {
         }
         return this.lazyModel;
     }
-    
+
     public String persist() {
 
         String message;
-        
+
         try {
-            
+
             if (proyecto.getId() != null) {
                 proyecto = proyectoService.update(proyecto);
                 message = "message_successfully_updated";
@@ -102,17 +98,17 @@ public class ProyectoBean implements Serializable {
             // Set validationFailed to keep the dialog open
             FacesContext.getCurrentInstance().validationFailed();
         }
-        
+
         FacesMessage facesMessage = MessageFactory.getMessage(message);
         FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        
+
         return null;
     }
-    
+
     public String delete() {
-        
+
         String message;
-        
+
         try {
             proyectoService.delete(proyecto);
             message = "message_successfully_deleted";
@@ -124,15 +120,15 @@ public class ProyectoBean implements Serializable {
             FacesContext.getCurrentInstance().validationFailed();
         }
         FacesContext.getCurrentInstance().addMessage(null, MessageFactory.getMessage(message));
-        
+
         return null;
     }
-    
+
     public void onDialogOpen(ProyectoEntity proyecto) {
         reset();
         this.proyecto = proyecto;
     }
-    
+
     public void reset() {
         proyecto = null;
 
@@ -148,22 +144,22 @@ public class ProyectoBean implements Serializable {
         }
         return this.allOfertasList;
     }
-    
+
     // Update oferta of the current proyecto
     public void updateOferta(OfertaEntity oferta) {
         this.proyecto.setOferta(oferta);
         // Maybe we just created and assigned a new oferta. So reset the allOfertaList.
         allOfertasList = null;
     }
-    
-     // Get a List of all oferta
+
+    // Get a List of all oferta
     public List<EmpresaEntity> getEmpresas() {
         if (this.allEmpresasList == null) {
             this.allEmpresasList = empresaService.findAllEmpresaEntities();
         }
         return this.allEmpresasList;
     }
-    
+
     // Update empresa of the current proyecto
     public void updateempresa(EmpresaEntity empresa) {
         this.proyecto.setEmpresa(empresa);
@@ -178,7 +174,7 @@ public class ProyectoBean implements Serializable {
         }
         return this.allPobladosList;
     }
-    
+
     // Update oferta of the current proyecto
     public void updatePoblado(PobladoEntity poblado) {
         this.proyecto.setPoblado(poblado);
@@ -186,18 +182,17 @@ public class ProyectoBean implements Serializable {
         allPobladosList = null;
     }
 
-
-    
-    
     public ProyectoEntity getProyecto() {
         if (this.proyecto == null) {
             prepareNewProyecto();
         }
         return this.proyecto;
     }
-    
+
     public void setProyecto(ProyectoEntity proyecto) {
         this.proyecto = proyecto;
     }
-    
+
+   
+
 }

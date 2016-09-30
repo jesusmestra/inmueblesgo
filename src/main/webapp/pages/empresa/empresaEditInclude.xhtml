@@ -63,7 +63,7 @@
                 </p:selectOneMenu>
             </h:panelGroup>
             <h:panelGroup rendered="#{not hideRepresentanteSelectInput}">
-
+<!--
                 <p:commandButton icon="ui-icon-plusthick" title="#{messages.label_create}"
                                  action="#{terceroBean.prepareNewTercero()}"
                                  update=":createRepresentanteFromEditDialog"
@@ -72,6 +72,17 @@
                                  rendered="#{applicationBean.componentExists('createRepresentanteFromEditDialog')}"
                                  style="vertical-align:top;" partialSubmit="true" process="@this">
                 </p:commandButton>
+-->
+
+                <p:commandButton icon="ui-icon-search" title="#{messages.label_create}"
+                                 action="#{terceroBean.onBuscarTercero}"
+                                 update=":buscarTerceroFromEditDialog"
+                                 resetValues="true"
+                                 oncomplete="PF('buscarTerceroFromEditDialogWidget').show()"
+                                 rendered="#{applicationBean.componentExists('buscarTerceroFromEditDialog')}"
+                                 style="vertical-align:top;" partialSubmit="true" process="@this">
+                </p:commandButton>
+
 
                 <p:message for="representanteSelectInput" display="icon" rendered="#{not hideRepresentanteSelectInput}"/>
             </h:panelGroup>             
