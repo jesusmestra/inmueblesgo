@@ -1,6 +1,7 @@
 package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.EmpresaEntity;
+import com.j2km.inmueblesgo.domain.MunicipioEntity;
 import com.j2km.inmueblesgo.domain.PobladoEntity;
 import com.j2km.inmueblesgo.domain.TerceroEntity;
 import com.j2km.inmueblesgo.service.EmpresaService;
@@ -46,6 +47,8 @@ public class EmpresaBean implements Serializable {
     private TerceroService representanteService;
     
     private List<TerceroEntity> allRepresentantesList;
+    
+    private MunicipioEntity municipioBusqueda;
 
 
     
@@ -116,6 +119,10 @@ public class EmpresaBean implements Serializable {
     public void onDialogOpen(EmpresaEntity empresa) {
         reset();
         this.empresa = empresa;
+        if(this.empresa.getPoblado()!=null){
+            this.allPobladosList = pobladoService.findPobladosByMunicipio(this.empresa.getPoblado().getMunicipio());
+            this.municipioBusqueda = this.empresa.getPoblado().getMunicipio();
+        }
     }
     
     public void reset() {
@@ -128,9 +135,9 @@ public class EmpresaBean implements Serializable {
 
     // Get a List of all poblado
     public List<PobladoEntity> getPoblados() {
-        if (this.allPobladosList == null) {
+        /*if (this.allPobladosList == null) {
             this.allPobladosList = pobladoService.findAllPobladoEntities();
-        }
+        }*/
         return this.allPobladosList;
     }
     
@@ -168,5 +175,29 @@ public class EmpresaBean implements Serializable {
     public void setEmpresa(EmpresaEntity empresa) {
         this.empresa = empresa;
     }
+    
+        // Update poblado of the current empresa
+    public void updateListaPoblado(List<PobladoEntity> listaPoblado, MunicipioEntity municipio) {
+        this.allPobladosList = listaPoblado;
+        this.municipioBusqueda = municipio;
+    }
+
+    public List<PobladoEntity> getAllPobladosList() {
+        return allPobladosList;
+    }
+
+    public void setAllPobladosList(List<PobladoEntity> allPobladosList) {
+        this.allPobladosList = allPobladosList;
+    }
+
+    public MunicipioEntity getMunicipioBusqueda() {
+        return municipioBusqueda;
+    }
+
+    public void setMunicipioBusqueda(MunicipioEntity municipioBusqueda) {
+        this.municipioBusqueda = municipioBusqueda;
+    }
+
+    
     
 }

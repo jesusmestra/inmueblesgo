@@ -186,7 +186,9 @@
 
             <p:dialog dynamic="true" id="createMunicipioFromEditDialog"
                       header="#{messages.dialog_poblado_create_municipio}" modal="true"
-                      widgetVar="createMunicipioFromEditDialogWidget" maximizable="true">
+                      widgetVar="createMunicipioFromEditDialogWidget" maximizable="true"
+                      style="width:50% !important; height:40% !important; top:25% !important; left: 30% !important;"
+                      >
                 <p:ajax event="close" listener="#{municipioBean.reset}" />
                 <p:outputPanel id="createMunicipioPanel">
                     <h:form id="createMunicipioForm">

@@ -12,17 +12,20 @@
         <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
 
 
-        <h:outputLabel value="#{messages.field_label_poblado_departamento}:" for="departamentoSelectInput" 
+            <h:outputLabel value="#{messages.field_label_poblado_departamento}:" for="departamentoSelectInput" 
                rendered="#{not hideDepartamentoSelectInput}"/>
             <h:panelGroup rendered="#{not hideDepartamentoSelectInput}">
-                <p:selectOneMenu value="#{pobladoBean.departamento}"
+                <p:selectOneMenu value="#{pobladoBean.departamentoBusqueda}"
                                  id="departamentoSelectInput">
+                    <p:ajax update="municipioSelectInput" 
+                            listener="#{pobladoBean.onCambiarDepartamentoBusqueda}" />
+                    
                     <f:selectItem noSelectionOption="true" itemLabel="" />
-                    <f:selectItems value="#{pobladoBean.departamentos}" 
+                    <f:selectItems value="#{pobladoBean.allDepartamentosList}" 
                                    var="departamento" 
                                    itemLabel="#{departamento.nombre}"
                                    itemValue="#{departamento}" />
-                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{pobladoBean.departamentos}" />
+                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{pobladoBean.allDepartamentosList}" />
 
                 </p:selectOneMenu>
             </h:panelGroup>
@@ -38,22 +41,26 @@
                 </p:commandButton>
 
                 <p:message for="departamentoSelectInput" display="icon" rendered="#{not hideDepartamentoSelectInput}"/>
-            </h:panelGroup>            
+            </h:panelGroup>  
+            
+            
             
             
             
 
-
-            <h:outputLabel value="#{messages.field_label_poblado_municipio}:" for="municipioSelectInput" rendered="#{not hideMunicipioSelectInput}"/>
+            <h:outputLabel value="#{messages.field_label_poblado_municipio}:" 
+                           for="municipioSelectInput" rendered="#{not hideMunicipioSelectInput}"/>
             <h:panelGroup rendered="#{not hideMunicipioSelectInput}">
-                <p:selectOneMenu value="#{pobladoBean.poblado.municipio}"
+                <p:selectOneMenu value="#{pobladoBean.municipioBusqueda}"
                                  id="municipioSelectInput">
+                     <p:ajax 
+                             listener="#{pobladoBean.onCambiarMunicipioBusqueda}" />
                     <f:selectItem noSelectionOption="true" itemLabel="" />
-                    <f:selectItems value="#{pobladoBean.municipios}" 
+                    <f:selectItems value="#{pobladoBean.allMunicipiosList}" 
                                    var="municipio" 
                                    itemLabel="#{municipio.nombre}"
                                    itemValue="#{municipio}" />
-                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{pobladoBean.municipios}" />
+                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{pobladoBean.allMunicipiosList}" />
 
                 </p:selectOneMenu>
             </h:panelGroup>
@@ -71,18 +78,37 @@
                 <p:message for="municipioSelectInput" display="icon" rendered="#{not hideMunicipioSelectInput}"/>
             </h:panelGroup>            
 
-            <h:outputLabel value="#{messages.field_label_poblado_codigo}:" for="codigoEditInput" />
-            <p:inputText value="#{pobladoBean.poblado.codigo}" id="codigoEditInput" 
-                         label="#{messages.field_label_poblado_codigo}" />
-            <p:message for="codigoEditInput" display="icon" />
-
-
-            <h:outputLabel value="#{messages.field_label_poblado_nombre}:" for="nombreEditInput" />
-            <p:inputText value="#{pobladoBean.poblado.nombre}" id="nombreEditInput" 
-                         label="#{messages.field_label_poblado_nombre}" />
-            <p:message for="nombreEditInput" display="icon" />
             
+            <!--
             
+            <h:outputLabel value="#{messages.field_label_poblado_nombre}:" 
+                           for="pobladoSelectInput" rendered="#{not hidePobladoSelectInput}"/>
+            <h:panelGroup rendered="#{not hidePobladoSelectInput}">
+                <p:selectOneMenu value="#{pobladoBean.pobladoBusqueda}"
+                                 id="pobladoSelectInput">
+                    <f:selectItem noSelectionOption="true" itemLabel="" />
+                    <f:selectItems value="#{pobladoBean.allPobladosList}" 
+                                   var="municipio" 
+                                   itemLabel="#{municipio.nombre}"
+                                   itemValue="#{municipio}" />
+                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{pobladoBean.allPobladosList}" />
+
+                </p:selectOneMenu>
+            </h:panelGroup>
+            <h:panelGroup rendered="#{not hideMunicipioSelectInput}">
+
+                <p:commandButton icon="ui-icon-plusthick" title="#{messages.label_create}"
+                                 action="#{municipioBean.prepareNewMunicipio()}"
+                                 update=":createMunicipioFromEditDialog"
+                                 resetValues="true"
+                                 oncomplete="PF('createMunicipioFromEditDialogWidget').show()"
+                                 rendered="#{applicationBean.componentExists('createMunicipioFromEditDialog')}"
+                                 style="vertical-align:top;" partialSubmit="true" process="@this">
+                </p:commandButton>
+
+                <p:message for="municipioSelectInput" display="icon" rendered="#{not hideMunicipioSelectInput}"/>
+            </h:panelGroup>              
+            -->
             
 
         </p:panelGrid>

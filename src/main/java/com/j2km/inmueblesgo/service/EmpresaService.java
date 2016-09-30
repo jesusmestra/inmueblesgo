@@ -99,7 +99,7 @@ public class EmpresaService extends BaseService<EmpresaEntity> implements Serial
 
                     case "nombre":
                         query.append(nextConnective).append(" o.nombre LIKE :nombre");
-                        queryParameters.put("ombre", "%" + filters.get(filterProperty) + "%");
+                        queryParameters.put("nombre", "%" + filters.get(filterProperty) + "%");
                         break;
 
                     case "nit":
@@ -131,7 +131,6 @@ public class EmpresaService extends BaseService<EmpresaEntity> implements Serial
             query.append(SortOrder.DESCENDING.equals(sortOrder) ? " DESC" : " ASC");
         }
 
-        System.out.println("MI FILTRO...." + query.toString());
 
         TypedQuery<EmpresaEntity> q = this.entityManager.createQuery(query.toString(), this.getType());
 
