@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+    <ui:composition template="/templates/layout.xhtml">
+        <ui:define name="content">
+
+            <h:form prependId="false" id="torreDataForm" onkeypress="if (event.keyCode == 13) {
+                return false;
+            }">
+
+                <p:dataTable id="torreTable" value="#{torreBean.lazyModel}" var="torre" resizableColumns="true" paginator="true"
+                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
+                             paginatorPosition="bottom" widgetVar="torreTable" emptyMessage="#{messages.label_no_records_found}"
+                             reflow="true">
+
+                    <f:facet name="header" >
+
+                        <p:commandButton value="#{messages.create_new_torre}" icon="ui-icon-plusthick" action="#{torreBean.prepareNewTorre()}"
+                                         resetValues="true" update=":editTorreDialog" oncomplete="PF('editTorreDialogWidget').show()"
+                                         style="float:left" />
+
+                        <p:commandButton id="toggler" type="button" value="#{messages.table_select_columns}" icon="ui-icon-calculator" />
+                        <p:columnToggler datasource="torreTable" trigger="toggler" />
+                    </f:facet>
+
+                    <p:column  headerText="#{messages.field_label_torre_nombre}" sortBy="#{torre.nombre}">                        
+                        <h:outputText value="#{torre.nombre}" />
+                    </p:column>
+
+                    <p:column  headerText="#{messages.field_label_torre_numero}" sortBy="#{torre.numero}">                        
+                        <h:outputText value="#{torre.numero}" />
+                    </p:column>
+                    
+                    <p:column  headerText="#{messages.field_label_torre_direccion}" sortBy="#{torre.direccion}">                        
+                        <h:outputText value="#{torre.direccion}" />
+                    </p:column>
+                    
+                    <p:column  headerText="Proyecto">                        
+                        <h:outputText value="#{torre.proyecto.nombre}" />
+                    </p:column>
+                    
+                    <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
+
+                                               
+                        <p:commandButton action="#{'/pages/torre/torreView?faces-redirect=true&amp;id='.concat(torre.id)}"
+                                         icon="ui-icon-zoomin"
+                                         title="#{messages.label_view}" />
+
+                        <p:commandButton icon="ui-icon-pencil" update=":editTorreDialog"
+                                         resetValues="true" 
+                                         action="#{torreBean.onDialogOpen(torre)}"
+                                         oncomplete="PF('editTorreDialogWidget').show()"
+                                         title="#{messages.label_edit}" >
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-close" 
+                                         oncomplete="PF('deleteTorreDialogWidget').show()"
+                                         title="#{messages.label_delete}" >
+                            <f:setPropertyActionListener value="#{torre}"
+                                                         target="#{torreBean.torre}" />
+                        </p:commandButton>
+
+                    </p:column>
+
+                </p:dataTable>
+
+            </h:form>
+
+            <p:confirmDialog id="deleteTorreDialog" widgetVar="deleteTorreDialogWidget"
+                             header="#{messages.label_confirm_deletion}"
+                             severity="alarm">
+                <f:facet name="message"><h:outputText value="#{messages.label_delete_record}" escape="false"/></f:facet>
+                <p:outputPanel>
+                    <h:form>
+                        <div style="text-align: center; margin:10px">
+                            <p:commandButton value="#{messages.label_yes}" action="#{torreBean.delete}" update=":torreDataForm :growlForm:growl" oncomplete="PF('deleteTorreDialogWidget').hide()" />
+                            <p:commandButton value="#{messages.label_no}" onclick="PF('deleteTorreDialogWidget').hide()" type="button" />
+                        </div>
+                    </h:form>
+                </p:outputPanel>
+            </p:confirmDialog>
+
+            <p:dialog dynamic="true" id="editTorreDialog" header="#{messages.label_torre_caption}"
+                      modal="true" widgetVar="editTorreDialogWidget" maximizable="true">
+                <p:ajax event="close" listener="#{torreBean.reset}"/>
+                <h:form id="editTorreForm" >
+                    <p:outputPanel id="torreEditPanel">
+                        <ui:include src="/pages/torre/torreEditInclude.xhtml"/>
+                        <div style="text-align: center; margin:10px">
+                            <p:commandButton value="#{messages.label_save}"
+                                             icon="ui-icon-disk" action="#{torreBean.persist}"
+                                             update=":editTorreForm:torreEditPanel :torreDataForm :growlForm:growl"
+                                             oncomplete="if(!args.validationFailed) PF('editTorreDialogWidget').hide()" />
+                            <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('editTorreDialogWidget').hide()" type="button" />
+                        </div>
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog dynamic="true" id="viewTorreDialog" header="#{messages.label_torre_caption}" modal="true" widgetVar="viewTorreDialogWidget" maximizable="true">
+                <p:ajax event="close" listener="#{torreBean.reset}" />
+                <h:form id="viewTorreForm">
+                    <ui:include src="/pages/torre/torreViewInclude.xhtml"/>
+                    <div style="text-align: center; margin:10px">
+                        <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('viewTorreDialogWidget').hide()" type="button" />
+                    </div>
+                </h:form>
+            </p:dialog>
+
+        </ui:define>
+    </ui:composition>
+</html>

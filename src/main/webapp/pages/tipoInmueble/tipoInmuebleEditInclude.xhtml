@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+
+        <p:outputPanel styleClass="ui-fluid">
+
+            <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">            
+                <h:outputLabel value="#{messages.field_label_tipoInmueble_descripcion}:" for="descripcionEditInput" />
+                <p:inputText value="#{tipoInmuebleBean.tipoInmueble.descripcion}" id="descripcionEditInput" 
+                             label="#{messages.field_label_tipoInmueble_descripcion}" />
+                <p:message for="descripcionEditInput" display="icon" /> 
+                
+                <h:outputLabel value="#{messages.field_label_tipoInmueble_area}:" for="areaEditInput" />
+                <p:inputText value="#{tipoInmuebleBean.tipoInmueble.area}" id="areaEditInput" 
+                             label="#{messages.field_label_tipoInmueble_area}" />
+                <p:message for="areaEditInput" display="icon" /> 
+                
+                <h:outputLabel value="#{messages.field_label_tipoInmueble_valorMetroCuadrado}:" for="valorMetroCuadradoEditInput" />
+                <p:inputText value="#{tipoInmuebleBean.tipoInmueble.valorMetroCuadrado}" id="valorMetroCuadradoEditInput" 
+                             label="#{messages.field_label_tipoInmueble_valorMetroCuadrado}" />
+                <p:message for="valorMetroCuadradoEditInput" display="icon" /> 
+                
+                <h:outputLabel value="#{messages.field_label_tipoInmueble_valorSeparacion}:" for="valorSeparacionEditInput" />
+                <p:inputText value="#{tipoInmuebleBean.tipoInmueble.valorSeparacion}" id="valorSeparacionEditInput" 
+                             label="#{messages.field_label_tipoInmueble_valorSeparacion}" />
+                <p:message for="valorSeparacionEditInput" display="icon" /> 
+                
+            </p:panelGrid>
+
+        </p:outputPanel>
+</html>

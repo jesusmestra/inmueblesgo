@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+    <ui:composition template="/templates/layout.xhtml">
+        <ui:define name="content">
+
+            <h:form prependId="false" id="tipoPlantaDataForm" onkeypress="if (event.keyCode == 13) {
+                return false;
+            }">
+
+                <p:dataTable id="tipoPlantaTable" value="#{tipoPlantaBean.lazyModel}" var="tipoPlanta" resizableColumns="true" paginator="true"
+                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
+                             paginatorPosition="bottom" widgetVar="tipoPlantaTable" emptyMessage="#{messages.label_no_records_found}"
+                             reflow="true">
+
+                    <f:facet name="header" >
+
+                        <p:commandButton value="#{messages.create_new_tipoPlanta}" icon="ui-icon-plusthick" action="#{tipoPlantaBean.prepareNewTipoPlanta()}"
+                                         resetValues="true" update=":editTipoPlantaDialog" oncomplete="PF('editTipoPlantaDialogWidget').show()"
+                                         style="float:left" />
+
+                        <p:commandButton id="toggler" type="button" value="#{messages.table_select_columns}" icon="ui-icon-calculator" />
+                        <p:columnToggler datasource="tipoPlantaTable" trigger="toggler" />
+                    </f:facet>
+
+                    <p:column  headerText="#{messages.field_label_tipoPlanta_descripcion}" sortBy="#{tipoPlanta.descripcion}">                        
+                        <h:outputText value="#{tipoPlanta.descripcion}" />
+                    </p:column>
+
+                    <p:column  headerText="#{messages.field_label_tipoPlanta_numeroInmuebles}" sortBy="#{tipoPlanta.numeroInmuebles}">                        
+                        <h:outputText value="#{tipoPlanta.numeroInmuebles}" />
+                    </p:column>
+                    
+                    <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
+
+                                               
+                        <p:commandButton action="#{'/pages/tipoPlanta/tipoPlantaView?faces-redirect=true&amp;id='.concat(tipoPlanta.id)}"
+                                         icon="ui-icon-zoomin"
+                                         title="#{messages.label_view}" />
+
+                        <p:commandButton icon="ui-icon-pencil" update=":editTipoPlantaDialog"
+                                         resetValues="true" 
+                                         action="#{tipoPlantaBean.onDialogOpen(tipoPlanta)}"
+                                         oncomplete="PF('editTipoPlantaDialogWidget').show()"
+                                         title="#{messages.label_edit}" >
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-close" 
+                                         oncomplete="PF('deleteTipoPlantaDialogWidget').show()"
+                                         title="#{messages.label_delete}" >
+                            <f:setPropertyActionListener value="#{tipoPlanta}"
+                                                         target="#{tipoPlantaBean.tipoPlanta}" />
+                        </p:commandButton>
+
+                    </p:column>
+
+                </p:dataTable>
+
+            </h:form>
+
+            <p:confirmDialog id="deleteTipoPlantaDialog" widgetVar="deleteTipoPlantaDialogWidget"
+                             header="#{messages.label_confirm_deletion}"
+                             severity="alarm">
+                <f:facet name="message"><h:outputText value="#{messages.label_delete_record}" escape="false"/></f:facet>
+                <p:outputPanel>
+                    <h:form>
+                        <div style="text-align: center; margin:10px">
+                            <p:commandButton value="#{messages.label_yes}" action="#{tipoPlantaBean.delete}" update=":tipoPlantaDataForm :growlForm:growl" oncomplete="PF('deleteTipoPlantaDialogWidget').hide()" />
+                            <p:commandButton value="#{messages.label_no}" onclick="PF('deleteTipoPlantaDialogWidget').hide()" type="button" />
+                        </div>
+                    </h:form>
+                </p:outputPanel>
+            </p:confirmDialog>
+
+            <p:dialog dynamic="true" id="editTipoPlantaDialog" header="#{messages.label_tipoPlanta_caption}"
+                      modal="true" widgetVar="editTipoPlantaDialogWidget" maximizable="true">
+                <p:ajax event="close" listener="#{tipoPlantaBean.reset}"/>
+                <h:form id="editTipoPlantaForm" >
+                    <p:outputPanel id="tipoPlantaEditPanel">
+                        <ui:include src="/pages/tipoPlanta/tipoPlantaEditInclude.xhtml"/>
+                        <div style="text-align: center; margin:10px">
+                            <p:commandButton value="#{messages.label_save}"
+                                             icon="ui-icon-disk" action="#{tipoPlantaBean.persist}"
+                                             update=":editTipoPlantaForm:tipoPlantaEditPanel :tipoPlantaDataForm :growlForm:growl"
+                                             oncomplete="if(!args.validationFailed) PF('editTipoPlantaDialogWidget').hide()" />
+                            <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('editTipoPlantaDialogWidget').hide()" type="button" />
+                        </div>
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog dynamic="true" id="viewTipoPlantaDialog" header="#{messages.label_tipoPlanta_caption}" modal="true" widgetVar="viewTipoPlantaDialogWidget" maximizable="true">
+                <p:ajax event="close" listener="#{tipoPlantaBean.reset}" />
+                <h:form id="viewTipoPlantaForm">
+                    <ui:include src="/pages/tipoPlanta/tipoPlantaViewInclude.xhtml"/>
+                    <div style="text-align: center; margin:10px">
+                        <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('viewTipoPlantaDialogWidget').hide()" type="button" />
+                    </div>
+                </h:form>
+            </p:dialog>
+
+        </ui:define>
+    </ui:composition>
+</html>
