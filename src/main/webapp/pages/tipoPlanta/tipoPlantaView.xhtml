@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+    <ui:composition template="/templates/layout.xhtml">
+        <ui:define name="content">
+
+            <f:metadata>
+                <f:viewParam name="id" value="#{tipoPlantaBusinessBean.tipoPlanta}" converter="#{genericEntityConverter}" />
+                <f:viewAction action="#{tipoPlantaBusinessBean.onLoad}"/>
+            </f:metadata>
+            
+            <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2" >
+
+                <h:outputText value="Descripción:" />
+                <h:outputText value="#{tipoPlantaBusinessBean.tipoPlanta.descripcion}" />
+
+                <h:outputText value="Numero de Inmuebles:" />
+                <h:outputText value="#{tipoPlantaBusinessBean.tipoPlanta.numeroInmuebles}" />
+
+            </h:panelGrid>
+            <h:form>
+                <p:dataTable id="detalleTable" value="#{tipoPlantaBusinessBean.detalles}" var="detalle">
+
+                    <f:facet name="header" >
+                        <h:outputText value="Detalle Tipo Planta"/>
+                    </f:facet>
+
+                    <p:column  headerText="numero">                        
+                        <p:inputText value="#{detalle.numero}" />
+                    </p:column>
+                    
+                    <p:column  headerText="Tipo Inmueble">                        
+                        <p:selectOneMenu value="#{detalle.tipoInmueble}"
+                                 id="tipoInmuebleSelectInput">
+                            <f:selectItem noSelectionOption="true" itemLabel="" />
+                            <f:selectItems value="#{tipoPlantaBusinessBean.tipoInmuebleList}" 
+                                           var="tipoInmueble" 
+                                           itemLabel="#{tipoInmueble.descripcion}"
+                                           itemValue="#{tipoInmueble}" />
+                            <o:converter converterId="omnifaces.SelectItemsConverter" list="#{tipoPlantaBusinessBean.tipoInmuebleList}" />
+
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:dataTable>
+                
+                <p:commandButton value="Guardar" icon="ui-icon-plusthick" 
+                                 action="#{tipoPlantaBusinessBean.guardarDetalle()}"
+                                 update="detalleTable growl"/>
+            </h:form>        
+
+        </ui:define>
+    </ui:composition>
+</html>

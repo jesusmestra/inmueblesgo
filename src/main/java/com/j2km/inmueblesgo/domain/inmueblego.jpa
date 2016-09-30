@@ -27,7 +27,7 @@
             <jpa:query>Select b from BaseEntity b where b.version=:version</jpa:query>
         </jpa:nq>
     </jpa:mapped-superclass>
-    <jpa:entity name="Departamento" xre="false" compositePrimaryKeyClass="DepartamentoEntityPK" abs="false" class="DepartamentoEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576758242">
+    <jpa:entity name="Departamento" xre="false" compositePrimaryKeyClass="DepartamentoEntityPK" abs="false" class="DepartamentoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576758242">
         <jpa:ts e="true"/>
         <jpa:hc e="true">
             <jpa:post>hash = 0;
@@ -264,7 +264,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="tipo_identificacion"/>
     </jpa:entity>
-    <jpa:entity name="EstadoInmueble" xre="false" compositePrimaryKeyClass="EstadoInmuebleEntityPK" abs="false" class="EstadoInmuebleEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472591162861">
+    <jpa:entity name="EstadoInmueble" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="EstadoInmuebleEntityPK" abs="false" class="EstadoInmuebleEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472591162861">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -289,7 +289,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="estado_inmueble"/>
     </jpa:entity>
-    <jpa:entity name="Inmueble" xre="false" compositePrimaryKeyClass="InmuebleEntityPK" abs="false" class="InmuebleEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472591379182">
+    <jpa:entity name="Inmueble" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="InmuebleEntityPK" abs="false" class="InmuebleEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472591379182">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -324,6 +324,9 @@ hash += (id != null ? id.hashCode() : 0);
             <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1472591162861" visibile="true" name="estadoInmueble" id="_147277004153728">
                 <jpa:join-column name="ESTADOINMUEBLE_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
             </jpa:many-to-one>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1475167232682" visibile="true" name="piso" id="_147518007267962">
+                <jpa:join-column name="PISO_ID" rc="" unique="false" nullable="true" insertable="true" updatable="true" column-definition="" table=""/>
+            </jpa:many-to-one>
         </jpa:attributes>
         <jpa:nq e="false" name="InmuebleEntity.findAll">
             <jpa:query>Select e from InmuebleEntity e</jpa:query>
@@ -357,7 +360,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="inmueble"/>
     </jpa:entity>
-    <jpa:entity name="Proyecto" cacheable="false" xre="false" compositePrimaryKeyClass="ProyectoEntityPK" abs="false" class="ProyectoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472591479472">
+    <jpa:entity name="Proyecto" cacheable="false" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="ProyectoEntityPK" abs="false" class="ProyectoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472591479472">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -517,6 +520,144 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="negociacion"/>
     </jpa:entity>
+    <jpa:entity name="Torre" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="TorreEntityPK" abs="false" class="TorreEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1475007647092">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" visibile="true" name="nombre" id="_1475007696511561">
+                <jpa:bv/>
+                <jpa:column name="torre_nombre" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" visibile="true" name="direccion" id="_1475007717167562">
+                <jpa:bv/>
+                <jpa:column name="torre_direccion" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" visibile="true" name="numero" id="_1475007732775563">
+                <jpa:bv/>
+                <jpa:column name="torre_numero" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1472591479472" visibile="true" name="proyecto" id="_147515966304456"/>
+        </jpa:attributes>
+        <jpa:nq e="false" name="TorreEntity.findAll">
+            <jpa:query>Select e from TorreEntity e</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="TorreEntity.findByNombre">
+            <jpa:query>Select t from TorreEntity t where t.nombre=:nombre</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="TorreEntity.findByDireccion">
+            <jpa:query>Select t from TorreEntity t where t.direccion=:direccion</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="TorreEntity.findByNumero">
+            <jpa:query>Select t from TorreEntity t where t.numero=:numero</jpa:query>
+        </jpa:nq>
+        <jpa:table name="torre"/>
+    </jpa:entity>
+    <jpa:entity name="TipoInmueble" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="TipoInmuebleEntityPK" abs="false" class="TipoInmuebleEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1475010301512">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" visibile="true" name="descripcion" id="_1475010364614566">
+                <jpa:bv/>
+                <jpa:column name="ti_descripcion" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" visibile="true" name="area" id="_1475010520999567">
+                <jpa:bv/>
+                <jpa:column name="ti_area" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" visibile="true" name="valorMetroCuadrado" id="_1475010539991568">
+                <jpa:bv/>
+                <jpa:column name="ti_valor_metro_cuadrado" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" visibile="true" name="valorSeparacion" id="_1475010595184569">
+                <jpa:bv/>
+                <jpa:column name="ti_valor_separacion" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
+            </jpa:basic>
+        </jpa:attributes>
+        <jpa:nq e="false" name="TipoInmuebleEntity.findAll">
+            <jpa:query>Select e from TipoInmuebleEntity e</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="TipoInmuebleEntity.findByDescripcion">
+            <jpa:query>Select t from TipoInmuebleEntity t where t.descripcion=:descripcion</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="TipoInmuebleEntity.findByArea">
+            <jpa:query>Select t from TipoInmuebleEntity t where t.area=:area</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="TipoInmuebleEntity.findByValorMetroCuadrado">
+            <jpa:query>Select t from TipoInmuebleEntity t where t.valorMetroCuadrado=:valorMetroCuadrado</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="TipoInmuebleEntity.findByValorSeparacion">
+            <jpa:query>Select t from TipoInmuebleEntity t where t.valorSeparacion=:valorSeparacion</jpa:query>
+        </jpa:nq>
+        <jpa:table name="tipo_inmueble"/>
+    </jpa:entity>
+    <jpa:entity name="TipoPlanta" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="TipoPlantaEntityPK" abs="false" class="TipoPlantaEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1475013442156">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" visibile="true" name="descripcion" id="_1475013483480572">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Integer" visibile="true" name="numeroInmuebles" id="_147507203608356">
+                <jpa:bv/>
+            </jpa:basic>
+        </jpa:attributes>
+        <jpa:nq e="false" name="TipoPlantaEntity.findAll">
+            <jpa:query>Select e from TipoPlantaEntity e</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="TipoPlantaEntity.findByDescripcion">
+            <jpa:query>Select t from TipoPlantaEntity t where t.descripcion=:descripcion</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="TipoPlantaEntity.findByNumeroInmuebles">
+            <jpa:query>Select t from TipoPlantaEntity t where t.numeroInmuebles=:numeroInmuebles</jpa:query>
+        </jpa:nq>
+        <jpa:table name="tipo_planta"/>
+    </jpa:entity>
+    <jpa:entity name="TipoPlantaDetalle" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="TipoPlantaDetalleEntityPK" abs="false" class="TipoPlantaDetalleEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1475014070164">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="Integer" visibile="true" name="numero" id="_1475014094638580">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1475013442156" visibile="true" name="tipoPlanta" id="_1475014107966581"/>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1475010301512" visibile="true" name="tipoInmueble" id="_1475014247371583"/>
+        </jpa:attributes>
+        <jpa:nq e="false" name="TipoPlantaDetalleEntity.findAll">
+            <jpa:query>Select e from TipoPlantaDetalleEntity e</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="TipoPlantaDetalleEntity.findByNumero">
+            <jpa:query>Select t from TipoPlantaDetalleEntity t where t.numero=:numero</jpa:query>
+        </jpa:nq>
+        <jpa:table name="tipo_planta_detalle"/>
+    </jpa:entity>
+    <jpa:entity name="Piso" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="PisoPK" abs="false" class="Piso" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1475167232682">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" visibile="true" name="numero" id="_147516805472859">
+                <jpa:bv/>
+                <jpa:column name="piso_numero" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1475007647092" visibile="true" name="torre" id="_147516815695660">
+                <jpa:join-column name="TORRE_ID" rc="" unique="false" nullable="true" insertable="true" updatable="true" column-definition="" table=""/>
+            </jpa:many-to-one>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1475013442156" visibile="true" name="tipoPlanta" id="_147516823321861">
+                <jpa:join-column name="TIPO_PLANTA_ID" rc="" unique="false" nullable="true" insertable="true" updatable="true" column-definition="" table=""/>
+            </jpa:many-to-one>
+        </jpa:attributes>
+        <jpa:nq e="false" name="Piso.findAll">
+            <jpa:query>Select e from Piso e</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="Piso.findByNumero">
+            <jpa:query>Select p from Piso p where p.numero=:numero</jpa:query>
+        </jpa:nq>
+        <jpa:table name="piso"/>
+    </jpa:entity>
     <jpa:snp e="true" loc="BEFORE_PACKAGE">/**
  * This file was generated by the JPA Modeler
  */</jpa:snp>
@@ -556,13 +697,13 @@ hash += (id != null ? id.hashCode() : 0);
                 <Bounds x="-50.0" y="795.0" width="221.0" height="95.0"/>
             </shape>
             <shape elementRef="_1472591162861">
-                <Bounds x="1109.0" y="21.0" width="210.0" height="75.0"/>
+                <Bounds x="1198.0" y="-95.0" width="210.0" height="75.0"/>
             </shape>
             <shape elementRef="_1472591379182">
-                <Bounds x="765.0" y="0.0" width="177.0" height="207.0"/>
+                <Bounds x="649.0" y="-25.0" width="177.0" height="227.0"/>
             </shape>
             <shape elementRef="_1472591479472">
-                <Bounds x="531.0" y="57.0" width="159.0" height="147.0"/>
+                <Bounds x="445.0" y="-131.0" width="159.0" height="147.0"/>
             </shape>
             <shape elementRef="_1472591773752">
                 <Bounds x="614.0" y="348.0" width="163.0" height="147.0"/>
@@ -573,8 +714,23 @@ hash += (id != null ? id.hashCode() : 0);
             <shape elementRef="_1472592325680">
                 <Bounds x="1018.0" y="324.0" width="182.0" height="167.0"/>
             </shape>
+            <shape elementRef="_1475007647092">
+                <Bounds x="445.0" y="-347.0" width="134.0" height="127.0"/>
+            </shape>
+            <shape elementRef="_1475010301512">
+                <Bounds x="961.0" y="-293.0" width="191.0" height="115.0"/>
+            </shape>
+            <shape elementRef="_1475013442156">
+                <Bounds x="718.0" y="-422.0" width="172.0" height="75.0"/>
+            </shape>
+            <shape elementRef="_1475014070164">
+                <Bounds x="945.0" y="-79.0" width="223.0" height="107.0"/>
+            </shape>
+            <shape elementRef="_1475167232682">
+                <Bounds x="729.0" y="-238.0" width="128.0" height="107.0"/>
+            </shape>
             <shape elementRef="_1473857903171">
-                <Bounds x="247.0" y="-296.0" width="172.0" height="86.0"/>
+                <Bounds x="133.0" y="-317.0" width="172.0" height="86.0"/>
             </shape>
         </plane>
     </jpa:diagram>

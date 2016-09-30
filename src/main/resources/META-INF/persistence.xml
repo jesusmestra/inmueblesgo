@@ -24,6 +24,13 @@
     <class>com.j2km.inmueblesgo.domain.PlanPagoEntity</class>
     <class>com.j2km.inmueblesgo.domain.OfertaEntity</class>
     <class>com.j2km.inmueblesgo.domain.NegociacionEntity</class>
+    <class>com.j2km.inmueblesgo.domain.TipoPlanta</class>
+    <class>com.j2km.inmueblesgo.domain.TipoPlantaDetalle</class>
+    <class>com.j2km.inmueblesgo.domain.TorreEntity</class>
+    <class>com.j2km.inmueblesgo.domain.TipoInmuebleEntity</class>
+    <class>com.j2km.inmueblesgo.domain.TipoPlantaEntity</class>
+    <class>com.j2km.inmueblesgo.domain.TipoPlantaDetalleEntity</class>
+    <class>com.j2km.inmueblesgo.domain.Piso</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>
