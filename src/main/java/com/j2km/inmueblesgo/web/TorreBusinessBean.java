@@ -5,6 +5,7 @@ import com.j2km.inmueblesgo.domain.TipoInmuebleEntity;
 import com.j2km.inmueblesgo.domain.TipoPlantaDetalleEntity;
 import com.j2km.inmueblesgo.domain.TipoPlantaEntity;
 import com.j2km.inmueblesgo.domain.TorreEntity;
+import com.j2km.inmueblesgo.service.EstadoInmuebleService;
 import com.j2km.inmueblesgo.service.InmuebleService;
 import com.j2km.inmueblesgo.service.TipoInmuebleService;
 import com.j2km.inmueblesgo.service.TipoPlantaService;
@@ -53,6 +54,9 @@ public class TorreBusinessBean implements Serializable {
     
     @Inject
     private TipoPlantaService tipoPlantaService;
+    
+    @Inject 
+    private EstadoInmuebleService estadoInmuebleService;
 
     public TorreEntity getTorre() {
         return torre;
@@ -124,13 +128,21 @@ public class TorreBusinessBean implements Serializable {
                 inmueble.setValorMetroCuadrado(detalle.getTipoInmueble().getValorMetroCuadrado());
                 inmueble.setProyecto(torre.getProyecto());
                 inmueble.setValorSeparacion(detalle.getTipoInmueble().getValorSeparacion());
+                inmueble.setEstadoInmueble(estadoInmuebleService.findByCodigo("01"));
                 inmueble.setNumero(i+" "+detalle.getNumero());
-                inmuebleService.save(inmueble);
-                
+                inmueble.setValorTotal(
+                        detalle.getTipoInmueble().getValorMetroCuadrado()*detalle.getTipoInmueble().getArea());
+                inmuebleService.save(inmueble);           
                 
                 System.out.println(detalle.getTipoInmueble());
             }
         }
+        
+        FacesMessage facesMsg = new FacesMessage(
+                            FacesMessage.SEVERITY_INFO, 
+                            "Pisos generados", 
+                            "Pisos generados");
+        FacesContext.getCurrentInstance().addMessage(null, facesMsg);
     }
     
     public void onLoad(){

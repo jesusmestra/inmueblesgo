@@ -119,14 +119,15 @@
 
 
                     <p:column  headerText="#{messages.field_label_inmueble_valorTotal}" sortBy="#{inmueble.valorTotal}">
-                        <h:outputText value="#{inmueble.valorTotal}" />
+                        <h:outputText value="#{inmueble.valorTotal}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
                     </p:column>                      
 
 
                     <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
 
-                        <p:commandButton action="#{'/pages/proyecto/minegociacion?faces-redirect=true&amp;id='.concat(inmueble.id)}"
-                                         actionListener="#{negociacionBean.nuevaNegociacion(inmueble.id)}"
+                        <p:commandButton action="#{'/pages/proyecto/minegociacion?faces-redirect=true&amp;id='.concat(inmueble.id)}"                                         
                                          icon="ui-icon-zoomin"
                                          title="#{messages.label_view}" />
 

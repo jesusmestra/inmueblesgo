@@ -46,7 +46,18 @@
                          label="#{messages.field_label_tercero_identificacion}" />
             <p:message for="identificacionEditInput" display="icon" />
 
+            <h:outputLabel value="Lugar Expedición:" for="pobladoSelectInput" />
+            <p:selectOneMenu value="#{terceroBean.tercero.lugarExpedicion}"
+                            id="pobladoSelectInput">
+               <f:selectItem noSelectionOption="true" itemLabel="" />
+               <f:selectItems value="#{empresaBean.allPobladosList}" 
+                              var="poblado" 
+                              itemLabel="#{poblado.nombre}"
+                              itemValue="#{poblado}" />
+               <o:converter converterId="omnifaces.SelectItemsConverter" list="#{empresaBean.allPobladosList}"/>
 
+            </p:selectOneMenu>
+            <p:message for="pobladoSelectInput" display="icon" />
 
             <h:outputLabel value="#{messages.field_label_tercero_apellido1}:" for="apellido1EditInput" />
             <p:inputText value="#{terceroBean.tercero.apellido1}" id="apellido1EditInput" 

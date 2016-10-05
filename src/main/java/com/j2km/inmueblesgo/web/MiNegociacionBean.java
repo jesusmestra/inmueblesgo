@@ -46,10 +46,10 @@ public class MiNegociacionBean implements Serializable {
 
     @Inject
     private PlanPagoService planPagoService;
-    
+
     @Inject
     private EstadoInmuebleService estadoInmuebleService;
-    
+
     @Inject
     private InmuebleService inmuebleService;
 
@@ -97,16 +97,75 @@ public class MiNegociacionBean implements Serializable {
      */
     public void onLoad() {
 
-        this.negociacion = negociacionService.findByInmueble(this.inmueble);
-        this.negociacion.setOferta(this.inmueble.getProyecto().getOferta());
         this.allTerceroList = terceroService.findAllTerceroEntities();
         this.allOfertaList = ofertaService.findAllOfertaEntities();
+
+        this.negociacion = negociacionService.findByInmueble(this.inmueble);
+
         System.out.println("Iniciando");
         if (this.negociacion == null) {
             this.negociacion = new NegociacionEntity();
             this.negociacion.setInmueble(this.inmueble);
+            
+            this.negociacion.setValorMetroCuadrado(this.inmueble.getValorMetroCuadrado());
+            this.negociacion.setValorSeparacion(this.inmueble.getValorSeparacion());
+
+            if (this.inmueble.getIncremento() != null) {
+                this.negociacion.setValorIncremento(this.inmueble.getIncremento());
+            } else {
+                this.negociacion.setValorIncremento(0D);
+            }
+
             this.negociacion.setFecha(Calendar.getInstance().getTime());
+            this.negociacion.setValorTotal(this.negociacion.getValorMetroCuadrado() * this.inmueble.getArea() + this.negociacion.getValorIncremento());
+            if (this.inmueble.getProyecto().getOferta() != null) {
+                this.negociacion.setOferta(this.inmueble.getProyecto().getOferta());
+                this.negociacion.setNumeroCuotas(this.negociacion.getOferta().getNumeroCuotas());
+                this.negociacion.setPorcentaje(this.inmueble.getProyecto().getOferta().getPorcentaje());
+            }
+
             allPlanPagosListNegociacion = new ArrayList<PlanPagoEntity>();
+            System.out.println("creada la negociacion.....");
+            Double inicial =  this.negociacion.getValorSeparacion();
+            Double valorInmueble = this.inmueble.getValorTotal();
+            Double porcentaje = this.negociacion.getOferta().getPorcentaje();
+            Double valorPorcentaje = (valorInmueble * porcentaje) / 100;
+            Double valorRestante = valorPorcentaje - inicial;
+
+            int numeroCuotas = this.negociacion.getOferta().getNumeroCuotas();
+
+            Double valorCuotas = 0.0;
+            if (numeroCuotas > 0) {
+                valorCuotas = (valorRestante / numeroCuotas);
+            }
+
+            numeroCuotas = numeroCuotas + 1;
+
+            Calendar cal = Calendar.getInstance();
+            System.out.println("entrada....." + this.negociacion);
+            System.out.println("fecha sel....." + this.negociacion.getFecha());
+            System.out.println("inmueble....." + this.negociacion.getInmueble());
+            cal.setTime(this.negociacion.getFecha());
+
+            for (int i = allPlanPagosListNegociacion.size(); i < numeroCuotas; i++) {
+                PlanPagoEntity entidad = new PlanPagoEntity();
+                allPlanPagosListNegociacion.add(entidad);
+            }
+
+            int i = 0;
+            for (PlanPagoEntity entidad : allPlanPagosListNegociacion) {
+                if (i == 0) {
+                    entidad.setValorPactado(inicial);
+                    entidad.setFechaPactada(cal.getTime());
+                } else {
+                    cal.add(Calendar.MONTH, 1);
+                    entidad.setFechaPactada(cal.getTime());
+                    entidad.setValorPactado(valorCuotas);
+                }
+                entidad.setNegociacion(this.negociacion);
+                entidad.setNumeroCuota(i);
+                i = i + 1;
+            }
         } else {
             this.allPlanPagosListNegociacion = planPagoService.findAllPlanPagoByNegociacion(this.negociacion);
         }
@@ -115,16 +174,18 @@ public class MiNegociacionBean implements Serializable {
 
     public void onCambioOfetra() {
         System.out.println("Cambio oferta.....");
+        
+        this.valorTotal();
 
         allPlanPagosListNegociacion = new ArrayList<PlanPagoEntity>();
         System.out.println("creada la negociacion.....");
-        Double inicial = this.inmueble.getValorSeparacion();
-        Double valorInmueble = this.inmueble.getValorTotal();
-        Double porcentaje = this.negociacion.getOferta().getPorcentaje();
+        Double inicial = this.negociacion.getValorSeparacion();
+        Double valorInmueble = this.negociacion.getValorTotal();
+        Double porcentaje = this.negociacion.getPorcentaje();
         Double valorPorcentaje = (valorInmueble * porcentaje) / 100;
         Double valorRestante = valorPorcentaje - inicial;
 
-        int numeroCuotas = this.negociacion.getOferta().getNumeroCuotas();
+        int numeroCuotas = this.negociacion.getNumeroCuotas();
 
         Double valorCuotas = 0.0;
         if (numeroCuotas > 0) {
@@ -133,10 +194,7 @@ public class MiNegociacionBean implements Serializable {
 
         numeroCuotas = numeroCuotas + 1;
 
-        Calendar cal = Calendar.getInstance();
-        System.out.println("entrada....." + this.negociacion);
-        System.out.println("fecha sel....." + this.negociacion.getFecha());
-        System.out.println("inmueble....." + this.negociacion.getInmueble());
+        Calendar cal = Calendar.getInstance();        
         cal.setTime(this.negociacion.getFecha());
 
         for (int i = allPlanPagosListNegociacion.size(); i < numeroCuotas; i++) {
@@ -204,16 +262,15 @@ public class MiNegociacionBean implements Serializable {
                     }
                 }
             }
-            
-            
+
             this.allPlanPagosListNegociacion = planPagoService.findAllPlanPagoByNegociacion(this.negociacion);
             EstadoInmuebleEntity estadoInmueble = estadoInmuebleService.findByNombre("Separado");
-            if (estadoInmueble != null){
+            if (estadoInmueble != null) {
                 System.out.println("Actualizando estado inmueble");
                 this.negociacion.getInmueble().setEstadoInmueble(estadoInmueble);
                 inmuebleService.update(this.negociacion.getInmueble());
             }
-            
+
             message = "message_successfully_created";
         }
 
@@ -243,13 +300,16 @@ public class MiNegociacionBean implements Serializable {
 
         }
     }
-    
-    public void onAgregarFilaPago(){
+
+    public void onAgregarFilaPago() {
         PlanPagoEntity entidad = new PlanPagoEntity();
         entidad.setNegociacion(this.negociacion);
         this.allPlanPagosListNegociacion.add(entidad);
-         
+
     }
-    
+
+    public void valorTotal() {
+        this.negociacion.setValorTotal(this.negociacion.getValorIncremento() + (this.negociacion.getValorMetroCuadrado() * this.inmueble.getArea()));
+    }
 
 }

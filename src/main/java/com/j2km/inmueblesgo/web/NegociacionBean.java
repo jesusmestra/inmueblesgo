@@ -124,7 +124,8 @@ public class NegociacionBean implements Serializable {
         System.out.println("Seleccionado inmueble...." + inmuebleId);
 
         reset();
-        InmuebleEntity inmuebleInstance = null;
+        InmuebleEntity inmuebleInstance = inmuebleService.find(inmuebleId);
+        System.out.println(inmuebleInstance);
         
         this.negociacion = negociacionService.findByInmueble(inmuebleInstance);
     
@@ -132,6 +133,10 @@ public class NegociacionBean implements Serializable {
             this.negociacion = new NegociacionEntity();
             Calendar cal = Calendar.getInstance();
             this.negociacion.setFecha(cal.getTime());
+            this.negociacion.setValorMetroCuadrado(inmuebleInstance.getValorMetroCuadrado());
+            this.negociacion.setValorSeparacion(inmuebleInstance.getValorSeparacion());
+            this.negociacion.setValorIncremento(inmuebleInstance.getIncremento());
+            
             this.cantidadCuotas = 0;
             this.allPlanPagosListNegociacion = null;
         }else{
