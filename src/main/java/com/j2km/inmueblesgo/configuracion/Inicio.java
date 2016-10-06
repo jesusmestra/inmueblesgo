@@ -8,21 +8,21 @@ package com.j2km.inmueblesgo.configuracion;
 import com.j2km.inmueblesgo.domain.EmpresaEntity;
 import com.j2km.inmueblesgo.domain.EstadoInmuebleEntity;
 import com.j2km.inmueblesgo.domain.OfertaEntity;
-import com.j2km.inmueblesgo.domain.Permiso;
+import com.j2km.inmueblesgo.domain.PermisoEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
-import com.j2km.inmueblesgo.domain.Rol;
+import com.j2km.inmueblesgo.domain.RolEntity;
 import com.j2km.inmueblesgo.domain.TerceroEntity;
 import com.j2km.inmueblesgo.domain.TipoIdentificacionEntity;
-import com.j2km.inmueblesgo.domain.Usuario;
+import com.j2km.inmueblesgo.domain.UsuarioEntity;
 import com.j2km.inmueblesgo.service.EmpresaService;
 import com.j2km.inmueblesgo.service.EstadoInmuebleService;
 import com.j2km.inmueblesgo.service.OfertaService;
-import com.j2km.inmueblesgo.service.PermisoFacade;
+import com.j2km.inmueblesgo.service.PermisoService;
 import com.j2km.inmueblesgo.service.ProyectoService;
-import com.j2km.inmueblesgo.service.RolFacade;
+import com.j2km.inmueblesgo.service.RolService;
 import com.j2km.inmueblesgo.service.TerceroService;
 import com.j2km.inmueblesgo.service.TipoIdentificacionService;
-import com.j2km.inmueblesgo.service.UsuarioFacade;
+import com.j2km.inmueblesgo.service.UsuarioService;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -34,13 +34,13 @@ import javax.inject.Inject;
 public class Inicio {
     
     @Inject
-    private UsuarioFacade usuarioFacade;
+    private UsuarioService usuarioService;
 
     @Inject
-    private RolFacade rolFacade;
+    private RolService rolService;
 
     @Inject
-    private PermisoFacade permisoFacade;
+    private PermisoService permisoService;
 
     @Inject
     private TipoIdentificacionService tipoIdentificacionService;
@@ -63,30 +63,38 @@ public class Inicio {
     @PostConstruct
     public void iniciar() {
         
-        Rol rol = rolFacade.findByNombre("ADMIN");
+        RolEntity rol = rolService.findByNombre("ADMIN");
 
         if (rol == null) {
-            rol = new Rol();
+            rol = new RolEntity();
             rol.setNombre("ADMIN");
-            rolFacade.create(rol);
+            rolService.save(rol);
+        }
+        
+        RolEntity rolVendedor = rolService.findByNombre("VENDEDOR");
+
+        if (rolVendedor == null) {
+            rolVendedor = new RolEntity();
+            rolVendedor.setNombre("VENDEDOR");
+            rolService.save(rolVendedor);
         }
 
-        Usuario usuario = usuarioFacade.findByLogin("admin");
+        UsuarioEntity usuario = usuarioService.findByLogin("admin");
 
         if (usuario == null) {
-            usuario = new Usuario();
+            usuario = new UsuarioEntity();
             usuario.setLogin("admin");
             usuario.setPassword("admin");
-            usuarioFacade.create(usuario);
+            usuarioService.save(usuario);
         }
 
-        Permiso permiso = permisoFacade.findByUsuarioAndRol(usuario, rol);
+        PermisoEntity permiso = permisoService.findByUsuarioAndRol(usuario, rol);
 
         if (permiso == null) {
-            permiso = new Permiso();
+            permiso = new PermisoEntity();
             permiso.setUsuario(usuario);
             permiso.setRol(rol);
-            permisoFacade.create(permiso);
+            permisoService.save(permiso);
         }
 
         EstadoInmuebleEntity estadoInmueble = estadoInmuebleService.findByCodigo("01");

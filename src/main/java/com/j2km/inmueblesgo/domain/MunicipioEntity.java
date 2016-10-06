@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * @author jdmp
+ * @author jkelsy
  */
 @Entity(name = "Municipio")
 @Table(name = "municipio")

@@ -18,9 +18,9 @@
     <class>com.j2km.inmueblesgo.domain.TipoInmuebleEntity</class>
     <class>com.j2km.inmueblesgo.domain.TipoPlantaEntity</class>
     <class>com.j2km.inmueblesgo.domain.TipoPlantaDetalleEntity</class>
-    <class>com.j2km.inmueblesgo.domain.Usuario</class>
-    <class>com.j2km.inmueblesgo.domain.Permiso</class>
-    <class>com.j2km.inmueblesgo.domain.Rol</class>
+    <class>com.j2km.inmueblesgo.domain.UsuarioEntity</class>
+    <class>com.j2km.inmueblesgo.domain.PermisoEntity</class>
+    <class>com.j2km.inmueblesgo.domain.RolEntity</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>
