@@ -12,7 +12,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
- * @author jdmp
+ * @author jkelsy
  */
 @Entity(name = "Negociacion")
 @Table(name = "negociacion")
@@ -29,6 +29,24 @@ public class NegociacionEntity extends BaseEntity implements Serializable {
     @Column(name = "neg_fecha")
     @Basic
     private Date fecha;
+
+    @Basic
+    private Double valorMetroCuadrado;
+
+    @Basic
+    private Double valorSeparacion;
+
+    @Basic
+    private Integer numeroCuotas;
+
+    @Basic
+    private Double valorIncremento;
+
+    @Basic
+    private Double valorTotal;
+
+    @Basic
+    private Double porcentaje;
 
     @OneToOne(targetEntity = InmuebleEntity.class)
     private InmuebleEntity inmueble;
@@ -61,6 +79,54 @@ public class NegociacionEntity extends BaseEntity implements Serializable {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public Double getValorMetroCuadrado() {
+        return this.valorMetroCuadrado;
+    }
+
+    public void setValorMetroCuadrado(Double valorMetroCuadrado) {
+        this.valorMetroCuadrado = valorMetroCuadrado;
+    }
+
+    public Double getValorSeparacion() {
+        return this.valorSeparacion;
+    }
+
+    public void setValorSeparacion(Double valorSeparacion) {
+        this.valorSeparacion = valorSeparacion;
+    }
+
+    public Integer getNumeroCuotas() {
+        return this.numeroCuotas;
+    }
+
+    public void setNumeroCuotas(Integer numeroCuotas) {
+        this.numeroCuotas = numeroCuotas;
+    }
+
+    public Double getValorIncremento() {
+        return this.valorIncremento;
+    }
+
+    public void setValorIncremento(Double valorIncremento) {
+        this.valorIncremento = valorIncremento;
+    }
+
+    public Double getValorTotal() {
+        return this.valorTotal;
+    }
+
+    public void setValorTotal(Double valorTotal) {
+        this.valorTotal = valorTotal;
+    }
+
+    public Double getPorcentaje() {
+        return this.porcentaje;
+    }
+
+    public void setPorcentaje(Double porcentaje) {
+        this.porcentaje = porcentaje;
     }
 
     public InmuebleEntity getInmueble() {

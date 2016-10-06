@@ -8,15 +8,21 @@ package com.j2km.inmueblesgo.configuracion;
 import com.j2km.inmueblesgo.domain.EmpresaEntity;
 import com.j2km.inmueblesgo.domain.EstadoInmuebleEntity;
 import com.j2km.inmueblesgo.domain.OfertaEntity;
+import com.j2km.inmueblesgo.domain.Permiso;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
+import com.j2km.inmueblesgo.domain.Rol;
 import com.j2km.inmueblesgo.domain.TerceroEntity;
 import com.j2km.inmueblesgo.domain.TipoIdentificacionEntity;
+import com.j2km.inmueblesgo.domain.Usuario;
 import com.j2km.inmueblesgo.service.EmpresaService;
 import com.j2km.inmueblesgo.service.EstadoInmuebleService;
 import com.j2km.inmueblesgo.service.OfertaService;
+import com.j2km.inmueblesgo.service.PermisoFacade;
 import com.j2km.inmueblesgo.service.ProyectoService;
+import com.j2km.inmueblesgo.service.RolFacade;
 import com.j2km.inmueblesgo.service.TerceroService;
 import com.j2km.inmueblesgo.service.TipoIdentificacionService;
+import com.j2km.inmueblesgo.service.UsuarioFacade;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -26,6 +32,15 @@ import javax.inject.Inject;
 @Startup
 @Singleton
 public class Inicio {
+    
+    @Inject
+    private UsuarioFacade usuarioFacade;
+
+    @Inject
+    private RolFacade rolFacade;
+
+    @Inject
+    private PermisoFacade permisoFacade;
 
     @Inject
     private TipoIdentificacionService tipoIdentificacionService;
@@ -47,6 +62,32 @@ public class Inicio {
     
     @PostConstruct
     public void iniciar() {
+        
+        Rol rol = rolFacade.findByNombre("ADMIN");
+
+        if (rol == null) {
+            rol = new Rol();
+            rol.setNombre("ADMIN");
+            rolFacade.create(rol);
+        }
+
+        Usuario usuario = usuarioFacade.findByLogin("admin");
+
+        if (usuario == null) {
+            usuario = new Usuario();
+            usuario.setLogin("admin");
+            usuario.setPassword("admin");
+            usuarioFacade.create(usuario);
+        }
+
+        Permiso permiso = permisoFacade.findByUsuarioAndRol(usuario, rol);
+
+        if (permiso == null) {
+            permiso = new Permiso();
+            permiso.setUsuario(usuario);
+            permiso.setRol(rol);
+            permisoFacade.create(permiso);
+        }
 
         EstadoInmuebleEntity estadoInmueble = estadoInmuebleService.findByCodigo("01");
         

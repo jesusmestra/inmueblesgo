@@ -108,4 +108,28 @@
         <extension>ttf</extension>
         <mime-type>application/font-sfnt</mime-type>
     </mime-mapping>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>all</web-resource-name>
+            <description>application security constraints</description>
+            <url-pattern>/pages/*</url-pattern>            
+            <http-method>GET</http-method>
+            <http-method>POST</http-method>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>ADMIN</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/login.xhtml</form-login-page>
+            <form-error-page>/error.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
+    
+    <security-role>
+        <role-name>ADMIN</role-name>
+    </security-role>
 </web-app>

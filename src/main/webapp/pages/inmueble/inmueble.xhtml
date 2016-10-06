@@ -150,7 +150,9 @@
                                 <p:remoteCommand name="updateValorTotalFilter" update="inmuebleTable:valorTotalFilter" />
                             </p:inputText>
                         </f:facet>
-                        <h:outputText value="#{inmueble.valorTotal}" />
+                        <h:outputText value="#{inmueble.valorTotal}">
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
                     </p:column>                      
 
 

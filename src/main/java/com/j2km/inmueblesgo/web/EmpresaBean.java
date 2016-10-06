@@ -197,9 +197,8 @@ public class EmpresaBean implements Serializable {
     public void setMunicipioBusqueda(MunicipioEntity municipioBusqueda) {
         this.municipioBusqueda = municipioBusqueda;
     }
-
     
-     public void updateSelectRepresentante(TerceroEntity tercero) {
+    public void updateSelectRepresentante(TerceroEntity tercero) {
         this.empresa.setRepresentante(tercero);
     }
     

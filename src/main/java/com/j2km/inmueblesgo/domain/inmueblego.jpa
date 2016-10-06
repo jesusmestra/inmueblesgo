@@ -52,7 +52,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="departamento"/>
     </jpa:entity>
-    <jpa:entity xre="false" compositePrimaryKeyClass="UsuarioPK" abs="false" class="Usuario" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576765246">
+    <jpa:entity lbl-ref="_1470328576765248" xre="false" compositePrimaryKeyClass="UsuarioPK" abs="false" class="Usuario" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576765246">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -92,7 +92,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:attributes>
         <jpa:table name="poblado"/>
     </jpa:entity>
-    <jpa:entity xre="false" compositePrimaryKeyClass="PermisoPK" abs="false" class="Permiso" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576780255">
+    <jpa:entity lbl-ref="_1470328576780257" xre="false" compositePrimaryKeyClass="PermisoPK" abs="false" class="Permiso" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576780255">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -224,7 +224,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:attributes>
         <jpa:table name="municipio"/>
     </jpa:entity>
-    <jpa:entity xre="false" compositePrimaryKeyClass="RolPK" abs="false" class="Rol" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576831298">
+    <jpa:entity xre="false" compositePrimaryKeyClass="RolPK" abs="false" class="Rol" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576831298">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -397,7 +397,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="proyecto"/>
     </jpa:entity>
-    <jpa:entity name="PlanPago" xre="false" compositePrimaryKeyClass="PlanPagoEntityPK" abs="false" class="PlanPagoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472591773752">
+    <jpa:entity name="PlanPago" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="PlanPagoEntityPK" abs="false" class="PlanPagoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472591773752">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -418,7 +418,7 @@ hash += (id != null ? id.hashCode() : 0);
                 <jpa:bv/>
                 <jpa:column name="pp_observacion" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
             </jpa:basic>
-            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1472592325680" visibile="true" name="negociacion" id="_147259236931975">
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1472592325680" visibile="true" name="negociacionEntity" id="_147259236931975">
                 <jpa:join-column name="NEGOCIACION_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
             </jpa:many-to-one>
         </jpa:attributes>
@@ -439,7 +439,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="plan_pago"/>
     </jpa:entity>
-    <jpa:entity name="Oferta" xre="false" compositePrimaryKeyClass="OfertaEntityPK" abs="false" class="OfertaEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472592050688">
+    <jpa:entity name="Oferta" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="OfertaEntityPK" abs="false" class="OfertaEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472592050688">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -485,7 +485,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="oferta"/>
     </jpa:entity>
-    <jpa:entity name="Negociacion" xre="false" compositePrimaryKeyClass="NegociacionEntityPK" abs="false" class="NegociacionEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472592325680">
+    <jpa:entity name="Negociacion" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="NegociacionEntityPK" abs="false" class="NegociacionEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472592325680">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -502,9 +502,27 @@ hash += (id != null ? id.hashCode() : 0);
                 <jpa:bv/>
                 <jpa:column name="neg_fecha" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
             </jpa:basic>
-            <jpa:one-to-one own="true" optional="true" primaryKey="false" connected-entity-id="_1472591379182" visibile="true" name="inmueble" id="_147447131196243"/>
-            <jpa:one-to-one own="true" optional="true" primaryKey="false" connected-entity-id="_1470328576795259" visibile="true" name="tercero" id="_147447133580344"/>
-            <jpa:one-to-one own="true" optional="true" primaryKey="false" connected-entity-id="_1472592050688" visibile="true" name="oferta" id="_147447250091445"/>
+            <jpa:basic attribute-type="Double" visibile="true" name="valorMetroCuadrado" id="_1475430265662123">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" visibile="true" name="valorSeparacion" id="_1475430858873124">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Integer" visibile="true" name="numeroCuotas" id="_147543224698462">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" visibile="true" name="valorIncremento" id="_147543225451763">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" visibile="true" name="valorTotal" id="_1475438494855125">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" visibile="true" name="porcentaje" id="_147562055077962">
+                <jpa:bv/>
+            </jpa:basic>
+            <jpa:one-to-one own="true" orp="false" optional="true" primaryKey="false" connected-entity-id="_1472591379182" visibile="true" name="inmueble" id="_147447131196243"/>
+            <jpa:one-to-one own="true" orp="false" optional="true" primaryKey="false" connected-entity-id="_1470328576795259" visibile="true" name="tercero" id="_147447133580344"/>
+            <jpa:one-to-one own="true" orp="false" optional="true" primaryKey="false" connected-entity-id="_1472592050688" visibile="true" name="oferta" id="_147447250091445"/>
         </jpa:attributes>
         <jpa:nq e="false" name="NegociacionEntity.findAll">
             <jpa:query>Select e from NegociacionEntity e</jpa:query>
@@ -518,9 +536,27 @@ hash += (id != null ? id.hashCode() : 0);
         <jpa:nq e="false" name="NegociacionEntity.findByFecha">
             <jpa:query>Select n from NegociacionEntity n where n.fecha=:fecha</jpa:query>
         </jpa:nq>
+        <jpa:nq e="false" name="NegociacionEntity.findByValorMetroCuadrado">
+            <jpa:query>Select n from NegociacionEntity n where n.valorMetroCuadrado=:valorMetroCuadrado</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="NegociacionEntity.findByValorSeparacion">
+            <jpa:query>Select n from NegociacionEntity n where n.valorSeparacion=:valorSeparacion</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="NegociacionEntity.findByNumeroCuotas">
+            <jpa:query>Select n from NegociacionEntity n where n.numeroCuotas=:numeroCuotas</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="NegociacionEntity.findByValorIncremento">
+            <jpa:query>Select n from NegociacionEntity n where n.valorIncremento=:valorIncremento</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="NegociacionEntity.findByValorTotal">
+            <jpa:query>Select n from NegociacionEntity n where n.valorTotal=:valorTotal</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="NegociacionEntity.findByPorcentaje">
+            <jpa:query>Select n from NegociacionEntity n where n.porcentaje=:porcentaje</jpa:query>
+        </jpa:nq>
         <jpa:table name="negociacion"/>
     </jpa:entity>
-    <jpa:entity name="Torre" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="TorreEntityPK" abs="false" class="TorreEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1475007647092">
+    <jpa:entity name="Torre" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="TorreEntityPK" abs="false" class="TorreEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1475007647092">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -634,7 +670,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="tipo_planta_detalle"/>
     </jpa:entity>
-    <jpa:entity name="Piso" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="PisoPK" abs="false" class="Piso" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1475167232682">
+    <jpa:entity name="Piso" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="PisoPK" abs="false" class="Piso" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1475167232682">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -673,7 +709,7 @@ hash += (id != null ? id.hashCode() : 0);
                 <Bounds x="-95.0" y="-95.0" width="199.0" height="75.0"/>
             </shape>
             <shape elementRef="_1470328576765246">
-                <Bounds x="1408.0" y="182.0" width="151.0" height="106.0"/>
+                <Bounds x="1383.0" y="96.0" width="151.0" height="106.0"/>
             </shape>
             <shape elementRef="_1470328576771250">
                 <Bounds x="-204.0" y="270.0" width="154.0" height="107.0"/>
@@ -706,13 +742,13 @@ hash += (id != null ? id.hashCode() : 0);
                 <Bounds x="445.0" y="-131.0" width="159.0" height="147.0"/>
             </shape>
             <shape elementRef="_1472591773752">
-                <Bounds x="614.0" y="348.0" width="163.0" height="147.0"/>
+                <Bounds x="614.0" y="348.0" width="168.0" height="147.0"/>
             </shape>
             <shape elementRef="_1472592050688">
-                <Bounds x="419.0" y="278.0" width="151.0" height="135.0"/>
+                <Bounds x="399.0" y="202.0" width="151.0" height="135.0"/>
             </shape>
             <shape elementRef="_1472592325680">
-                <Bounds x="1018.0" y="324.0" width="182.0" height="167.0"/>
+                <Bounds x="1111.0" y="61.0" width="182.0" height="287.0"/>
             </shape>
             <shape elementRef="_1475007647092">
                 <Bounds x="445.0" y="-347.0" width="134.0" height="127.0"/>

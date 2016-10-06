@@ -14,13 +14,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- * @author jdmp
+ * @author jkelsy
  */
 @Entity(name = "Inmueble")
 @Table(name = "inmueble")
-//@NamedQueries({
-//    @NamedQuery(name = "InmuebleEntity.findByProyecto", query = "Select i from InmuebleEntity i WHERE i.proyecto.id = :proyecto_id"),
-//    @NamedQuery(name = "InmuebleEntity.findByProyectoAndEstado", query = "Select i from InmuebleEntity i WHERE i.proyecto.id = :proyecto_id AND i.estadoInmueble.id = :estado_id")})
+@NamedQueries({
+    @NamedQuery(name = "Inmueble.findByProyecto", query = "Select i from Inmueble i WHERE i.proyecto.id = :proyecto_id"),
+    @NamedQuery(name = "Inmueble.findByProyectoAndEstado", query = "Select i from Inmueble i WHERE i.proyecto.id = :proyecto_id AND i.estadoInmueble.id = :estado_id")})
 public class InmuebleEntity extends BaseEntity implements Serializable {
 
     @Column(name = "inm_numero")
@@ -54,6 +54,10 @@ public class InmuebleEntity extends BaseEntity implements Serializable {
     @ManyToOne(targetEntity = EstadoInmuebleEntity.class)
     @JoinColumn(name = "ESTADOINMUEBLE_ID")
     private EstadoInmuebleEntity estadoInmueble;
+
+    @ManyToOne(targetEntity = Piso.class)
+    @JoinColumn(name = "PISO_ID")
+    private Piso piso;
 
     public String getNumero() {
         return this.numero;
@@ -117,6 +121,14 @@ public class InmuebleEntity extends BaseEntity implements Serializable {
 
     public void setEstadoInmueble(EstadoInmuebleEntity estadoInmueble) {
         this.estadoInmueble = estadoInmueble;
-    }   
+    }
+
+    public Piso getPiso() {
+        return this.piso;
+    }
+
+    public void setPiso(Piso piso) {
+        this.piso = piso;
+    }
 
 }

@@ -11,3 +11,11 @@ Creacion de inmuebles:
 
 
 Lugar de expedicion tercero.
+
+Al momento de la negociación cambiar el valor del inmueble
+
+Actualizacion del metro cuadrado por proyecto de los inmuebles que estén disponibles. 
+Aumentar por porcentaje los incrementos.
+
+Al crear la negociación no se deben debe buscarse si hay una negociacion actual?
+Debe el historial de negociaciones de un inmueble.
