@@ -14,7 +14,9 @@ import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,6 +27,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
+import org.primefaces.context.RequestContext;
 
 @Named("proyectoBean")
 @ViewScoped
@@ -193,6 +196,5 @@ public class ProyectoBean implements Serializable {
         this.proyecto = proyecto;
     }
 
-   
-
+    
 }

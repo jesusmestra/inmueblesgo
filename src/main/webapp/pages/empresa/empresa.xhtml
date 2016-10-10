@@ -326,7 +326,11 @@
                 </p:outputPanel>
             </p:dialog>            
 
-
+            <h:form>
+ <p:commandButton value="Select Car" icon="ui-icon-extlink" actionListener="#{terceroBean.chooseTercero}">
+       <p:ajax event="dialogReturn" listener="#{terceroBean.seleccionar}"  />  
+    </p:commandButton>
+            </h:form>
 
         </ui:define>
     </ui:composition>
