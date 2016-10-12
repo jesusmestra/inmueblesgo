@@ -52,7 +52,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="departamento"/>
     </jpa:entity>
-    <jpa:entity name="Usuario" cacheable="false" xre="false" compositePrimaryKeyClass="UsuarioEntityPK" abs="false" class="UsuarioEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576765246">
+    <jpa:entity name="Usuario" cacheable="false" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="UsuarioEntityPK" abs="false" class="UsuarioEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576765246">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -65,7 +65,22 @@ hash += (id != null ? id.hashCode() : 0);
                 <jpa:bv/>
                 <jpa:column name="usr_login" unique="true" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
             </jpa:basic>
+            <jpa:basic attribute-type="Boolean" visibile="true" name="activo" id="_1475788669636129">
+                <jpa:bv/>
+            </jpa:basic>
         </jpa:attributes>
+        <jpa:nq e="false" name="UsuarioEntity.findByActivo">
+            <jpa:query>Select u from UsuarioEntity u where u.activo=:activo</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="UsuarioEntity.findByExpira">
+            <jpa:query>Select u from UsuarioEntity u where u.expira=:expira</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="true" name="UsuarioEntity.esAdmin">
+            <jpa:query>Select e from Permiso e WHERE e.usuario = :usuario and e.rol.nombre = 'ADMIN'</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="true" name="UsuarioEntity.esVendedor">
+            <jpa:query>Select e from Permiso e WHERE e.usuario = :usuario and e.rol.nombre = 'VENDEDOR'</jpa:query>
+        </jpa:nq>
         <jpa:table name="sec_usuario"/>
     </jpa:entity>
     <jpa:entity name="Poblado" xre="false" compositePrimaryKeyClass="PobladoEntityPK" abs="false" class="PobladoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576771250">
@@ -87,7 +102,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:attributes>
         <jpa:table name="poblado"/>
     </jpa:entity>
-    <jpa:entity name="Permiso" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="PermisoEntityPK" abs="false" class="PermisoEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576780255">
+    <jpa:entity name="Permiso" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="PermisoEntityPK" abs="false" class="PermisoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576780255">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -698,13 +713,13 @@ hash += (id != null ? id.hashCode() : 0);
                 <Bounds x="-76.0" y="-115.0" width="199.0" height="75.0"/>
             </shape>
             <shape elementRef="_1470328576765246">
-                <Bounds x="-257.0" y="-422.0" width="151.0" height="75.0"/>
+                <Bounds x="-257.0" y="-406.0" width="151.0" height="95.0"/>
             </shape>
             <shape elementRef="_1470328576771250">
                 <Bounds x="-204.0" y="270.0" width="154.0" height="107.0"/>
             </shape>
             <shape elementRef="_1470328576780255">
-                <Bounds x="-229.0" y="-253.0" width="153.0" height="75.0"/>
+                <Bounds x="-229.0" y="-273.0" width="153.0" height="75.0"/>
             </shape>
             <shape elementRef="_1470328576795259">
                 <Bounds x="305.0" y="560.0" width="164.0" height="227.0"/>
