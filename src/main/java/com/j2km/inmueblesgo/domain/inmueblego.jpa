@@ -105,7 +105,6 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:attributes>
         <jpa:table name="poblado"/>
     </jpa:entity>
-    <jpa:entity name="Permiso" xre="false" compositePrimaryKeyClass="PermisoEntityPK" abs="false" class="PermisoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576780255">
     <jpa:entity name="Permiso" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="PermisoEntityPK" abs="false" class="PermisoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576780255">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
