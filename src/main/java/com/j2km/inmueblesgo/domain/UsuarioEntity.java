@@ -7,6 +7,8 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -14,6 +16,9 @@ import javax.persistence.Table;
  */
 @Entity(name = "Usuario")
 @Table(name = "sec_usuario")
+@NamedQueries({
+    @NamedQuery(name = "UsuarioEntity.esAdmin", query = "Select e from Permiso e WHERE e.usuario = :usuario and e.rol.nombre = 'ADMIN'"),
+    @NamedQuery(name = "UsuarioEntity.esVendedor", query = "Select e from Permiso e WHERE e.usuario = :usuario and e.rol.nombre = 'VENDEDOR'")})
 public class UsuarioEntity extends BaseEntity implements Serializable {
 
     @Column(name = "usr_password")
@@ -23,6 +28,9 @@ public class UsuarioEntity extends BaseEntity implements Serializable {
     @Column(name = "usr_login", unique = true)
     @Basic
     private String login;
+
+    @Basic
+    private Boolean activo;
 
     public String getPassword() {
         return this.password;
@@ -38,6 +46,14 @@ public class UsuarioEntity extends BaseEntity implements Serializable {
 
     public void setLogin(String login) {
         this.login = login;
+    }
+
+    public Boolean getActivo() {
+        return this.activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
     }
 
 }
