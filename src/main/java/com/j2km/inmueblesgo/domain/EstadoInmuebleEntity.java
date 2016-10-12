@@ -20,6 +20,7 @@ public class EstadoInmuebleEntity extends BaseEntity implements Serializable {
     @Basic
     private String nombre;
 
+    @Column(name = "ei_codigo")
     @Basic
     private String codigo;
 

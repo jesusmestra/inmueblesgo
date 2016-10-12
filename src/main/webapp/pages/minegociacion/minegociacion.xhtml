@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="/templates/layout.xhtml">
+
+        <ui:define name="content">
+
+            <f:metadata>
+                <f:viewParam name="id" value="#{miNegociacionBean.inmueble}" 
+                             converter="#{genericEntityConverter}" />              
+                <f:viewAction action="#{miNegociacionBean.onLoad}"  />
+            </f:metadata>
+
+            <h:form id="viewInmuebleForm" >
+                <p:outputPanel>
+                    <p:outputPanel id="inmuebleViewPanel" styleClass="ui-fluid">
+
+                        <h:panelGrid columns="3" styleClass="dialog" columnClasses="col1,col2, col3" >
+                            <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2">
+
+                                <h:outputText value="#{messages.field_label_inmueble_proyecto}:" />
+                                <h:outputText value="#{miNegociacionBean.inmueble.proyecto.nombre}" />
+
+
+                                <h:outputText value="#{messages.field_label_inmueble_estadoInmueble}:" />
+                                <h:outputText value="#{miNegociacionBean.inmueble.estadoInmueble.nombre}" />
+
+                                <h:outputText value="#{messages.field_label_inmueble_numero}:" />
+                                <h:outputText value="#{miNegociacionBean.inmueble.numero}" />
+
+                                <h:outputText value="#{messages.field_label_inmueble_area}:" />
+                                <h:outputText value="#{miNegociacionBean.inmueble.area}" >
+                                    <f:convertNumber currencySymbol="" groupingUsed="true"
+                                                     maxFractionDigits="2" type="currency" />
+                                </h:outputText>
+
+                                <h:outputText value="Porcentaje:" />
+                                <p:inputText value="#{miNegociacionBean.negociacion.porcentaje}" >
+                                    <f:convertNumber groupingUsed="true"
+                                                     maxFractionDigits="2" type="currency" />
+                                    <p:ajax event="keyup" update="pnlGrd_numOfLbl valorTotalEditInput" 
+                                            listener="#{miNegociacionBean.onCambioOfetra}" />
+
+                                </p:inputText>
+
+                                <h:outputText value="Número Cuotas:" />
+                                <p:inputText value="#{miNegociacionBean.negociacion.numeroCuotas}" >
+                                    <f:convertNumber  groupingUsed="true"
+                                                      maxFractionDigits="2" type="currency" />
+                                    <p:ajax event="keyup" update="pnlGrd_numOfLbl valorTotalEditInput" 
+                                            listener="#{miNegociacionBean.onCambioOfetra}" />
+
+                                </p:inputText>
+
+                                <h:outputText value="#{messages.field_label_inmueble_valorMetroCuadrado}:" />
+                                <p:inputText value="#{miNegociacionBean.negociacion.valorMetroCuadrado}" >
+                                    <f:convertNumber  groupingUsed="true"
+                                                      maxFractionDigits="2" type="currency" />                                
+                                    <p:ajax event="keyup" update="pnlGrd_numOfLbl valorTotalEditInput" 
+                                            listener="#{miNegociacionBean.onCambioOfetra}" />
+                                </p:inputText>
+
+                                <h:outputText value="#{messages.field_label_inmueble_incremento}:" />
+                                <p:inputText value="#{miNegociacionBean.negociacion.valorIncremento}" >
+                                    <f:convertNumber groupingUsed="true"
+                                                     maxFractionDigits="2" type="currency" />
+                                    <p:ajax event="keyup" update="pnlGrd_numOfLbl valorTotalEditInput" 
+                                            listener="#{miNegociacionBean.onCambioOfetra}" />
+                                </p:inputText>
+
+                                <h:outputText value="#{messages.field_label_inmueble_valorSeparacion}:" />
+                                <p:inputText value="#{miNegociacionBean.negociacion.valorSeparacion}" >
+                                    <f:convertNumber  groupingUsed="true"
+                                                      maxFractionDigits="2" type="currency" />
+                                    <p:ajax event="keyup" update="pnlGrd_numOfLbl valorTotalEditInput" 
+                                            listener="#{miNegociacionBean.onCambioOfetra}" />
+                                </p:inputText>
+
+                                <h:outputText value="#{messages.field_label_inmueble_valorTotal}:" />
+
+                                <h:outputText value="#{miNegociacionBean.negociacion.valorTotal}" id="valorTotalEditInput">
+                                    <f:convertNumber groupingUsed="true"
+                                                     maxFractionDigits="2" type="currency" />
+                                </h:outputText>                                        
+
+                                <h:outputText  value="#{messages.field_label_negociacion_fecha}:" />
+                                <p:calendar value="#{miNegociacionBean.negociacion.fecha}" id="fechaEditCalendar" 
+                                            label="#{messages.field_label_negociacion_fecha}"  >
+
+
+                                    <p:ajax event="dateSelect" listener="#{miNegociacionBean.onCambioFecha }"
+                                            update="pnlGrd_numOfLbl"
+                                            />
+
+                                </p:calendar>
+                            </h:panelGrid>
+                            <h:panelGrid columns="2" width="400" styleClass="dialog" columnClasses="col1,col2">
+                                <div style="width: 100px;">
+
+                                </div>
+                            </h:panelGrid>
+                            <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2" rendered="#{miNegociacionBean.puedeAprobar}">
+
+                                <h:outputText value="APROBACION DE LA NEGOCIACION" />
+                                <h:outputText value="#{miNegociacionBean.puedeAprobar}" />
+
+                                <h:outputText  value="#{messages.field_label_negociacion_aprobacion}:" />
+                                <p:selectOneMenu id="console" value="#{miNegociacionBean.negociacion.aprobado}" style="width:125px">
+                                    <f:selectItem itemLabel="Si" itemValue="#{true}" />
+                                    <f:selectItem itemLabel="No" itemValue="#{false}" />
+                                </p:selectOneMenu>
+
+
+                                <h:outputText  value="#{messages.field_label_negociacion_fechaRevision}:" />
+                                <p:calendar value="#{miNegociacionBean.negociacion.fechaRevision}" id="fechaRevisionEditCalendar" 
+                                            >
+                                </p:calendar>
+                            </h:panelGrid>
+                        </h:panelGrid>
+
+
+                        <p:dataTable id="dtTerceroNegociacion" rowIndexVar="i"   
+                                     var="negociacionTercero" value="#{miNegociacionBean.allListNegociacionTercero}">
+                            <p:column  headerText="#{messages.field_label_tercero_identificacion}">
+                                <h:outputText value="#{negociacionTercero.tercero.identificacion}" />
+                            </p:column>
+
+                            <p:column  headerText="#{messages.field_label_tercero_apellido1}">
+                                <h:outputText value="#{negociacionTercero.tercero.apellido1}" />
+                            </p:column>
+                            <p:column  headerText="#{messages.field_label_tercero_apellido2}">
+                                <h:outputText value="#{negociacionTercero.tercero.apellido2}" />
+                            </p:column>
+                            <p:column  headerText="#{messages.field_label_tercero_nombres}">
+                                <h:outputText value="#{negociacionTercero.tercero.nombres}" />
+                            </p:column>
+
+                        </p:dataTable>
+
+
+
+                        <p:commandButton icon="ui-icon-search" title="#{messages.label_create}" value="#{messages.label_tercero_caption}" 
+                                         actionListener="#{terceroBean.chooseTercero}">
+                            <p:ajax event="dialogReturn" listener="#{miNegociacionBean.seleccionarTercero}"  
+                                    update="dtTerceroNegociacion"
+                                    />  
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{miNegociacionBean.onGrabarPlanPago}" 
+                                         value="Grabar" update="growl pnlGrd_numOfLbl viewInmuebleForm"/>
+
+                        <p:commandButton actionListener="#{miNegociacionBean.onAgregarFilaPago}" 
+                                         value="Agregar fila" update="growl pnlGrd_numOfLbl" />
+
+                        <p:growl id="growl" showDetail="true" sticky="true" />  
+                        <p:dataTable id="pnlGrd_numOfLbl" rowIndexVar="i"   var="planPago" value="#{miNegociacionBean.allPlanPagosListNegociacion}">
+                            <p:column headerText="#{messages.field_label_plan_pago_numero_cuota}">
+                                <p:inputText value="#{planPago.numeroCuota}" id="numeroCuotaEditInput_#{i}" 
+                                             label="#{field_label_plan_pago_numero_cuota}" />
+                            </p:column>
+                            <p:column headerText="Fecha">
+                                <p:calendar value="#{planPago.fechaPactada}" id="fechaPactadaEditInput_#{i}" 
+                                            label="#{messages.field_label_plan_pago_fecha_pactada}"  />
+                            </p:column>
+                            <p:column headerText="#{messages.field_label_plan_pago_valor}">
+                                <p:inputText value="#{planPago.valorPactado}" id="valorEditInput_#{i}" 
+                                             label="#{messages.field_label_plan_pago_valor}" >
+                                    <f:convertNumber  groupingUsed="true"
+                                                      maxFractionDigits="2" type="currency" />
+
+                                </p:inputText>
+                            </p:column>
+                            <p:column headerText="Observacion">
+                                <p:inputText value="#{planPago.observacion}" id="observacionEditInput_#{i}" 
+                                             label="#{messages.field_label_negociacion_nombre}" />
+                            </p:column>
+
+
+                        </p:dataTable>
+
+                    </p:outputPanel>
+                </p:outputPanel>
+
+            </h:form>
+
+
+
+
+        </ui:define>
+
+    </ui:composition>
+</html>

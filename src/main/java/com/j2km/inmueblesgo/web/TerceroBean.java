@@ -185,14 +185,8 @@ public class TerceroBean implements Serializable {
         this.allTercerosBuscar = terceroService.buscarTercerosFiltro(terceroBuscar);
     }
 
-    public void seleccionar(SelectEvent event) {
-        System.err.println("Llegando a selccionar");
-        TerceroEntity terceroS = (TerceroEntity) event.getObject();
-        System.out.println("Tercero seleccionado....." + terceroS);
-    }
 
     public void selectCarFromDialog(TerceroEntity tercero) {
-        System.err.println("Cerrando dialogo");
         RequestContext.getCurrentInstance().closeDialog(tercero);
     }
 
@@ -202,7 +196,6 @@ public class TerceroBean implements Serializable {
 
     public void chooseTercero() {
 
-        System.out.println("Selecionando tercero");
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("modal", true);
         options.put("width", "80%");

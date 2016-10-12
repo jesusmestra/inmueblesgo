@@ -7,7 +7,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
@@ -15,7 +14,6 @@ import javax.persistence.Table;
  */
 @Entity(name = "Departamento")
 @Table(name = "departamento")
-@NamedQuery(name = "DepartamentoEntity.findByCodigo", query = "Select e from Departamento e WHERE e.codigo = :codigo")
 public class DepartamentoEntity extends BaseEntity implements Serializable {
 
     @Column(name = "dpto_codigo")

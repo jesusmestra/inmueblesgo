@@ -5,19 +5,22 @@ package com.j2km.inmueblesgo.domain;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * @author jkelsy
+ * @author jdmp
  */
 @Entity(name = "TipoPlanta")
 @Table(name = "tipo_planta")
 public class TipoPlantaEntity extends BaseEntity implements Serializable {
 
+    @Column(name = "tipo_planta_descripcion")
     @Basic
     private String descripcion;
 
+    @Column(name = "tipo_planta_numero_inmuebles")
     @Basic
     private Integer numeroInmuebles;
 

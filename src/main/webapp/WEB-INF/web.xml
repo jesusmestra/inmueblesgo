@@ -108,7 +108,7 @@
         <extension>ttf</extension>
         <mime-type>application/font-sfnt</mime-type>
     </mime-mapping>
-    <!--
+    <!-- -->
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>all</web-resource-name>
@@ -119,6 +119,7 @@
         </web-resource-collection>
         <auth-constraint>
             <role-name>ADMIN</role-name>
+            <role-name>VENDEDOR</role-name>
         </auth-constraint>
     </security-constraint>
     <login-config>
@@ -132,5 +133,5 @@
     <security-role>
         <role-name>ADMIN</role-name>
     </security-role>
-    -->
+   <!-- -->
 </web-app>

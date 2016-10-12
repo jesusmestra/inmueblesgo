@@ -6,13 +6,16 @@ package com.j2km.inmueblesgo.domain;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
- * @author jkelsy
+ * @author jdmp
  */
 @Entity(name = "Negociacion")
 @Table(name = "negociacion")
@@ -30,31 +33,52 @@ public class NegociacionEntity extends BaseEntity implements Serializable {
     @Basic
     private Date fecha;
 
+    @Column(name = "neg_valor_metro_cuadrado")
     @Basic
     private Double valorMetroCuadrado;
 
+    @Column(name = "neg_valor_separacion")
     @Basic
     private Double valorSeparacion;
 
+    @Column(name = "neg_numero_cuotas")
     @Basic
     private Integer numeroCuotas;
 
+    @Column(name = "neg_valor_incremento")
     @Basic
     private Double valorIncremento;
 
+    @Column(name = "neg_valor_total")
     @Basic
     private Double valorTotal;
 
+    @Column(name = "neg_porcentaje")
     @Basic
     private Double porcentaje;
 
-    @OneToOne(targetEntity = InmuebleEntity.class)
+    @Column(name = "neg_aprobado")
+    @Basic
+    private Boolean aprobado;
+
+    @Column(name = "neg_fecha_revision")
+    @Basic
+    private Date fechaRevision;
+
+    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = UsuarioEntity.class)
+    @JoinColumn(name = "VENDEDOR_ID")
+    private UsuarioEntity vendedor;
+
+    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = UsuarioEntity.class)
+    @JoinColumn(name = "SUPERVISOR_ID")
+    private UsuarioEntity supervisor;
+
+    @OneToOne(cascade = {CascadeType.ALL}, targetEntity = InmuebleEntity.class)
+    @JoinColumn(name = "INMUEBLE_ID")
     private InmuebleEntity inmueble;
 
-    @OneToOne(targetEntity = TerceroEntity.class)
-    private TerceroEntity tercero;
-
-    @OneToOne(targetEntity = OfertaEntity.class)
+    @OneToOne(cascade = {CascadeType.ALL}, targetEntity = OfertaEntity.class)
+    @JoinColumn(name = "OFERTA_ID")
     private OfertaEntity oferta;
 
     public String getCodigo() {
@@ -129,20 +153,44 @@ public class NegociacionEntity extends BaseEntity implements Serializable {
         this.porcentaje = porcentaje;
     }
 
+    public Boolean getAprobado() {
+        return this.aprobado;
+    }
+
+    public void setAprobado(Boolean aprobado) {
+        this.aprobado = aprobado;
+    }
+
+    public Date getFechaRevision() {
+        return this.fechaRevision;
+    }
+
+    public void setFechaRevision(Date fechaRevision) {
+        this.fechaRevision = fechaRevision;
+    }
+
+    public UsuarioEntity getVendedor() {
+        return this.vendedor;
+    }
+
+    public void setVendedor(UsuarioEntity vendedor) {
+        this.vendedor = vendedor;
+    }
+
+    public UsuarioEntity getSupervisor() {
+        return this.supervisor;
+    }
+
+    public void setSupervisor(UsuarioEntity supervisor) {
+        this.supervisor = supervisor;
+    }
+
     public InmuebleEntity getInmueble() {
         return this.inmueble;
     }
 
     public void setInmueble(InmuebleEntity inmueble) {
         this.inmueble = inmueble;
-    }
-
-    public TerceroEntity getTercero() {
-        return this.tercero;
-    }
-
-    public void setTercero(TerceroEntity tercero) {
-        this.tercero = tercero;
     }
 
     public OfertaEntity getOferta() {

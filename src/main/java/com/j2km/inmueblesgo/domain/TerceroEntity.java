@@ -5,6 +5,7 @@ package com.j2km.inmueblesgo.domain;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -48,11 +49,11 @@ public class TerceroEntity extends BaseEntity implements Serializable {
     @Basic
     private String nombres;
 
-    @ManyToOne(targetEntity = TipoIdentificacionEntity.class)
+    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = TipoIdentificacionEntity.class)
     @JoinColumn(name = "TIPO_IDENTIFICACION_ID", referencedColumnName = "ID")
     private TipoIdentificacionEntity tipoIdentificacion;
 
-    @ManyToOne(targetEntity = PobladoEntity.class)
+    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = PobladoEntity.class)
     @JoinColumn(name = "LUGAR_EXPEDICION_ID")
     private PobladoEntity lugarExpedicion;
 

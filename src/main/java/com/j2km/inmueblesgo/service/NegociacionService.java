@@ -1,9 +1,10 @@
 package com.j2km.inmueblesgo.service;
 
-
 import com.j2km.inmueblesgo.domain.InmuebleEntity;
 import com.j2km.inmueblesgo.domain.NegociacionEntity;
+import com.j2km.inmueblesgo.domain.NegociacionTerceroEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
+import com.j2km.inmueblesgo.domain.TerceroEntity;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -41,10 +42,9 @@ public class NegociacionService extends BaseService<NegociacionEntity> implement
 
         /* This is called before a Negociacion is deleted. Place here all the
            steps to cut dependencies to other entities */
-        
         //  SI SE VA A ELIMINAR MUNICIPIOS Y POBLADOS EN CASCADA this.cutAllTipoIdentificacionTercerosAssignments(tipoIdentificacion);
     }
-    
+
     /*
     SI SE VA A ELIMINAR MUNICIPIOS Y POBLADOS EN CASCADA    
     // Remove all assignments from all tercero a tipoIdentificacion. Called before delete a tipoIdentificacion.
@@ -55,10 +55,8 @@ public class NegociacionService extends BaseService<NegociacionEntity> implement
                 .setParameter("p", tipoIdentificacion).executeUpdate();
     }
 
-*/
-    
-
-    /* PARA LAS BUSQUEDAS YA SEA POR MUNICIPIO
+     */
+ /* PARA LAS BUSQUEDAS YA SEA POR MUNICIPIO
     
     @Transactional
     public List<NegociacionEntity> findAvailableNegociacions(TipoIdentificacionEntity tipoIdentificacion) {
@@ -70,11 +68,9 @@ public class NegociacionService extends BaseService<NegociacionEntity> implement
         return entityManager.createQuery("SELECT o FROM Negociacion o WHERE o.tipoIdentificacion = :tipoIdentificacion", NegociacionEntity.class).setParameter("tipoIdentificacion", tipoIdentificacion).getResultList();
     }
 
-    */
-
+     */
     @Transactional
     public NegociacionEntity findByInmueble(InmuebleEntity inmueble) {
-        System.out.println("Buscando el inmueble....");
         List<NegociacionEntity> lista = entityManager.createQuery("SELECT o FROM Negociacion o WHERE o.inmueble = :inmueble", NegociacionEntity.class).setParameter("inmueble", inmueble).getResultList();
         if (lista == null || lista.isEmpty()) {
             return null;
@@ -82,9 +78,7 @@ public class NegociacionService extends BaseService<NegociacionEntity> implement
 
         return lista.get(0);
     }
-    
-    
-    
+
     // This is the central method called by the DataTable
     @Override
     @Transactional
@@ -96,7 +90,6 @@ public class NegociacionService extends BaseService<NegociacionEntity> implement
 
         // Can be optimized: We need this join only when tipoIdentificacion filter is set
         //query.append(" LEFT OUTER JOIN o.tipoIdentificacion tipoIdentificacion");
-
         String nextConnective = " WHERE";
 
         Map<String, Object> queryParameters = new HashMap<>();
@@ -146,5 +139,7 @@ public class NegociacionService extends BaseService<NegociacionEntity> implement
 
         return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
+
+    
 
 }

@@ -21,6 +21,8 @@
     <class>com.j2km.inmueblesgo.domain.UsuarioEntity</class>
     <class>com.j2km.inmueblesgo.domain.PermisoEntity</class>
     <class>com.j2km.inmueblesgo.domain.RolEntity</class>
+    <class>com.j2km.inmueblesgo.domain.NegociacionTerceroEntity</class>
+    <class>com.j2km.inmueblesgo.domain.Piso</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

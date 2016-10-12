@@ -5,6 +5,7 @@ package com.j2km.inmueblesgo.domain;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -14,13 +15,13 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- * @author jkelsy
+ * @author jdmp
  */
 @Entity(name = "Inmueble")
 @Table(name = "inmueble")
 @NamedQueries({
-    @NamedQuery(name = "Inmueble.findByProyecto", query = "Select i from Inmueble i WHERE i.proyecto.id = :proyecto_id"),
-    @NamedQuery(name = "Inmueble.findByProyectoAndEstado", query = "Select i from Inmueble i WHERE i.proyecto.id = :proyecto_id AND i.estadoInmueble.id = :estado_id")})
+    @NamedQuery(name = "InmuebleEntity.findByProyecto", query = "Select i from Inmueble i WHERE i.proyecto.id = :proyecto_id"),
+    @NamedQuery(name = "InmuebleEntity.findByProyectoAndEstado", query = "Select i from Inmueble i WHERE i.proyecto.id = :proyecto_id AND i.estadoInmueble.id = :estado_id")})
 public class InmuebleEntity extends BaseEntity implements Serializable {
 
     @Column(name = "inm_numero")
@@ -47,15 +48,15 @@ public class InmuebleEntity extends BaseEntity implements Serializable {
     @Basic
     private Double valorTotal;
 
-    @ManyToOne(targetEntity = ProyectoEntity.class)
+    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = ProyectoEntity.class)
     @JoinColumn(name = "PROYECTO_ID")
     private ProyectoEntity proyecto;
 
-    @ManyToOne(targetEntity = EstadoInmuebleEntity.class)
-    @JoinColumn(name = "ESTADOINMUEBLE_ID")
+    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = EstadoInmuebleEntity.class)
+    @JoinColumn(name = "ESTADO_INMUEBLE_ID")
     private EstadoInmuebleEntity estadoInmueble;
 
-    @ManyToOne(targetEntity = Piso.class)
+    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = Piso.class)
     @JoinColumn(name = "PISO_ID")
     private Piso piso;
 

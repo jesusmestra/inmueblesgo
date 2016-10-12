@@ -6,6 +6,7 @@ package com.j2km.inmueblesgo.domain;
 import java.io.Serializable;
 import java.sql.Blob;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity(name = "Empresa")
 @Table(name = "empresa")
-//@NamedQuery(name = "EmpresaEntity.findByNit", query = "Select e from EmpresaEntity e WHERE e.nit =:nit")
+@NamedQuery(name = "EmpresaEntity.findByNit", query = "Select e from Empresa e WHERE e.nit =:nit")
 public class EmpresaEntity extends BaseEntity implements Serializable {
 
     @Column(name = "emp_direccion")
@@ -57,11 +58,11 @@ public class EmpresaEntity extends BaseEntity implements Serializable {
     @Basic
     private String email;
 
-    @ManyToOne(targetEntity = TerceroEntity.class)
+    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = TerceroEntity.class)
     @JoinColumn(name = "REPRESENTANTE_ID")
     private TerceroEntity representante;
 
-    @ManyToOne(targetEntity = PobladoEntity.class)
+    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = PobladoEntity.class)
     @JoinColumn(name = "POBLADO_ID")
     private PobladoEntity poblado;
 

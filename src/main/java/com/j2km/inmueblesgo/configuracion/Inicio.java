@@ -71,14 +71,6 @@ public class Inicio {
             rolService.save(rol);
         }
         
-        RolEntity rolVendedor = rolService.findByNombre("VENDEDOR");
-
-        if (rolVendedor == null) {
-            rolVendedor = new RolEntity();
-            rolVendedor.setNombre("VENDEDOR");
-            rolService.save(rolVendedor);
-        }
-
         UsuarioEntity usuario = usuarioService.findByLogin("admin");
 
         if (usuario == null) {
@@ -96,6 +88,35 @@ public class Inicio {
             permiso.setRol(rol);
             permisoService.save(permiso);
         }
+        
+        
+         RolEntity rolVendedor = rolService.findByNombre("VENDEDOR");
+
+        if (rolVendedor == null) {
+            rolVendedor = new RolEntity();
+            rolVendedor.setNombre("VENDEDOR");
+            rolService.save(rolVendedor);
+        }
+        
+        UsuarioEntity usuarioVendedor = usuarioService.findByLogin("vendedor");
+
+        if (usuarioVendedor == null) {
+            usuarioVendedor = new UsuarioEntity();
+            usuarioVendedor.setLogin("vendedor");
+            usuarioVendedor.setPassword("vendedor");
+            usuarioService.save(usuarioVendedor);
+        }
+
+        PermisoEntity permisoVendedor = permisoService.findByUsuarioAndRol(usuarioVendedor, rolVendedor);
+
+        if (permisoVendedor == null) {
+            permisoVendedor = new PermisoEntity();
+            permisoVendedor.setUsuario(usuarioVendedor);
+            permisoVendedor.setRol(rolVendedor);
+            permisoService.save(permisoVendedor);
+        }
+        
+        
 
         EstadoInmuebleEntity estadoInmueble = estadoInmuebleService.findByCodigo("01");
         

@@ -22,6 +22,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
+import org.primefaces.event.SelectEvent;
 
 @Named("empresaBean")
 @ViewScoped
@@ -201,6 +202,11 @@ public class EmpresaBean implements Serializable {
     public void updateSelectRepresentante(TerceroEntity tercero) {
         this.empresa.setRepresentante(tercero);
     }
+    
+    public void seleccionar(SelectEvent event) {
+        this.empresa.setRepresentante((TerceroEntity) event.getObject());
+    }
+
     
     
 }

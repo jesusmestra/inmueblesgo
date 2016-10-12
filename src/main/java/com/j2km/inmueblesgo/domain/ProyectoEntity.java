@@ -5,6 +5,7 @@ package com.j2km.inmueblesgo.domain;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -28,15 +29,15 @@ public class ProyectoEntity extends BaseEntity implements Serializable {
     @Basic
     private String codigo;
 
-    @ManyToOne(targetEntity = EmpresaEntity.class)
+    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = EmpresaEntity.class)
     @JoinColumn(name = "EMPRESA_ID")
     private EmpresaEntity empresa;
 
-    @ManyToOne(targetEntity = OfertaEntity.class)
+    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = OfertaEntity.class)
     @JoinColumn(name = "OFERTA_ID")
     private OfertaEntity oferta;
 
-    @ManyToOne(targetEntity = PobladoEntity.class)
+    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = PobladoEntity.class)
     @JoinColumn(name = "POBLADO_ID")
     private PobladoEntity poblado;
 
