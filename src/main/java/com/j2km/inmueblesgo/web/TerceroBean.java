@@ -8,18 +8,25 @@ import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
+import javax.persistence.TypedQuery;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 @Named("terceroBean")
 @ViewScoped
@@ -162,21 +169,49 @@ public class TerceroBean implements Serializable {
         this.terceroBuscar = terceroBuscar;
     }
 
-   
     public void onBuscarTercero() {
         resetBusqueda();
+        terceroBuscar = new TerceroEntity();
+
     }
-    
+
     public void resetBusqueda() {
         this.terceroBuscar = null;
         this.allTercerosBuscar = null;
     }
-    
-    public void buscarTercero(){
+
+    public void buscarTercero() {
         System.out.println("Enter presionado");
-        //this.allTercerosBuscar = terceroService.findAllTerceroEntities();
-        
+        this.allTercerosBuscar = terceroService.buscarTercerosFiltro(terceroBuscar);
     }
-    
-    
+
+    public void seleccionar(SelectEvent event) {
+        System.err.println("Llegando a selccionar");
+        TerceroEntity terceroS = (TerceroEntity) event.getObject();
+        System.out.println("Tercero seleccionado....." + terceroS);
+    }
+
+    public void selectCarFromDialog(TerceroEntity tercero) {
+        System.err.println("Cerrando dialogo");
+        RequestContext.getCurrentInstance().closeDialog(tercero);
+    }
+
+    public void resetBuscar() {
+        terceroBuscar = new TerceroEntity();
+    }
+
+    public void chooseTercero() {
+
+        System.out.println("Selecionando tercero");
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("modal", true);
+        options.put("width", "80%");
+        options.put("height", 400);
+        options.put("contentWidth", "100%");
+        options.put("contentHeight", "100%");
+        options.put("headerElement", "customheader");
+        RequestContext.getCurrentInstance().openDialog("/pages/tercero/terceroBuscarInclude", options, null);
+        System.out.println("Terminado selec");
+    }
+
 }

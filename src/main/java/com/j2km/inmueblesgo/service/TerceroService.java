@@ -4,6 +4,8 @@ import com.j2km.inmueblesgo.domain.TerceroEntity;
 import com.j2km.inmueblesgo.domain.TipoIdentificacionEntity;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -141,4 +143,103 @@ public class TerceroService extends BaseService<TerceroEntity> implements Serial
         return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
+    @Transactional
+    public List<TerceroEntity> findEntidadesFiltro(Map<String, Object> filters) {
+        Map<String, Object> queryParameters = new HashMap<>();
+        return null;
+    }
+
+    public List<TerceroEntity> buscarTercerosFiltro(TerceroEntity terceroBuscar) {
+        System.out.println("UUUUUUUUUUUUU..." + terceroBuscar.getNombres());
+
+        List<String> rangoFiltro = new ArrayList<String>();
+
+        rangoFiltro.add("identificacion");
+        rangoFiltro.add("nombres");
+        rangoFiltro.add("apellido1");
+        rangoFiltro.add("apellido2");
+
+        StringBuilder query = new StringBuilder();
+
+        query.append("SELECT o FROM Tercero o");
+        String nextConnective = " WHERE";
+        Map<String, Object> queryParameters = new HashMap<>();
+        //String filterProperty = "identificacion";
+
+        if (true) {
+            nextConnective += " ( ";
+            //for (String filterProperty : terceroBuscar.getClass().getDeclaredFields()) {
+
+            for (String filterProperty : rangoFiltro) {
+                System.out.println("Entro al FOR...." + rangoFiltro);
+                //for (int i = 0; i < 1; i++) {
+/*
+                if (null == null) {
+                    continue;
+                }
+                 */
+
+                switch (filterProperty) {
+
+                    case "identificacion":
+                        if (terceroBuscar.getIdentificacion() == null) {
+                            continue;
+                        }
+
+                        if (terceroBuscar.getIdentificacion() != null) {
+                            query.append(nextConnective).append(" o.identificacion LIKE :identificacion");
+                            queryParameters.put("identificacion", "%" + terceroBuscar.getIdentificacion() + "%");
+                        }
+                        break;
+                    case "nombres":
+                        if (terceroBuscar.getNombres() == null) {
+                            continue;
+                        }
+
+                        if (terceroBuscar.getNombres() != null) {
+                            query.append(nextConnective).append(" o.nombres LIKE :nombres");
+                            queryParameters.put("nombres", "%" + terceroBuscar.getNombres() + "%");
+                        }
+                        break;
+
+                    case "apellido1":
+                        if (terceroBuscar.getApellido1() == null) {
+                            continue;
+                        }
+
+                        if (terceroBuscar.getApellido1() != null) {
+                            query.append(nextConnective).append(" o.apellido1 LIKE :apellido1");
+                            queryParameters.put("apellido1", "%" + terceroBuscar.getApellido1() + "%");
+                        }
+                        break;
+                    case "apellido2":
+                        if (terceroBuscar.getApellido2() == null) {
+                            continue;
+                        }
+
+                        if (terceroBuscar.getApellido2() != null) {
+                            query.append(nextConnective).append(" o.apellido2 LIKE :apellido2");
+                            queryParameters.put("apellido2", "%" + terceroBuscar.getApellido2() + "%");
+                        }
+                        break;
+
+                }
+                nextConnective = " AND";
+
+                query.append(" ) ");
+                nextConnective = " AND";
+
+            }
+
+        }
+        TypedQuery<TerceroEntity> q = this.entityManager.createQuery(query.toString(), this.getType());
+
+        for (String queryParameter : queryParameters.keySet()) {
+            q.setParameter(queryParameter, queryParameters.get(queryParameter));
+        }
+
+        //return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+        return q.getResultList();
+
+    }
 }

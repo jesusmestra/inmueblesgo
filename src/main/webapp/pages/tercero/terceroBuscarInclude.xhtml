@@ -6,10 +6,19 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:o="http://omnifaces.org/ui">
-
+    <h:head>
+        
+    </h:head>
+    <h:body>
+    <h:outputStylesheet library="css" name="standard.css" />
+    <f:metadata>
+                           
+        <f:viewAction action="#{terceroBean.resetBuscar}" />
+            </f:metadata>
+    <h:form>
     <p:outputPanel styleClass="ui-fluid">
 
-        <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
+        <p:panelGrid columns="9" columnClasses="ui-grid-col-4, ui-grid-col-6, ui-grid-col-2, ui-grid-col-4, ui-grid-col-6, ui-grid-col-2, ui-grid-col-4, ui-grid-col-6, ui-grid-col-2" layout="grid" >
 
 
                       
@@ -20,28 +29,70 @@
                                                       buscarTercero(); 
                                                      return false;
                                                  }" >
+                
+                
                         <p:remoteCommand name="buscarTercero" 
                                          actionListener="#{terceroBean.buscarTercero}" 
-                                         update="identificacionEditInput"/>
+                                         update="terceroTable"/>
                          
                          
-                </p:inputText>                          
-                         
+                </p:inputText> 
+            <p:message for="identificacionEditInput" display="icon" />
+           
+            
+             <p:message for="identificacionEditInput" display="icon" /><p:message for="identificacionEditInput" display="icon" />
+            <p:message for="identificacionEditInput" display="icon" />
+            
+            
+           <p:message for="identificacionEditInput" display="icon" /><p:message for="identificacionEditInput" display="icon" />
             <p:message for="identificacionEditInput" display="icon" />
 
             <h:outputLabel value="#{messages.field_label_tercero_apellido1}:" for="apellido1EditInput" />
             <p:inputText value="#{terceroBean.terceroBuscar.apellido1}" id="apellido1EditInput" 
-                         label="#{messages.field_label_tercero_apellido1}" />
+                         label="#{messages.field_label_tercero_apellido1}"  onkeypress="if (event.keyCode == 13) {
+                                                      buscarTercero(); 
+                                                     return false;
+                                                 }" >
+                
+                
+                        <p:remoteCommand name="buscarTercero" 
+                                         actionListener="#{terceroBean.buscarTercero}" 
+                                         update="terceroTable"/>
+                         
+                         
+                </p:inputText>  
             <p:message for="apellido1EditInput" display="icon" />
 
             <h:outputLabel value="#{messages.field_label_tercero_apellido2}:" for="apellido2EditInput" />
             <p:inputText value="#{terceroBean.terceroBuscar.apellido2}" id="apellido2EditInput" 
-                         label="#{messages.field_label_tercero_apellido2}" />
+                         label="#{messages.field_label_tercero_apellido2}"   onkeypress="if (event.keyCode == 13) {
+                                                      buscarTercero(); 
+                                                     return false;
+                                                 }" >
+                
+                
+                        <p:remoteCommand name="buscarTercero" 
+                                         actionListener="#{terceroBean.buscarTercero}" 
+                                         update="terceroTable"/>
+                         
+                         
+                </p:inputText>      
             <p:message for="apellido2EditInput" display="icon" />
 
             <h:outputLabel value="#{messages.field_label_tercero_nombres}:" for="nombresEditInput" />
             <p:inputText value="#{terceroBean.terceroBuscar.nombres}" id="nombresEditInput" 
-                         label="#{messages.field_label_tercero_nombres}" />
+                         label="#{messages.field_label_tercero_nombres}"   onkeypress="if (event.keyCode == 13) {
+                                                      buscarTercero(); 
+                                                     return false;
+                                                 }" >
+                
+                
+                        <p:remoteCommand name="buscarTercero" 
+                                         actionListener="#{terceroBean.buscarTercero}" 
+                                         update="terceroTable"/>
+                         
+                         
+                </p:inputText>      
             <p:message for="nombresEditInput" display="icon" />
 
 
@@ -52,16 +103,31 @@
                      paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                      rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
                      paginatorPosition="bottom" widgetVar="terceroTable" emptyMessage="#{messages.label_no_records_found}"
+                     rowKey="#{tercero}"
                      reflow="true">
             <f:facet name="header" >
 
             </f:facet>
 
-            <p:column headerText="#{messages.field_label_tercero_tipoIdentificacion}" sortBy="#{tercero.tipoIdentificacion}" filterBy="#{tercero.tipoIdentificacion}">
+            <p:column headerText="#{messages.field_label_tercero_identificacion}"  >
                 <h:outputText value="#{tercero.identificacion}" />
             </p:column>              
-
+            <p:column headerText="#{messages.field_label_tercero_nombres}"  >
+                <h:outputText value="#{tercero.nombres}" />
+            </p:column> 
+            <p:column headerText="#{messages.field_label_tercero_apellido1}" >
+                <h:outputText value="#{tercero.apellido1}" />
+            </p:column> 
+            <p:column headerText="#{messages.field_label_tercero_apellido2}" >
+                <h:outputText value="#{tercero.apellido2}" />
+            </p:column> 
+            <p:column style="width:32px;text-align: center">
+                    <p:commandButton icon="ui-icon-search" actionListener="#{terceroBean.selectCarFromDialog(tercero)}" />
+                </p:column>
         </p:dataTable>
 
     </p:outputPanel>
+    
+    </h:form>
+    </h:body>
 </html>
