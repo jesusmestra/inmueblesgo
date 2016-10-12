@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+    
+    <f:metadata>
+        <f:viewAction action="#{usuarioBean.reset()}" />
+    </f:metadata>
+
+    <ui:composition template="/templates/layout.xhtml">
+        <ui:define name="content">
+            <h:form prependId="false" id="formUsuario" onkeypress="if (event.keyCode == 13) {
+                        return false;
+                    }">    
+             <p:growl />
+                <p:panel>
+                    <f:facet name="header">
+                        <h:outputText value="Nuevo Usuario"/>
+                    </f:facet>
+                    <p:panelGrid id="panelNuevoUsuario" columns="6" columnClasses="ui-g-2, ui-g-2, ui-g-1, ui-g-1, ui-g-2, ui-g-2" layout="grid" >
+                        <p:inputText value="#{usuarioBean.usuario.login}" placeholder="login"/>
+                        <p:inputText value="#{usuarioBean.usuario.password}" placeholder="password"/>
+                        <p:selectBooleanCheckbox value="#{usuarioBean.usuario.activo}" itemLabel="ACTIVO"/>
+                        <p:selectBooleanCheckbox value="#{usuarioBean.esAdmin}" itemLabel="ADMIN"/>
+                        <p:selectBooleanCheckbox value="#{usuarioBean.esVendedor}" itemLabel="VENDEDOR"/>
+                        <p:commandButton action="#{usuarioBean.nuevoUsuario}" value="Guardar" update="formUsuario growl" />
+                    </p:panelGrid>                   
+                </p:panel>            
+             
+             <p:dataTable id="usuarioTable" value="#{usuarioBean.lazyModel}" var="usuario" resizableColumns="true" paginator="true"
+                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
+                             paginatorPosition="bottom" widgetVar="usuarioTable" emptyMessage="#{messages.label_no_records_found}"
+                             reflow="true" selectionMode="single" rowKey="#{usuario.id}">
+                 
+                    <p:ajax event="rowSelect" listener="#{usuarioBean.onRowSelect}" update="formUsuario" />
+                    
+                    <p:column  headerText="Login" sortBy="#{usuario.login}" filterBy="#{usuario.login}">
+                        <f:facet name="filter">
+                            <p:inputText id="loginFilter"
+                                         onkeypress="if (event.keyCode == 13) {
+                                    PF('usuarioTable').filter();
+                                    updateLoginFilter(); return false;
+                                }" >
+                                <p:remoteCommand name="updateLoginFilter" update="usuarioTable:loginFilter" />
+                            </p:inputText>
+                        </f:facet>
+                        <h:outputText value="#{usuario.login}" />
+                    </p:column>
+                 
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Password"/>
+                        </f:facet>
+                        <h:outputText value="#{usuario.password}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Activo"/>
+                        </f:facet>                                
+                        <p:selectBooleanCheckbox value="#{usuario.activo}" />
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="ES ADMIN"/>
+                        </f:facet>                                
+                        <h:outputText value="SI" rendered="#{usuarioService.esAdmin(usuario)}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="ES VENDEDOR"/>
+                        </f:facet>                                
+                        <h:outputText value="SI" rendered="#{usuarioService.esVendedor(usuario)}"/>
+                    </p:column>
+                    <p:column styleClass="action-column" headerText="Opciones" width="115" exportable="false">
+                        <p:commandButton icon="ui-icon-pencil" update="formUsuario"
+                                         resetValues="true" 
+                                         action="#{usuarioBean.seleccionarUsuario(usuario.id)}"                                     
+                                         title="Modificar" 
+                                         rendered="false" >
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </h:form>     
+            
+        </ui:define>
+    </ui:composition>
+</html>
