@@ -48,7 +48,7 @@ public class UsuarioEntity extends BaseEntity implements Serializable {
         this.login = login;
     }
 
-    public Boolean getActivo() {
+    public Boolean isActivo() {
         return this.activo;
     }
 

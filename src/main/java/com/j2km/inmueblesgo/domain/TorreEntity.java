@@ -5,7 +5,6 @@ package com.j2km.inmueblesgo.domain;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -30,7 +29,7 @@ public class TorreEntity extends BaseEntity implements Serializable {
     @Basic
     private String numero;
 
-    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = ProyectoEntity.class)
+    @ManyToOne(targetEntity = ProyectoEntity.class)
     private ProyectoEntity proyecto;
 
     public String getNombre() {

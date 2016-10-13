@@ -6,7 +6,6 @@ package com.j2km.inmueblesgo.domain;
 import java.io.Serializable;
 import java.sql.Blob;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -58,11 +57,11 @@ public class EmpresaEntity extends BaseEntity implements Serializable {
     @Basic
     private String email;
 
-    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = TerceroEntity.class)
+    @ManyToOne(targetEntity = TerceroEntity.class)
     @JoinColumn(name = "REPRESENTANTE_ID")
     private TerceroEntity representante;
 
-    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = PobladoEntity.class)
+    @ManyToOne(targetEntity = PobladoEntity.class)
     @JoinColumn(name = "POBLADO_ID")
     private PobladoEntity poblado;
 

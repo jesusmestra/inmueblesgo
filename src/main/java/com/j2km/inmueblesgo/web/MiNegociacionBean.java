@@ -37,6 +37,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -148,7 +149,6 @@ public class MiNegociacionBean implements Serializable {
         this.allOfertaList = ofertaService.findAllOfertaEntities();
 
         this.negociacion = negociacionService.findByInmueble(this.inmueble);
-
         if (this.negociacion == null) {
             this.negociacion = new NegociacionEntity();
             this.negociacion.setInmueble(this.inmueble);
@@ -249,8 +249,10 @@ public class MiNegociacionBean implements Serializable {
             }
         }
         
-        for (PermisoEntity userRole : userRoles) {
-            if(userRole.getRol().getNombre().equals("ADMIN")){
+        for (PermisoEntity permiso : userRoles) {
+            String nombreRol = permiso.getRol().getNombre();
+            
+            if(nombreRol.equals("ADMIN")){
                 respuesta = true;
             }
         }
@@ -316,7 +318,6 @@ public class MiNegociacionBean implements Serializable {
     }
 
     public String onGrabarPlanPago() {
-
         String message;
         message = "message_successfully_created";
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, MessageFactory.getMessageString(message), null);
@@ -326,17 +327,15 @@ public class MiNegociacionBean implements Serializable {
         for (PlanPagoEntity plan : this.allPlanPagosListNegociacion) {
             sumaPagos = sumaPagos + plan.getValorPactado();
         }
-
         if (sumaPagos > inmueble.getValorTotal()) {
             //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Datos no grabados"));
             // ERORRO
             message = "message_error_suma_pago_pactado";
             facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageFactory.getMessageString(message), null);
         } else {
-
             this.negociacion.setInmueble(inmueble);
             if (this.negociacion.getId() == null) {
-                negociacionService.save(this.negociacion);
+                    negociacionService.save(this.negociacion);
             } else {
                 negociacionService.update(this.negociacion);
             }
@@ -350,45 +349,49 @@ public class MiNegociacionBean implements Serializable {
             }
 
             for (PlanPagoEntity plan : this.allPlanPagosListNegociacion) {
+                if(plan.getValorPactado()!=null || !plan.getValorPactado().isNaN()){
                 sumaPagos = sumaPagos + plan.getValorPactado();
                 if (plan.getValorPactado() > 0) {
                     if (plan.getId() == null) {
                         planPagoService.save(plan);
                     } else {
-                        planPagoService.update(plan);
+                            planPagoService.update(plan);
+                        }
                     }
                 }
             }
-
             this.allPlanPagosListNegociacion = planPagoService.findAllPlanPagoByNegociacion(this.negociacion);
             EstadoInmuebleEntity estadoInmueble = estadoInmuebleService.findByNombre("Separado");
             if (estadoInmueble != null) {
-                System.out.println("Actualizando estado inmueble");
                 this.negociacion.getInmueble().setEstadoInmueble(estadoInmueble);
                 inmuebleService.update(this.negociacion.getInmueble());
             }
 
             /* GRABACION DE LOS TERCEROS.....
             /* ELIMINAMOS TERCEROS QUE EXISTIERA */
+            
             List<NegociacionTerceroEntity> listaNegociacionTercero = negociacionTerceroService.findAllNegociacionTerceroByNegociacion(this.negociacion);
             if (listaNegociacionTercero != null) {
                 for (NegociacionTerceroEntity p : listaNegociacionTercero) {
                     negociacionTerceroService.delete(p);
                 }
             }
- System.out.println("NEGOCIACION GRABADA....."+this.negociacion);
+ if(this.allListNegociacionTercero!=null){
             for (NegociacionTerceroEntity negociacionTercero : this.allListNegociacionTercero) {
                 if (negociacionTercero.getId() == null) {
                     if (negociacionTercero.getNegociacion() == null) {
+                        
                         negociacionTercero.setNegociacion(this.negociacion);
                     }
                     negociacionTerceroService.save(negociacionTercero);
                 } else {
                     negociacionTerceroService.update(negociacionTercero);
                 }
+                
             }
+ }
 
-            message = "message_successfully_created";
+            //message = "message_successfully_created";
         }
 
         FacesContext.getCurrentInstance().addMessage("Mensaje", facesMessage);

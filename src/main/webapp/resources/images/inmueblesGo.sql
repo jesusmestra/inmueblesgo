@@ -18,10 +18,7 @@ INSERT INTO `oferta` (`id`, `version`, `ofer_nombre`, `ofer_numero_cuotas`, `ofe
 
 INSERT INTO `proyecto` (`id`, `version`, `proyecto_codigo`, `proyecto_nombre`, `EMPRESA_ID`, `OFERTA_ID`, `POBLADO_ID`) VALUES
 
-(5, 0, '014', 'SAN SEBASTIAN', 3, 1, NULL),
-(6, 0, 'P001', 'CONJUNTO CERRADO KORANDO 5', 1, 2, NULL),
-(7, 0, 'P003', 'BUHO TORRES 3', 1, 2, NULL),
-(8, 0, 'P004', 'CONJUNTO CERRADO HP 9', 2, 3, NULL);
+(5, 0, '014', 'SAN SEBASTIAN', 3, 1, NULL);
 
 
 

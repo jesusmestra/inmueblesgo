@@ -6,7 +6,6 @@ package com.j2km.inmueblesgo.domain;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -65,19 +64,19 @@ public class NegociacionEntity extends BaseEntity implements Serializable {
     @Basic
     private Date fechaRevision;
 
-    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = UsuarioEntity.class)
+    @ManyToOne(targetEntity = UsuarioEntity.class)
     @JoinColumn(name = "VENDEDOR_ID")
     private UsuarioEntity vendedor;
 
-    @ManyToOne(cascade = {CascadeType.ALL}, targetEntity = UsuarioEntity.class)
+    @ManyToOne(targetEntity = UsuarioEntity.class)
     @JoinColumn(name = "SUPERVISOR_ID")
     private UsuarioEntity supervisor;
 
-    @OneToOne(cascade = {CascadeType.ALL}, targetEntity = InmuebleEntity.class)
+    @OneToOne(targetEntity = InmuebleEntity.class)
     @JoinColumn(name = "INMUEBLE_ID")
     private InmuebleEntity inmueble;
 
-    @OneToOne(cascade = {CascadeType.ALL}, targetEntity = OfertaEntity.class)
+    @OneToOne(targetEntity = OfertaEntity.class)
     @JoinColumn(name = "OFERTA_ID")
     private OfertaEntity oferta;
 
