@@ -1,0 +1,18 @@
+body{
+    background-image: url("/inmueblesGo/resources/images/bkg04.jpg");
+    background-color: white;
+}
+
+.modal-dialog {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    z-index: 10040;
+    overflow: auto;
+    overflow-y: auto;
+}
+
+.panel.panel-default{
+    background-color: rgba(10, 10, 10, 0.4);
+    
+}

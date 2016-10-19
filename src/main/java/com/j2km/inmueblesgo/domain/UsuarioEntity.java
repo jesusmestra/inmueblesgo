@@ -12,7 +12,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 /**
- * @author jdmp
+ * @author jkelsy
  */
 @Entity(name = "Usuario")
 @Table(name = "sec_usuario")
@@ -54,6 +54,10 @@ public class UsuarioEntity extends BaseEntity implements Serializable {
 
     public void setActivo(Boolean activo) {
         this.activo = activo;
+    }
+
+    public Boolean getActivo() {
+        return this.activo;
     }
 
 }

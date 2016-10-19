@@ -15,76 +15,26 @@
 
 
             <h:outputLabel value="#{messages.field_label_empresa_poblado}:" for="pobladoSelectInput" rendered="#{not hidePobladoSelectInput}"/>
-            <h:panelGroup rendered="#{not hidePobladoSelectInput}">
-                <!--
-                <h:inputHidden value="#{empresaBean.empresa.poblado}" id="pobladoSelectInput"/>
-                -->
-                <h:outputText value="#{empresaBean.municipioBusqueda.codigo} | #{empresaBean.municipioBusqueda.nombre}" id="pobladoSelectInput1"/>
 
-                <p:selectOneMenu value="#{empresaBean.empresa.poblado}"
-                                 id="pobladoSelectInput">
-                    <f:selectItem noSelectionOption="true" itemLabel="" />
-                    <f:selectItems value="#{empresaBean.allPobladosList}" 
-                                   var="poblado" 
-                                   itemLabel="#{poblado.nombre}"
-                                   itemValue="#{poblado}" />
-                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{empresaBean.allPobladosList}"/>
 
-                </p:selectOneMenu>
+            <p:outputLabel id="labelNombrePoblado" value="#{empresaBean.empresa.poblado.nombre}"/>
+            <p:commandButton icon="ui-icon-search" title="#{messages.label_create}" 
+                             actionListener="#{buscarPobladoBean.choosePoblado}">
+                <p:ajax event="dialogReturn" listener="#{empresaBean.seleccionarPoblado}" update="labelNombrePoblado" />  
+            </p:commandButton>
 
-            </h:panelGroup>
-            <h:panelGroup rendered="#{not hidePobladoSelectInput}">
+          
 
-                <p:commandButton icon="ui-icon-search" title="#{messages.label_create}"
-                                 action="#{pobladoBean.onBuscarPoblado}"
-                                 update=":buscarPobladoFromEditDialog"
-                                 resetValues="true"
-                                 oncomplete="PF('buscarPobladoFromEditDialogWidget').show()"
-                                 rendered="#{applicationBean.componentExists('buscarPobladoFromEditDialog')}"
-                                 style="vertical-align:top;" partialSubmit="true" process="@this">
-                </p:commandButton>
-
-                <p:message for="pobladoSelectInput" display="icon" rendered="#{not hidePobladoSelectInput}"/>
-            </h:panelGroup>            
 
 
 
             <h:outputLabel value="#{messages.field_label_empresa_representante}:" for="representanteSelectInput" rendered="#{not hideRepresentanteSelectInput}"/>
             <p:outputLabel id="labelNombreRepresentante" value="#{empresaBean.empresa.representante.identificacion} | #{empresaBean.empresa.representante.apellido1} #{empresaBean.empresa.representante.apellido2}, #{empresaBean.empresa.representante.nombres}"/>
-            <h:panelGroup rendered="#{not hideRepresentanteSelectInput}">
-                <!--
-                                <p:commandButton icon="ui-icon-plusthick" title="#{messages.label_create}"
-                                                 action="#{terceroBean.prepareNewTercero()}"
-                                                 update=":createRepresentanteFromEditDialog"
-                                                 resetValues="true"
-                                                 oncomplete="PF('createRepresentanteFromEditDialogWidget').show()"
-                                                 rendered="#{applicationBean.componentExists('createRepresentanteFromEditDialog')}"
-                                                 style="vertical-align:top;" partialSubmit="true" process="@this">
-                                </p:commandButton>
-                -->
-<!--
-                <p:commandButton icon="ui-icon-search" title="#{messages.label_create}"
-                                 action="#{terceroBean.onBuscarTercero}"
-                                 update=":buscarTerceroFromEditDialog"
-                                 resetValues="true"
-                                 oncomplete="PF('buscarTerceroFromEditDialogWidget').show()"
-                                 rendered="#{applicationBean.componentExists('buscarTerceroFromEditDialog')}"
-                                 style="vertical-align:top;" partialSubmit="true" process="@this">
 
-
-                </p:commandButton>
--->
-                <p:commandButton icon="ui-icon-search" title="#{messages.label_create}" 
-                                  actionListener="#{terceroBean.chooseTercero()}">
-                    <p:ajax event="dialogReturn" listener="#{empresaBean.seleccionar}" update="labelNombreRepresentante" />  
-                </p:commandButton>
-                <p:message for="labelNombreRepresentante" display="icon" rendered="#{not hideRepresentanteSelectInput}"/>
-            </h:panelGroup>             
-
-
-
-
-
+            <p:commandButton icon="ui-icon-search" title="#{messages.label_create}" 
+                             actionListener="#{buscarTerceroBean.chooseTercero}">
+                <p:ajax event="dialogReturn" listener="#{empresaBean.seleccionar}" update="labelNombreRepresentante" />  
+            </p:commandButton>
 
 
             <h:outputLabel value="#{messages.field_label_empresa_nit}:" for="nitEditInput" />

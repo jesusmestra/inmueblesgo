@@ -206,6 +206,10 @@ public class EmpresaBean implements Serializable {
     public void seleccionar(SelectEvent event) {
         this.empresa.setRepresentante((TerceroEntity) event.getObject());
     }
+    
+    public void seleccionarPoblado(SelectEvent event) {
+        this.empresa.setPoblado((PobladoEntity) event.getObject());
+    }
 
     
     

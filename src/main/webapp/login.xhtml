@@ -4,67 +4,44 @@
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
-        <link rel="stylesheet" type="text/css"
-              href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" />
-        <link rel="stylesheet" type="text/css"
-              href="#{request.contextPath}/resources/dist/css/AdminLTE.min.css" />
-        <link rel="stylesheet" type="text/css"
-              href="#{request.contextPath}/resources/dist/css/skins/skin-blue.min.css" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
-        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css"/>
+        <h:outputStylesheet library="css" name="login.css"/>
+        <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css"/>
 
     </h:head>
 
-    <body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <a href="../../index2.html"><b>Hermes</b>Doc</a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="login-box-body">
-    <p class="login-box-msg">Entrar al sistema</p>
-
-    <form method="post" action="j_security_check">
-      <div class="form-group has-feedback">
-        <input type="text" name="j_username" id="j_username" placeholder="Username" class="form-control"/>
-        <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-      </div>
-      <div class="form-group has-feedback">
-          <input type="password" name="j_password" id="j_password" placeholder="Password" class="form-control"/>
-        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-      </div>
-      <div class="row">
-        
-        <!-- /.col -->
-        <div class="col-xs-4">
-          <button type="submit" class="btn btn-primary btn-block btn-flat">Entrar</button>
+    <body> 
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="panel panel-default" style="margin-top: 20px;">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Ingresar al Sistema</h3>
+                </div>
+                <div class="panel-body">               
+                    <div class="well" style="background-color: rgba(255, 255, 255, 0.6);">
+                        <form id="loginForm" method="post" action="j_security_check" novalidate="novalidate">
+                            <div class="form-group">
+                                <label for="Login" class="control-label">Login</label>
+                                <input type="text" class="form-control" name="j_username" id="j_username" required="" title="Ingresar el login"/>
+                                <span class="help-block"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="password" class="control-label">Password</label>
+                                <input type="password" class="form-control" name="j_password" id="j_password" required="" title="Ingresar el password"/>
+                                <span class="help-block"></span>
+                            </div>
+                            <div id="loginErrorMsg" class="alert alert-error hide">Wrong username og password</div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="remember" id="remember"/> Remember login
+                                </label>                                  
+                            </div>
+                            <button type="submit" class="btn btn-success btn-block">Login</button>                              
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- /.col -->
-      </div>
-    </form>
 
-    
-
-  </div>
-  <!-- /.login-box-body -->
-</div>
-<!-- /.login-box -->
-
-<!-- jQuery 2.2.0 -->
-<script src="../../plugins/jQuery/jQuery-2.2.0.min.js"></script>
-<!-- Bootstrap 3.3.6 -->
-<script src="../../bootstrap/js/bootstrap.min.js"></script>
-<!-- iCheck -->
-<script src="../../plugins/iCheck/icheck.min.js"></script>
-<script>
-  $(function () {
-    $('input').iCheck({
-      checkboxClass: 'icheckbox_square-blue',
-      radioClass: 'iradio_square-blue',
-      increaseArea: '20%' // optional
-    });
-  });
-</script>
-</body>
+    </body>
 
 </html>

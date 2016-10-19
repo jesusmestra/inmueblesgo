@@ -1,5 +1,6 @@
 package com.j2km.inmueblesgo.web;
 
+import com.j2km.inmueblesgo.domain.PobladoEntity;
 import com.j2km.inmueblesgo.domain.TerceroEntity;
 import com.j2km.inmueblesgo.domain.TipoIdentificacionEntity;
 import com.j2km.inmueblesgo.service.TerceroService;
@@ -148,63 +149,10 @@ public class TerceroBean implements Serializable {
 
     public void setTercero(TerceroEntity tercero) {
         this.tercero = tercero;
-    }
-
-    private TerceroEntity terceroBuscar;
-    private List<TerceroEntity> allTercerosBuscar;
-
-    public List<TerceroEntity> getAllTercerosBuscar() {
-        return allTercerosBuscar;
-    }
-
-    public void setAllTercerosBuscar(List<TerceroEntity> allTercerosBuscar) {
-        this.allTercerosBuscar = allTercerosBuscar;
-    }
-
-    public TerceroEntity getTerceroBuscar() {
-        return terceroBuscar;
-    }
-
-    public void setTerceroBuscar(TerceroEntity terceroBuscar) {
-        this.terceroBuscar = terceroBuscar;
-    }
-
-    public void onBuscarTercero() {
-        resetBusqueda();
-        terceroBuscar = new TerceroEntity();
-
-    }
-
-    public void resetBusqueda() {
-        this.terceroBuscar = null;
-        this.allTercerosBuscar = null;
-    }
-
-    public void buscarTercero() {
-        System.out.println("Enter presionado");
-        this.allTercerosBuscar = terceroService.buscarTercerosFiltro(terceroBuscar);
-    }
-
-
-    public void selectCarFromDialog(TerceroEntity tercero) {
-        RequestContext.getCurrentInstance().closeDialog(tercero);
-    }
-
-    public void resetBuscar() {
-        terceroBuscar = new TerceroEntity();
-    }
-
-    public void chooseTercero() {
-
-        Map<String, Object> options = new HashMap<String, Object>();
-        options.put("modal", true);
-        options.put("width", "80%");
-        options.put("height", 400);
-        options.put("contentWidth", "100%");
-        options.put("contentHeight", "100%");
-        options.put("headerElement", "customheader");
-        RequestContext.getCurrentInstance().openDialog("/pages/tercero/terceroBuscarInclude", options, null);
-        System.out.println("Terminado selec");
+    }    
+    
+    public void seleccionarPoblado(SelectEvent event) {
+        this.tercero.setLugarExpedicion((PobladoEntity) event.getObject());
     }
 
 }

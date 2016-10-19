@@ -27,7 +27,7 @@
             <jpa:query>Select b from BaseEntity b where b.version=:version</jpa:query>
         </jpa:nq>
     </jpa:mapped-superclass>
-    <jpa:entity name="Departamento" xre="false" compositePrimaryKeyClass="DepartamentoEntityPK" abs="false" class="DepartamentoEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576758242">
+    <jpa:entity name="Departamento" xre="false" compositePrimaryKeyClass="DepartamentoEntityPK" abs="false" class="DepartamentoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576758242">
         <jpa:ts e="true"/>
         <jpa:hc e="true">
             <jpa:post>hash = 0;
@@ -52,10 +52,13 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="departamento"/>
     </jpa:entity>
-    <jpa:entity name="Usuario" cacheable="false" xre="false" compositePrimaryKeyClass="UsuarioEntityPK" abs="false" class="UsuarioEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576765246">
+    <jpa:entity name="Usuario" cacheable="false" lbl-ref="_147385920495571" xre="false" compositePrimaryKeyClass="UsuarioPK" abs="false" class="Usuario" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576765246">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
+        <jpa:snp e="true">public Boolean getActivo(){
+    return this.activo;
+}</jpa:snp>
         <jpa:attributes>
             <jpa:basic attribute-type="String" visibile="true" name="password" id="_1470328576765247">
                 <jpa:bv/>
@@ -69,21 +72,21 @@ hash += (id != null ? id.hashCode() : 0);
                 <jpa:bv/>
             </jpa:basic>
         </jpa:attributes>
-        <jpa:nq e="false" name="UsuarioEntity.findByActivo">
-            <jpa:query>Select u from UsuarioEntity u where u.activo=:activo</jpa:query>
+        <jpa:nq e="false" name="Usuario.findByActivo">
+            <jpa:query>Select u from Usuario u where u.activo=:activo</jpa:query>
         </jpa:nq>
-        <jpa:nq e="false" name="UsuarioEntity.findByExpira">
-            <jpa:query>Select u from UsuarioEntity u where u.expira=:expira</jpa:query>
+        <jpa:nq e="false" name="Usuario.findByExpira">
+            <jpa:query>Select u from Usuario u where u.expira=:expira</jpa:query>
         </jpa:nq>
-        <jpa:nq e="true" name="UsuarioEntity.esAdmin">
+        <jpa:nq e="true" name="Usuario.esAdmin">
             <jpa:query>Select e from Permiso e WHERE e.usuario = :usuario and e.rol.nombre = 'ADMIN'</jpa:query>
         </jpa:nq>
-        <jpa:nq e="true" name="UsuarioEntity.esVendedor">
+        <jpa:nq e="true" name="Usuario.esVendedor">
             <jpa:query>Select e from Permiso e WHERE e.usuario = :usuario and e.rol.nombre = 'VENDEDOR'</jpa:query>
         </jpa:nq>
         <jpa:table name="sec_usuario"/>
     </jpa:entity>
-    <jpa:entity name="Poblado" xre="false" compositePrimaryKeyClass="PobladoEntityPK" abs="false" class="PobladoEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576771250">
+    <jpa:entity name="Poblado" xre="false" compositePrimaryKeyClass="PobladoEntityPK" abs="false" class="PobladoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576771250">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -102,7 +105,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:attributes>
         <jpa:table name="poblado"/>
     </jpa:entity>
-    <jpa:entity name="Permiso" xre="false" compositePrimaryKeyClass="PermisoEntityPK" abs="false" class="PermisoEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576780255">
+    <jpa:entity name="Permiso" xre="false" compositePrimaryKeyClass="PermisoEntityPK" abs="false" class="PermisoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576780255">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -116,7 +119,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:attributes>
         <jpa:table name="sec_permiso"/>
     </jpa:entity>
-    <jpa:entity name="Tercero" xre="false" compositePrimaryKeyClass="TerceroEntityPK" abs="false" class="TerceroEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576795259">
+    <jpa:entity name="Tercero" xre="false" compositePrimaryKeyClass="TerceroEntityPK" abs="false" class="TerceroEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576795259">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -161,7 +164,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="tercero"/>
     </jpa:entity>
-    <jpa:entity name="Empresa" xre="false" compositePrimaryKeyClass="EmpresaEntityPK" abs="false" class="EmpresaEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576816274">
+    <jpa:entity name="Empresa" xre="false" compositePrimaryKeyClass="EmpresaEntityPK" abs="false" class="EmpresaEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576816274">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -214,7 +217,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="empresa"/>
     </jpa:entity>
-    <jpa:entity name="Municipio" xre="false" compositePrimaryKeyClass="MunicipioEntityPK" abs="false" class="MunicipioEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576824293">
+    <jpa:entity name="Municipio" xre="false" compositePrimaryKeyClass="MunicipioEntityPK" abs="false" class="MunicipioEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576824293">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -233,7 +236,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:attributes>
         <jpa:table name="municipio"/>
     </jpa:entity>
-    <jpa:entity name="Rol" xre="false" compositePrimaryKeyClass="RolEntityPK" abs="false" class="RolEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576831298">
+    <jpa:entity name="Rol" xre="false" compositePrimaryKeyClass="RolEntityPK" abs="false" class="RolEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576831298">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -245,7 +248,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:attributes>
         <jpa:table name="sec_rol"/>
     </jpa:entity>
-    <jpa:entity name="TipoIdentificacion" xre="false" compositePrimaryKeyClass="TipoIdentificacionEntityPK" abs="false" class="TipoIdentificacionEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1470328576847309">
+    <jpa:entity name="TipoIdentificacion" xre="false" compositePrimaryKeyClass="TipoIdentificacionEntityPK" abs="false" class="TipoIdentificacionEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1470328576847309">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -268,7 +271,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="tipo_identificacion"/>
     </jpa:entity>
-    <jpa:entity name="EstadoInmueble" xre="false" compositePrimaryKeyClass="EstadoInmuebleEntityPK" abs="false" class="EstadoInmuebleEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1472591162861">
+    <jpa:entity name="EstadoInmueble" xre="false" compositePrimaryKeyClass="EstadoInmuebleEntityPK" abs="false" class="EstadoInmuebleEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472591162861">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -293,7 +296,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="estado_inmueble"/>
     </jpa:entity>
-    <jpa:entity name="Inmueble" xre="false" compositePrimaryKeyClass="InmuebleEntityPK" abs="false" class="InmuebleEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1472591379182">
+    <jpa:entity name="Inmueble" xre="false" compositePrimaryKeyClass="InmuebleEntityPK" abs="false" class="InmuebleEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472591379182">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -364,7 +367,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="inmueble"/>
     </jpa:entity>
-    <jpa:entity name="Proyecto" cacheable="false" xre="false" compositePrimaryKeyClass="ProyectoEntityPK" abs="false" class="ProyectoEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1472591479472">
+    <jpa:entity name="Proyecto" cacheable="false" xre="false" compositePrimaryKeyClass="ProyectoEntityPK" abs="false" class="ProyectoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472591479472">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -401,7 +404,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="proyecto"/>
     </jpa:entity>
-    <jpa:entity name="PlanPago" xre="false" compositePrimaryKeyClass="PlanPagoEntityPK" abs="false" class="PlanPagoEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1472591773752">
+    <jpa:entity name="PlanPago" xre="false" compositePrimaryKeyClass="PlanPagoEntityPK" abs="false" class="PlanPagoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472591773752">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -443,7 +446,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="plan_pago"/>
     </jpa:entity>
-    <jpa:entity name="Oferta" xre="false" compositePrimaryKeyClass="OfertaEntityPK" abs="false" class="OfertaEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1472592050688">
+    <jpa:entity name="Oferta" xre="false" compositePrimaryKeyClass="OfertaEntityPK" abs="false" class="OfertaEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472592050688">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -489,7 +492,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="oferta"/>
     </jpa:entity>
-    <jpa:entity name="Negociacion" xre="false" compositePrimaryKeyClass="NegociacionEntityPK" abs="false" class="NegociacionEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1472592325680">
+    <jpa:entity name="Negociacion" xre="false" compositePrimaryKeyClass="NegociacionEntityPK" abs="false" class="NegociacionEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1472592325680">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -589,7 +592,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="negociacion"/>
     </jpa:entity>
-    <jpa:entity name="Torre" xre="false" compositePrimaryKeyClass="TorreEntityPK" abs="false" class="TorreEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1475007647092">
+    <jpa:entity name="Torre" xre="false" compositePrimaryKeyClass="TorreEntityPK" abs="false" class="TorreEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1475007647092">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -622,7 +625,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="torre"/>
     </jpa:entity>
-    <jpa:entity name="TipoInmueble" xre="false" compositePrimaryKeyClass="TipoInmuebleEntityPK" abs="false" class="TipoInmuebleEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1475010301512">
+    <jpa:entity name="TipoInmueble" xre="false" compositePrimaryKeyClass="TipoInmuebleEntityPK" abs="false" class="TipoInmuebleEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1475010301512">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -661,7 +664,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="tipo_inmueble"/>
     </jpa:entity>
-    <jpa:entity name="TipoPlanta" xre="false" compositePrimaryKeyClass="TipoPlantaEntityPK" abs="false" class="TipoPlantaEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1475013442156">
+    <jpa:entity name="TipoPlanta" xre="false" compositePrimaryKeyClass="TipoPlantaEntityPK" abs="false" class="TipoPlantaEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1475013442156">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -686,7 +689,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="tipo_planta"/>
     </jpa:entity>
-    <jpa:entity name="TipoPlantaDetalle" xre="false" compositePrimaryKeyClass="TipoPlantaDetalleEntityPK" abs="false" class="TipoPlantaDetalleEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1475014070164">
+    <jpa:entity name="TipoPlantaDetalle" xre="false" compositePrimaryKeyClass="TipoPlantaDetalleEntityPK" abs="false" class="TipoPlantaDetalleEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1475014070164">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -710,7 +713,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="tipo_planta_detalle"/>
     </jpa:entity>
-    <jpa:entity name="Piso" xre="false" compositePrimaryKeyClass="PisoPK" abs="false" class="Piso" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1475167232682">
+    <jpa:entity name="Piso" xre="false" compositePrimaryKeyClass="PisoPK" abs="false" class="Piso" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1475167232682">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -734,7 +737,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="piso"/>
     </jpa:entity>
-    <jpa:entity name="NegociacionTercero" xre="false" compositePrimaryKeyClass="NegociacionTerceroEntityPK" abs="false" class="NegociacionTerceroEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1476119461258">
+    <jpa:entity name="NegociacionTercero" xre="false" compositePrimaryKeyClass="NegociacionTerceroEntityPK" abs="false" class="NegociacionTerceroEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1476119461258">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -805,7 +808,7 @@ hash += (id != null ? id.hashCode() : 0);
                 <Bounds x="399.0" y="202.0" width="151.0" height="135.0"/>
             </shape>
             <shape elementRef="_1472592325680">
-                <Bounds x="945.0" y="84.0" width="182.0" height="347.0"/>
+                <Bounds x="929.0" y="59.0" width="182.0" height="347.0"/>
             </shape>
             <shape elementRef="_1475007647092">
                 <Bounds x="445.0" y="-347.0" width="134.0" height="127.0"/>
