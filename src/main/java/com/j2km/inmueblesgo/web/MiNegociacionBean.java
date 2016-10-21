@@ -41,6 +41,7 @@ import javax.persistence.PersistenceException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.core.Request;
 import org.primefaces.event.SelectEvent;
 
 @Named("miNegociacionBean")
@@ -332,10 +333,14 @@ public class MiNegociacionBean implements Serializable {
             // ERORRO
             message = "message_error_suma_pago_pactado";
             facesMessage = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageFactory.getMessageString(message), null);
-        } else {
+        } else {            
+            
             this.negociacion.setInmueble(inmueble);
-            if (this.negociacion.getId() == null) {
-                    negociacionService.save(this.negociacion);
+            if (this.negociacion.getId() == null) {                
+                UsuarioEntity vendedor = usuarioService.findByLogin(
+                        FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());                
+                this.negociacion.setVendedor(vendedor);
+                negociacionService.save(this.negociacion);
             } else {
                 negociacionService.update(this.negociacion);
             }
