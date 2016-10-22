@@ -16,3 +16,13 @@ body{
     background-color: rgba(10, 10, 10, 0.4);
     
 }
+
+.panel.panel-danger{
+    background-color: rgba(10, 10, 10, 0.4);
+    
+}
+
+#loginErrorMsg{
+    color: white;
+    background-color: #269abc;
+}
