@@ -17,8 +17,8 @@ import javax.persistence.Table;
 @Entity(name = "Usuario")
 @Table(name = "sec_usuario")
 @NamedQueries({
-    @NamedQuery(name = "UsuarioEntity.esAdmin", query = "Select e from Permiso e WHERE e.usuario = :usuario and e.rol.nombre = 'ADMIN'"),
-    @NamedQuery(name = "UsuarioEntity.esVendedor", query = "Select e from Permiso e WHERE e.usuario = :usuario and e.rol.nombre = 'VENDEDOR'")})
+    @NamedQuery(name = "UsuarioEntity.esAdmin", query = "Select e from Permiso e WHERE e.usuario = :usuario and e.rol.nombre = 'ADMIN'")
+    ,@NamedQuery(name = "UsuarioEntity.esVendedor", query = "Select e from Permiso e WHERE e.usuario = :usuario and e.rol.nombre = 'VENDEDOR'")})
 public class UsuarioEntity extends BaseEntity implements Serializable {
 
     @Column(name = "usr_password")

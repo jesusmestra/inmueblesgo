@@ -5,10 +5,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 <ui:composition template="/templates/layout.xhtml">
+    <ui:define name="header">
+        <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css"/>
+    </ui:define>
   <ui:define name="content">
-    <p:panel id="mainPanel">
-      <h:outputText id="welcomeText" value="#{messages.label_welcome_text}" />
-    </p:panel>
+    Dashboard
   </ui:define>
 </ui:composition>
 </html>

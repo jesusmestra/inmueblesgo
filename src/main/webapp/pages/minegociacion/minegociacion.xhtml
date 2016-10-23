@@ -106,22 +106,8 @@
 
                                 </div>
                             </h:panelGrid>
-                            <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2" rendered="#{miNegociacionBean.puedeAprobar}">
-
-                                <h:outputText value="APROBACION DE LA NEGOCIACION" />
-                                <h:outputText value="#{miNegociacionBean.puedeAprobar}" />
-
-                                <h:outputText  value="#{messages.field_label_negociacion_aprobacion}:" />
-                                <p:selectOneMenu id="console" value="#{miNegociacionBean.negociacion.aprobado}" style="width:125px">
-                                    <f:selectItem itemLabel="Si" itemValue="#{true}" />
-                                    <f:selectItem itemLabel="No" itemValue="#{false}" />
-                                </p:selectOneMenu>
-
-
-                                <h:outputText  value="#{messages.field_label_negociacion_fechaRevision}:" />
-                                <p:calendar value="#{miNegociacionBean.negociacion.fechaRevision}" id="fechaRevisionEditCalendar" 
-                                            >
-                                </p:calendar>
+                            <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2" rendered="#{request.isUserInRole('ADMIN')}">                                    
+                                <p:editor value="#{miNegociacionBean.negociacionHistoricoEntity.observacion}"/>
                             </h:panelGrid>
                         </h:panelGrid>
 

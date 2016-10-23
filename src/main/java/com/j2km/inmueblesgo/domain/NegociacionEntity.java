@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
- * @author jdmp
+ * @author jkelsy
  */
 @Entity(name = "Negociacion")
 @Table(name = "negociacion")
@@ -23,10 +23,6 @@ public class NegociacionEntity extends BaseEntity implements Serializable {
     @Column(name = "neg_codigo")
     @Basic
     private String codigo;
-
-    @Column(name = "neg_nombre")
-    @Basic
-    private String nombre;
 
     @Column(name = "neg_fecha")
     @Basic
@@ -56,22 +52,6 @@ public class NegociacionEntity extends BaseEntity implements Serializable {
     @Basic
     private Double porcentaje;
 
-    @Column(name = "neg_aprobado")
-    @Basic
-    private Boolean aprobado;
-
-    @Column(name = "neg_fecha_revision")
-    @Basic
-    private Date fechaRevision;
-
-    @ManyToOne(targetEntity = UsuarioEntity.class)
-    @JoinColumn(name = "VENDEDOR_ID")
-    private UsuarioEntity vendedor;
-
-    @ManyToOne(targetEntity = UsuarioEntity.class)
-    @JoinColumn(name = "SUPERVISOR_ID")
-    private UsuarioEntity supervisor;
-
     @OneToOne(targetEntity = InmuebleEntity.class)
     @JoinColumn(name = "INMUEBLE_ID")
     private InmuebleEntity inmueble;
@@ -80,20 +60,24 @@ public class NegociacionEntity extends BaseEntity implements Serializable {
     @JoinColumn(name = "OFERTA_ID")
     private OfertaEntity oferta;
 
+    @ManyToOne(targetEntity = UsuarioEntity.class)
+    @JoinColumn(name = "SUPERVISOR_ID")
+    private UsuarioEntity supervisor;
+
+    @ManyToOne(targetEntity = EstadoNegociacionEntity.class)
+    @JoinColumn(name = "ESTADO_NEGOCIACION_ID")
+    private EstadoNegociacionEntity estadoNegociacion;
+
+    @ManyToOne(targetEntity = UsuarioEntity.class)
+    @JoinColumn(name = "VENDEDOR_ID")
+    private UsuarioEntity vendedor;
+
     public String getCodigo() {
         return this.codigo;
     }
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
-    }
-
-    public String getNombre() {
-        return this.nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public Date getFecha() {
@@ -152,38 +136,6 @@ public class NegociacionEntity extends BaseEntity implements Serializable {
         this.porcentaje = porcentaje;
     }
 
-    public Boolean getAprobado() {
-        return this.aprobado;
-    }
-
-    public void setAprobado(Boolean aprobado) {
-        this.aprobado = aprobado;
-    }
-
-    public Date getFechaRevision() {
-        return this.fechaRevision;
-    }
-
-    public void setFechaRevision(Date fechaRevision) {
-        this.fechaRevision = fechaRevision;
-    }
-
-    public UsuarioEntity getVendedor() {
-        return this.vendedor;
-    }
-
-    public void setVendedor(UsuarioEntity vendedor) {
-        this.vendedor = vendedor;
-    }
-
-    public UsuarioEntity getSupervisor() {
-        return this.supervisor;
-    }
-
-    public void setSupervisor(UsuarioEntity supervisor) {
-        this.supervisor = supervisor;
-    }
-
     public InmuebleEntity getInmueble() {
         return this.inmueble;
     }
@@ -198,6 +150,30 @@ public class NegociacionEntity extends BaseEntity implements Serializable {
 
     public void setOferta(OfertaEntity oferta) {
         this.oferta = oferta;
+    }
+
+    public UsuarioEntity getSupervisor() {
+        return this.supervisor;
+    }
+
+    public void setSupervisor(UsuarioEntity supervisor) {
+        this.supervisor = supervisor;
+    }
+
+    public EstadoNegociacionEntity getEstadoNegociacion() {
+        return this.estadoNegociacion;
+    }
+
+    public void setEstadoNegociacion(EstadoNegociacionEntity estadoNegociacion) {
+        this.estadoNegociacion = estadoNegociacion;
+    }
+
+    public UsuarioEntity getVendedor() {
+        return this.vendedor;
+    }
+
+    public void setVendedor(UsuarioEntity vendedor) {
+        this.vendedor = vendedor;
     }
 
 }

@@ -7,6 +7,7 @@ package com.j2km.inmueblesgo.configuracion;
 
 import com.j2km.inmueblesgo.domain.EmpresaEntity;
 import com.j2km.inmueblesgo.domain.EstadoInmuebleEntity;
+import com.j2km.inmueblesgo.domain.EstadoNegociacionEntity;
 import com.j2km.inmueblesgo.domain.OfertaEntity;
 import com.j2km.inmueblesgo.domain.PermisoEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
@@ -16,6 +17,7 @@ import com.j2km.inmueblesgo.domain.TipoIdentificacionEntity;
 import com.j2km.inmueblesgo.domain.UsuarioEntity;
 import com.j2km.inmueblesgo.service.EmpresaService;
 import com.j2km.inmueblesgo.service.EstadoInmuebleService;
+import com.j2km.inmueblesgo.service.EstadoNegociacionService;
 import com.j2km.inmueblesgo.service.OfertaService;
 import com.j2km.inmueblesgo.service.PermisoService;
 import com.j2km.inmueblesgo.service.ProyectoService;
@@ -60,8 +62,60 @@ public class Inicio {
     @Inject
     private EstadoInmuebleService estadoInmuebleService;
     
+    @Inject
+    private EstadoNegociacionService estadoNegociacionService;
+    
     @PostConstruct
     public void iniciar() {
+        
+        
+        
+          EstadoNegociacionEntity estadoNegociacion = estadoNegociacionService.findByCodigo("01");
+        
+        if (estadoNegociacion == null){
+            estadoNegociacion = new EstadoNegociacionEntity();
+            estadoNegociacion.setCodigo("01");
+            estadoNegociacion.setNombre("Radicado");
+            estadoNegociacionService.save(estadoNegociacion);
+        }
+        
+        
+        estadoNegociacion = estadoNegociacionService.findByCodigo("02");
+        
+        if (estadoNegociacion == null){
+            estadoNegociacion = new EstadoNegociacionEntity();
+            estadoNegociacion.setCodigo("02");
+            estadoNegociacion.setNombre("Aprobado");
+            estadoNegociacionService.save(estadoNegociacion);
+        }
+        
+        estadoNegociacion = estadoNegociacionService.findByCodigo("03");
+        
+        if (estadoNegociacion == null){
+            estadoNegociacion = new EstadoNegociacionEntity();
+            estadoNegociacion.setCodigo("03");
+            estadoNegociacion.setNombre("Rechazado");
+            estadoNegociacionService.save(estadoNegociacion);
+        }
+        
+        estadoNegociacion = estadoNegociacionService.findByCodigo("04");
+        
+        if (estadoNegociacion == null){
+            estadoNegociacion = new EstadoNegociacionEntity();
+            estadoNegociacion.setCodigo("04");
+            estadoNegociacion.setNombre("Finalizado");
+            estadoNegociacionService.save(estadoNegociacion);
+        }
+         
+        // ES APROBADO PERO QUEDA MAL EN LA NEGOCIACION
+        estadoNegociacion = estadoNegociacionService.findByCodigo("05");
+       
+        if (estadoNegociacion == null){
+            estadoNegociacion = new EstadoNegociacionEntity();
+            estadoNegociacion.setCodigo("04");
+            estadoNegociacion.setNombre("Anulado");  
+            estadoNegociacionService.save(estadoNegociacion);
+        }
         
         RolEntity rol = rolService.findByNombre("ADMIN");
 
