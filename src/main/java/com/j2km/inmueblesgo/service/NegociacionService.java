@@ -139,7 +139,14 @@ public class NegociacionService extends BaseService<NegociacionEntity> implement
 
         return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
-
     
+    @Transactional
+    public List<NegociacionEntity> findAllNuevas() {
+        List<NegociacionEntity> lista = entityManager.createQuery("SELECT o FROM Negociacion o WHERE o.estadoNegociacion.nombre = 'Radicado'", NegociacionEntity.class).getResultList();
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        }
+        return lista;
+    }    
 
 }
