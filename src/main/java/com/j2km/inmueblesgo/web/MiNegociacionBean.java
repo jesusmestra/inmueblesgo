@@ -235,7 +235,7 @@ public class MiNegociacionBean implements Serializable {
         //return ruta;
 
     }
-
+/*
     public boolean informacionUsuario() {
         boolean respuesta = false;
         FacesContext context = FacesContext.getCurrentInstance();
@@ -266,11 +266,12 @@ public class MiNegociacionBean implements Serializable {
 
         return respuesta;
     }
-
+*/
     public void onLoadView() {
 
         if (this.negociacion == null) {
             // REDIRECT PARA ALGUN LADO
+            System.err.println("NO TRAE NEGOCIACION....");
         } else {
 
             this.inmueble = this.negociacion.getInmueble();
@@ -323,7 +324,7 @@ public class MiNegociacionBean implements Serializable {
         }
     }
 
-    public void onGrabarPlanPago() {
+    public String onGrabarPlanPago() throws IOException {
         String message;
         message = "message_successfully_created";
         FacesMessage facesMessage = new FacesMessage(FacesMessage.SEVERITY_INFO, MessageFactory.getMessageString(message), null);
@@ -414,6 +415,8 @@ public class MiNegociacionBean implements Serializable {
 
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage("Mensaje", facesMessage);
+        
+        return "/pages/minegociacion/negociacionView.xhtml?faces-redirect=true&id="+ this.negociacion.getId().toString();
         
     }
 

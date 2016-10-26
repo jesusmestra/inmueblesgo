@@ -14,7 +14,7 @@
             NEGOCIACION VIEW
             <f:metadata>
                 <f:viewParam name="id" value="#{miNegociacionBean.negociacion}" 
-                             converter="#{genericEntityConverter}" />              
+                             converter="#{genericEntityConverter}" />   
                 <f:viewAction action="#{miNegociacionBean.onLoadView}"/>
             </f:metadata>
 
@@ -22,7 +22,8 @@
                 <p:outputPanel>
                     <p:outputPanel id="inmuebleViewPanel" styleClass="ui-fluid">
 
-                        <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2" >
+                        <h:panelGrid columns="3" styleClass="dialog" columnClasses="col1,col2, col3" >
+                            <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2">
 
                                 <h:outputText value="#{messages.field_label_inmueble_proyecto}:" />
                                 <h:outputText value="#{miNegociacionBean.inmueble.proyecto.nombre}" />
@@ -82,55 +83,64 @@
                                 <h:outputText value="#{miNegociacionBean.negociacion.fecha}" id="fechaEditCalendar" 
                                               >
                                 </h:outputText>
-                          
-                        </h:panelGrid>
+                                </h:panelGrid>
+                                <h:panelGrid columns="2" width="400" styleClass="dialog" columnClasses="col1,col2">
+                                    <div style="width: 100px;">
+
+                                    </div>
+                                </h:panelGrid>
+                                <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2" rendered="#{request.isUserInRole('ADMIN')}">                                    
+                                    HISTORICO
+                                </h:panelGrid>
+                                
+                            </h:panelGrid>
 
 
 
-                        <p:dataTable id="dtTerceroNegociacion" rowIndexVar="i"   
-                                     var="negociacionTercero" value="#{miNegociacionBean.allListNegociacionTercero}">
-                            <p:column  headerText="#{messages.field_label_tercero_identificacion}">
-                                <h:outputText value="#{negociacionTercero.tercero.identificacion}" />
-                            </p:column>
+                            <p:dataTable id="dtTerceroNegociacion" rowIndexVar="i"   
+                                         var="negociacionTercero" value="#{miNegociacionBean.allListNegociacionTercero}">
+                                <p:column  headerText="#{messages.field_label_tercero_identificacion}">
+                                    <h:outputText value="#{negociacionTercero.tercero.identificacion}" />
+                                </p:column>
 
-                            <p:column  headerText="#{messages.field_label_tercero_apellido1}">
-                                <h:outputText value="#{negociacionTercero.tercero.apellido1}" />
-                            </p:column>
-                            <p:column  headerText="#{messages.field_label_tercero_apellido2}">
-                                <h:outputText value="#{negociacionTercero.tercero.apellido2}" />
-                            </p:column>
-                            <p:column  headerText="#{messages.field_label_tercero_nombres}">
-                                <h:outputText value="#{negociacionTercero.tercero.nombres}" />
-                            </p:column>
+                                <p:column  headerText="#{messages.field_label_tercero_apellido1}">
+                                    <h:outputText value="#{negociacionTercero.tercero.apellido1}" />
+                                </p:column>
+                                <p:column  headerText="#{messages.field_label_tercero_apellido2}">
+                                    <h:outputText value="#{negociacionTercero.tercero.apellido2}" />
+                                </p:column>
+                                <p:column  headerText="#{messages.field_label_tercero_nombres}">
+                                    <h:outputText value="#{negociacionTercero.tercero.nombres}" />
+                                </p:column>
 
-                        </p:dataTable>
+                            </p:dataTable>
 
 
 
-                        <p:growl id="growl" showDetail="true" sticky="true" />  
-                        <p:dataTable id="pnlGrd_numOfLbl" rowIndexVar="i"   var="planPago" value="#{miNegociacionBean.allPlanPagosListNegociacion}">
-                            <p:column headerText="#{messages.field_label_plan_pago_numero_cuota}">
-                                <h:outputText value="#{planPago.numeroCuota}" id="numeroCuotaEditInput_#{i}" 
-                                              />
-                            </p:column>
-                            <p:column headerText="Fecha">
-                                <h:outputText value="#{planPago.fechaPactada}" id="fechaPactadaEditInput_#{i}" 
-                                              />
-                            </p:column>
-                            <p:column headerText="#{messages.field_label_plan_pago_valor}">
-                                <h:outputText value="#{planPago.valorPactado}" id="valorEditInput_#{i}" 
-                                              >
-                                    <f:convertNumber  groupingUsed="true"
-                                                      maxFractionDigits="2" type="currency" />
+                            <p:growl id="growl" showDetail="true" sticky="true" />  
+                            <p:dataTable id="pnlGrd_numOfLbl" rowIndexVar="i"   var="planPago" value="#{miNegociacionBean.allPlanPagosListNegociacion}">
+                                <p:column headerText="#{messages.field_label_plan_pago_numero_cuota}">
+                                    <h:outputText value="#{planPago.numeroCuota}" id="numeroCuotaEditInput_#{i}" 
+                                                  />
+                                </p:column>
+                                <p:column headerText="Fecha">
+                                    <h:outputText value="#{planPago.fechaPactada}" id="fechaPactadaEditInput_#{i}" 
+                                                  />
+                                </p:column>
+                                <p:column headerText="#{messages.field_label_plan_pago_valor}">
+                                    <h:outputText value="#{planPago.valorPactado}" id="valorEditInput_#{i}" 
+                                                  >
+                                        <f:convertNumber  groupingUsed="true"
+                                                          maxFractionDigits="2" type="currency" />
 
-                                </h:outputText>
-                            </p:column>
-                            <p:column headerText="Observacion">
-                                <h:outputText value="#{planPago.observacion}" id="observacionEditInput_#{i}" 
-                                              />
-                            </p:column>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Observacion">
+                                    <h:outputText value="#{planPago.observacion}" id="observacionEditInput_#{i}" 
+                                                  />
+                                </p:column>
 
-                        </p:dataTable>
+                            </p:dataTable>
 
                     </p:outputPanel>
                 </p:outputPanel>
