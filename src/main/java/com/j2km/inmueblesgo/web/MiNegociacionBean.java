@@ -50,7 +50,6 @@ import org.primefaces.event.SelectEvent;
 
 @Named("miNegociacionBean")
 @ViewScoped
-@DeclareRoles("TutorialUser")
 public class MiNegociacionBean implements Serializable {
 
     private InmuebleEntity inmueble;

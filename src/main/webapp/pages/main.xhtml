@@ -1,15 +1,136 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-<ui:composition template="/templates/layout.xhtml">
-    <ui:define name="header">
-        <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css"/>
-    </ui:define>
-  <ui:define name="content">
-    Dashboard
-  </ui:define>
-</ui:composition>
+    <ui:composition template="/templates/layout.xhtml">
+        <ui:define name="header">
+            <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css"/>
+            <h:outputStylesheet library="css" name="sb-admin-2.css"/>   
+
+        </ui:define>
+        <ui:define name="content">
+            <h:form>
+                <div class="row">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-file-text-o fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">#{dashboard.nuevasNegociaciones.size()}</div>
+                                        <div>Nuevas Negociaciones!</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p:commandLink actionListener="#{dashboard.cargarNuevasNegociaciones()}" update="detalle">
+                                <div class="panel-footer">
+                                    <span class="pull-left">Ver Detalles</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </p:commandLink>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-green">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-tasks fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">12</div>
+                                        <div>New Tasks!</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-yellow">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-shopping-cart fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">124</div>
+                                        <div>New Orders!</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6">
+                        <div class="panel panel-red">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-xs-3">
+                                        <i class="fa fa-support fa-5x"></i>
+                                    </div>
+                                    <div class="col-xs-9 text-right">
+                                        <div class="huge">13</div>
+                                        <div>Support Tickets!</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="#">
+                                <div class="panel-footer">
+                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <h:panelGrid id="detalle" >
+                    <p:dataTable value="#{dashboard.nuevasNegociaciones}" var="negociacion" rendered="#{(dashboard.tablaActiva == 1)}">
+                        <p:column headerText="Fecha">
+                            <h:outputText value="#{negociacion.fecha}"/>
+                        </p:column>
+                        <p:column headerText="Vendedor">
+                            <h:outputText value="#{negociacion.vendedor.login}"/>
+                        </p:column>
+                        <p:column headerText="Proyecto">
+                            <h:outputText value="#{negociacion.inmueble.proyecto.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Inmueble">
+                            <h:outputText value="#{negociacion.inmueble.numero}"/>
+                        </p:column>
+                        <p:column headerText="Cliente(s)">
+                            <ui:repeat value="#{dashboard.findAllTerceroByNegociacio(negociacion)}" var="tercero">
+                                <h:outputText value="#{tercero.tercero.apellido1} #{tercero.tercero.nombres}"/>
+                                <br/>
+                            </ui:repeat>
+                        </p:column>
+                        <p:column headerText="Opciones">
+                            <p:commandButton action="#{'/pages/minegociacion/negociacionView?faces-redirect=true&amp;id='.concat(negociacion.id)}"                                         
+                                         icon="fa fa-eye"
+                                         title="Ver Información"/>
+                        </p:column>
+                        
+                        
+                    </p:dataTable>
+                </h:panelGrid>
+            </h:form>
+        </ui:define>
+    </ui:composition>
 </html>
