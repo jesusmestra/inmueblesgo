@@ -20,12 +20,12 @@
                                         <i class="fa fa-file-text-o fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">#{dashboard.nuevasNegociaciones.size()}</div>
+                                        <div class="huge">#{sessionScope.dashboard.nuevasNegociaciones.size()}</div>
                                         <div>Nuevas Negociaciones!</div>
                                     </div>
                                 </div>
                             </div>
-                            <p:commandLink actionListener="#{dashboard.cargarNuevasNegociaciones()}" update="detalle">
+                            <p:commandLink actionListener="#{sessionScope.dashboard.cargarNuevasNegociaciones(1)}" update="detalle">
                                 <div class="panel-footer">
                                     <span class="pull-left">Ver Detalles</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -47,13 +47,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#">
+                            <p:commandLink actionListener="#{sessionScope.dashboard.cargarNuevasNegociaciones(2)}" update="detalle">
                                 <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-left">Ver Detalles</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
-                            </a>
+                            </p:commandLink>
+
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
@@ -69,13 +70,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#">
+                            <p:commandLink actionListener="#{sessionScope.dashboard.cargarNuevasNegociaciones(3)}" update="detalle">
                                 <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-left">Ver Detalles</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
-                            </a>
+                            </p:commandLink>
+
                         </div>
                     </div>
                     <div class="col-lg-3 col-md-6">
@@ -91,16 +93,24 @@
                                     </div>
                                 </div>
                             </div>
-                            <a href="#">
+                            <p:commandLink actionListener="#{sessionScope.dashboard.cargarNuevasNegociaciones(4)}" update="detalle">
                                 <div class="panel-footer">
-                                    <span class="pull-left">View Details</span>
+                                    <span class="pull-left">Ver Detalles</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
                                     <div class="clearfix"></div>
                                 </div>
-                            </a>
+                            </p:commandLink>
+
                         </div>
                     </div>
                 </div>
+
+
+
+
+
+
+
                 <h:panelGrid id="detalle" >
                     <p:dataTable value="#{dashboard.nuevasNegociaciones}" var="negociacion" rendered="#{(dashboard.tablaActiva == 1)}">
                         <p:column headerText="Fecha">
@@ -123,13 +133,55 @@
                         </p:column>
                         <p:column headerText="Opciones">
                             <p:commandButton action="#{'/pages/minegociacion/negociacionView?faces-redirect=true&amp;id='.concat(negociacion.id)}"                                         
-                                         icon="fa fa-eye"
-                                         title="Ver Información"/>
+                                             icon="fa fa-eye"
+                                             title="Ver Información"/>
                         </p:column>
-                        
-                        
+
+
                     </p:dataTable>
+
+
+
+                    <p:dataTable value="#{null}" var="negociacion" rendered="#{(dashboard.tablaActiva == 2)}">
+                        <p:column headerText="Tabla2"></p:column>
+                    </p:dataTable>
+
+                    <p:dataTable value="#{null}" var="negociacion" rendered="#{(dashboard.tablaActiva == 3)}">
+                        <p:column headerText="Tabla3"></p:column>
+                    </p:dataTable>
+
+                    <p:dataTable value="#{null}" var="negociacion" rendered="#{(dashboard.tablaActiva == 4)}">
+                        <p:column headerText="Tabla4"></p:column>
+                    </p:dataTable>
+
                 </h:panelGrid>
+
+
+
+
+
+
+
+
+
+                <h:form>
+                    <p:growl id="growl" showDetail="true" />
+
+                    <h:panelGrid columns="2" columnClasses="left,right" style="width:100%">
+                        <p:chart type="pie" model="#{chartBean.pieModel1}" style="width:400px;height:300px">
+                            <p:ajax event="itemSelect" listener="#{chartBean.itemSelect}" update="growl" />
+                        </p:chart>
+
+                        <p:chart type="bar" model="#{chartBean.barModel}" style="width:400px;height:300px">
+                            <p:ajax event="itemSelect" listener="#{chartBean.itemSelect}" update="growl" />
+                        </p:chart>  
+                    </h:panelGrid>
+
+                </h:form>
+
+
+
+
             </h:form>
         </ui:define>
     </ui:composition>

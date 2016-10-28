@@ -8,6 +8,7 @@ package com.j2km.inmueblesgo.configuracion;
 import com.j2km.inmueblesgo.domain.EmpresaEntity;
 import com.j2km.inmueblesgo.domain.EstadoInmuebleEntity;
 import com.j2km.inmueblesgo.domain.EstadoNegociacionEntity;
+import com.j2km.inmueblesgo.domain.EstadoProyectoEntity;
 import com.j2km.inmueblesgo.domain.OfertaEntity;
 import com.j2km.inmueblesgo.domain.PermisoEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
@@ -18,6 +19,7 @@ import com.j2km.inmueblesgo.domain.UsuarioEntity;
 import com.j2km.inmueblesgo.service.EmpresaService;
 import com.j2km.inmueblesgo.service.EstadoInmuebleService;
 import com.j2km.inmueblesgo.service.EstadoNegociacionService;
+import com.j2km.inmueblesgo.service.EstadoProyectoService;
 import com.j2km.inmueblesgo.service.OfertaService;
 import com.j2km.inmueblesgo.service.PermisoService;
 import com.j2km.inmueblesgo.service.ProyectoService;
@@ -30,11 +32,10 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 
-
 @Startup
 @Singleton
 public class Inicio {
-    
+
     @Inject
     private UsuarioService usuarioService;
 
@@ -49,74 +50,92 @@ public class Inicio {
 
     @Inject
     private TerceroService terceroService;
-    
+
     @Inject
     private EmpresaService empresaService;
-    
+
     @Inject
     private ProyectoService proyectoService;
-    
+
     @Inject
     private OfertaService ofertaService;
 
     @Inject
     private EstadoInmuebleService estadoInmuebleService;
-    
+
     @Inject
     private EstadoNegociacionService estadoNegociacionService;
-    
+
+    @Inject
+    private EstadoProyectoService estadoProyectoService;
+
     @PostConstruct
     public void iniciar() {
-        
-        
-        
-          EstadoNegociacionEntity estadoNegociacion = estadoNegociacionService.findByCodigo("01");
-        
-        if (estadoNegociacion == null){
+
+        EstadoProyectoEntity estadoProyecto = estadoProyectoService.findByCodigo("01");
+
+        if (estadoProyecto == null) {
+            estadoProyecto = new EstadoProyectoEntity();
+            estadoProyecto.setCodigo("01");
+            estadoProyecto.setNombre("Activo");
+            estadoProyectoService.save(estadoProyecto);
+        }
+
+        estadoProyecto = estadoProyectoService.findByCodigo("02");
+
+        if (estadoProyecto == null) {
+            estadoProyecto = new EstadoProyectoEntity();
+            estadoProyecto.setCodigo("02");
+            estadoProyecto.setNombre("Inactivo");
+            estadoProyectoService.save(estadoProyecto);
+        }
+
+        EstadoNegociacionEntity estadoNegociacion = estadoNegociacionService.findByCodigo("01");
+
+        if (estadoNegociacion == null) {
             estadoNegociacion = new EstadoNegociacionEntity();
             estadoNegociacion.setCodigo("01");
             estadoNegociacion.setNombre("Radicado");
             estadoNegociacionService.save(estadoNegociacion);
         }
-        
-        
+
         estadoNegociacion = estadoNegociacionService.findByCodigo("02");
-        
-        if (estadoNegociacion == null){
+
+        if (estadoNegociacion == null) {
             estadoNegociacion = new EstadoNegociacionEntity();
             estadoNegociacion.setCodigo("02");
             estadoNegociacion.setNombre("Aprobado");
             estadoNegociacionService.save(estadoNegociacion);
         }
-        
+
         estadoNegociacion = estadoNegociacionService.findByCodigo("03");
-        
-        if (estadoNegociacion == null){
+
+        if (estadoNegociacion == null) {
             estadoNegociacion = new EstadoNegociacionEntity();
             estadoNegociacion.setCodigo("03");
             estadoNegociacion.setNombre("Rechazado");
             estadoNegociacionService.save(estadoNegociacion);
         }
-        
+
         estadoNegociacion = estadoNegociacionService.findByCodigo("04");
-        
-        if (estadoNegociacion == null){
+
+        if (estadoNegociacion == null) {
             estadoNegociacion = new EstadoNegociacionEntity();
             estadoNegociacion.setCodigo("04");
             estadoNegociacion.setNombre("Finalizado");
             estadoNegociacionService.save(estadoNegociacion);
         }
-         
+
         // ES APROBADO PERO QUEDA MAL EN LA NEGOCIACION
         estadoNegociacion = estadoNegociacionService.findByCodigo("05");
-       
-        if (estadoNegociacion == null){
+
+        if (estadoNegociacion == null) {
             estadoNegociacion = new EstadoNegociacionEntity();
-            estadoNegociacion.setCodigo("04");
-            estadoNegociacion.setNombre("Anulado");  
+            estadoNegociacion.setCodigo("05");
+            estadoNegociacion.setNombre("Anulado");
             estadoNegociacionService.save(estadoNegociacion);
         }
-        
+
         RolEntity rol = rolService.findByNombre("ADMIN");
 
         if (rol == null) {
@@ -124,7 +143,7 @@ public class Inicio {
             rol.setNombre("ADMIN");
             rolService.save(rol);
         }
-        
+
         UsuarioEntity usuario = usuarioService.findByLogin("admin");
 
         if (usuario == null) {
@@ -142,16 +161,15 @@ public class Inicio {
             permiso.setRol(rol);
             permisoService.save(permiso);
         }
-        
-        
-         RolEntity rolVendedor = rolService.findByNombre("VENDEDOR");
+
+        RolEntity rolVendedor = rolService.findByNombre("VENDEDOR");
 
         if (rolVendedor == null) {
             rolVendedor = new RolEntity();
             rolVendedor.setNombre("VENDEDOR");
             rolService.save(rolVendedor);
         }
-        
+
         UsuarioEntity usuarioVendedor = usuarioService.findByLogin("vendedor");
 
         if (usuarioVendedor == null) {
@@ -169,37 +187,34 @@ public class Inicio {
             permisoVendedor.setRol(rolVendedor);
             permisoService.save(permisoVendedor);
         }
-        
-        
 
         EstadoInmuebleEntity estadoInmueble = estadoInmuebleService.findByCodigo("01");
-        
-        if (estadoInmueble == null){
+
+        if (estadoInmueble == null) {
             estadoInmueble = new EstadoInmuebleEntity();
             estadoInmueble.setCodigo("01");
             estadoInmueble.setNombre("Disponible");
             estadoInmuebleService.save(estadoInmueble);
         }
-        
+
         estadoInmueble = estadoInmuebleService.findByCodigo("02");
-        
-        if (estadoInmueble == null){
+
+        if (estadoInmueble == null) {
             estadoInmueble = new EstadoInmuebleEntity();
             estadoInmueble.setCodigo("02");
             estadoInmueble.setNombre("Separado");
             estadoInmuebleService.save(estadoInmueble);
         }
-        
+
         estadoInmueble = estadoInmuebleService.findByCodigo("03");
-        
-        if (estadoInmueble == null){
+
+        if (estadoInmueble == null) {
             estadoInmueble = new EstadoInmuebleEntity();
             estadoInmueble.setCodigo("03");
             estadoInmueble.setNombre("Vendido");
             estadoInmuebleService.save(estadoInmueble);
         }
-        
-        
+
         TipoIdentificacionEntity tipoIdentificacion = tipoIdentificacionService.findByAbrebiatura("CC");
 
         if (tipoIdentificacion == null) {
@@ -288,8 +303,8 @@ public class Inicio {
             empresa.setRepresentante(terceroService.findByIdentificacion("11000531"));
             empresaService.save(empresa);
         }
-        
-         empresa = empresaService.findByNit("999999999");
+
+        empresa = empresaService.findByNit("999999999");
 
         if (empresa == null) {
             empresa = new EmpresaEntity();
@@ -305,10 +320,10 @@ public class Inicio {
             empresa.setRepresentante(terceroService.findByIdentificacion("10766753"));
             empresaService.save(empresa);
         }
-        
+
         OfertaEntity oferta = ofertaService.findByNombre("Plan 30/70 18");
-        
-        if (oferta == null){
+
+        if (oferta == null) {
             oferta = new OfertaEntity();
             oferta.setNombre("Plan 30/70 18");
             oferta.setNumeroCuotas(18);
@@ -317,10 +332,10 @@ public class Inicio {
             oferta.setValorSeparacion(5000000.0);
             ofertaService.save(oferta);
         }
-        
+
         oferta = ofertaService.findByNombre("Plan 40/70 12");
-        
-        if (oferta == null){
+
+        if (oferta == null) {
             oferta = new OfertaEntity();
             oferta.setNombre("Plan 40/70 12");
             oferta.setNumeroCuotas(12);
@@ -329,48 +344,50 @@ public class Inicio {
             oferta.setValorSeparacion(10000000.0);
             ofertaService.save(oferta);
         }
-        
-        
-        
+
         ProyectoEntity proyecto = proyectoService.findByCodigo("P001");
-        if (proyecto == null){
+        if (proyecto == null) {
             proyecto = new ProyectoEntity();
             proyecto.setCodigo("P001");
             proyecto.setNombre("CONJUNTO CERRADO KORANDO");
             proyecto.setEmpresa(empresaService.findByNit("999999988"));
             proyecto.setOferta(ofertaService.findByNombre("Plan 40/70 12"));
+            proyecto.setEstadoProyecto(estadoProyecto);
             proyectoService.save(proyecto);
         }
 
         proyecto = proyectoService.findByCodigo("P002");
-        if (proyecto == null){
+        if (proyecto == null) {
             proyecto = new ProyectoEntity();
             proyecto.setCodigo("P002");
             proyecto.setNombre("TORRES IMAN");
             proyecto.setEmpresa(empresaService.findByNit("999999999"));
             proyecto.setOferta(ofertaService.findByNombre("Plan 30/70 18"));
+            proyecto.setEstadoProyecto(estadoProyecto);
             proyectoService.save(proyecto);
         }
-        
+
         proyecto = proyectoService.findByCodigo("P003");
-        if (proyecto == null){
+        if (proyecto == null) {
             proyecto = new ProyectoEntity();
             proyecto.setCodigo("P003");
             proyecto.setNombre("BUHO TORRES");
             proyecto.setEmpresa(empresaService.findByNit("999999988"));
             proyecto.setOferta(ofertaService.findByNombre("Plan 40/70 12"));
+            proyecto.setEstadoProyecto(estadoProyecto);
             proyectoService.save(proyecto);
         }
 
         proyecto = proyectoService.findByCodigo("P004");
-        if (proyecto == null){
+        if (proyecto == null) {
             proyecto = new ProyectoEntity();
             proyecto.setCodigo("P004");
             proyecto.setNombre("CONJUNTO CERRADO HP");
             proyecto.setEmpresa(empresaService.findByNit("999999999"));
             proyecto.setOferta(ofertaService.findByNombre("Plan 30/70 18"));
+            proyecto.setEstadoProyecto(estadoProyecto);
             proyectoService.save(proyecto);
         }
-     
+
     }
 }

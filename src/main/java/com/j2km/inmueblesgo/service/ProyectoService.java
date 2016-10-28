@@ -1,6 +1,7 @@
 package com.j2km.inmueblesgo.service;
 
 import com.j2km.inmueblesgo.domain.EmpresaEntity;
+import com.j2km.inmueblesgo.domain.EstadoProyectoEntity;
 import com.j2km.inmueblesgo.domain.OfertaEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
 import java.io.Serializable;
@@ -150,5 +151,20 @@ public class ProyectoService extends BaseService<ProyectoEntity> implements Seri
 
         return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
+    
+    
+    /********************/
+    @Transactional
+    public List<ProyectoEntity> findAllByEstado(EstadoProyectoEntity estado) {
+
+        List<ProyectoEntity> lista = entityManager.createQuery("SELECT o FROM Proyecto o WHERE o.estadoProyecto = :estado", ProyectoEntity.class).setParameter("estado", estado).getResultList();
+        if (lista == null || lista.isEmpty()) {
+            return null;
+        }
+
+        return lista;
+    }
+    
+    
 
 }

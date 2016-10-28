@@ -40,6 +40,10 @@ public class ProyectoEntity extends BaseEntity implements Serializable {
     @JoinColumn(name = "POBLADO_ID")
     private PobladoEntity poblado;
 
+    @ManyToOne(targetEntity = EstadoProyectoEntity.class)
+    @JoinColumn(name = "ESTADO_PROYECTO_ID")
+    private EstadoProyectoEntity estadoProyecto;
+
     public String getNombre() {
         return this.nombre;
     }
@@ -78,6 +82,14 @@ public class ProyectoEntity extends BaseEntity implements Serializable {
 
     public void setPoblado(PobladoEntity poblado) {
         this.poblado = poblado;
+    }
+
+    public EstadoProyectoEntity getEstadoProyecto() {
+        return this.estadoProyecto;
+    }
+
+    public void setEstadoProyecto(EstadoProyectoEntity estadoProyecto) {
+        this.estadoProyecto = estadoProyecto;
     }
 
 }

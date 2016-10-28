@@ -17,6 +17,30 @@
                              converter="#{genericEntityConverter}" />              
                 <f:viewAction action="#{miNegociacionBean.onLoad}"  />
             </f:metadata>
+            
+    <p:panel  header="#{miNegociacionBean.inmueble.proyecto.nombre} |  #{miNegociacionBean.inmueble.proyecto.empresa.nombre}" style="margin-bottom:10px;">
+
+        <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+            <h:graphicImage name="images/proyecto/proyecto_#{miNegociacionBean.inmueble.proyecto.id}.gif"  />
+
+
+            <p:outputPanel>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputText value="Codigo:" />
+                    <h:outputText value="#{miNegociacionBean.inmueble.proyecto.codigo}" style="font-weight: bold"/>
+
+                    <h:outputText value="Nombre:" />
+                    <h:outputText value="#{miNegociacionBean.inmueble.proyecto.nombre}" style="font-weight: bold"/>
+
+                    <h:outputText value="Ubicacion:" />
+                    <h:outputText value="#{miNegociacionBean.inmueble.proyecto.poblado.municipio.nombre}" style="font-weight: bold"/>
+                </h:panelGrid>
+            </p:outputPanel>
+        </h:panelGrid>
+    </p:panel>
+            
+            
+            
 
             <h:form id="viewInmuebleForm" >
                 <p:outputPanel>
@@ -25,8 +49,6 @@
                         <h:panelGrid columns="3" styleClass="dialog" columnClasses="col1,col2, col3" >
                             <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2">
 
-                                <h:outputText value="#{messages.field_label_inmueble_proyecto}:" />
-                                <h:outputText value="#{miNegociacionBean.inmueble.proyecto.nombre}" />
 
 
                                 <h:outputText value="#{messages.field_label_inmueble_estadoInmueble}:" />

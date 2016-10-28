@@ -1,12 +1,18 @@
 package com.j2km.inmueblesgo.web;
 
-import com.j2km.inmueblesgo.domain.DepartamentoEntity;
 import com.j2km.inmueblesgo.domain.EmpresaEntity;
+import com.j2km.inmueblesgo.domain.EstadoInmuebleEntity;
+import com.j2km.inmueblesgo.domain.EstadoProyectoEntity;
+import com.j2km.inmueblesgo.domain.InmuebleEntity;
+import com.j2km.inmueblesgo.domain.NegociacionEntity;
 import com.j2km.inmueblesgo.domain.OfertaEntity;
 import com.j2km.inmueblesgo.domain.PobladoEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
-import com.j2km.inmueblesgo.service.DepartamentoService;
 import com.j2km.inmueblesgo.service.EmpresaService;
+import com.j2km.inmueblesgo.service.EstadoInmuebleService;
+import com.j2km.inmueblesgo.service.EstadoProyectoService;
+import com.j2km.inmueblesgo.service.InmuebleService;
+import com.j2km.inmueblesgo.service.NegociacionService;
 import com.j2km.inmueblesgo.service.OfertaService;
 import com.j2km.inmueblesgo.service.PobladoService;
 import com.j2km.inmueblesgo.service.ProyectoService;
@@ -14,9 +20,7 @@ import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +31,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
-import org.primefaces.context.RequestContext;
 
 @Named("proyectoBean")
 @ViewScoped
@@ -59,9 +62,29 @@ public class ProyectoBean implements Serializable {
 
     private List<EmpresaEntity> allEmpresasList;
 
-    private List<DepartamentoEntity> departamentoList;
     @Inject
-    private DepartamentoService departamentoService;
+    private EstadoProyectoService estadoProyectoService;
+
+    private List<EstadoProyectoEntity> estadoProyectoList;
+
+    private EstadoProyectoEntity estadoProyectoSel;
+
+    private List<ProyectoEntity> proyectoEntityList;
+
+    @Inject
+    private EstadoInmuebleService estadoInmuebleService;
+
+    private List<EstadoInmuebleEntity> estadoInmuebleList;
+
+    private EstadoInmuebleEntity estadoInmuebleSel;
+
+    private List<InmuebleEntity> inmuebleEntityList;
+
+    @Inject
+    private InmuebleService inmuebleService;
+    
+    @Inject
+    private NegociacionService negociacionService;
 
     public void prepareNewProyecto() {
         reset();
@@ -196,5 +219,113 @@ public class ProyectoBean implements Serializable {
         this.proyecto = proyecto;
     }
 
+    /**
+     * ****************
+     */
+    public void inicioListaProyecto() {
+        this.estadoProyectoSel = estadoProyectoService.findByCodigo("01");
+        this.estadoProyectoList = estadoProyectoService.findAllEstadoProyectoEntities();
+        if (this.estadoProyectoSel == null) {
+            this.proyectoEntityList = proyectoService.findAllProyectoEntities();
+        } else {
+            this.proyectoEntityList = proyectoService.findAllByEstado(estadoProyectoSel);
+        }
+
+    }
+
+    public void inicioListaInmueble() {
+        this.estadoInmuebleSel = estadoInmuebleService.findByCodigo("01");
+        this.estadoInmuebleList = estadoInmuebleService.findAllEstadoInmuebleEntities();
+        if (this.estadoInmuebleSel == null) {
+            inmuebleService.findInmueblesByProyecto(proyecto);
+        } else {
+            this.inmuebleEntityList = inmuebleService.findAllInmueblesByProyectoAndEstado(proyecto, estadoInmuebleSel);
+        }
+
+    }
+
+    public List<EstadoInmuebleEntity> getEstadoInmuebleList() {
+        return estadoInmuebleList;
+    }
+
+    public void setEstadoInmuebleList(List<EstadoInmuebleEntity> estadoInmuebleList) {
+        this.estadoInmuebleList = estadoInmuebleList;
+    }
+
+    public EstadoInmuebleEntity getEstadoInmuebleSel() {
+        return estadoInmuebleSel;
+    }
+
+    public void setEstadoInmuebleSel(EstadoInmuebleEntity estadoInmuebleSel) {
+        this.estadoInmuebleSel = estadoInmuebleSel;
+    }
+
+    public List<InmuebleEntity> getInmuebleEntityList() {
+        return inmuebleEntityList;
+    }
+
+    public void setInmuebleEntityList(List<InmuebleEntity> inmuebleEntityList) {
+        this.inmuebleEntityList = inmuebleEntityList;
+    }
+
+    public List<EstadoProyectoEntity> getEstadoProyectoList() {
+        return estadoProyectoList;
+    }
+
+    public void setEstadoProyectoList(List<EstadoProyectoEntity> estadoProyectoList) {
+        this.estadoProyectoList = estadoProyectoList;
+    }
+
+    public EstadoProyectoEntity getEstadoProyectoSel() {
+        return estadoProyectoSel;
+    }
+
+    public void setEstadoProyectoSel(EstadoProyectoEntity estadoProyectoSel) {
+        this.estadoProyectoSel = estadoProyectoSel;
+    }
+
+    public List<ProyectoEntity> getProyectoEntityList() {
+        return proyectoEntityList;
+    }
+
+    public void setProyectoEntityList(List<ProyectoEntity> proyectoEntityList) {
+        this.proyectoEntityList = proyectoEntityList;
+    }
+
+    public void cambioEstadoProyecto() {
+
+        if (this.estadoProyectoSel == null) {
+            this.proyectoEntityList = proyectoService.findAllProyectoEntities();
+        } else {
+            this.proyectoEntityList = proyectoService.findAllByEstado(estadoProyectoSel);
+        }
+
+    }
+
+    public void cambioEstadoInmueble() {
+
+        System.err.println("Estado Inmueble"+this.estadoInmuebleSel);
+        
+        if (this.estadoInmuebleSel == null) {
+            this.inmuebleEntityList = inmuebleService.findInmueblesByProyecto(proyecto);
+        } else {
+            this.inmuebleEntityList = inmuebleService.findAllInmueblesByProyectoAndEstado(proyecto, estadoInmuebleSel);
+        }
+
+    }
+    
+    
+    public String redireccionaNegociacion(InmuebleEntity inmueble){
+        String ruta = "";
+        if (inmueble.getEstadoInmueble().getId() == 1){
+            ruta = "/pages/vendedor/negociacion?faces-redirect=true&amp;id=".concat(inmueble.getId().toString());
+        }else{
+            NegociacionEntity n = negociacionService.findByInmueble(inmueble);
+            if (n!=null){
+                ruta = "/pages/vendedor/negociacionView?faces-redirect=true&amp;id=".concat(n.getId().toString());
+            }
+        }
+    return ruta;
+    }
     
 }

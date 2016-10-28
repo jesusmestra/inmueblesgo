@@ -7,21 +7,26 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:o="http://omnifaces.org/ui">
 
-    <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2" >
+    <h:form>
+    <p:panel  header="#{proyectoBean.proyecto.nombre} |  #{proyectoBean.proyecto.empresa.nombre}" style="margin-bottom:10px;">
 
-        <h:outputText value="#{messages.field_label_proyecto_empresa}:" />
-        <h:outputText value="#{proyectoBean.proyecto.empresa.nombre}" />
-
-
-        <h:outputText value="#{messages.field_label_proyecto_oferta}:" />
-        <h:outputText value="#{proyectoBean.proyecto.oferta.nombre}" />
-
-        <h:outputText value="#{messages.field_label_proyecto_codigo}:" />
-        <h:outputText value="#{proyectoBean.proyecto.codigo}" />
-
-        <h:outputText value="#{messages.field_label_proyecto_nombre}:" />
-        <h:outputText value="#{proyectoBean.proyecto.nombre}" />
+        <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+            <h:graphicImage name="images/proyecto/proyecto_#{proyectoBean.proyecto.id}.gif"  />
 
 
-    </h:panelGrid>
+            <p:outputPanel>
+                <h:panelGrid columns="2" cellpadding="5">
+                    <h:outputText value="Codigo:" />
+                    <h:outputText value="#{proyectoBean.proyecto.codigo}" style="font-weight: bold"/>
+
+                    <h:outputText value="Nombre:" />
+                    <h:outputText value="#{proyectoBean.proyecto.nombre}" style="font-weight: bold"/>
+
+                    <h:outputText value="Ubicacion:" />
+                    <h:outputText value="#{proyectoBean.proyecto.poblado.municipio.nombre}" style="font-weight: bold"/>
+                </h:panelGrid>
+            </p:outputPanel>
+        </h:panelGrid>
+    </p:panel>
+   </h:form>
 </html>
