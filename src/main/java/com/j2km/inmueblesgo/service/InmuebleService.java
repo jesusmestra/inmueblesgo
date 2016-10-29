@@ -136,5 +136,17 @@ public class InmuebleService extends BaseService<InmuebleEntity> implements Seri
 
         return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
+    
+    /****************************/
+    
+        @Transactional
+    public List<InmuebleEntity> findAllInmueblesByProyectoAndEstado(ProyectoEntity proyecto, EstadoInmuebleEntity estadoInmueble) {
+        return entityManager.createQuery("SELECT o FROM Inmueble o WHERE o.proyecto = :proyecto and o.estadoInmueble = :estadoInmueble", InmuebleEntity.class)
+                .setParameter("proyecto", proyecto)
+                .setParameter("estadoInmueble", estadoInmueble)
+                .getResultList();
+    }
+
+    
 
 }

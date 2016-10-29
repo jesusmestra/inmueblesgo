@@ -12,139 +12,152 @@
 
             <f:metadata>
                 <f:viewParam name="id" value="#{proyectoBean.proyecto}" converter="#{genericEntityConverter}" />
+                <f:viewAction action="#{proyectoBean.inicioListaInmueble}"  />
             </f:metadata>
 
-            <p:outputPanel id="proyectoViewPanel" >
-                <h:form id="viewProductExampleForm">
-                    <ui:include src="/pages/proyecto/proyectoViewInclude.xhtml"/>
-                    <div style="margin:10px">
-                        <p:commandButton value="#{messages.label_close}" 
-                                         icon="ui-icon-close" 
-                                         action="/pages/proyecto/proyecto?faces-redirect=true" 
-                                         immediate="true"/>
-                        <p:commandButton icon="ui-icon-plusthick" value="Generacion Masiva" 
-                                         oncomplete="PF('editInmuebleMasiveDialogWidget').show();"                
-                                         actionListener="#{inmuebleBean.onDialogGenerarInmuebles()}"
-                                         update=":inmuebleMasiveDataForm"
-                                         />
-                    </div>
-            </h:form>
-            </p:outputPanel>
 
-
-
+            <ui:include src="/pages/proyecto/proyectoViewInclude.xhtml"/>
+            <!--
+            <div style="margin:10px">
+                
+                <p:commandButton value="#{messages.label_close}" 
+                                 icon="ui-icon-close" 
+                                 action="/pages/proyecto/proyecto?faces-redirect=true" 
+                                 immediate="true"/>
+                <p:commandButton icon="ui-icon-plusthick" value="Generacion Masiva" 
+                                 oncomplete="PF('editInmuebleMasiveDialogWidget').show();"                
+                                 actionListener="#{inmuebleBean.onDialogGenerarInmuebles()}"
+                                 update=":inmuebleMasiveDataForm"
+                                 />
+            </div>
             
 
-            <p:dialog id="inmuebleMasiveDataForm" appendTo="@(body)" widgetVar="editInmuebleMasiveDialogWidget" header="Nuevo Proyecto" modal="true" 
-                      resizable="false" closeOnEscape="true" draggable="false">
-                <h:form id="editInmuebleMasiveForm">
-                    <h:panelGrid columns="2">
-                        <p:outputPanel id="inmuebleMasiveEditPanel">
-                            <ui:include src="/pages/inmueble/inmuebleMasiveEditInclude.xhtml"/>
-                            <div style="text-align: center; margin:10px">
-                                <p:commandButton value="#{messages.label_save}"
-                                                 icon="ui-icon-disk" action="#{inmuebleBean.generacionMasiva}"
-                                                 update=":editInmuebleMasiveForm:inmuebleMasiveEditPanel :inmuebleMasiveDataForm :growlForm:growl"
-                                                 oncomplete="if(!args.validationFailed) PF('editInmuebleMasiveDialogWidget').hide()" />
-                                <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('editInmuebleMasiveDialogWidget').hide()" type="button" />
-                            </div>
-                        </p:outputPanel>
+    <p:dialog id="inmuebleMasiveDataForm" appendTo="@(body)" widgetVar="editInmuebleMasiveDialogWidget" header="Nuevo Proyecto" modal="true" 
+              resizable="false" closeOnEscape="true" draggable="false">
+        <h:form id="editInmuebleMasiveForm">
+            <h:panelGrid columns="2">
+                <p:outputPanel id="inmuebleMasiveEditPanel">
+                    <ui:include src="/pages/inmueble/inmuebleMasiveEditInclude.xhtml"/>
+                    <div style="text-align: center; margin:10px">
+                        <p:commandButton value="#{messages.label_save}"
+                                         icon="ui-icon-disk" action="#{inmuebleBean.generacionMasiva}"
+                                         update=":editInmuebleMasiveForm:inmuebleMasiveEditPanel :inmuebleMasiveDataForm :growlForm:growl"
+                                         oncomplete="if(!args.validationFailed) PF('editInmuebleMasiveDialogWidget').hide()" />
+                        <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('editInmuebleMasiveDialogWidget').hide()" type="button" />
+                    </div>
+                </p:outputPanel>
 
-                    </h:panelGrid>
-                </h:form>
+            </h:panelGrid>
+        </h:form>
 
-            </p:dialog>   
+    </p:dialog>   
 
-
+            -->
 
 
             <h:form prependId="false" id="inmuebleDataForm" onkeypress="if (event.keyCode == 13) {
                         return false;
                     }">
 
+                <p:selectOneMenu value="#{proyectoBean.estadoInmuebleSel}"
+                                 >
+                    <f:selectItem noSelectionOption="true" itemLabel="" />
+                    <f:selectItems value="#{proyectoBean.estadoInmuebleList}" 
+                                   var="estadoInmueble" 
+                                   itemLabel="#{estadoInmueble.nombre}"
+                                   itemValue="#{estadoInmueble}" />
+                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.estadoInmuebleList}" />
+                    <p:ajax update="inmuebleTable" listener="#{proyectoBean.cambioEstadoInmueble}" />
+                </p:selectOneMenu>
 
 
-                <p:dataTable id="inmuebleTable" value="#{inmuebleService.findInmueblesByProyecto(proyectoBean.proyecto)}" 
+                <p:dataTable id="inmuebleTable" value="#{proyectoBean.inmuebleEntityList}" 
                              var="inmueble" resizableColumns="true" paginator="true"
                              paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
                              paginatorPosition="bottom" widgetVar="inmuebleTable" emptyMessage="#{messages.label_no_records_found}"
-                             reflow="true">
+                             reflow="true"
+                             rowIndexVar="i"
+                             >
 
                     <f:facet name="header" >
-
-                        <p:commandButton value="#{messages.create_new_inmueble}" icon="ui-icon-plusthick" action="#{inmuebleBean.prepareNewInmueble()}"
-                                         resetValues="true" update=":editInmuebleDialog" oncomplete="PF('editInmuebleDialogWidget').show()"
-                                         style="float:left" />
-
-
-
-                        <p:commandButton id="toggler" type="button" value="#{messages.table_select_columns}" icon="ui-icon-calculator" />
-                        <p:columnToggler datasource="inmuebleTable" trigger="toggler" />
+                        <p:outputLabel value="#{messages.label_listado_inmuebles}"/>
                     </f:facet>
 
+                    <p:column  headerText="#{messages.label_item}" style="width: 2%;" class="derecha"  >
+                        <h:outputText value="#{i+1}" />
+                    </p:column>
 
-                    <p:column headerText="#{messages.field_label_inmueble_proyecto}" >
-                        <h:outputText value="#{inmueble.proyecto.nombre}" />
-                    </p:column>                     
-
-
-                    <p:column headerText="#{messages.field_label_inmueble_estadoInmueble}" sortBy="#{inmueble.estadoInmueble}" >
-                        <h:outputText value="#{inmueble.estadoInmueble.nombre}" />
-                    </p:column>            
-
-                    <p:column  headerText="#{messages.field_label_inmueble_numero}" sortBy="#{inmueble.numero}" >
+                    <p:column  headerText="#{messages.field_label_inmueble_numero}"  >
                         <h:outputText value="#{inmueble.numero}" />
                     </p:column>                
 
-                    <p:column  headerText="#{messages.field_label_inmueble_area}" sortBy="#{inmueble.area}" >
-                        <h:outputText value="#{inmueble.area}" />
+                    <p:column  headerText="#{messages.field_label_inmueble_area}" class="derecha">
+                        <h:outputText value="#{inmueble.area}" >
+                            <f:convertNumber type="number"  />
+                        </h:outputText>
+
                     </p:column>  
 
 
-                    <p:column  headerText="#{messages.field_label_inmueble_valorMetroCuadrado}" sortBy="#{inmueble.valorMetroCuadrado}" >
-                        <h:outputText value="#{inmueble.valorMetroCuadrado}" />
+                    <p:column  headerText="#{messages.field_label_inmueble_valorMetroCuadrado}" class="derecha" >
+                        <h:outputText value="#{inmueble.valorMetroCuadrado}" >
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
+
                     </p:column>  
 
 
-                    <p:column  headerText="#{messages.field_label_inmueble_incremento}" sortBy="#{inmueble.incremento}" >
-                        <h:outputText value="#{inmueble.incremento}" />
+                    <p:column  headerText="#{messages.field_label_inmueble_incremento}" class="derecha" >
+                        <h:outputText value="#{inmueble.incremento}" >
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
                     </p:column> 
 
 
-                    <p:column  headerText="#{messages.field_label_inmueble_valorSeparacion}" sortBy="#{inmueble.valorSeparacion}" >
-                        <h:outputText value="#{inmueble.valorSeparacion}" />
+                    <p:column  headerText="#{messages.field_label_inmueble_valorSeparacion}" class="derecha" >
+                        <h:outputText value="#{inmueble.valorSeparacion}" >
+                            <f:convertNumber type="currency" currencySymbol="$" />
+                        </h:outputText>
                     </p:column>                     
 
 
 
-                    <p:column  headerText="#{messages.field_label_inmueble_valorTotal}" sortBy="#{inmueble.valorTotal}">
+                    <p:column  headerText="#{messages.field_label_inmueble_valorTotal}" class="derecha">
                         <h:outputText value="#{inmueble.valorTotal}">
                             <f:convertNumber type="currency" currencySymbol="$" />
                         </h:outputText>
                     </p:column>                      
 
-
-                    <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
-
-                        <p:commandButton action="#{'/pages/minegociacion/minegociacion?faces-redirect=true&amp;id='.concat(inmueble.id)}"                                         
-                                         icon="ui-icon-zoomin"
-                                         title="#{messages.label_view}" />
+                    <p:column headerText="#{messages.field_label_inmueble_estadoInmueble}"  >
+                        <h:outputText value="#{inmueble.estadoInmueble.nombre}" />
+                    </p:column>            
 
 
+                    <p:column styleClass="action-column" headerText="#{messages.table_actions_column}"  exportable="false" 
+                              style="width: 5%;" >
+
+                        <p:commandButton action="#{proyectoBean.redireccionaNegociacion(inmueble)}"                                         
+                                         icon="fa fa-shopping-cart"
+                                         title="#{messages.label_view}" rendered="#{inmueble.estadoInmueble.id == 1}" />
+
+                        <p:commandButton action="#{proyectoBean.redireccionaNegociacion(inmueble)}"                                         
+                                         icon="fa fa-eye"
+                                         title="#{messages.label_view}" rendered="#{inmueble.estadoInmueble.id != 1}" />
+<!--                                         
                         <p:commandButton icon="ui-icon-pencil" update=":editInmuebleDialog"
                                          resetValues="true" 
                                          action="#{inmuebleBean.onDialogOpen(inmueble)}"
                                          oncomplete="PF('editInmuebleDialogWidget').show()"
                                          title="#{messages.label_edit}" >
                         </p:commandButton>
-
+-->
 
                     </p:column>
 
                 </p:dataTable>
 
-
+<!--
                 <p:dialog dynamic="true" id="editInmuebleDialog" header="#{messages.label_inmueble_caption}"
                           modal="true" widgetVar="editInmuebleDialogWidget" maximizable="true">
                     <p:ajax event="close" listener="#{inmuebleBean.reset}"/>
@@ -161,7 +174,7 @@
                         </p:outputPanel>
                     </h:form>
                 </p:dialog>
-
+-->
             </h:form>         
 
 

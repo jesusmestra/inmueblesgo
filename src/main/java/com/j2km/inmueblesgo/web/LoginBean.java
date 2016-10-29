@@ -9,11 +9,13 @@ import java.io.Serializable;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,21 +24,33 @@ import javax.servlet.http.HttpSession;
 @ViewScoped
 public class LoginBean implements Serializable {
 
-    public void logouth() throws IOException{
-        
+    
+    
+    
+    public void logout() throws IOException, ServletException{
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
         HttpSession session = (HttpSession) externalContext.getSession(true);
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         
-        request.getSession().invalidate();
+        
+        try {
+            request.logout();
+            request.getSession().invalidate();
         response.sendRedirect(request.getContextPath());
-    }
+             
+        } catch (ServletException e) {
+            context.addMessage(null,  
+                    new FacesMessage("Wylogowywanie nie powiodło się"));
+        }
+    }    
+    
+
     
     
     public void informacionSession(FacesContext facesContext){
-       /* FacesContext context = facesContext;
+     /*  FacesContext context = facesContext;
         ExternalContext externalContext = context.getExternalContext();
         HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
         HttpSession session = (HttpSession) externalContext.getSession(true);
@@ -49,6 +63,9 @@ public class LoginBean implements Serializable {
         UsuarioEntity usuario = usuarioService.findByLogin(userPrincipal.getName());
 */
     }
+    
+    
+    
     
     
 }

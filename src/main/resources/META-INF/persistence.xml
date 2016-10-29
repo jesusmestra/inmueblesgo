@@ -26,6 +26,7 @@
     <class>com.j2km.inmueblesgo.domain.NegociacionHistoricoEntity</class>
     <class>com.j2km.inmueblesgo.domain.EstadoNegociacionEntity</class>
     <class>com.j2km.inmueblesgo.domain.Usuario</class>
+    <class>com.j2km.inmueblesgo.domain.EstadoProyectoEntity</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

@@ -7,13 +7,11 @@ package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.PermisoEntity;
 import com.j2km.inmueblesgo.domain.RolEntity;
-import com.j2km.inmueblesgo.domain.TorreEntity;
 import com.j2km.inmueblesgo.domain.UsuarioEntity;
 import com.j2km.inmueblesgo.service.PermisoService;
 import com.j2km.inmueblesgo.service.RolService;
 import com.j2km.inmueblesgo.service.UsuarioService;
 import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
-import com.sun.imageio.plugins.jpeg.JPEG;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,7 +22,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.PersistenceException;
-import javax.transaction.Transactional;
 import org.primefaces.event.SelectEvent;
 
 /**
