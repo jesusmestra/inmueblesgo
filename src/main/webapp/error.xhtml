@@ -1,50 +1,36 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="/templates/layout.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:fn="http://xmlns.jcp.org/jsp/jstl/functions"
+    xmlns:of="http://omnifaces.org/functions"
+>
+    <ui:define name="contentTitle">#{messages.label_error}</ui:define>
 
-    <h:head>
-        <h:outputStylesheet library="css" name="login.css"/>
-        <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css"/>
-
-    </h:head>
-
-    <body> 
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-            <div class="panel panel-default" style="margin-top: 20px;">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Error de autenticación!!!</h3>
-                </div>
-                <div class="panel-body">               
-                    <div class="well" style="background-color: rgba(255, 255, 255, 0.6);">
-                        <form id="loginForm" method="post" action="j_security_check" novalidate="novalidate">
-                            <div class="form-group">
-                                <label for="Login" class="control-label">Login</label>
-                                <input type="text" class="form-control" name="j_username" id="j_username" required="" title="Ingresar el login"/>
-                                <span class="help-block"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="password" class="control-label">Password</label>
-                                <input type="password" class="form-control" name="j_password" id="j_password" required="" title="Ingresar el password"/>
-                                <span class="help-block"></span>
-                            </div>
-                            <div class="alert alert-danger">
-                                <strong>Error: </strong> Login o Password incorrectos.
-                            </div>
-                            
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="remember" id="remember"/> Remember login
-                                </label>                                  
-                            </div>
-                            <button type="submit" class="btn btn-success btn-block">Login</button>                              
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </body>
-
-</html>
+    <ui:define name="content">
+        <ui:insert name="errorContent">
+            <h3>#{messages.label_error_occured}</h3>
+            <br/>
+            <b>Date/time:</b> #{of:formatDate(now, 'yyyy-MM-dd HH:mm:ss')}
+            <br/>
+            <b>User agent:</b> #{header['user-agent']}
+            <br/>
+            <b>User IP:</b> #{empty header['x-forwarded-for'] ? request.remoteAddr : fn:split(header['x-forwarded-for'], ',')[0]}
+            <br/>
+            <b>Request URI:</b> <a href="#{requestScope['javax.servlet.error.request_uri']}">#{requestScope['javax.servlet.error.request_uri']}</a>
+            <br/>
+            <b>Ajax request:</b> #{facesContext.partialViewContext.ajaxRequest ? 'Yes' : 'No'}
+            <br/>
+            <b>Status code:</b> #{requestScope['javax.servlet.error.status_code']}
+            <br/>
+            <b>Exception type:</b> <code>#{requestScope['javax.servlet.error.exception_type']}</code>
+            <br/>
+            <b>Exception message:</b> <code>#{requestScope['javax.servlet.error.message']}</code>
+            <br/>
+            <h:panelGroup rendered="#{facesContext.application.projectStage eq 'Development'}">
+                <b>Stack trace:</b> <pre><code>#{of:printStackTrace(requestScope['javax.servlet.error.exception'])}</code></pre>
+            </h:panelGroup>
+        </ui:insert>
+        <h:outputScript rendered="#{facesContext.partialViewContext.ajaxRequest}">scrollTo(0, 0);</h:outputScript>
+    </ui:define>
+</ui:composition>
