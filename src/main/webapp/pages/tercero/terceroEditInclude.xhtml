@@ -48,8 +48,7 @@
 
            <h:outputLabel value="#{messages.field_label_empresa_poblado}:" for="pobladoSelectInput" rendered="#{not hidePobladoSelectInput}"/>
 
-
-           <p:outputLabel id="labelNombrePoblado" value="#{terceroBean.tercero.lugarExpedicion.nombre}"/>
+            <p:outputLabel id="labelNombrePoblado" value="#{terceroBean.tercero.lugarExpedicion.nombre}"/>
             <p:commandButton icon="ui-icon-search" title="#{messages.label_create}" 
                              actionListener="#{buscarPobladoBean.choosePoblado}">
                 <p:ajax event="dialogReturn" listener="#{terceroBean.seleccionarPoblado}" update="labelNombrePoblado" />  
