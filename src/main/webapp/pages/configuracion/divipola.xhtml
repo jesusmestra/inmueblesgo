@@ -19,6 +19,17 @@
                     <h:commandButton action="#{configuracionBean.cargarDivipola()}" value="Upload File" />
                 </h:form>    
 
+                            <h:form enctype="multipart/form-data">
+                    
+                    Seleccina el archivo de la IMAGEN:
+                    <br/>                   
+                    <p:fileUpload value="#{configuracionBean.archivo}" mode="simple" skinSimple="true"/>
+                    <br/>
+                    <h:commandButton action="#{configuracionBean.saveFile}" value="Upload File" />
+                </h:form>    
+
+            
+            
         </ui:define>
     </ui:composition>
 </html>
