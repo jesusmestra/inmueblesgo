@@ -31,6 +31,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
+import org.primefaces.event.SelectEvent;
 
 @Named("proyectoBean")
 @ViewScoped
@@ -326,6 +327,10 @@ public class ProyectoBean implements Serializable {
             }
         }
     return ruta;
+    }
+    
+    public void seleccionarPoblado(SelectEvent event) {
+        this.proyecto.setPoblado((PobladoEntity) event.getObject());
     }
     
 }
