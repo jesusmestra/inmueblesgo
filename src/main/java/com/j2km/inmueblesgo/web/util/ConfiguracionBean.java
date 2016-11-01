@@ -13,19 +13,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Properties;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.apache.commons.io.FileUtils;
 import org.apache.poi.util.IOUtils;
 import org.primefaces.model.UploadedFile;
 
 @Named(value = "configuracionBean")
 @SessionScoped
-public class ConfiguracionBean implements Serializable{
-     @Inject
-     ConfiguracionService configuracion;
+public class ConfiguracionBean implements Serializable {
+
+    @Inject
+    ConfiguracionService configuracion;
 
     private UploadedFile divipola;
 
@@ -40,60 +45,38 @@ public class ConfiguracionBean implements Serializable{
         this.divipola = divipola;
     }
 
-    public void cargarDivipola() {       
-        System.out.println("Esta es la divipola"+divipola);
-        
-        if(divipola.getContents().length == 0) {
+    public void cargarDivipola() {
+        System.out.println("Esta es la divipola" + divipola);
+
+        if (divipola.getContents().length == 0) {
             FacesMessage facesMessage = MessageFactory.getMessage("message_archivo_vacio");
-            FacesContext.getCurrentInstance().addMessage(null, facesMessage);         
-        }else{
+            FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        } else {
             configuracion.cargarDivipola(divipola);
         }
-        
-        
-        
-        
-    }
-    
-    
-    private UploadedFile archivo;
 
-    public UploadedFile getArchivo() {
-        return archivo;
+    }
+    private UploadedFile archivo2;
+
+    public UploadedFile getArchivo2() {
+        return archivo2;
     }
 
-    public void setArchivo(UploadedFile archivo) {
-        this.archivo = archivo;
+    public void setArchivo2(UploadedFile archivo2) {
+        this.archivo2 = archivo2;
     }
-    
-    
-    
-    
-    
-    
-//    public void saveFile(InputStream uploadedInputStream, String serverLocation) {
-    public void saveFile() throws FileNotFoundException, IOException {
-        
-        
-        String filePath ="/home/jdmp/programacion/Proyectos/inmueblesgo/src/main/webapp/resources/images/proyecto/"+File.separator;
 
-    String filename = archivo.getFileName();
-    InputStream input = archivo.getInputstream();
-    OutputStream output = new FileOutputStream(new File(filePath, filename));
-
-    try {
-        IOUtils.copy(input, output);
-    } finally {
-        IOUtils.closeQuietly(input);
-        IOUtils.closeQuietly(output);
+    public void grabarArchivo() throws IOException {
+        
+        //Properties p = getPropiedades();
+        
+        //System.err.println("Propieda"+p.getProperty("ruta"));
+        
+        configuracion.copiarArchivo(archivo2, "proyecto_9.jpg", "proyecto");
     }
-        
-        
-        
-        
 
-}
     
     
     
+
 }

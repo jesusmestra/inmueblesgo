@@ -23,9 +23,12 @@
                     
                     Seleccina el archivo de la IMAGEN:
                     <br/>                   
-                    <p:fileUpload value="#{configuracionBean.archivo}" mode="simple" skinSimple="true"/>
+                    <p:fileUpload value="#{configuracionBean.archivo2 }" mode="simple" skinSimple="true"/>
                     <br/>
-                    <h:commandButton action="#{configuracionBean.saveFile}" value="Upload File" />
+                    <h:commandButton action="#{configuracionBean.grabarArchivo}" value="Upload File" />
+                    
+                    <h:outputLabel value="#{applicationBean.rutaCarpeta()}:" />
+                    
                 </h:form>    
 
             

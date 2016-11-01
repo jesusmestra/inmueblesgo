@@ -28,6 +28,9 @@ public class ProyectoEntity extends BaseEntity implements Serializable {
     @Basic
     private String codigo;
 
+    @Basic
+    private String logo;
+
     @ManyToOne(targetEntity = EmpresaEntity.class)
     @JoinColumn(name = "EMPRESA_ID")
     private EmpresaEntity empresa;
@@ -58,6 +61,14 @@ public class ProyectoEntity extends BaseEntity implements Serializable {
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;
+    }
+
+    public String getLogo() {
+        return this.logo;
+    }
+
+    public void setLogo(String logo) {
+        this.logo = logo;
     }
 
     public EmpresaEntity getEmpresa() {

@@ -11,7 +11,7 @@
 
         <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
 
-<h:outputLabel value="#{messages.field_label_proyecto_empresa}:" for="empresaSelectInput" rendered="#{not hideEmpresaSelectInput}"/>
+            <h:outputLabel value="#{messages.field_label_proyecto_empresa}:" for="empresaSelectInput" rendered="#{not hideEmpresaSelectInput}"/>
             <h:panelGroup rendered="#{not hideEmpresaSelectInput}">
                 <p:selectOneMenu value="#{proyectoBean.proyecto.empresa}"
                                  id="empresaSelectInput">
@@ -72,6 +72,15 @@
             <p:message for="codigoEditInput" display="icon" />
 
 
+            
+            
+            <h:outputLabel value="#{messages.label_proyecto_logo}"  />
+            <h:graphicImage value="#{applicationBean.webCarpeta()}proyecto/#{proyectoBean.proyecto.logo}"
+                            width="50" height="50"
+                            />
+            <p:message for="nombreEditInput" display="icon" />
+            
+            
             <h:outputLabel value="#{messages.field_label_proyecto_nombre}:" for="nombreEditInput" />
             <p:inputText value="#{proyectoBean.proyecto.nombre}" id="nombreEditInput" 
                          label="#{messages.field_label_proyecto_nombre}" />
@@ -85,6 +94,21 @@
                 <p:ajax event="dialogReturn" listener="#{proyectoBean.seleccionarPoblado}" update="labelNombrePoblado" />  
             </p:commandButton>
             
+
+
+            <h:outputLabel value="#{messages.label_selecciona_archivo}:" for="logoEditInput" />
+           
+            <p:fileUpload value="#{proyectoBean.archivoLogo }"  skinSimple="true" id="logoEditInput"
+                          mode="simple"
+                          />
+
+            <p:message for="logoEditInput" display="icon" />
+
+
+
+
+
+
 
         </p:panelGrid>
 

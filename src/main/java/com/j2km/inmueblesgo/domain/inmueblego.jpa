@@ -380,6 +380,9 @@ hash += (id != null ? id.hashCode() : 0);
                 <jpa:bv/>
                 <jpa:column name="proyecto_codigo" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
             </jpa:basic>
+            <jpa:basic attribute-type="String" visibile="true" name="logo" id="_147791572067181">
+                <jpa:bv/>
+            </jpa:basic>
             <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1470328576816274" visibile="true" name="empresa" id="_147259223889771">
                 <jpa:join-column name="EMPRESA_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
             </jpa:many-to-one>
@@ -404,6 +407,9 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:nq e="false" name="ProyectoEntity.findByCodigo">
             <jpa:query>Select p from ProyectoEntity p where p.codigo=:codigo</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="false" name="ProyectoEntity.findByLogo">
+            <jpa:query>Select p from ProyectoEntity p where p.logo=:logo</jpa:query>
         </jpa:nq>
         <jpa:table name="proyecto"/>
     </jpa:entity>
@@ -805,7 +811,7 @@ hash += (id != null ? id.hashCode() : 0);
         </jpa:nq>
         <jpa:table name="estado_negociacion"/>
     </jpa:entity>
-    <jpa:entity name="EstadoProyecto" xre="false" compositePrimaryKeyClass="EstadoProyectoEntityPK" abs="false" class="EstadoProyectoEntity" superclassId="_1473857903171" visibile="true" minimized="false" rootElement="_1470328576751241" id="_1477593775853">
+    <jpa:entity name="EstadoProyecto" xre="false" compositePrimaryKeyClass="EstadoProyectoEntityPK" abs="false" class="EstadoProyectoEntity" superclassId="_1473857903171" visibile="true" gen="false" minimized="false" rootElement="_1470328576751241" id="_1477593775853">
         <jpa:ts e="true"/>
         <jpa:hc e="true"/>
         <jpa:eq e="true"/>
@@ -875,7 +881,7 @@ hash += (id != null ? id.hashCode() : 0);
                 <Bounds x="518.0" y="-95.0" width="177.0" height="227.0"/>
             </shape>
             <shape elementRef="_1472591479472">
-                <Bounds x="258.0" y="-151.0" width="159.0" height="167.0"/>
+                <Bounds x="258.0" y="-151.0" width="159.0" height="187.0"/>
             </shape>
             <shape elementRef="_1472591773752">
                 <Bounds x="614.0" y="348.0" width="163.0" height="147.0"/>
@@ -910,11 +916,11 @@ hash += (id != null ? id.hashCode() : 0);
             <shape elementRef="_1477236947268">
                 <Bounds x="1188.0" y="133.0" width="231.0" height="75.0"/>
             </shape>
+            <shape elementRef="_1477593775853">
+                <Bounds x="445.0" y="-427.0" width="208.0" height="75.0"/>
+            </shape>
             <shape elementRef="_1473857903171">
                 <Bounds x="69.0" y="-433.0" width="172.0" height="86.0"/>
-            </shape>
-            <shape elementRef="_1477593775853">
-                <Bounds x="445.0" y="-427.0" width="249.0" height="75.0"/>
             </shape>
         </plane>
     </jpa:diagram>
