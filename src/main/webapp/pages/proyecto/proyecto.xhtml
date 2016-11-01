@@ -184,11 +184,12 @@
             <p:dialog dynamic="true" id="editProyectoDialog" header="#{messages.label_proyecto_caption}"
                       modal="true" widgetVar="editProyectoDialogWidget" maximizable="true">
                 <p:ajax event="close" listener="#{proyectoBean.reset}"/>
-                <h:form id="editProyectoForm" >
+                <h:form id="editProyectoForm" enctype="multipart/form-data" >
                     <p:outputPanel id="proyectoEditPanel">
                         <ui:include src="/pages/proyecto/proyectoEditInclude.xhtml"/>
                         <div style="text-align: center; margin:10px">
                             <p:commandButton value="#{messages.label_save}"
+                                             ajax="false"
                                              icon="ui-icon-disk" action="#{proyectoBean.persist}"
                                              update=":editProyectoForm:proyectoEditPanel :proyectoDataForm :growlForm:growl"
                                              oncomplete="if(!args.validationFailed) PF('editProyectoDialogWidget').hide()" />

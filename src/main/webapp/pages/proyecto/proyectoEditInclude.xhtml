@@ -11,7 +11,7 @@
 
         <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
 
-<h:outputLabel value="#{messages.field_label_proyecto_empresa}:" for="empresaSelectInput" rendered="#{not hideEmpresaSelectInput}"/>
+            <h:outputLabel value="#{messages.field_label_proyecto_empresa}:" for="empresaSelectInput" rendered="#{not hideEmpresaSelectInput}"/>
             <h:panelGroup rendered="#{not hideEmpresaSelectInput}">
                 <p:selectOneMenu value="#{proyectoBean.proyecto.empresa}"
                                  id="empresaSelectInput">
@@ -75,6 +75,10 @@
             <h:outputLabel value="#{messages.field_label_proyecto_nombre}:" for="nombreEditInput" />
             <p:inputText value="#{proyectoBean.proyecto.nombre}" id="nombreEditInput" 
                          label="#{messages.field_label_proyecto_nombre}" />
+            <p:message for="nombreEditInput" display="icon" />
+
+
+            <h:outputLabel value="#{messages.field_label_proyecto_poblado}:" for="labelNombrePoblado" />
             <p:message for="nombreEditInput" display="icon" />            
             
             <h:outputLabel value="Poblado:" for="labelNombrePoblado" />
@@ -83,8 +87,47 @@
                              actionListener="#{buscarPobladoBean.choosePoblado}">
                 <p:ajax event="dialogReturn" listener="#{proyectoBean.seleccionarPoblado}" update="labelNombrePoblado" />  
             </p:commandButton>
-            
 
+
+            <h:outputLabel value="#{messages.field_label_proyecto_selecciona_archivo}:" for="logoEditInput" />
+
+            <p:fileUpload value="#{proyectoBean.archivoLogo }"  skinSimple="true" id="logoEditInput"
+                          mode="simple"
+                          />
+
+            <p:message for="logoEditInput" display="icon" />
+
+
+
+
+
+
+            <h:outputLabel value="#{messages.field_label_proyecto_estado}:" for="estadoProyectoSelectInput" />
+            <h:panelGroup >
+                <p:selectOneMenu value="#{proyectoBean.proyecto.estadoProyecto }"
+                                 id="estadoProyectoSelectInput">
+                    <f:selectItem noSelectionOption="true" itemLabel="" />
+                    <f:selectItems value="#{proyectoBean.estadoProyectoList}" 
+                                   var="estadoProyecto" 
+                                   itemLabel="#{estadoProyecto.nombre}"
+                                   itemValue="#{estadoProyecto}" />
+                    <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.estadoProyectoList}" />
+
+                </p:selectOneMenu>
+            </h:panelGroup>
+            <p:message for="estadoProyectoSelectInput" display="icon" />
+
+             <h:outputLabel value="#{messages.field_label_proyecto_latitud}:" for="latitudEditInput" />
+             <p:inputText value="#{proyectoBean.proyecto.latitud}" id="latitudEditInput" 
+                         label="#{messages.field_label_proyecto_latitud}" />
+            <p:message for="latitudEditInput" display="icon" />
+            
+             <h:outputLabel value="#{messages.field_label_proyecto_longitud}:" for="longitudEditInput" />
+             <p:inputText value="#{proyectoBean.proyecto.longitud}" id="longitudEditInput" 
+                         label="#{messages.field_label_proyecto_longitud}" />
+            <p:message for="longitudEditInput" display="icon" />
+            
+            
         </p:panelGrid>
 
     </p:outputPanel>

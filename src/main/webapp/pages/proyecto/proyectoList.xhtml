@@ -28,7 +28,8 @@
             <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
                 <h:commandLink  action="#{'/pages/proyecto/proyectoView?faces-redirect=true&amp;id='.concat(proyecto.id)}"
                                 title="#{messages.label_view}" >
-                    <h:graphicImage name="images/proyecto/proyecto_#{proyecto.id}.gif"  />
+                    <h:graphicImage value="#{applicationBean.webCarpeta()}proyecto/#{proyecto.logo}" width="60" height="70"
+                                    />
                 </h:commandLink>
 
 

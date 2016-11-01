@@ -8,6 +8,7 @@ import com.j2km.inmueblesgo.domain.NegociacionEntity;
 import com.j2km.inmueblesgo.domain.OfertaEntity;
 import com.j2km.inmueblesgo.domain.PobladoEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
+import com.j2km.inmueblesgo.service.ConfiguracionService;
 import com.j2km.inmueblesgo.service.EmpresaService;
 import com.j2km.inmueblesgo.service.EstadoInmuebleService;
 import com.j2km.inmueblesgo.service.EstadoProyectoService;
@@ -18,6 +19,7 @@ import com.j2km.inmueblesgo.service.PobladoService;
 import com.j2km.inmueblesgo.service.ProyectoService;
 import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
+import java.io.IOException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -32,6 +34,7 @@ import javax.inject.Named;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.UploadedFile;
 
 @Named("proyectoBean")
 @ViewScoped
@@ -83,13 +86,20 @@ public class ProyectoBean implements Serializable {
 
     @Inject
     private InmuebleService inmuebleService;
-    
+
     @Inject
     private NegociacionService negociacionService;
+
+    private UploadedFile archivoLogo;
+
+    @Inject
+    private ConfiguracionService configuracionServiceInstance;
 
     public void prepareNewProyecto() {
         reset();
         this.proyecto = new ProyectoEntity();
+        
+        this.estadoProyectoList = estadoProyectoService.findAllEstadoProyectoEntities();
         // set any default values now, if you need
         // Example: this.proyecto.setAnything("test");
     }
@@ -101,9 +111,10 @@ public class ProyectoBean implements Serializable {
         return this.lazyModel;
     }
 
-    public String persist() {
+    public String persist() throws IOException {
 
         String message;
+        String nombreLogo;
 
         try {
 
@@ -124,6 +135,21 @@ public class ProyectoBean implements Serializable {
             message = "message_save_exception";
             // Set validationFailed to keep the dialog open
             FacesContext.getCurrentInstance().validationFailed();
+        } finally {
+            if (proyecto.getId() != null) {
+
+                if (archivoLogo != null) {
+                    nombreLogo = configuracionServiceInstance.copiarArchivo(archivoLogo, "proyecto_" + proyecto.getId().toString(), "proyecto");
+                    if (nombreLogo != null && nombreLogo.length() > 0) {
+                        proyecto.setLogo(nombreLogo);
+                    }
+
+                }
+                if (proyecto.getLogo() != null && proyecto.getLogo().length() > 0) {
+                    proyecto = proyectoService.update(proyecto);
+                }
+            }
+
         }
 
         FacesMessage facesMessage = MessageFactory.getMessage(message);
@@ -154,6 +180,7 @@ public class ProyectoBean implements Serializable {
     public void onDialogOpen(ProyectoEntity proyecto) {
         reset();
         this.proyecto = proyecto;
+        this.estadoProyectoList = estadoProyectoService.findAllEstadoProyectoEntities();
     }
 
     public void reset() {
@@ -305,8 +332,8 @@ public class ProyectoBean implements Serializable {
 
     public void cambioEstadoInmueble() {
 
-        System.err.println("Estado Inmueble"+this.estadoInmuebleSel);
-        
+        System.err.println("Estado Inmueble" + this.estadoInmuebleSel);
+
         if (this.estadoInmuebleSel == null) {
             this.inmuebleEntityList = inmuebleService.findInmueblesByProyecto(proyecto);
         } else {
@@ -314,23 +341,30 @@ public class ProyectoBean implements Serializable {
         }
 
     }
-    
-    
-    public String redireccionaNegociacion(InmuebleEntity inmueble){
+
+    public String redireccionaNegociacion(InmuebleEntity inmueble) {
         String ruta = "";
-        if (inmueble.getEstadoInmueble().getId() == 1){
+        if (inmueble.getEstadoInmueble().getId() == 1) {
             ruta = "/pages/vendedor/negociacion?faces-redirect=true&amp;id=".concat(inmueble.getId().toString());
-        }else{
+        } else {
             NegociacionEntity n = negociacionService.findByInmueble(inmueble);
-            if (n!=null){
+            if (n != null) {
                 ruta = "/pages/vendedor/negociacionView?faces-redirect=true&amp;id=".concat(n.getId().toString());
             }
         }
-    return ruta;
+        return ruta;
     }
-    
+
     public void seleccionarPoblado(SelectEvent event) {
         this.proyecto.setPoblado((PobladoEntity) event.getObject());
     }
-    
+
+    public UploadedFile getArchivoLogo() {
+        return archivoLogo;
+    }
+
+    public void setArchivoLogo(UploadedFile archivoLogo) {
+        this.archivoLogo = archivoLogo;
+    }
+
 }
