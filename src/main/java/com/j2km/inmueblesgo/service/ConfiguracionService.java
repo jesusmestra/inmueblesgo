@@ -8,18 +8,24 @@ package com.j2km.inmueblesgo.service;
 import com.j2km.inmueblesgo.domain.DepartamentoEntity;
 import com.j2km.inmueblesgo.domain.MunicipioEntity;
 import com.j2km.inmueblesgo.domain.PobladoEntity;
+import com.j2km.inmueblesgo.web.ApplicationBean;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URLConnection;
 import javax.ejb.Stateless;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import org.apache.poi.util.IOUtils;
 import org.primefaces.model.UploadedFile;
+import org.apache.commons.io.FilenameUtils;
 
 @Stateless
 public class ConfiguracionService{
@@ -34,6 +40,9 @@ public class ConfiguracionService{
 
     @Inject
     private PobladoService pf;
+    
+    @Inject
+    private ApplicationBean ap;
 
     public void cargarDivipola(UploadedFile divipola) { 
         
@@ -104,4 +113,38 @@ public class ConfiguracionService{
         }
 
     }
+    
+    
+    public String copiarArchivo(UploadedFile archivo, String nuevoNombre, String carpeta) throws FileNotFoundException, IOException {
+        String resultado = "";
+
+      
+        
+        String filePath = ap.rutaCarpeta() + File.separator + carpeta;
+        InputStream input = archivo.getInputstream();
+        String fileType = URLConnection.guessContentTypeFromStream(input);
+
+        String extension = FilenameUtils.getExtension(archivo.getFileName());
+        
+        
+        String filename = nuevoNombre +"." +extension;
+
+        OutputStream output = new FileOutputStream(new File(filePath, filename));
+
+        try {
+            IOUtils.copy(input, output);
+            resultado = filename;
+
+        } catch (IOException e) {
+            System.err.println("Error" + e);
+        } finally {
+            IOUtils.closeQuietly(input);
+            IOUtils.closeQuietly(output);
+        }
+
+        return resultado;
+
+    }
+    
+    
 }

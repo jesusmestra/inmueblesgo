@@ -28,12 +28,15 @@ public class ProyectoEntity extends BaseEntity implements Serializable {
     @Basic
     private String codigo;
 
+    @Column(name = "proyecto_logo")
     @Basic
     private String logo;
 
+    @Column(name = "proyecto_latitud")
     @Basic
     private String latitud;
 
+    @Column(name = "proyecto_logitud")
     @Basic
     private String longitud;
 

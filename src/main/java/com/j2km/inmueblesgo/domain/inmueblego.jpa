@@ -380,9 +380,18 @@ hash += (id != null ? id.hashCode() : 0);
                 <jpa:bv/>
                 <jpa:column name="proyecto_codigo" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
             </jpa:basic>
-            <jpa:basic attribute-type="String" visibile="true" name="logo" id="_147800857010781"/>
-            <jpa:basic attribute-type="String" visibile="true" name="latitud" id="_147800857651582"/>
-            <jpa:basic attribute-type="String" visibile="true" name="longitud" id="_147800858044483"/>
+            <jpa:basic attribute-type="String" visibile="true" name="logo" id="_147800857010781">
+                <jpa:bv/>
+                <jpa:column name="proyecto_logo" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" visibile="true" name="latitud" id="_147800857651582">
+                <jpa:bv/>
+                <jpa:column name="proyecto_latitud" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" visibile="true" name="longitud" id="_147800858044483">
+                <jpa:bv/>
+                <jpa:column name="proyecto_logitud" unique="false" nullable="true" insertable="true" updatable="true" length="255" precision="0" scale="0"/>
+            </jpa:basic>
             <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_1470328576816274" visibile="true" name="empresa" id="_147259223889771">
                 <jpa:join-column name="EMPRESA_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
             </jpa:many-to-one>
