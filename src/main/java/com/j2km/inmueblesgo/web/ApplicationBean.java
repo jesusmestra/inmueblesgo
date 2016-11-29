@@ -22,7 +22,7 @@ public class ApplicationBean implements Serializable {
     }
 
     public String webCarpeta() {
-        return "http://localhost:8086/archivos/inmueblesGo/";
+        return "http://localhost:8080/archivos/inmueblesGo/";
     }
 
 }

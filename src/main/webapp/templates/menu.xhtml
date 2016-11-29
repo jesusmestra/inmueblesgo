@@ -7,22 +7,23 @@
     <ui:composition>
         <h:form>
             <p:menu>
-
+                <p:submenu label="#{messages.menu_administrador}" rendered="#{request.isUserInRole('ADMIN')}">
+                    <p:menuitem value="#{messages.menu_empresas}" url="/pages/empresa/empresa.xhtml" icon="icon-empresa" ajax="false" async="false" />
+                    <p:menuitem value="#{messages.menu_proyectos}" url="/pages/proyecto/proyecto.xhtml" icon="icon-proyecto"  ajax="false" async="false" />
+                </p:submenu>
+                
                 <p:submenu label="#{messages.menu_vendedor}" rendered="#{request.isUserInRole('ADMIN') or request.isUserInRole('VENDEDOR')  }">
                     <p:menuitem value="#{messages.menu_negociacions}" url="/pages/vendedor/proyectos.xhtml" icon="icon-negociacion" ajax="false" async="false" />
-                </p:submenu>
-
-                <p:submenu label="#{messages.menu_administrador}" rendered="#{request.isUserInRole('ADMIN')}">
                 </p:submenu>
 
                 <p:submenu label="#{messages.menu_configuracion}" rendered="#{request.isUserInRole('ADMIN')}">
 
 
-                    <p:menuitem value="#{messages.menu_proyectos}" url="/pages/proyecto/proyecto.xhtml" icon="icon-proyecto"  ajax="false" async="false" />
+                    
 
                     <p:menuitem value="#{messages.menu_inmuebles}" url="/pages/inmueble/inmueble.xhtml" icon="icon-inmueble" ajax="false" async="false" />
 
-                    <p:menuitem value="#{messages.menu_empresas}" url="/pages/empresa/empresa.xhtml" icon="icon-empresa" ajax="false" async="false" />
+                    
 
                     <p:menuitem value="#{messages.menu_estadoInmuebles}" url="/pages/estadoInmueble/estadoInmueble.xhtml" icon="icon-entity" ajax="false" async="false" />
 

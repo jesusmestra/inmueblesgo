@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+    <ui:composition template="/templates/layout.xhtml">
+        <ui:define name="content">
+
+            <h:form prependId="false" id="empresaDataForm" onkeypress="if (event.keyCode == 13) {
+                        return false;
+                    }">
+
+                <div class="ui-g">
+                    <div class="ui-g-2">
+                        <h:outputLabel value="#{messages.field_label_empresa_nit}:" for="nitEditInput" />
+                        <p:inputText value="#{empresaBean.empresa.nit}" id="nitEditInput" 
+                                     label="#{messages.field_label_empresa_nit}" />
+
+                    </div>
+                    <div class="ui-g-3">
+                        <h:outputLabel value="#{messages.field_label_empresa_nombre}:" for="nombreEditInput" />
+                        <p:inputText value="#{empresaBean.empresa.nombre}" id="nombreEditInput" 
+                                     label="#{messages.field_label_empresa_nombre}" />
+                        <p:message for="nombreEditInput" display="icon" />
+                    </div>
+                    <div class="ui-g-3">
+                        <h:outputLabel value="#{messages.field_label_empresa_direccion}:" for="direccionEditInput" />
+                        <p:inputText value="#{empresaBean.empresa.direccion}" id="direccionEditInput" 
+                                     label="#{messages.field_label_empresa_direccion}" />
+                        <p:message for="direccionEditInput" display="icon" />
+                    </div>
+                    <div class="ui-g-2">
+                        <h:outputLabel value="#{messages.field_label_empresa_telefono}:" for="telefonoEditInput" />
+                        <p:inputText value="#{empresaBean.empresa.telefono}" id="telefonoEditInput" 
+                                     label="#{messages.field_label_empresa_telefono}" />
+                        <p:message for="telefonoEditInput" display="icon" />
+                    </div>
+                    <div class="ui-g-2">
+                        <h:outputLabel value="#{messages.field_label_empresa_email}:" for="emailEditInput" />
+                        <p:inputText value="#{empresaBean.empresa.email}" id="emailEditInput" 
+                                     label="#{messages.field_label_empresa_email}" />
+                        <p:message for="emailEditInput" display="icon" />
+                    </div>
+                </div>                
+
+                <h:outputLabel value="#{messages.field_label_empresa_poblado}:" for="pobladoSelectInput" rendered="#{not hidePobladoSelectInput}"/>
+
+                <p:outputLabel id="labelNombrePoblado" value="#{empresaBean.empresa.poblado.nombre}"/>
+                <p:commandButton icon="ui-icon-search" title="#{messages.label_create}" 
+                                 actionListener="#{buscarPobladoBean.choosePoblado}">
+                    <p:ajax event="dialogReturn" listener="#{empresaBean.seleccionarPoblado}" update="labelNombrePoblado" />  
+                </p:commandButton>
+
+
+                <h:outputLabel value="#{messages.field_label_empresa_representante}:" for="representanteSelectInput" rendered="#{not hideRepresentanteSelectInput}"/>
+                <p:outputLabel id="labelNombreRepresentante" value="#{empresaBean.empresa.representante.identificacion} | #{empresaBean.empresa.representante.apellido1} #{empresaBean.empresa.representante.apellido2}, #{empresaBean.empresa.representante.nombres}"/>
+
+                <p:commandButton icon="ui-icon-search" title="#{messages.label_create}" 
+                                 actionListener="#{buscarTerceroBean.chooseTercero}">
+                    <p:ajax event="dialogReturn" listener="#{empresaBean.seleccionar}" update="labelNombreRepresentante" />  
+                </p:commandButton>
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>

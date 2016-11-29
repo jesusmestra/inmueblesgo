@@ -56,6 +56,7 @@ public class EmpresaBean implements Serializable {
     public void prepareNewEmpresa() {
         reset();
         this.empresa = new EmpresaEntity();
+        
         // set any default values now, if you need
         // Example: this.empresa.setAnything("test");
     }
