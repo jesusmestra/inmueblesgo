@@ -22,16 +22,49 @@
 
                     <f:facet name="header" >
 
-                        <p:commandButton value="#{messages.create_new_empresa}" 
-                                         icon="ui-icon-plusthick" 
-                                         action="/pages/empresa/empresaEditar?faces-redirect=true&amp;}"
-                                         resetValues="true" 
+                        <p:commandButton value="#{messages.create_new_empresa}"  icon="ui-icon-plusthick" action="#{empresaBean.prepareNewEmpresa()}"
+                                         resetValues="true" update=":editEmpresaDialog" oncomplete="PF('editEmpresaDialogWidget').show()"
                                          style="float:left" />
+                        
+                        
 
                         <p:commandButton id="toggler" type="button" value="#{messages.table_select_columns}" icon="ui-icon-calculator" />
                         <p:columnToggler datasource="empresaTable" trigger="toggler" />
                     </f:facet>
 
+                       <p:column  headerText="#{messages.field_label_empresa_nit}" sortBy="#{empresa.nit}" filterBy="#{empresa.nit}">
+                       
+                           <!--
+                           <f:facet name="filter">
+                            <p:inputText id="nitFilter"
+                                         onkeypress="if (event.keyCode == 13) {
+                                                     PF('empresaTable').filter();
+                                                     updateNitFilter();
+                                                     return false;
+                                                 }" >
+                                <p:remoteCommand name="updateNitFilter" update="empresaTable:nitFilter" />
+                            </p:inputText>
+                        </f:facet>
+                           -->
+                        <h:outputText value="#{empresa.nit}" />
+                    </p:column>
+                    
+                         <p:column  headerText="#{messages.field_label_empresa_nombre}" sortBy="#{empresa.nombre}" filterBy="#{empresa.nombre}">
+                        <f:facet name="filter">
+                            <p:inputText id="nombreFilter"
+                                         onkeypress="if (event.keyCode == 13) {
+                                                     PF('empresaTable').filter();
+                                                     updateNombreFilter();
+                                                     return false;
+                                                 }" >
+                                <p:remoteCommand name="updateNombreFilter" update="empresaTable:nombreFilter" />
+                            </p:inputText>
+                        </f:facet>
+                        <h:outputText value="#{empresa.nombre}" />
+                    </p:column>
+                    
+                    
+                    
                     <p:column headerText="#{messages.field_label_empresa_representante}" sortBy="#{empresa.representante}" filterBy="#{empresa.representante}">
                         <f:facet name="filter">
                             <p:selectOneMenu  id="representanteFilter"
@@ -74,35 +107,11 @@
 
 
 
-                    <p:column  headerText="#{messages.field_label_empresa_nit}" sortBy="#{empresa.nit}" filterBy="#{empresa.nit}">
-                        <f:facet name="filter">
-                            <p:inputText id="nitFilter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                                     PF('empresaTable').filter();
-                                                     updateNitFilter();
-                                                     return false;
-                                                 }" >
-                                <p:remoteCommand name="updateNitFilter" update="empresaTable:nitFilter" />
-                            </p:inputText>
-                        </f:facet>
-                        <h:outputText value="#{empresa.nit}" />
-                    </p:column>                    
+                                     
 
 
 
-                    <p:column  headerText="#{messages.field_label_empresa_nombre}" sortBy="#{empresa.nombre}" filterBy="#{empresa.nombre}">
-                        <f:facet name="filter">
-                            <p:inputText id="nombreFilter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                                     PF('empresaTable').filter();
-                                                     updateNombreFilter();
-                                                     return false;
-                                                 }" >
-                                <p:remoteCommand name="updateNombreFilter" update="empresaTable:nombreFilter" />
-                            </p:inputText>
-                        </f:facet>
-                        <h:outputText value="#{empresa.nombre}" />
-                    </p:column>
+               
 
 
 
@@ -150,7 +159,7 @@
             <p:dialog dynamic="true" id="editEmpresaDialog" header="#{messages.label_empresa_caption}"
                       modal="true" widgetVar="editEmpresaDialogWidget" maximizable="true">
                 <p:ajax event="close" listener="#{empresaBean.reset}"/>
-                <h:form id="editEmpresaForm" >
+                <h:form id="editEmpresaForm" enctype="multipart/form-data">
                     <p:outputPanel id="empresaEditPanel">
                         <ui:include src="/pages/empresa/empresaEditInclude.xhtml"/>
                         <div style="text-align: center; margin:10px">

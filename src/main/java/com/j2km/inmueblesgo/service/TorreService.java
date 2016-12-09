@@ -1,6 +1,9 @@
 package com.j2km.inmueblesgo.service;
 
 
+import com.j2km.inmueblesgo.domain.EstadoInmuebleEntity;
+import com.j2km.inmueblesgo.domain.InmuebleEntity;
+import com.j2km.inmueblesgo.domain.ProyectoEntity;
 import com.j2km.inmueblesgo.domain.TorreEntity;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -27,7 +30,7 @@ public class TorreService extends BaseService<TorreEntity> implements Serializab
 
         return entityManager.createQuery("SELECT o FROM Torre o ", TorreEntity.class).getResultList();
     }
-
+  
     @Override
     @Transactional
     public long countAllEntries() {
@@ -127,4 +130,13 @@ public class TorreService extends BaseService<TorreEntity> implements Serializab
         return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
 
+    
+    @Transactional
+    public List<TorreEntity> findAllByProyecto(ProyectoEntity proyecto) {
+        return entityManager.createQuery("SELECT o FROM Torre o WHERE o.proyecto = :proyecto", TorreEntity.class)
+                .setParameter("proyecto", proyecto)
+                .getResultList();
+    }
+    
+    
 }

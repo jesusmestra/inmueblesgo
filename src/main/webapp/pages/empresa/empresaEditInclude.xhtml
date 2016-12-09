@@ -78,11 +78,13 @@
                          label="#{messages.field_label_empresa_emailPort}" />
             <p:message for="emailPortEditInput" display="icon" />
 
-            <h:outputLabel value="#{messages.field_label_empresa_logo}:" for="logoEditInput" />
-            <p:inputText value="#{empresaBean.empresa.logo}" id="logoEditInput" 
-                         label="#{messages.field_label_empresa_logo}" />
-            <p:message for="logoEditInput" display="icon" />
 
+            <h:outputLabel value="#{messages.field_label_empresa_logo}:" for="logoEditInput" />
+
+            <p:fileUpload value="#{empresaBean.archivoLogo }"  skinSimple="true" id="logoEditInput"
+                          mode="simple"
+                          />
+            <p:message for="logoEditInput" display="icon" />
 
 
         </p:panelGrid>

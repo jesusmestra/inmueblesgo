@@ -116,6 +116,7 @@ public class TerceroBean implements Serializable {
     public void onDialogOpen(TerceroEntity tercero) {
         reset();
         this.tercero = tercero;
+        
     }
 
     public void reset() {

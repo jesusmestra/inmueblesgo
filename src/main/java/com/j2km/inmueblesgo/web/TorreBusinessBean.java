@@ -1,12 +1,14 @@
 package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.InmuebleEntity;
+import com.j2km.inmueblesgo.domain.Piso;
 import com.j2km.inmueblesgo.domain.TipoInmuebleEntity;
 import com.j2km.inmueblesgo.domain.TipoPlantaDetalleEntity;
 import com.j2km.inmueblesgo.domain.TipoPlantaEntity;
 import com.j2km.inmueblesgo.domain.TorreEntity;
 import com.j2km.inmueblesgo.service.EstadoInmuebleService;
 import com.j2km.inmueblesgo.service.InmuebleService;
+import com.j2km.inmueblesgo.service.PisoService;
 import com.j2km.inmueblesgo.service.TipoInmuebleService;
 import com.j2km.inmueblesgo.service.TipoPlantaService;
 import com.j2km.inmueblesgo.service.TorreService;
@@ -33,30 +35,33 @@ public class TorreBusinessBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Logger logger = Logger.getLogger(TorreBusinessBean.class.getName()); 
-    
+    private static final Logger logger = Logger.getLogger(TorreBusinessBean.class.getName());
+
     private TorreEntity torre;
     private TipoPlantaEntity tipoPlanta;
     private int pisoInicial;
     private int pisoFinal;
-    
+
     private List<TipoInmuebleEntity> tipoInmuebleList;
     private List<TipoPlantaEntity> tipoPlantaList;
-    
+
     @Inject
     private TorreService torreService;
-    
+
     @Inject
     private InmuebleService inmuebleService;
-    
+
     @Inject
     private TipoInmuebleService tipoInmuebleService;
-    
+
     @Inject
     private TipoPlantaService tipoPlantaService;
-    
-    @Inject 
+
+    @Inject
     private EstadoInmuebleService estadoInmuebleService;
+
+    @Inject
+    private PisoService pisoService;
 
     public TorreEntity getTorre() {
         return torre;
@@ -64,10 +69,10 @@ public class TorreBusinessBean implements Serializable {
 
     public void setTorre(TorreEntity torre) {
         this.torre = torre;
-    }  
+    }
 
     public List<TipoInmuebleEntity> getTipoInmuebleList() {
-        if(tipoInmuebleList == null){
+        if (tipoInmuebleList == null) {
             tipoInmuebleList = tipoInmuebleService.findAllTipoInmuebleEntities();
         }
         return tipoInmuebleList;
@@ -75,10 +80,10 @@ public class TorreBusinessBean implements Serializable {
 
     public void setTipoInmuebleList(List<TipoInmuebleEntity> tipoInmuebleList) {
         this.tipoInmuebleList = tipoInmuebleList;
-    }      
+    }
 
     public List<TipoPlantaEntity> getTipoPlantaList() {
-        if(tipoPlantaList == null){
+        if (tipoPlantaList == null) {
             tipoPlantaList = tipoPlantaService.findAllTipoPlantaEntities();
         }
         return tipoPlantaList;
@@ -86,7 +91,7 @@ public class TorreBusinessBean implements Serializable {
 
     public void setTipoPlantaList(List<TipoPlantaEntity> tipoPlantaList) {
         this.tipoPlantaList = tipoPlantaList;
-    }    
+    }
 
     public TipoPlantaEntity getTipoPlanta() {
         return tipoPlanta;
@@ -94,7 +99,7 @@ public class TorreBusinessBean implements Serializable {
 
     public void setTipoPlanta(TipoPlantaEntity tipoPlanta) {
         this.tipoPlanta = tipoPlanta;
-    }    
+    }
 
     public int getPisoInicial() {
         return pisoInicial;
@@ -111,47 +116,69 @@ public class TorreBusinessBean implements Serializable {
     public void setPisoFinal(int pisoFinal) {
         this.pisoFinal = pisoFinal;
     }
-    
-    public void generarMasivo(){
-        
+
+    public void generarMasivo() {
+
         InmuebleEntity inmueble;
-        List <TipoPlantaDetalleEntity> tipoPlantaDetalle =  tipoPlantaService.findAllDetallesByTipoPlanta(tipoPlanta);
-        
-        for (int i = pisoInicial; i <= pisoFinal; i++){
-            System.out.println(i);
-            System.out.println(tipoPlanta);
-            
-            for(TipoPlantaDetalleEntity detalle: tipoPlantaDetalle){
-                
-                inmueble = new InmuebleEntity();
-                inmueble.setArea(detalle.getTipoInmueble().getArea());
-                inmueble.setValorMetroCuadrado(detalle.getTipoInmueble().getValorMetroCuadrado());
-                inmueble.setProyecto(torre.getProyecto());
-                inmueble.setValorSeparacion(detalle.getTipoInmueble().getValorSeparacion());
-                inmueble.setEstadoInmueble(estadoInmuebleService.findByCodigo("01"));
-                inmueble.setNumero(i+" "+detalle.getNumero());
-                inmueble.setValorTotal(
-                        detalle.getTipoInmueble().getValorMetroCuadrado()*detalle.getTipoInmueble().getArea());
-                inmuebleService.save(inmueble);           
-                
-                System.out.println(detalle.getTipoInmueble());
+        List<TipoPlantaDetalleEntity> tipoPlantaDetalle = tipoPlantaService.findAllDetallesByTipoPlanta(tipoPlanta);
+
+        for (int i = pisoInicial; i <= pisoFinal; i++) {
+            //System.out.println(i);
+            //System.out.println(tipoPlanta);
+            Piso p = pisoService.findByNumeroAndTorre(Integer.toString(i), torre);
+
+            if (p == null) {
+                p = new Piso();
+                p.setNumero(Integer.toString(i));
+                p.setTipoPlanta(tipoPlanta);
+                p.setTorre(torre);
+                pisoService.save(p);
+
+                for (TipoPlantaDetalleEntity detalle : tipoPlantaDetalle) {
+
+                    inmueble = new InmuebleEntity();
+                    inmueble.setArea(detalle.getTipoInmueble().getArea());
+                    inmueble.setValorMetroCuadrado(detalle.getTipoInmueble().getValorMetroCuadrado());
+                    inmueble.setProyecto(torre.getProyecto());
+                    inmueble.setValorSeparacion(detalle.getTipoInmueble().getValorSeparacion());
+                    inmueble.setEstadoInmueble(estadoInmuebleService.findByCodigo("01"));
+                    inmueble.setNumero(i + " " + detalle.getNumero());
+                    inmueble.setValorTotal(
+                            detalle.getTipoInmueble().getValorMetroCuadrado() * detalle.getTipoInmueble().getArea());
+                    inmueble.setPiso(p);
+                    inmuebleService.save(inmueble);
+
+                    System.out.println(detalle.getTipoInmueble());
+                }
+
             }
+
         }
-        
+
         FacesMessage facesMsg = new FacesMessage(
-                            FacesMessage.SEVERITY_INFO, 
-                            "Pisos generados", 
-                            "Pisos generados");
+                FacesMessage.SEVERITY_INFO,
+                "Pisos generados",
+                "Pisos generados");
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-    }
-    
-    public void onLoad(){
-            
-        
+        pisoListTorre = pisoService.findAllByTorre(this.torre);
     }
 
-    public void guardarDetalle(){
-               
-        
+    private List<Piso> pisoListTorre;
+
+    public List<Piso> getPisoListTorre() {
+        return pisoListTorre;
+    }
+
+    public void setPisoListTorre(List<Piso> pisoListTorre) {
+        this.pisoListTorre = pisoListTorre;
+    }
+
+    public void onLoad() {
+        this.pisoListTorre = pisoService.findAllByTorre(this.torre);
+
+    }
+
+    public void guardarDetalle() {
+
     }
 }

@@ -2,7 +2,9 @@ package com.j2km.inmueblesgo.service;
 
 import com.j2km.inmueblesgo.domain.EstadoInmuebleEntity;
 import com.j2km.inmueblesgo.domain.InmuebleEntity;
+import com.j2km.inmueblesgo.domain.Piso;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
+import com.j2km.inmueblesgo.domain.TorreEntity;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -144,6 +146,14 @@ public class InmuebleService extends BaseService<InmuebleEntity> implements Seri
         return entityManager.createQuery("SELECT o FROM Inmueble o WHERE o.proyecto = :proyecto and o.estadoInmueble = :estadoInmueble", InmuebleEntity.class)
                 .setParameter("proyecto", proyecto)
                 .setParameter("estadoInmueble", estadoInmueble)
+                .getResultList();
+    }
+    
+     @Transactional
+    public List<InmuebleEntity> findAllInmueblesByPisoAndProyecto(Piso piso, ProyectoEntity proyecto) {
+        return entityManager.createQuery("SELECT o FROM Inmueble o WHERE o.proyecto = :proyecto and o.piso = :piso", InmuebleEntity.class)
+                .setParameter("proyecto", proyecto)
+                .setParameter("piso", piso)
                 .getResultList();
     }
 

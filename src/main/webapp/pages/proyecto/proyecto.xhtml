@@ -239,7 +239,7 @@
                       widgetVar="createEmpresaFromEditDialogWidget" maximizable="true">
                 <p:ajax event="close" listener="#{empresaBean.reset}" />
                 <p:outputPanel id="createEmpresaPanel">
-                    <h:form id="createEmpresaForm">
+                    <h:form id="createEmpresaForm"  enctype="multipart/form-data">
                         <ui:include src="/pages/empresa/empresaEditInclude.xhtml">
                             <ui:param name="hideProyectoSelectInput" value="true" />
                         </ui:include>

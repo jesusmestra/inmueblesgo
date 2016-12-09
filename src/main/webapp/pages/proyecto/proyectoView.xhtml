@@ -17,7 +17,39 @@
 
 
             <ui:include src="/pages/proyecto/proyectoViewInclude.xhtml"/>
-            <!--
+            <h:form>
+                <p:toolbar style="margin-top:5px">
+                    <f:facet name="left">
+                        
+                        <p:outputLabel id="labelNombrePoblado"/>
+                        <p:commandButton icon="fa fa-wrench" 
+                                         value="Configuracion"
+                                         title="#{messages.label_create}" 
+                                         actionListener="#{proyectoBean.dialogoTorreProyecto}">
+                            <p:ajax event="dialogReturn"  
+                                    update="labelNombrePoblado" />  
+                        </p:commandButton>
+
+                        
+                    </f:facet>
+                </p:toolbar>
+            </h:form>
+<!--
+            <p:dialog dynamic="true" id="viewTorreDialog" 
+                      header="#{messages.label_proyecto_caption}" 
+                      modal="true" 
+                      widgetVar="viewTorreDialogWidget" maximizable="true">
+                <h:form id="viewTorreForm">
+                    <p:outputPanel id="empresaEditPanel">
+                        <ui:include src="/pages/torre/torreEditInclude.xhtml"/>
+                        <div style="text-align: center; margin:10px">
+                            <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('viewTorreDialogWidget').hide()" type="button" />
+                        </div>
+                    </p:outputPanel>                
+                </h:form>
+            </p:dialog>
+
+            
             <div style="margin:10px">
                 
                 <p:commandButton value="#{messages.label_close}" 
@@ -144,37 +176,37 @@
                         <p:commandButton action="#{proyectoBean.redireccionaNegociacion(inmueble)}"                                         
                                          icon="fa fa-eye"
                                          title="#{messages.label_view}" rendered="#{inmueble.estadoInmueble.id != 1}" />
-<!--                                         
-                        <p:commandButton icon="ui-icon-pencil" update=":editInmuebleDialog"
-                                         resetValues="true" 
-                                         action="#{inmuebleBean.onDialogOpen(inmueble)}"
-                                         oncomplete="PF('editInmuebleDialogWidget').show()"
-                                         title="#{messages.label_edit}" >
-                        </p:commandButton>
--->
+                        <!--                                         
+                                                <p:commandButton icon="ui-icon-pencil" update=":editInmuebleDialog"
+                                                                 resetValues="true" 
+                                                                 action="#{inmuebleBean.onDialogOpen(inmueble)}"
+                                                                 oncomplete="PF('editInmuebleDialogWidget').show()"
+                                                                 title="#{messages.label_edit}" >
+                                                </p:commandButton>
+                        -->
 
                     </p:column>
 
                 </p:dataTable>
 
-<!--
-                <p:dialog dynamic="true" id="editInmuebleDialog" header="#{messages.label_inmueble_caption}"
-                          modal="true" widgetVar="editInmuebleDialogWidget" maximizable="true">
-                    <p:ajax event="close" listener="#{inmuebleBean.reset}"/>
-                    <h:form id="editInmuebleForm" >
-                        <p:outputPanel id="inmuebleEditPanel">
-                            <ui:include src="/pages/inmueble/inmuebleEditInclude.xhtml"/>
-                            <div style="text-align: center; margin:10px">
-                                <p:commandButton value="#{messages.label_save}"
-                                                 icon="ui-icon-disk" action="#{inmuebleBean.persist}"
-                                                 update=":editInmuebleForm:inmuebleEditPanel :inmuebleDataForm :growlForm:growl"
-                                                 oncomplete="if(!args.validationFailed) PF('editInmuebleDialogWidget').hide()" />
-                                <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('editInmuebleDialogWidget').hide()" type="button" />
-                            </div>
-                        </p:outputPanel>
-                    </h:form>
-                </p:dialog>
--->
+                <!--
+                                <p:dialog dynamic="true" id="editInmuebleDialog" header="#{messages.label_inmueble_caption}"
+                                          modal="true" widgetVar="editInmuebleDialogWidget" maximizable="true">
+                                    <p:ajax event="close" listener="#{inmuebleBean.reset}"/>
+                                    <h:form id="editInmuebleForm" >
+                                        <p:outputPanel id="inmuebleEditPanel">
+                                            <ui:include src="/pages/inmueble/inmuebleEditInclude.xhtml"/>
+                                            <div style="text-align: center; margin:10px">
+                                                <p:commandButton value="#{messages.label_save}"
+                                                                 icon="ui-icon-disk" action="#{inmuebleBean.persist}"
+                                                                 update=":editInmuebleForm:inmuebleEditPanel :inmuebleDataForm :growlForm:growl"
+                                                                 oncomplete="if(!args.validationFailed) PF('editInmuebleDialogWidget').hide()" />
+                                                <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('editInmuebleDialogWidget').hide()" type="button" />
+                                            </div>
+                                        </p:outputPanel>
+                                    </h:form>
+                                </p:dialog>
+                -->
             </h:form>         
 
 

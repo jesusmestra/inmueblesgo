@@ -12,7 +12,7 @@
         <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
 
             <h:outputLabel value="#{messages.field_label_proyecto_empresa}:" for="empresaSelectInput" rendered="#{not hideEmpresaSelectInput}"/>
-            <h:panelGroup rendered="#{not hideEmpresaSelectInput}">
+            <h:panelGroup rendered="#{not hideEmpresaSelectInput}" style="min-width: 100px;">
                 <p:selectOneMenu value="#{proyectoBean.proyecto.empresa}"
                                  id="empresaSelectInput">
                     <f:selectItem noSelectionOption="true" itemLabel="" />
@@ -78,15 +78,9 @@
             <p:message for="nombreEditInput" display="icon" />
 
 
-            <h:outputLabel value="#{messages.field_label_proyecto_poblado}:" for="labelNombrePoblado" />
-            <p:message for="nombreEditInput" display="icon" />            
-            
-            <h:outputLabel value="Poblado:" for="labelNombrePoblado" />
-            <p:outputLabel id="labelNombrePoblado" value="#{proyectoBean.proyecto.poblado.nombre}"/>
-            <p:commandButton icon="ui-icon-search" title="#{messages.label_create}" 
-                             actionListener="#{buscarPobladoBean.choosePoblado}">
-                <p:ajax event="dialogReturn" listener="#{proyectoBean.seleccionarPoblado}" update="labelNombrePoblado" />  
-            </p:commandButton>
+          
+          
+
 
 
             <h:outputLabel value="#{messages.field_label_proyecto_selecciona_archivo}:" for="logoEditInput" />
@@ -117,6 +111,15 @@
             </h:panelGroup>
             <p:message for="estadoProyectoSelectInput" display="icon" />
 
+            
+              <h:outputLabel value="Poblado:" for="labelNombrePoblado" />
+            <p:outputLabel id="labelNombrePoblado" value="#{proyectoBean.proyecto.poblado.nombre}"/>
+            <p:commandButton icon="ui-icon-search" title="#{messages.label_create}" 
+                             actionListener="#{buscarPobladoBean.choosePoblado}">
+                <p:ajax event="dialogReturn" listener="#{proyectoBean.seleccionarPoblado}" update="labelNombrePoblado" />  
+            </p:commandButton>
+            
+            
              <h:outputLabel value="#{messages.field_label_proyecto_latitud}:" for="latitudEditInput" />
              <p:inputText value="#{proyectoBean.proyecto.latitud}" id="latitudEditInput" 
                          label="#{messages.field_label_proyecto_latitud}" />

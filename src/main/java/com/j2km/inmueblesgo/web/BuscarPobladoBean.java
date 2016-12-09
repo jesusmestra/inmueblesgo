@@ -119,8 +119,8 @@ public class BuscarPobladoBean implements Serializable{
 
         Map<String, Object> options = new HashMap<String, Object>();
         options.put("modal", true);
-        options.put("width", "80%");
-        options.put("height", 400);
+        options.put("width", "50%");
+        options.put("height", 200);
         options.put("contentWidth", "100%");
         options.put("contentHeight", "100%");
         options.put("headerElement", "customheader");

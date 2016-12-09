@@ -9,55 +9,8 @@
       xmlns:o="http://omnifaces.org/ui">
     <ui:composition template="/templates/layout.xhtml">
         <ui:define name="content">
+            <ui:include src="/pages/torre/torreViewTemplate.xhtml"/>
 
-            <f:metadata>
-                <f:viewParam name="id" value="#{torreBusinessBean.torre}" converter="#{genericEntityConverter}" />
-                <f:viewAction action="#{torreBusinessBean.onLoad}"/>
-            </f:metadata>
-
-            <h:form>
-
-                <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2" >
-
-                    <h:outputText value="Descripción:" />
-                    <h:outputText value="#{torreBusinessBean.torre.nombre}" />
-
-                    <h:outputText value="Numero:" />
-                    <h:outputText value="#{torreBusinessBean.torre.numero}" />
-
-                    <h:outputText value="Dirección:" />
-                    <h:outputText value="#{torreBusinessBean.torre.direccion}" />
-
-                    <h:outputText value="Proyecto:" />
-                    <h:outputText value="#{torreBusinessBean.torre.proyecto.nombre}" />
-
-                </h:panelGrid>
-
-                <p:panel id="basic" header="Agregar Piso(s)" footer="Generación masiva de inmuebles" style="margin-bottom:20px">
-                    <h:panelGrid columns="2" cellpadding="10">                   
-                        <h:outputText value="Tipo Planta" />
-                        <p:selectOneMenu value="${torreBusinessBean.tipoPlanta}">
-                            <f:selectItem noSelectionOption="true" itemLabel="" />
-                            <f:selectItems value="#{torreBusinessBean.tipoPlantaList}" 
-                                           var="tipoPlanta" 
-                                           itemLabel="#{tipoPlanta.descripcion}"
-                                           itemValue="#{tipoPlanta}" />
-                            <o:converter converterId="omnifaces.SelectItemsConverter" list="#{torreBusinessBean.tipoPlantaList}" />
-                        </p:selectOneMenu>
-                        
-                        <h:outputText value="Piso Inicial" />
-                        <p:inputNumber value="#{torreBusinessBean.pisoInicial}"/>
-                        
-                        <h:outputText value="Piso Final" />
-                        <p:inputNumber value="#{torreBusinessBean.pisoFinal}"/>
-                        
-                        <p:commandButton value="Generar Masivo" icon="ui-icon-plusthick" 
-                                 action="#{torreBusinessBean.generarMasivo()}"
-                                 update="growl"/>
-                    </h:panelGrid>
-                </p:panel>
-
-            </h:form>
         </ui:define>
     </ui:composition>
 </html>

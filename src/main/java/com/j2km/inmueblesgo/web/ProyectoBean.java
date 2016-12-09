@@ -6,8 +6,10 @@ import com.j2km.inmueblesgo.domain.EstadoProyectoEntity;
 import com.j2km.inmueblesgo.domain.InmuebleEntity;
 import com.j2km.inmueblesgo.domain.NegociacionEntity;
 import com.j2km.inmueblesgo.domain.OfertaEntity;
+import com.j2km.inmueblesgo.domain.Piso;
 import com.j2km.inmueblesgo.domain.PobladoEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
+import com.j2km.inmueblesgo.domain.TorreEntity;
 import com.j2km.inmueblesgo.service.ConfiguracionService;
 import com.j2km.inmueblesgo.service.EmpresaService;
 import com.j2km.inmueblesgo.service.EstadoInmuebleService;
@@ -15,14 +17,19 @@ import com.j2km.inmueblesgo.service.EstadoProyectoService;
 import com.j2km.inmueblesgo.service.InmuebleService;
 import com.j2km.inmueblesgo.service.NegociacionService;
 import com.j2km.inmueblesgo.service.OfertaService;
+import com.j2km.inmueblesgo.service.PisoService;
 import com.j2km.inmueblesgo.service.PobladoService;
 import com.j2km.inmueblesgo.service.ProyectoService;
+import com.j2km.inmueblesgo.service.TorreService;
 import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 import java.io.IOException;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -33,6 +40,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -366,5 +374,106 @@ public class ProyectoBean implements Serializable {
     public void setArchivoLogo(UploadedFile archivoLogo) {
         this.archivoLogo = archivoLogo;
     }
+    
+    /* PARA CREAR LAS TORRES Y LOS INMUEBLES */
+     
+      @Inject
+    private TorreService torreService;
+        @Inject
+    private PisoService pisoService;
+    private ProyectoEntity proyectoTorre;
+    private TorreEntity torreNueva;
+    private TorreEntity torreInstance;
+      private List <TorreEntity> torreListProyecto;
+ 
+    public TorreEntity getTorreInstance() {
+        return torreInstance;
+    }
+
+    public void setTorreInstance(TorreEntity torreInstance) {
+        this.torreInstance = torreInstance;
+    }
+
+    public TorreEntity getTorreNueva() {
+        return torreNueva;
+    }
+
+    public void setTorreNueva(TorreEntity torreNueva) {
+        this.torreNueva = torreNueva;
+    }
+
+    public ProyectoEntity getProyectoTorre() {
+        return proyectoTorre;
+    }
+
+    public void setProyectoTorre(ProyectoEntity proyectoTorre) {
+        this.proyectoTorre = proyectoTorre;
+    }
+    
+    
+    
+    public void dialogoTorreProyecto() {
+
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("modal", true);
+        options.put("width", "80%");
+        options.put("height", 400);
+        options.put("contentWidth", "100%");
+        options.put("contentHeight", "100%");
+        options.put("headerElement", "customheader");
+        List<String> paramList = new ArrayList<String>();
+        paramList.add(this.proyecto.getId().toString());
+        Map<String, List<String>> paramMap = new HashMap<String, List<String>>();
+        paramMap.put("id", paramList);
+        
+        RequestContext.getCurrentInstance().openDialog("/pages/proyecto/crearTorreProyectoInclude.", options, paramMap);
+        
+    } 
+    
+  
+
+    public List<TorreEntity> getTorreListProyecto() {
+        return torreListProyecto;
+    }
+
+    public void setTorreListProyecto(List<TorreEntity> torreListProyecto) {
+        this.torreListProyecto = torreListProyecto;
+    }
+  
+    
+    public void resetTorreProyecto() {
+        this.torreNueva = new TorreEntity();
+        this.torreNueva.setProyecto(this.proyectoTorre);
+        this.torreListProyecto = torreService.findAllByProyecto(this.proyectoTorre);
+    }
+    
+    
+    
+     public void dialogoPisosTorre(TorreEntity t) {
+
+        Map<String, Object> options = new HashMap<String, Object>();
+        options.put("modal", true);
+        options.put("width", "80%");
+        options.put("height", 400);
+        options.put("contentWidth", "100%");
+        options.put("contentHeight", "100%");
+        //options.put("headerElement", "customheader");
+        List<String> paramList = new ArrayList<String>();
+         
+        paramList.add(t.getId().toString());
+        Map<String, List<String>> paramMap = new HashMap<String, List<String>>();
+        paramMap.put("id", paramList);
+        
+        //RequestContext.getCurrentInstance().openDialog("/pages/proyecto/pisoTorreInclude.", options, paramMap);
+        RequestContext.getCurrentInstance().openDialog("/pages/torre/torreViewTemplate.", options, paramMap);
+        
+    } 
+    
+    public void grabarTorre(){
+        torreService.save(torreNueva);
+        resetTorreProyecto();
+    }
+    
+    /* PARA CREAR LAS TORRES Y LOS INMUEBLES */
 
 }

@@ -4,7 +4,6 @@
 package com.j2km.inmueblesgo.domain;
 
 import java.io.Serializable;
-import java.sql.Blob;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,7 +38,7 @@ public class EmpresaEntity extends BaseEntity implements Serializable {
 
     @Column(name = "emp_logo")
     @Basic
-    private Blob logo;
+    private String logo;
 
     @Column(name = "emp_email_host")
     @Basic
@@ -97,11 +96,11 @@ public class EmpresaEntity extends BaseEntity implements Serializable {
         this.nit = nit;
     }
 
-    public Blob getLogo() {
+    public String getLogo() {
         return this.logo;
     }
 
-    public void setLogo(Blob logo) {
+    public void setLogo(String logo) {
         this.logo = logo;
     }
 

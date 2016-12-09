@@ -4,11 +4,13 @@ import com.j2km.inmueblesgo.domain.EmpresaEntity;
 import com.j2km.inmueblesgo.domain.MunicipioEntity;
 import com.j2km.inmueblesgo.domain.PobladoEntity;
 import com.j2km.inmueblesgo.domain.TerceroEntity;
+import com.j2km.inmueblesgo.service.ConfiguracionService;
 import com.j2km.inmueblesgo.service.EmpresaService;
 import com.j2km.inmueblesgo.service.PobladoService;
 import com.j2km.inmueblesgo.service.TerceroService;
 import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
+import java.io.IOException;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,6 +25,7 @@ import javax.inject.Named;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
 import org.primefaces.event.SelectEvent;
+import org.primefaces.model.UploadedFile;
 
 @Named("empresaBean")
 @ViewScoped
@@ -51,7 +54,18 @@ public class EmpresaBean implements Serializable {
     
     private MunicipioEntity municipioBusqueda;
 
+    private UploadedFile archivoLogo;
 
+    public UploadedFile getArchivoLogo() {
+        return archivoLogo;
+    }
+
+    public void setArchivoLogo(UploadedFile archivoLogo) {
+        this.archivoLogo = archivoLogo;
+    }
+    
+    @Inject
+    private ConfiguracionService configuracionServiceInstance;
     
     public void prepareNewEmpresa() {
         reset();
@@ -68,10 +82,10 @@ public class EmpresaBean implements Serializable {
         return this.lazyModel;
     }
     
-    public String persist() {
+    public String persist() throws IOException {
 
         String message;
-        
+         String nombreLogo;
         try {
             
             if (empresa.getId() != null) {
@@ -91,6 +105,24 @@ public class EmpresaBean implements Serializable {
             message = "message_save_exception";
             // Set validationFailed to keep the dialog open
             FacesContext.getCurrentInstance().validationFailed();
+        }finally {
+            System.err.println("Iniciando la carga del archivo");
+            if (empresa.getId() != null) {
+                
+                System.err.println("Copiando el del archivo"+archivoLogo);
+                
+                if (archivoLogo != null) {
+                    nombreLogo = configuracionServiceInstance.copiarArchivo(archivoLogo, "empresa_" + empresa.getId().toString(), "empresa");
+                    if (nombreLogo != null && nombreLogo.length() > 0) {
+                        empresa.setLogo(nombreLogo);
+                    }
+
+                }
+                if (empresa.getLogo() != null && empresa.getLogo().length() > 0) {
+                    empresa = empresaService.update(empresa);
+                }
+            }
+
         }
         
         FacesMessage facesMessage = MessageFactory.getMessage(message);

@@ -118,7 +118,7 @@ public class ConfiguracionService{
     public String copiarArchivo(UploadedFile archivo, String nuevoNombre, String carpeta) throws FileNotFoundException, IOException {
         String resultado = "";
 
-      
+        System.err.println("Grabando el archivo");
         
         String filePath = ap.rutaCarpeta() + File.separator + carpeta;
         InputStream input = archivo.getInputstream();

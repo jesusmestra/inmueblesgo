@@ -191,7 +191,7 @@
             </p:confirmDialog>
 
             <p:dialog dynamic="true" id="editTerceroDialog" header="#{messages.label_tercero_caption}"
-                      modal="true" widgetVar="editTerceroDialogWidget" maximizable="true">
+                      modal="true" widgetVar="editTerceroDialogWidget" maximizable="true" style="width: 70%; height: 400px;" >
                 <p:ajax event="close" listener="#{terceroBean.reset}"/>
                 <h:form id="editTerceroForm" >
                     <p:outputPanel id="terceroEditPanel">

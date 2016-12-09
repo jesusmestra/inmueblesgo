@@ -84,8 +84,16 @@ a, img {
     padding-right: 3px;
 }
 
+.centrado{
+    text-align: center;
+    
+}
 
-
+.izquierda{
+    text-align: left;
+    padding-left: 3px;
+    
+}
 .icon-entity {
     background: url(../resources/images/entity.png) !important;
     height:15px;

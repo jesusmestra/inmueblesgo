@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <h:outputStylesheet library="css" name="standard.css" />
+        <f:metadata>
+            <f:viewParam name="id" value="#{proyectoBean.proyectoTorre}" converter="#{genericEntityConverter}" />
+            <f:viewAction action="#{proyectoBean.resetTorreProyecto}" />
+        </f:metadata>
+                        <p:panel id="contenido" 
+                         header="Crear Torre" footer="" style="margin-bottom:5px">
+
+        
+        <h:form>
+            <p:outputPanel styleClass="ui-fluid">
+                <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">            
+                    <h:outputLabel value="#{messages.field_label_torre_nombre}:" for="nombreEditInput" />
+                    <p:inputText value="#{proyectoBean.torreNueva.nombre}" id="nombreEditInput" 
+                                 label="#{messages.field_label_torre_nombre}" />
+                    <p:message for="nombreEditInput" display="icon" /> 
+
+                    <h:outputLabel value="#{messages.field_label_torre_numero}:" for="numeroEditInput" />
+                    <p:inputText value="#{proyectoBean.torreNueva.numero}" id="numeroEditInput" 
+                                 label="#{messages.field_label_torre_numero}" />
+                    <p:message for="numeroEditInput" display="icon" /> 
+
+                    <h:outputLabel value="#{messages.field_label_torre_direccion}:" for="direccionEditInput" />
+                    <p:inputText value="#{proyectoBean.torreNueva.direccion}" id="direccionEditInput" 
+                                 label="#{messages.field_label_torre_direccion}" />
+                    <p:message for="direccionEditInput" display="icon" /> 
+
+
+                </p:panelGrid>
+                      <p:commandButton value="Crear" icon="ui-icon-plusthick" 
+                                       action="#{proyectoBean.grabarTorre}"
+                                                 update="tablaListadoTorre"
+                                                 
+                                                 />
+
+
+                <p:dataTable id="tablaListadoTorre" value="#{proyectoBean.torreListProyecto}" 
+                             var="torre" resizableColumns="true" paginator="true"
+                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
+                             paginatorPosition="bottom" widgetVar="torreTable" emptyMessage="#{messages.label_no_records_found}"
+                             reflow="true"
+                             rowIndexVar="i"
+                             >
+
+                    <f:facet name="header" >
+                        <p:outputLabel value="#{messages.label_listado_torres}"/>
+                    </f:facet>
+
+                    <p:column  headerText="#{messages.label_item}" style="width: 3%;" class="derecha"  >
+                        <h:outputText value="#{i+1}" />
+                    </p:column>
+
+                    <p:column  headerText="#{messages.field_label_inmueble_numero}"  >
+                        <h:outputText value="#{torre.numero}" />
+                    </p:column>
+                    <p:column  headerText="#{messages.field_label_inmueble_numero}" style="width: 3%" class="centrado" >
+
+                        
+                        <p:outputLabel id="labelNombrePoblado_#{piso.id}"/>
+      
+                        <p:commandButton icon="fa fa-building-o" 
+                                         title="Ver torre" 
+                                         actionListener="#{proyectoBean.dialogoPisosTorre(torre)}">
+                            <p:ajax event="dialogReturn" 
+                                    update="labelNombrePoblado_#{piso.id}" />  
+                        </p:commandButton>
+                        
+                        
+                        
+                    </p:column>
+
+
+                </p:dataTable>
+
+
+
+
+
+            </p:outputPanel>
+
+        </h:form>
+                        </p:panel>
+    </h:body>
+</html>
