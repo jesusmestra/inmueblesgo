@@ -6,7 +6,6 @@ import com.j2km.inmueblesgo.domain.EstadoProyectoEntity;
 import com.j2km.inmueblesgo.domain.InmuebleEntity;
 import com.j2km.inmueblesgo.domain.NegociacionEntity;
 import com.j2km.inmueblesgo.domain.OfertaEntity;
-import com.j2km.inmueblesgo.domain.Piso;
 import com.j2km.inmueblesgo.domain.PobladoEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
 import com.j2km.inmueblesgo.domain.TorreEntity;
@@ -41,6 +40,7 @@ import javax.inject.Named;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.CloseEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.UploadedFile;
 
@@ -270,6 +270,7 @@ public class ProyectoBean implements Serializable {
     }
 
     public void inicioListaInmueble() {
+        System.err.println("ACTULIZANDO LOS INMUEBLES");
         this.estadoInmuebleSel = estadoInmuebleService.findByCodigo("01");
         this.estadoInmuebleList = estadoInmuebleService.findAllEstadoInmuebleEntities();
         if (this.estadoInmuebleSel == null) {
@@ -410,8 +411,14 @@ public class ProyectoBean implements Serializable {
         this.proyectoTorre = proyectoTorre;
     }
     
+     public void actualizarLista(SelectEvent event) {
+        inicioListaInmueble(); 
+     }
     
-    
+     public void cerrarDialogoCrearProyecto(){
+        RequestContext.getCurrentInstance().closeDialog(null);
+     }
+     
     public void dialogoTorreProyecto() {
 
         Map<String, Object> options = new HashMap<String, Object>();
@@ -421,6 +428,7 @@ public class ProyectoBean implements Serializable {
         options.put("contentWidth", "100%");
         options.put("contentHeight", "100%");
         options.put("headerElement", "customheader");
+        options.put("closable", true);
         List<String> paramList = new ArrayList<String>();
         paramList.add(this.proyecto.getId().toString());
         Map<String, List<String>> paramMap = new HashMap<String, List<String>>();
@@ -428,6 +436,9 @@ public class ProyectoBean implements Serializable {
         
         RequestContext.getCurrentInstance().openDialog("/pages/proyecto/crearTorreProyectoInclude.", options, paramMap);
         
+        inicioListaInmueble(); 
+        
+        RequestContext.getCurrentInstance().update(":inmuebleDataForm:inmuebleTable");
     } 
     
   

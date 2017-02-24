@@ -26,8 +26,8 @@
                                          value="Configuracion"
                                          title="#{messages.label_create}" 
                                          actionListener="#{proyectoBean.dialogoTorreProyecto}">
-                            <p:ajax event="dialogReturn"  
-                                    update="labelNombrePoblado" />  
+                            <p:ajax event="dialogReturn"  listener="#{proyectoBean.actualizarLista}"
+                                    update=":inmuebleDataForm:inmuebleTable" />  
                         </p:commandButton>
 
                         
