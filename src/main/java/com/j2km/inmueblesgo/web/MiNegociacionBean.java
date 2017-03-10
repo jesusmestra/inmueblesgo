@@ -278,6 +278,30 @@ public class MiNegociacionBean implements Serializable {
             this.allListNegociacionTercero = negociacionTerceroService.findAllNegociacionTerceroByNegociacion(this.negociacion);
         }
     }
+    
+    public void onCambioValorCuota(){
+        int i = 0;
+        Double valorSumadoCuotas = 0.0;
+        
+        for (PlanPagoEntity entidad : allPlanPagosListNegociacion) {
+            if (allPlanPagosListNegociacion.get(0) == entidad){
+                if(!entidad.getValorPactado().equals(negociacion.getValorSeparacion())){
+                    negociacion.setValorSeparacion(entidad.getValorPactado());
+                }
+            }
+            valorSumadoCuotas = valorSumadoCuotas + entidad.getValorPactado();
+        }
+        
+        
+        Double porcentaje = 0.0;
+       
+        System.err.println(valorSumadoCuotas.intValue());
+        System.err.println(negociacion.getValorTotal().intValue());
+        porcentaje = (valorSumadoCuotas * 100) / negociacion.getValorTotal();
+        System.err.println(porcentaje.intValue());
+        negociacion.setPorcentaje(porcentaje);
+        
+    }
 
     public void onCambioOfetra() {
 
@@ -412,10 +436,10 @@ public class MiNegociacionBean implements Serializable {
             //message = "message_successfully_created";
         }
 
+        FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage("Mensaje", facesMessage);
-        
-        return "/pages/minegociacion/negociacionView.xhtml?faces-redirect=true&id="+ this.negociacion.getId().toString();
+        context.addMessage("Mensaje", facesMessage);        
+        return "/pages/vendedor/negociacionView.xhtml?faces-redirect=true&id="+ this.negociacion.getId().toString();
         
     }
 

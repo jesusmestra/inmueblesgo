@@ -17,30 +17,30 @@
                              converter="#{genericEntityConverter}" />              
                 <f:viewAction action="#{miNegociacionBean.onLoad}"  />
             </f:metadata>
-            
-    <p:panel  header="#{miNegociacionBean.inmueble.proyecto.nombre} |  #{miNegociacionBean.inmueble.proyecto.empresa.nombre}" style="margin-bottom:10px;">
 
-        <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
-            <h:graphicImage name="images/proyecto/proyecto_#{miNegociacionBean.inmueble.proyecto.id}.gif"  />
+            <p:panel  header="#{miNegociacionBean.inmueble.proyecto.nombre} |  #{miNegociacionBean.inmueble.proyecto.empresa.nombre}" style="margin-bottom:10px;">
+
+                <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
+                    <h:graphicImage name="images/proyecto/proyecto_#{miNegociacionBean.inmueble.proyecto.id}.gif"  />
 
 
-            <p:outputPanel>
-                <h:panelGrid columns="2" cellpadding="5">
-                    <h:outputText value="Codigo:" />
-                    <h:outputText value="#{miNegociacionBean.inmueble.proyecto.codigo}" style="font-weight: bold"/>
+                    <p:outputPanel>
+                        <h:panelGrid columns="2" cellpadding="5">
+                            <h:outputText value="Codigo:" />
+                            <h:outputText value="#{miNegociacionBean.inmueble.proyecto.codigo}" style="font-weight: bold"/>
 
-                    <h:outputText value="Nombre:" />
-                    <h:outputText value="#{miNegociacionBean.inmueble.proyecto.nombre}" style="font-weight: bold"/>
+                            <h:outputText value="Nombre:" />
+                            <h:outputText value="#{miNegociacionBean.inmueble.proyecto.nombre}" style="font-weight: bold"/>
 
-                    <h:outputText value="Ubicacion:" />
-                    <h:outputText value="#{miNegociacionBean.inmueble.proyecto.poblado.municipio.nombre}" style="font-weight: bold"/>
+                            <h:outputText value="Ubicacion:" />
+                            <h:outputText value="#{miNegociacionBean.inmueble.proyecto.poblado.municipio.nombre}" style="font-weight: bold"/>
+                        </h:panelGrid>
+                    </p:outputPanel>
                 </h:panelGrid>
-            </p:outputPanel>
-        </h:panelGrid>
-    </p:panel>
-            
-            
-            
+            </p:panel>
+
+
+
 
             <h:form id="viewInmuebleForm" >
                 <p:outputPanel>
@@ -60,50 +60,53 @@
                                 <h:outputText value="#{messages.field_label_inmueble_area}:" />
                                 <h:outputText value="#{miNegociacionBean.inmueble.area}" >
                                     <f:convertNumber currencySymbol="" groupingUsed="true"
-                                                     maxFractionDigits="2" type="currency" />
+                                                     maxFractionDigits="0" type="currency" />
                                 </h:outputText>
 
                                 <h:outputText value="Porcentaje:" />
-                                <p:inputText value="#{miNegociacionBean.negociacion.porcentaje}" >
-                                    <f:convertNumber groupingUsed="true"
-                                                     maxFractionDigits="2" type="currency" />
-                                    <p:ajax event="keyup" update="pnlGrd_numOfLbl valorTotalEditInput" 
+                                <p:inputNumber id="txtProcentaje" value="#{miNegociacionBean.negociacion.porcentaje}"  
+                                               decimalSeparator="," thousandSeparator="." decimalPlaces="2"
+                                               minValue="1" emptyValue="sign">
+                                    <p:ajax event="change" update="pnlGrd_numOfLbl valorTotalEditInput" 
                                             listener="#{miNegociacionBean.onCambioOfetra}" />
-
-                                </p:inputText>
+                                </p:inputNumber>                                
 
                                 <h:outputText value="Número Cuotas:" />
-                                <p:inputText value="#{miNegociacionBean.negociacion.numeroCuotas}" >
-                                    <f:convertNumber  groupingUsed="true"
-                                                      maxFractionDigits="2" type="currency" />
-                                    <p:ajax event="keyup" update="pnlGrd_numOfLbl valorTotalEditInput" 
+                               
+                                <p:inputNumber value="#{miNegociacionBean.negociacion.numeroCuotas}"  
+                                               decimalSeparator="," thousandSeparator="." decimalPlaces="0"
+                                               minValue="1" emptyValue="sign">
+                                    <p:ajax event="change" update="pnlGrd_numOfLbl valorTotalEditInput" 
                                             listener="#{miNegociacionBean.onCambioOfetra}" />
-
-                                </p:inputText>
+                                </p:inputNumber>
+                                
 
                                 <h:outputText value="#{messages.field_label_inmueble_valorMetroCuadrado}:" />
-                                <p:inputText value="#{miNegociacionBean.negociacion.valorMetroCuadrado}" >
-                                    <f:convertNumber  groupingUsed="true"
-                                                      maxFractionDigits="2" type="currency" />                                
-                                    <p:ajax event="keyup" update="pnlGrd_numOfLbl valorTotalEditInput" 
+                                <p:inputNumber value="#{miNegociacionBean.negociacion.valorMetroCuadrado}"  
+                                               decimalSeparator="," thousandSeparator="." decimalPlaces="0" symbol="$"
+                                               emptyValue="zero">
+                                                     
+                                    <p:ajax event="change" update="pnlGrd_numOfLbl valorTotalEditInput" 
                                             listener="#{miNegociacionBean.onCambioOfetra}" />
-                                </p:inputText>
+                                </p:inputNumber>
 
                                 <h:outputText value="#{messages.field_label_inmueble_incremento}:" />
-                                <p:inputText value="#{miNegociacionBean.negociacion.valorIncremento}" >
-                                    <f:convertNumber groupingUsed="true"
-                                                     maxFractionDigits="2" type="currency" />
-                                    <p:ajax event="keyup" update="pnlGrd_numOfLbl valorTotalEditInput" 
+                                <p:inputNumber value="#{miNegociacionBean.negociacion.valorIncremento}"  
+                                               decimalSeparator="," thousandSeparator="." decimalPlaces="0" symbol="$"
+                                               emptyValue="zero">
+                                                     
+                                    <p:ajax event="change" update="pnlGrd_numOfLbl valorTotalEditInput" 
                                             listener="#{miNegociacionBean.onCambioOfetra}" />
-                                </p:inputText>
+                                </p:inputNumber>                              
 
                                 <h:outputText value="#{messages.field_label_inmueble_valorSeparacion}:" />
-                                <p:inputText value="#{miNegociacionBean.negociacion.valorSeparacion}" >
-                                    <f:convertNumber  groupingUsed="true"
-                                                      maxFractionDigits="2" type="currency" />
-                                    <p:ajax event="keyup" update="pnlGrd_numOfLbl valorTotalEditInput" 
+                                <p:inputNumber id="txtValorSeparacion" value="#{miNegociacionBean.negociacion.valorSeparacion}"  
+                                               decimalSeparator="," thousandSeparator="." decimalPlaces="0" symbol="$"
+                                               emptyValue="zero">
+                                                     
+                                    <p:ajax event="change" update="pnlGrd_numOfLbl valorTotalEditInput" 
                                             listener="#{miNegociacionBean.onCambioOfetra}" />
-                                </p:inputText>
+                                </p:inputNumber>
 
                                 <h:outputText value="#{messages.field_label_inmueble_valorTotal}:" />
 
@@ -177,12 +180,15 @@
                                             label="#{messages.field_label_plan_pago_fecha_pactada}"  />
                             </p:column>
                             <p:column headerText="#{messages.field_label_plan_pago_valor}">
-                                <p:inputText value="#{planPago.valorPactado}" id="valorEditInput_#{i}" 
-                                             label="#{messages.field_label_plan_pago_valor}" >
-                                    <f:convertNumber  groupingUsed="true"
-                                                      maxFractionDigits="2" type="currency" />
-
-                                </p:inputText>
+                                
+                                <p:inputNumber value="#{planPago.valorPactado}" id="valorEditInput_#{i}" label="#{messages.field_label_plan_pago_valor}"
+                                               decimalSeparator="," thousandSeparator="." decimalPlaces="0" symbol="$"
+                                               emptyValue="zero">
+                                                     
+                                    <p:ajax event="change" update=":viewInmuebleForm:txtProcentaje :viewInmuebleForm:txtValorSeparacion" 
+                                            listener="#{miNegociacionBean.onCambioValorCuota}"/>  
+                                </p:inputNumber>
+                                
                             </p:column>
                             <p:column headerText="Observacion">
                                 <p:inputText value="#{planPago.observacion}" id="observacionEditInput_#{i}" 
