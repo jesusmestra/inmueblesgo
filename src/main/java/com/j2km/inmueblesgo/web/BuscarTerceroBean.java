@@ -12,7 +12,7 @@ import com.j2km.inmueblesgo.domain.TerceroEntity;
 import com.j2km.inmueblesgo.service.DepartamentoService;
 import com.j2km.inmueblesgo.service.MunicipioService;
 import com.j2km.inmueblesgo.service.PobladoService;
-import com.j2km.inmueblesgo.service.TerceroService;
+import com.j2km.inmueblesgo.service.TerceroRepository;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -35,7 +35,7 @@ public class BuscarTerceroBean implements Serializable{
     private static final Logger logger = Logger.getLogger(BuscarTerceroBean.class.getName());
     
     @Inject 
-    private TerceroService terceroService;  
+    private TerceroRepository terceroService;  
     
     private TerceroEntity terceroEntity;    
     private List<TerceroEntity> allTerceros;  
@@ -58,7 +58,8 @@ public class BuscarTerceroBean implements Serializable{
 
     public void buscarTercero() {
         System.out.println("Enter presionado");
-        this.allTerceros = terceroService.buscarTercerosFiltro(terceroEntity);
+        this.allTerceros = terceroService.buscar(terceroEntity);
+        
     }
 
     public void selectTerceroFromDialog(TerceroEntity tercero) {

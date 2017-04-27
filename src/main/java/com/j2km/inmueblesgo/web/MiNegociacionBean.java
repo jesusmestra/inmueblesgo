@@ -22,7 +22,7 @@ import com.j2km.inmueblesgo.service.OfertaService;
 import com.j2km.inmueblesgo.service.PermisoService;
 import com.j2km.inmueblesgo.service.PlanPagoService;
 import com.j2km.inmueblesgo.service.RolService;
-import com.j2km.inmueblesgo.service.TerceroService;
+import com.j2km.inmueblesgo.service.TerceroRepository;
 import com.j2km.inmueblesgo.service.UsuarioService;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 import java.io.IOException;
@@ -65,7 +65,7 @@ public class MiNegociacionBean implements Serializable {
     private NegociacionService negociacionService;
 
     @Inject
-    private TerceroService terceroService;
+    private TerceroRepository terceroService;
 
     @Inject
     private OfertaService ofertaService;

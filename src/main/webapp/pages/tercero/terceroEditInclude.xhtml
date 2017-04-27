@@ -11,9 +11,6 @@
 
         <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
 
-
-
-
             <h:outputLabel value="#{messages.field_label_tercero_tipoIdentificacion}:" for="tipoIdentificacionSelectInput" rendered="#{not hideTipoIdentificacionSelectInput}"/>
             <h:panelGroup rendered="#{not hideTipoIdentificacionSelectInput}">
                 <p:selectOneMenu value="#{terceroBean.tercero.tipoIdentificacion}"
@@ -83,9 +80,6 @@
             <p:inputText value="#{terceroBean.tercero.email}" id="emailEditInput" 
                          label="#{messages.field_label_tercero_email}" />
             <p:message for="emailEditInput" display="icon" />
-
-
-
 
         </p:panelGrid>
 

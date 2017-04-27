@@ -14,7 +14,7 @@
                         return false;
                     }">
 
-                <p:dataTable id="terceroTable" value="#{terceroBean.lazyModel}" var="tercero" resizableColumns="true" paginator="true"
+                <p:dataTable id="terceroTable" value="#{terceroBean.tercerosPorUsuario}" var="tercero" resizableColumns="true" paginator="true"
                              paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
                              paginatorPosition="bottom" widgetVar="terceroTable" emptyMessage="#{messages.label_no_records_found}"

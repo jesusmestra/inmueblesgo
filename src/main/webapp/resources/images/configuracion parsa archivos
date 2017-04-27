@@ -31,11 +31,9 @@ desde el navegador : 0.0.0.0:xxxx/archivos
             </servlet-container>
             <handlers>
                 <file name="welcome-content" path="${jboss.home.dir}/welcome-content"/>
-                
                 <!--Para grabas archivos -->
                 <file name="archivos" path="/home/files" directory-listing="true"/>
-                <!--Para grabas archivos -->
-                
+                <!--Para grabas archivos -->                
             </handlers>
 
 /*********************************************

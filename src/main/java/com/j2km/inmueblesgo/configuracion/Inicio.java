@@ -24,7 +24,7 @@ import com.j2km.inmueblesgo.service.OfertaService;
 import com.j2km.inmueblesgo.service.PermisoService;
 import com.j2km.inmueblesgo.service.ProyectoService;
 import com.j2km.inmueblesgo.service.RolService;
-import com.j2km.inmueblesgo.service.TerceroService;
+import com.j2km.inmueblesgo.service.TerceroRepository;
 import com.j2km.inmueblesgo.service.TipoIdentificacionService;
 import com.j2km.inmueblesgo.service.UsuarioService;
 import javax.annotation.PostConstruct;
@@ -49,7 +49,7 @@ public class Inicio {
     private TipoIdentificacionService tipoIdentificacionService;
 
     @Inject
-    private TerceroService terceroService;
+    private TerceroRepository terceroService;
 
     @Inject
     private EmpresaService empresaService;
@@ -255,7 +255,7 @@ public class Inicio {
             tipoIdentificacionService.save(tipoIdentificacion);
         }
 
-        TerceroEntity representante = terceroService.findByIdentificacion("11000531");
+        /*TerceroEntity representante = terceroService.findOptionalByIdentificacion("11000531");
 
         if (representante == null) {
 
@@ -268,10 +268,11 @@ public class Inicio {
             representante.setTipoIdentificacion(tipoIdentificacionService.findByAbrebiatura("CC"));
             representante.setEmail("jkelsy@gmail.com");
             representante.setTelefono("7810010");
+            representante.setUsuario(usuario);
             terceroService.save(representante);
         }
 
-        representante = terceroService.findByIdentificacion("10766753");
+        representante = terceroService.findOptionalByIdentificacion("10766753");
 
         if (representante == null) {
 
@@ -300,7 +301,7 @@ public class Inicio {
             empresa.setEmailPort("80");
             //empresa.setPoblado(poblado);
             empresa.setTelefono("7810010");
-            empresa.setRepresentante(terceroService.findByIdentificacion("11000531"));
+            empresa.setRepresentante(terceroService.findOptionalByIdentificacion("11000531"));
             empresaService.save(empresa);
         }
 
@@ -317,7 +318,7 @@ public class Inicio {
             empresa.setEmailPort("80");
             //empresa.setPoblado(poblado);
             empresa.setTelefono("7810010");
-            empresa.setRepresentante(terceroService.findByIdentificacion("10766753"));
+            empresa.setRepresentante(terceroService.findOptionalByIdentificacion("10766753"));
             empresaService.save(empresa);
         }
 
@@ -387,7 +388,7 @@ public class Inicio {
             proyecto.setOferta(ofertaService.findByNombre("Plan 30/70 18"));
             proyecto.setEstadoProyecto(estadoProyecto);
             proyectoService.save(proyecto);
-        }
+        }*/
 
     }
 }

@@ -2,31 +2,7 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="InmueblesDS" transaction-type="JTA">
     <jta-data-source>java:/jboss/datasources/InmueblesDS</jta-data-source>
-    <class>com.j2km.inmueblesgo.domain.TipoIdentificacionEntity</class>
-    <class>com.j2km.inmueblesgo.domain.TerceroEntity</class>
-    <class>com.j2km.inmueblesgo.domain.DepartamentoEntity</class>
-    <class>com.j2km.inmueblesgo.domain.PobladoEntity</class>
-    <class>com.j2km.inmueblesgo.domain.EmpresaEntity</class>
-    <class>com.j2km.inmueblesgo.domain.MunicipioEntity</class>
-    <class>com.j2km.inmueblesgo.domain.EstadoInmuebleEntity</class>
-    <class>com.j2km.inmueblesgo.domain.InmuebleEntity</class>
-    <class>com.j2km.inmueblesgo.domain.ProyectoEntity</class>
-    <class>com.j2km.inmueblesgo.domain.PlanPagoEntity</class>
-    <class>com.j2km.inmueblesgo.domain.OfertaEntity</class>
-    <class>com.j2km.inmueblesgo.domain.NegociacionEntity</class>
-    <class>com.j2km.inmueblesgo.domain.TorreEntity</class>
-    <class>com.j2km.inmueblesgo.domain.TipoInmuebleEntity</class>
-    <class>com.j2km.inmueblesgo.domain.TipoPlantaEntity</class>
-    <class>com.j2km.inmueblesgo.domain.TipoPlantaDetalleEntity</class>
-    <class>com.j2km.inmueblesgo.domain.UsuarioEntity</class>
-    <class>com.j2km.inmueblesgo.domain.PermisoEntity</class>
-    <class>com.j2km.inmueblesgo.domain.RolEntity</class>
-    <class>com.j2km.inmueblesgo.domain.NegociacionTerceroEntity</class>
-    <class>com.j2km.inmueblesgo.domain.Piso</class>
-    <class>com.j2km.inmueblesgo.domain.NegociacionHistoricoEntity</class>
-    <class>com.j2km.inmueblesgo.domain.EstadoNegociacionEntity</class>
-    <class>com.j2km.inmueblesgo.domain.Usuario</class>
-    <class>com.j2km.inmueblesgo.domain.EstadoProyectoEntity</class>
+    
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.hbm2ddl.auto" value="update"/>

@@ -9,7 +9,7 @@ import com.j2km.inmueblesgo.service.InmuebleService;
 import com.j2km.inmueblesgo.service.NegociacionService;
 import com.j2km.inmueblesgo.service.OfertaService;
 import com.j2km.inmueblesgo.service.PlanPagoService;
-import com.j2km.inmueblesgo.service.TerceroService;
+import com.j2km.inmueblesgo.service.TerceroRepository;
 import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
@@ -45,7 +45,7 @@ public class NegociacionBean implements Serializable {
     @Inject
     private NegociacionService negociacionService;
     @Inject
-    private TerceroService terceroService;
+    private TerceroRepository terceroService;
     @Inject
     private OfertaService ofertaService;
     @Inject
@@ -104,7 +104,7 @@ public class NegociacionBean implements Serializable {
         Calendar cal = Calendar.getInstance();
         this.negociacion.setFecha(cal.getTime());
 
-        this.allTerceroList = terceroService.findAllTerceroEntities();
+        this.allTerceroList = terceroService.findAll();
         this.allOfertaList = ofertaService.findAllOfertaEntities();
         this.cantidadCuotas = 0;
         this.allPlanPagosListNegociacion = null;
@@ -145,7 +145,7 @@ public class NegociacionBean implements Serializable {
         }
         
         
-        this.allTerceroList = terceroService.findAllTerceroEntities();
+        this.allTerceroList = terceroService.findAll();
         this.allOfertaList = ofertaService.findAllOfertaEntities();
     }
 

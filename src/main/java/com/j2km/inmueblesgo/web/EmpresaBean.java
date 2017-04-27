@@ -7,7 +7,7 @@ import com.j2km.inmueblesgo.domain.TerceroEntity;
 import com.j2km.inmueblesgo.service.ConfiguracionService;
 import com.j2km.inmueblesgo.service.EmpresaService;
 import com.j2km.inmueblesgo.service.PobladoService;
-import com.j2km.inmueblesgo.service.TerceroService;
+import com.j2km.inmueblesgo.service.TerceroRepository;
 import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 import java.io.IOException;
@@ -48,7 +48,7 @@ public class EmpresaBean implements Serializable {
     private List<PobladoEntity> allPobladosList;
 
     @Inject
-    private TerceroService representanteService;
+    private TerceroRepository terceroService;
     
     private List<TerceroEntity> allRepresentantesList;
     
@@ -186,7 +186,7 @@ public class EmpresaBean implements Serializable {
     // Get a List of all terceros
     public List<TerceroEntity> getRepresentantes() {
         if (this.allRepresentantesList == null) {
-            this.allRepresentantesList = representanteService.findAllTerceroEntities();
+            this.allRepresentantesList = terceroService.findAll();
         }
         return this.allRepresentantesList;
     }
