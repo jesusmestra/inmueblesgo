@@ -5,13 +5,13 @@
  */
 package com.j2km.inmueblesgo.web;
 
+import com.j2km.inmueblesgo.configuracion.Constantes;
 import com.j2km.inmueblesgo.domain.PermisoEntity;
 import com.j2km.inmueblesgo.domain.RolEntity;
 import com.j2km.inmueblesgo.domain.UsuarioEntity;
-import com.j2km.inmueblesgo.service.PermisoService;
-import com.j2km.inmueblesgo.service.RolService;
-import com.j2km.inmueblesgo.service.UsuarioService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
+import com.j2km.inmueblesgo.service.PermisoRepository;
+import com.j2km.inmueblesgo.service.RolRepository;
+import com.j2km.inmueblesgo.service.UsuarioRepository;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Level;
@@ -36,39 +36,40 @@ public class UsuarioBean implements Serializable{
     private static final Logger logger = Logger.getLogger(UsuarioBean.class.getName());
     
     @Inject 
-    private UsuarioService usuarioService;
+    private UsuarioRepository usuarioService;
     
     @Inject
-    private RolService rolService;
+    private RolRepository rolService;
     
     @Inject 
-    private PermisoService permisoService;
+    private PermisoRepository permisoService;  
     
-    private GenericLazyDataModel<UsuarioEntity> lazyModel;    
+    private List<UsuarioEntity> usuarioList;
     
     private UsuarioEntity usuario;  
     private Boolean esVendedor;
+
+    public List<UsuarioEntity> getUsuarioList() {
+        return usuarioList;
+    }
+
+    public void setUsuarioList(List<UsuarioEntity> usuarioList) {
+        this.usuarioList = usuarioList;
+    }
     private Boolean esAdmin;    
     private String login;
-    
-    public GenericLazyDataModel<UsuarioEntity> getLazyModel() {
-        if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(usuarioService);
-        }
-        return this.lazyModel;
-    }
     
     public void nuevoUsuario(){        
         
         try{
             PermisoEntity permiso;
-            RolEntity rolVendedor = rolService.findByNombre("VENDEDOR");
-            RolEntity rolAdmin = rolService.findByNombre("ADMIN");
+            RolEntity rolVendedor = rolService.findOptionalByNombre(Constantes.ROLE_VENDEDOR);
+            RolEntity rolAdmin = rolService.findOptionalByNombre(Constantes.ROLE_ADMIN);
             
             if(usuario.getId() == null){
                 usuario = usuarioService.save(usuario);                
             }else{
-                usuarioService.update(usuario); 
+                usuarioService.save(usuario); 
             }   
             
             if(esVendedor){                
@@ -77,9 +78,9 @@ public class UsuarioBean implements Serializable{
                 permiso.setUsuario(usuario);
                 permisoService.save(permiso);
             }else{
-                permiso = permisoService.findByUsuarioAndRol(usuario, rolVendedor);
+                permiso = permisoService.findOptionalByUsuarioAndRol(usuario, rolVendedor);
                 if(permiso != null){
-                    permisoService.delete(permiso);
+                    permisoService.remove(permiso);
                 }                
             }
 
@@ -89,9 +90,9 @@ public class UsuarioBean implements Serializable{
                 permiso.setUsuario(usuario);
                 permisoService.save(permiso);
             }else{
-                permiso = permisoService.findByUsuarioAndRol(usuario, rolAdmin);
+                permiso = permisoService.findOptionalByUsuarioAndRol(usuario, rolAdmin);
                 if(permiso != null){
-                    permisoService.delete(permiso);
+                    permisoService.remove(permiso);
                 } 
             }
 
@@ -119,6 +120,7 @@ public class UsuarioBean implements Serializable{
         usuario = new UsuarioEntity();       
         esVendedor = false;
         esAdmin = false;   
+        usuarioList = usuarioService.findAll();
     }  
 
     public UsuarioEntity getUsuario() {
@@ -146,7 +148,7 @@ public class UsuarioBean implements Serializable{
     }
 
     public List<UsuarioEntity> getUsuarios() {
-        return usuarioService.findAllUsuarioEntities();
+        return usuarioService.findAll();
     }  
 
     public String getLogin() {
@@ -158,9 +160,17 @@ public class UsuarioBean implements Serializable{
     }    
     
     public void seleccionarUsuario(Long usuarioId) {   
-        usuario = usuarioService.find(usuarioId);        
+        usuario = usuarioService.findBy(usuarioId);        
         esAdmin = usuarioService.esAdmin(usuario);
         esVendedor = usuarioService.esVendedor(usuario);
+    }
+    
+    public Boolean admin(UsuarioEntity usuario){
+        return usuarioService.esAdmin(usuario);
+    }
+    
+    public Boolean vendedor(UsuarioEntity usuario){
+        return usuarioService.esVendedor(usuario);
     }
     
     public void onRowSelect(SelectEvent event) {        

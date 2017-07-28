@@ -14,9 +14,9 @@ import javax.transaction.Transactional;
 import org.primefaces.model.SortOrder;
 
 @Named
-public class PlanPagoService extends BaseService<PlanPagoEntity> implements Serializable {
+public class PlanPagoService implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    /*private static final long serialVersionUID = 1L;
 
     public PlanPagoService() {
         super(PlanPagoEntity.class);
@@ -39,7 +39,7 @@ public class PlanPagoService extends BaseService<PlanPagoEntity> implements Seri
 
         /* This is called before a Municipio is deleted. Place here all the
            steps to cut dependencies to other entities */
-    }
+    /*}
 
     @Transactional
     public List<PlanPagoEntity> findAvailablePlanPago(NegociacionEntity negociacion) {
@@ -107,6 +107,6 @@ public class PlanPagoService extends BaseService<PlanPagoEntity> implements Seri
         }
 
         return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+    }*/
 
 }

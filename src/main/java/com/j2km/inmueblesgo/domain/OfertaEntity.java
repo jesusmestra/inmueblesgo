@@ -7,14 +7,41 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * @author jdmp
  */
 @Entity(name = "Oferta")
 @Table(name = "oferta")
-public class OfertaEntity extends BaseEntity implements Serializable {
+public class OfertaEntity implements Serializable {
+    
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
+    
+    @Version
+    private int version;
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
     @Column(name = "ofer_porcentaje")
     @Basic
@@ -74,6 +101,27 @@ public class OfertaEntity extends BaseEntity implements Serializable {
 
     public void setPeriodicidad(String periodicidad) {
         this.periodicidad = periodicidad;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {return false;}
+        if (!java.util.Objects.equals(getClass(), obj.getClass())) {return false;}
+        final OfertaEntity other = (OfertaEntity) obj;
+        if (!java.util.Objects.equals(this.getId(), other.getId())) {        return false;        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (this.getId() != null ? this.getId().hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "OfertaEntity{" + " id=" + id + '}';
     }
 
 }

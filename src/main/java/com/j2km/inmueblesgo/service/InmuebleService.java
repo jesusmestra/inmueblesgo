@@ -2,7 +2,7 @@ package com.j2km.inmueblesgo.service;
 
 import com.j2km.inmueblesgo.domain.EstadoInmuebleEntity;
 import com.j2km.inmueblesgo.domain.InmuebleEntity;
-import com.j2km.inmueblesgo.domain.Piso;
+import com.j2km.inmueblesgo.domain.PisoEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
 import com.j2km.inmueblesgo.domain.TorreEntity;
 import java.io.Serializable;
@@ -17,8 +17,8 @@ import javax.transaction.Transactional;
 import org.primefaces.model.SortOrder;
 
 @Named
-public class InmuebleService extends BaseService<InmuebleEntity> implements Serializable {
-
+public class InmuebleService implements Serializable {
+    /*
     private static final long serialVersionUID = 1L;
 
     public InmuebleService() {
@@ -42,8 +42,8 @@ public class InmuebleService extends BaseService<InmuebleEntity> implements Seri
 
         /* This is called before a Inmueble is deleted. Place here all the
            steps to cut dependencies to other entities */
-    }
-
+    /*}
+/*
     @Transactional
     public List<InmuebleEntity> findAvailableInmuebles(EstadoInmuebleEntity estadoInmueble) {
         return entityManager.createQuery("SELECT o FROM Inmueble o WHERE o.estadoInmueble IS NULL", InmuebleEntity.class).getResultList();
@@ -141,7 +141,7 @@ public class InmuebleService extends BaseService<InmuebleEntity> implements Seri
     
     /****************************/
     
-        @Transactional
+    /*    @Transactional
     public List<InmuebleEntity> findAllInmueblesByProyectoAndEstado(ProyectoEntity proyecto, EstadoInmuebleEntity estadoInmueble) {
         return entityManager.createQuery("SELECT o FROM Inmueble o WHERE o.proyecto = :proyecto and o.estadoInmueble = :estadoInmueble", InmuebleEntity.class)
                 .setParameter("proyecto", proyecto)
@@ -157,6 +157,6 @@ public class InmuebleService extends BaseService<InmuebleEntity> implements Seri
                 .getResultList();
     }
 
-    
+   */
 
 }

@@ -1,18 +1,23 @@
 package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.InmuebleEntity;
-import com.j2km.inmueblesgo.domain.Piso;
+import com.j2km.inmueblesgo.domain.PisoEntity;
 import com.j2km.inmueblesgo.domain.TipoInmuebleEntity;
 import com.j2km.inmueblesgo.domain.TipoPlantaDetalleEntity;
 import com.j2km.inmueblesgo.domain.TipoPlantaEntity;
 import com.j2km.inmueblesgo.domain.TorreEntity;
-import com.j2km.inmueblesgo.service.EstadoInmuebleService;
+import com.j2km.inmueblesgo.service.EstadoInmuebleRepository;
+import com.j2km.inmueblesgo.service.InmuebleRepository;
 import com.j2km.inmueblesgo.service.InmuebleService;
+import com.j2km.inmueblesgo.service.PisoRepository;
 import com.j2km.inmueblesgo.service.PisoService;
+import com.j2km.inmueblesgo.service.TipoInmuebleRepository;
 import com.j2km.inmueblesgo.service.TipoInmuebleService;
+import com.j2km.inmueblesgo.service.TipoPlantaDetalleRepository;
+import com.j2km.inmueblesgo.service.TipoPlantaRepository;
 import com.j2km.inmueblesgo.service.TipoPlantaService;
+import com.j2km.inmueblesgo.service.TorreRepository;
 import com.j2km.inmueblesgo.service.TorreService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
@@ -46,22 +51,25 @@ public class TorreBusinessBean implements Serializable {
     private List<TipoPlantaEntity> tipoPlantaList;
 
     @Inject
-    private TorreService torreService;
+    private TorreRepository torreService;
 
     @Inject
-    private InmuebleService inmuebleService;
+    private InmuebleRepository inmuebleService;
+    
+    @Inject
+    private TipoPlantaDetalleRepository tipoPlantaDetalleService;
 
     @Inject
-    private TipoInmuebleService tipoInmuebleService;
+    private TipoInmuebleRepository tipoInmuebleService;
 
     @Inject
-    private TipoPlantaService tipoPlantaService;
+    private TipoPlantaRepository tipoPlantaService;
 
     @Inject
-    private EstadoInmuebleService estadoInmuebleService;
+    private EstadoInmuebleRepository estadoInmuebleService;
 
     @Inject
-    private PisoService pisoService;
+    private PisoRepository pisoService;
 
     public TorreEntity getTorre() {
         return torre;
@@ -73,7 +81,7 @@ public class TorreBusinessBean implements Serializable {
 
     public List<TipoInmuebleEntity> getTipoInmuebleList() {
         if (tipoInmuebleList == null) {
-            tipoInmuebleList = tipoInmuebleService.findAllTipoInmuebleEntities();
+            tipoInmuebleList = tipoInmuebleService.findAll();
         }
         return tipoInmuebleList;
     }
@@ -84,7 +92,7 @@ public class TorreBusinessBean implements Serializable {
 
     public List<TipoPlantaEntity> getTipoPlantaList() {
         if (tipoPlantaList == null) {
-            tipoPlantaList = tipoPlantaService.findAllTipoPlantaEntities();
+            tipoPlantaList = tipoPlantaService.findAll();
         }
         return tipoPlantaList;
     }
@@ -120,16 +128,16 @@ public class TorreBusinessBean implements Serializable {
     public void generarMasivo() {
 
         InmuebleEntity inmueble;
-        List<TipoPlantaDetalleEntity> tipoPlantaDetalle = tipoPlantaService.findAllDetallesByTipoPlanta(tipoPlanta);
+        List<TipoPlantaDetalleEntity> tipoPlantaDetalle = tipoPlantaDetalleService.findByTipoPlanta(tipoPlanta);
 
         for (int i = pisoInicial; i <= pisoFinal; i++) {
             //System.out.println(i);
             //System.out.println(tipoPlanta);
-            Piso p = pisoService.findByNumeroAndTorre(Integer.toString(i), torre);
+            PisoEntity p = pisoService.findByNumeroAndTorre(Integer.toString(i), torre);
 
             if (p == null) {
-                p = new Piso();
-                p.setNumero(Integer.toString(i));
+                p = new PisoEntity();
+                p.setNumero(i);
                 p.setTipoPlanta(tipoPlanta);
                 p.setTorre(torre);
                 pisoService.save(p);
@@ -141,7 +149,7 @@ public class TorreBusinessBean implements Serializable {
                     inmueble.setValorMetroCuadrado(detalle.getTipoInmueble().getValorMetroCuadrado());
                     inmueble.setProyecto(torre.getProyecto());
                     inmueble.setValorSeparacion(detalle.getTipoInmueble().getValorSeparacion());
-                    inmueble.setEstadoInmueble(estadoInmuebleService.findByCodigo("01"));
+                    inmueble.setEstadoInmueble(estadoInmuebleService.findOptionalByCodigo("01"));
                     inmueble.setNumero(i + " " + detalle.getNumero());
                     inmueble.setValorTotal(
                             detalle.getTipoInmueble().getValorMetroCuadrado() * detalle.getTipoInmueble().getArea());
@@ -150,9 +158,7 @@ public class TorreBusinessBean implements Serializable {
 
                     System.out.println(detalle.getTipoInmueble());
                 }
-
             }
-
         }
 
         FacesMessage facesMsg = new FacesMessage(
@@ -160,21 +166,21 @@ public class TorreBusinessBean implements Serializable {
                 "Pisos generados",
                 "Pisos generados");
         FacesContext.getCurrentInstance().addMessage(null, facesMsg);
-        pisoListTorre = pisoService.findAllByTorre(this.torre);
+        pisoListTorre = pisoService.findByTorre(this.torre);
     }
 
-    private List<Piso> pisoListTorre;
+    private List<PisoEntity> pisoListTorre;
 
-    public List<Piso> getPisoListTorre() {
+    public List<PisoEntity> getPisoListTorre() {
         return pisoListTorre;
     }
 
-    public void setPisoListTorre(List<Piso> pisoListTorre) {
+    public void setPisoListTorre(List<PisoEntity> pisoListTorre) {
         this.pisoListTorre = pisoListTorre;
     }
 
     public void onLoad() {
-        this.pisoListTorre = pisoService.findAllByTorre(this.torre);
+        this.pisoListTorre = pisoService.findByTorre(this.torre);
 
     }
 

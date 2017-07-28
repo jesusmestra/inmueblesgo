@@ -1,11 +1,11 @@
 package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.TipoIdentificacionEntity;
-import com.j2km.inmueblesgo.service.TipoIdentificacionService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
+import com.j2km.inmueblesgo.service.TipoIdentificacionRepository;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,27 +25,27 @@ public class TipoIdentificacionBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(TipoIdentificacionBean.class.getName());
     
-    private GenericLazyDataModel<TipoIdentificacionEntity> lazyModel;
-    
     private TipoIdentificacionEntity tipoIdentificacion;
     
+    private List<TipoIdentificacionEntity> allTipoIdentificacionsList;
+    
     @Inject
-    private TipoIdentificacionService tipoIdentificacionService;
+    private TipoIdentificacionRepository tipoIdentificacionService;
     
     public void prepareNewTipoIdentificacion() {
         reset();
         this.tipoIdentificacion = new TipoIdentificacionEntity();
-        // set any default values now, if you need
-        // Example: this.tipoIdentificacion.setAnything("test");
+        allTipoIdentificacionsList = tipoIdentificacionService.findAll();
     }
 
-    public GenericLazyDataModel<TipoIdentificacionEntity> getLazyModel() {
-        if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(tipoIdentificacionService);
-        }
-        return this.lazyModel;
+    public List<TipoIdentificacionEntity> getAllTipoIdentificacionsList() {
+        return allTipoIdentificacionsList;
     }
-    
+
+    public void setAllTipoIdentificacionsList(List<TipoIdentificacionEntity> allTipoIdentificacionsList) {
+        this.allTipoIdentificacionsList = allTipoIdentificacionsList;
+    }
+
     public String persist() {
 
         String message;
@@ -53,7 +53,7 @@ public class TipoIdentificacionBean implements Serializable {
         try {
             
             if (tipoIdentificacion.getId() != null) {
-                tipoIdentificacion = tipoIdentificacionService.update(tipoIdentificacion);
+                tipoIdentificacion = tipoIdentificacionService.save(tipoIdentificacion);
                 message = "message_successfully_updated";
             } else {
                 tipoIdentificacion = tipoIdentificacionService.save(tipoIdentificacion);
@@ -82,7 +82,7 @@ public class TipoIdentificacionBean implements Serializable {
         String message;
         
         try {
-            tipoIdentificacionService.delete(tipoIdentificacion);
+            tipoIdentificacionService.remove(tipoIdentificacion);
             message = "message_successfully_deleted";
             reset();
         } catch (Exception e) {

@@ -6,242 +6,270 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:o="http://omnifaces.org/ui">
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
     <ui:composition template="/templates/layout.xhtml">
         <ui:define name="content">
+            <f:metadata>                
+                <f:viewAction action="#{terceroBean.prepareNewTercero()}"  />
+            </f:metadata>
+            <h:form prependId="false" id="terceroDataForm">
+                <p:messages closable="true"/>
+                <p:tabView widgetVar="tabTercero" id="tabTercero" dynamic="true">
+                    <p:tab title="Datos Personales">
+                        <p:panel header="(Crear / Editar) Clientes" widgetVar="panelTercero">
+                            <div class="ui-g">
+                                <div class="ui-g-2">
+                                    <h:outputLabel value="Tipo Identificación:" for="tipoIdentificacionSelectInput"/>
 
-            <h:form prependId="false" id="terceroDataForm" onkeypress="if (event.keyCode == 13) {
-                        return false;
-                    }">
+                                    <p:selectOneMenu value="#{terceroBean.tercero.tipoIdentificacion}"
+                                                     id="tipoIdentificacionSelectInput">
+                                        <f:selectItem noSelectionOption="true" itemLabel="" />
+                                        <f:selectItems value="#{terceroBean.tipoIdentificacions}" 
+                                                       var="tipoIdentificacion" 
+                                                       itemLabel="#{tipoIdentificacion.nombre}"
+                                                       itemValue="#{tipoIdentificacion}" />
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{terceroBean.tipoIdentificacions}" />
 
-                <p:dataTable id="terceroTable" value="#{terceroBean.tercerosPorUsuario}" var="tercero" resizableColumns="true" paginator="true"
-                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
-                             paginatorPosition="bottom" widgetVar="terceroTable" emptyMessage="#{messages.label_no_records_found}"
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-g-2">
+                                    <h:outputLabel value="Identificación:" for="identificacionEditInput" />
+                                    <p:inputText value="#{terceroBean.tercero.identificacion}" id="identificacionEditInput" 
+                                                 label="Identificación" />
+                                    <p:message for="identificacionEditInput" display="icon" />
+                                </div>                        
+                                <div class="ui-g-2">
+                                    <h:outputText value="Lugar Expedición"/>
+                                    <p:selectOneMenu value="#{terceroBean.lugarExpedicionDepartamento}" autoWidth="false" title="Departamento">                            
+                                        <f:selectItem noSelectionOption="true" itemLabel="Departamento..." />
+                                        <f:selectItems value="#{terceroBean.departamentoList}" 
+                                                       var="departamento"
+                                                       itemLabel="#{departamento.nombre}"
+                                                       itemValue="#{departamento}"/>
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{terceroBean.departamentoList}" />
+                                        <p:ajax event="change" update="@widgetVar(selectMunicipio) @widgetVar(selectPoblado)" listener="#{terceroBean.seleccionarDepartamentoExpedicion()}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputText value="."/>
+                                    <p:selectOneMenu value="#{terceroBean.lugarExpedicionMunicipio}" 
+                                                     autoWidth="false" id="selectMunicipio" widgetVar="selectMunicipio">                            
+                                        <f:selectItem noSelectionOption="true" itemLabel="Municipio..."/>
+                                        <f:selectItems value="#{terceroBean.lugarExpedicionMunicipioList}" 
+                                                       var="municipio"
+                                                       itemLabel="#{municipio.nombre}"
+                                                       itemValue="#{municipio}"/>
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{terceroBean.lugarExpedicionMunicipioList}" />
+                                        <p:ajax event="change" update="@widgetVar(selectPoblado)" listener="#{terceroBean.seleccionarMunicipioExpedicion()}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputText value="."/>
+                                    <p:selectOneMenu value="#{terceroBean.tercero.lugarExpedicion}" autoWidth="false" id="selectPoblado" widgetVar="selectPoblado">                            
+                                        <f:selectItem noSelectionOption="true" itemLabel="Poblado..."/>
+                                        <f:selectItems value="#{terceroBean.lugarExpedicionPobladoList}" 
+                                                       var="poblado"
+                                                       itemLabel="#{poblado.nombre}"
+                                                       itemValue="#{poblado}"/>
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{terceroBean.lugarExpedicionPobladoList}" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="ui-g">
+                                <div class="ui-g-3">
+                                    <h:outputLabel value="#{messages.field_label_tercero_apellido1}:" for="apellido1EditInput" />
+                                    <p:inputText value="#{terceroBean.tercero.apellido1}" id="apellido1EditInput" 
+                                                 label="#{messages.field_label_tercero_apellido1}" />
+                                    <p:message for="apellido1EditInput" display="icon" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputLabel value="#{messages.field_label_tercero_apellido2}:" for="apellido2EditInput" />
+                                    <p:inputText value="#{terceroBean.tercero.apellido2}" id="apellido2EditInput" 
+                                                 label="#{messages.field_label_tercero_apellido2}" />
+                                    <p:message for="apellido2EditInput" display="icon" />    
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputLabel value="#{messages.field_label_tercero_nombres}:" for="nombresEditInput" />
+                                    <p:inputText value="#{terceroBean.tercero.nombres}" id="nombresEditInput" 
+                                                 label="#{messages.field_label_tercero_nombres}" />
+                                    <p:message for="nombresEditInput" display="icon" />
+                                </div>
+                            </div>
+                            <div class="ui-g">
+                                <div class="ui-g-4">
+                                    <h:outputLabel value="#{messages.field_label_tercero_direccion}:" for="direccionEditInput" />
+                                    <p:inputText value="#{terceroBean.tercero.direccion}" id="direccionEditInput" 
+                                                 label="#{messages.field_label_tercero_direccion}" />
+                                    <p:message for="direccionEditInput" display="icon" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputLabel value="#{messages.field_label_tercero_telefono}:" for="telefonoEditInput" />
+                                    <p:inputText value="#{terceroBean.tercero.telefono}" id="telefonoEditInput" 
+                                                 label="#{messages.field_label_tercero_telefono}" />
+                                    <p:message for="telefonoEditInput" display="icon" /> 
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputLabel value="#{messages.field_label_tercero_email}:" for="emailEditInput" />
+                                    <p:inputText value="#{terceroBean.tercero.email}" id="emailEditInput" 
+                                                 label="#{messages.field_label_tercero_email}" />
+                                    <p:message for="emailEditInput" display="icon" /> 
+                                </div>
+                            </div>             
+
+                            <div class="ui-g">
+                                <div class="ui-g-2">
+                                    <h:outputText value="Lugar Residencia"/>
+                                    <p:selectOneMenu value="#{terceroBean.lugarResidenciaDepartamento}" autoWidth="false" title="Departamento">                            
+                                        <f:selectItem noSelectionOption="true" itemLabel="Departamento..." />
+                                        <f:selectItems value="#{terceroBean.departamentoList}" 
+                                                       var="departamento"
+                                                       itemLabel="#{departamento.nombre}"
+                                                       itemValue="#{departamento}"/>
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{terceroBean.departamentoList}" />
+                                        <p:ajax event="change" update="@widgetVar(selectMunicipioResidencia) @widgetVar(selectPobladoResidencia)" listener="#{terceroBean.seleccionarDepartamentoResidencia()}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputText value="."/>
+                                    <p:selectOneMenu value="#{terceroBean.lugarResidenciaMunicipio}" 
+                                                     autoWidth="false" id="selectMunicipioResidencia" widgetVar="selectMunicipioResidencia">                            
+                                        <f:selectItem noSelectionOption="true" itemLabel="Municipio..."/>
+                                        <f:selectItems value="#{terceroBean.lugarResidenciaMunicipioList}" 
+                                                       var="municipio"
+                                                       itemLabel="#{municipio.nombre}"
+                                                       itemValue="#{municipio}"/>
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{terceroBean.lugarResidenciaMunicipioList}" />
+                                        <p:ajax event="change" update="@widgetVar(selectPobladoResidencia)" listener="#{terceroBean.seleccionarMunicipioResidencia()}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputText value="."/>
+                                    <p:selectOneMenu value="#{terceroBean.tercero.lugarResidencia}" autoWidth="false" id="selectPobladoResidencia" widgetVar="selectPobladoResidencia">                            
+                                        <f:selectItem noSelectionOption="true" itemLabel="Poblado..."/>
+                                        <f:selectItems value="#{terceroBean.lugarResidenciaPobladoList}" 
+                                                       var="poblado"
+                                                       itemLabel="#{poblado.nombre}"
+                                                       itemValue="#{poblado}"/>
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{terceroBean.lugarResidenciaPobladoList}" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="ui-g">
+                                <div class="ui-g-2">
+                                    <h:outputLabel value="Fuente Información:" for="tipoFuenteInformacion"/>
+
+                                    <p:selectOneMenu value="#{terceroBean.tercero.tipoFuenteInformacion}"
+                                                     id="tipoFuenteInformacion">
+                                        <f:selectItem noSelectionOption="true" itemLabel="" />
+                                        <f:selectItems value="#{terceroBean.tipoFuenteInformacionList}" 
+                                                       var="tfi" 
+                                                       itemLabel="#{tfi.nombre}"
+                                                       itemValue="#{tfi}" />
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{terceroBean.tipoFuenteInformacionList}" />
+                                        <p:ajax event="change" update="panelOtraFuente"/>    
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-g-2">
+
+                                    <p:panelGrid id="panelOtraFuente">
+                                        <h:outputLabel rendered="#{terceroBean.tercero.tipoFuenteInformacion.nombre eq 'OTRA'}">Otra Fuente</h:outputLabel>
+                                        <p:inputText value="#{terceroBean.tercero.otraFuente}" rendered="#{terceroBean.tercero.tipoFuenteInformacion.nombre eq 'OTRA'}"/>
+                                    </p:panelGrid>
+                                </div>
+                            </div>
+                            <div class="ui-g">
+                                <div class="ui-g-3">
+                                    <p:commandButton action="#{terceroBean.persist}" value="Guardar" update="@widgetVar(terceroTable) @widgetVar(panelTercero)"/>
+                                </div>
+                            </div>
+                        </p:panel>
+                    </p:tab>
+                    <p:tab title="Notificaciones">
+                        <p:panel header="Crear Notificaciones" widgetVar="panelNotificacion">
+                            <div class="ui-g">
+                                <div class="ui-g-12">
+                                    <label for="descripcion">Descripción</label>
+                                    <p:inputTextarea id="descripcion" value="#{terceroBean.notificacionVendedor.descripcion}"/>
+                                </div>
+                                <div class="ui-g-12">
+                                    <label for="fecha">Fecha</label>
+                                    <p:calendar id="fecha" value="#{terceroBean.notificacionVendedor.fecha}"/>
+                                </div>
+                                <div class="ui-g-12">
+                                    <p:commandButton action="#{terceroBean.guardarNotificacionVendedor}" value="Guardar"/>
+                                </div>
+                            </div>
+                        </p:panel>
+                        <p:panel header="Listado de Notificaciones">
+                            <p:dataTable value="#{terceroBean.notificacionVendedorList}" var="notificacion">
+                                <p:column headerText="Descripción">
+                                    #{notificacion.descripcion}
+                                </p:column>
+                                <p:column headerText="fecha">
+                                    #{notificacion.fecha}
+                                </p:column>
+                            </p:dataTable>
+                            
+                        </p:panel>
+                    </p:tab>
+                </p:tabView>
+                <p:dataTable id="terceroTable" value="#{terceroBean.tercerosPorUsuario}" var="tercero"                            
+                             widgetVar="terceroTable" emptyMessage="#{messages.label_no_records_found}"
                              reflow="true">
-
                     <f:facet name="header" >
-
-                        <p:commandButton value="#{messages.create_new_tercero}" icon="ui-icon-plusthick" action="#{terceroBean.prepareNewTercero()}"
-                                         resetValues="true" update=":editTerceroDialog" oncomplete="PF('editTerceroDialogWidget').show()"
-                                         style="float:left" />
-
-                        <p:commandButton id="toggler" type="button" value="#{messages.table_select_columns}" icon="ui-icon-calculator" />
-                        <p:columnToggler datasource="terceroTable" trigger="toggler" />
+                        Listado de Clientes
                     </f:facet>
 
-                    <p:column headerText="#{messages.field_label_tercero_tipoIdentificacion}" sortBy="#{tercero.tipoIdentificacion}" filterBy="#{tercero.tipoIdentificacion}">
-                        <f:facet name="filter">
-                            <p:selectOneMenu  id="tipoIdentificacionFilter"
-                                              style="width:145px;"
-                                              onchange="PF('terceroTable').filter(); return false;">
-                                <f:selectItem noSelectionOption="true" itemLabel="" />
-                                <f:selectItems itemLabel="#{tipoIdentificacion.nombre}"
-                                               value="#{terceroBean.tipoIdentificacions}" 
-                                               var="tipoIdentificacion" 
-                                               itemValue="#{tipoIdentificacion}" />
-                                <o:converter converterId="omnifaces.SelectItemsConverter" list="#{terceroBean.tipoIdentificacions}" />
-                            </p:selectOneMenu>
-                        </f:facet>
+                    <p:column headerText="#{messages.field_label_tercero_tipoIdentificacion}">                        
                         <h:outputText value="#{tercero.tipoIdentificacion.nombre}" />
                     </p:column>            
 
-                    <p:column  headerText="#{messages.field_label_tercero_identificacion}" sortBy="#{tercero.identificacion}" filterBy="#{tercero.identificacion}">
-                        <f:facet name="filter">
-                            <p:inputText id="identificacionFilter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                                     PF('terceroTable').filter();
-                                                     updateIdentificacionFilter();
-                                                     return false;
-                                                 }" >
-                                <p:remoteCommand name="updateIdentificacionFilter" update="terceroTable:identificacionFilter" />
-                            </p:inputText>
-                        </f:facet>
+                    <p:column  headerText="#{messages.field_label_tercero_identificacion}" filterBy="#{tercero.identificacion}" filterMatchMode="contains">
+
                         <h:outputText value="#{tercero.identificacion}" />
-                    </p:column>                    
+                    </p:column> 
 
-
-
-
-                    <p:column  headerText="#{messages.field_label_tercero_apellido1}" sortBy="#{tercero.apellido1}" filterBy="#{tercero.apellido1}">
-                        <f:facet name="filter">
-                            <p:inputText id="apellido1Filter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                                     PF('terceroTable').filter();
-                                                     updateApellido1Filter();
-                                                     return false;
-                                                 }" >
-                                <p:remoteCommand name="updateApellido1Filter" update="terceroTable:apellido1Filter" />
-                            </p:inputText>
-                        </f:facet>
+                    <p:column  headerText="#{messages.field_label_tercero_apellido1}" filterBy="#{tercero.apellido1}" filterMatchMode="contains">                        
                         <h:outputText value="#{tercero.apellido1}" />
                     </p:column>
 
-                    <p:column  headerText="#{messages.field_label_tercero_apellido2}" sortBy="#{tercero.apellido2}" filterBy="#{tercero.apellido2}">
-                        <f:facet name="filter">
-                            <p:inputText id="apellido2Filter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                                     PF('terceroTable').filter();
-                                                     updateApellido2Filter();
-                                                     return false;
-                                                 }" >
-                                <p:remoteCommand name="updateApellido2Filter" update="terceroTable:apellido2Filter" />
-                            </p:inputText>
-                        </f:facet>
+                    <p:column  headerText="#{messages.field_label_tercero_apellido2}" filterBy="#{tercero.apellido2}" filterMatchMode="contains">
+
                         <h:outputText value="#{tercero.apellido2}" />
                     </p:column>
 
+                    <p:column  headerText="#{messages.field_label_tercero_nombres}"  filterBy="#{tercero.nombres}" filterMatchMode="contains">
 
-
-                    <p:column  headerText="#{messages.field_label_tercero_nombres}" sortBy="#{tercero.nombres}" filterBy="#{tercero.nombres}">
-                        <f:facet name="filter">
-                            <p:inputText id="nombresFilter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                                     PF('terceroTable').filter();
-                                                     updateNombresFilter();
-                                                     return false;
-                                                 }" >
-                                <p:remoteCommand name="updateNombresFilter" update="terceroTable:nombresFilter" />
-                            </p:inputText>
-                        </f:facet>
                         <h:outputText value="#{tercero.nombres}" />
                     </p:column>
-
-
-
-
-
+                    <p:column  headerText="Usuario">                        
+                        <h:outputText value="#{tercero.usuario.login}" />
+                    </p:column>
+                    <p:column  headerText="Fuente Información">                        
+                        <h:outputText value="#{tercero.tipoFuenteInformacion.nombre}" />
+                        <h:outputText value=" :: #{tercero.otraFuente}" rendered="#{tercero.tipoFuenteInformacion.nombre eq 'OTRA'}"/>
+                    </p:column>
                     <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
 
-                        <p:commandButton icon="ui-icon-zoomin" update=":viewTerceroDialog" oncomplete="PF('viewTerceroDialogWidget').show()" title="#{messages.label_view}">
-                            <f:setPropertyActionListener value="#{tercero}" target="#{terceroBean.tercero}" />
-                        </p:commandButton>
-
-                        <p:commandButton icon="ui-icon-pencil" update=":editTerceroDialog"
+                        <p:commandButton icon="ui-icon-pencil" update="@widgetVar(panelTercero)"
                                          resetValues="true" 
-                                         action="#{terceroBean.onDialogOpen(tercero)}"
-                                         oncomplete="PF('editTerceroDialogWidget').show()"
-                                         title="#{messages.label_edit}" >
+                                         action="#{terceroBean.seleccionarTercero(tercero)}"                                         
+                                         title="#{messages.label_edit}"
+                                         oncomplete="PF('tabTercero').select(0)">
                         </p:commandButton>
 
-                        <p:commandButton icon="ui-icon-close" 
-                                         oncomplete="PF('deleteTerceroDialogWidget').show()"
-                                         title="#{messages.label_delete}" >
-                            <f:setPropertyActionListener value="#{tercero}"
-                                                         target="#{terceroBean.tercero}" />
+                        <p:commandButton icon="fa fa-whatsapp"
+                                         resetValues="true" 
+                                         action="#{terceroBean.selectTabNotificacion(tercero)}" 
+                                         oncomplete="PF('tabTercero').select(1)"
+                                         update="@widgetVar(tabTercero)"
+                                         title="Notificaciones" >
                         </p:commandButton>
 
                     </p:column>
-
                 </p:dataTable>
-
-                <h:panelGrid columns="2">
-                    <p:panel header="#{messages.export_all_data}">
-
-                        <h:commandLink>
-                            <h:graphicImage  name="images/excel.png" alt="Excel|" />
-                            <p:dataExporter type="xls" target="terceroTable" fileName="Terceros"/>
-                        </h:commandLink>
-
-                        <h:commandLink>
-                            <h:graphicImage name="images/pdf.png" alt="PDF|" />
-                            <p:dataExporter type="pdf" target="terceroTable" fileName="Terceros"/>
-                        </h:commandLink>
-
-                        <h:commandLink>
-                            <h:graphicImage name="images/csv.png" alt="CSV" />
-                            <p:dataExporter type="csv" target="terceroTable" fileName="Terceros" />
-                        </h:commandLink>
-
-                    </p:panel>
-
-                    <p:panel header="#{messages.export_page_data}">
-                        <h:commandLink>
-                            <h:graphicImage name="images/excel.png" alt="Excel|" />
-                            <p:dataExporter type="xls" target="terceroTable" fileName="Terceros" pageOnly="true"/>
-                        </h:commandLink>
-
-                        <h:commandLink>
-                            <h:graphicImage name="images/pdf.png" alt="PDF|" />
-                            <p:dataExporter type="pdf" target="terceroTable" fileName="Terceros" pageOnly="true"/>
-                        </h:commandLink>
-
-                        <h:commandLink>
-                            <h:graphicImage name="images/csv.png" alt="CSV" />
-                            <p:dataExporter type="csv" target="terceroTable" fileName="Terceros" pageOnly="true"/>
-                        </h:commandLink>
-
-                    </p:panel>
-                </h:panelGrid>
-
             </h:form>
-
-            <p:confirmDialog id="deleteTerceroDialog" widgetVar="deleteTerceroDialogWidget"
-                             header="#{messages.label_confirm_deletion}"
-                             severity="alarm">
-                <f:facet name="message"><h:outputText value="#{messages.label_delete_record}" escape="false"/></f:facet>
-                <p:outputPanel>
-                    <h:form>
-                        <div style="text-align: center; margin:10px">
-                            <p:commandButton value="#{messages.label_yes}" action="#{terceroBean.delete}" update=":terceroDataForm :growlForm:growl" oncomplete="PF('deleteTerceroDialogWidget').hide()" />
-                            <p:commandButton value="#{messages.label_no}" onclick="PF('deleteTerceroDialogWidget').hide()" type="button" />
-                        </div>
-                    </h:form>
-                </p:outputPanel>
-            </p:confirmDialog>
-
-            <p:dialog dynamic="true" id="editTerceroDialog" header="#{messages.label_tercero_caption}"
-                      modal="true" widgetVar="editTerceroDialogWidget" maximizable="true" style="width: 70%; height: 400px;" >
-                <p:ajax event="close" listener="#{terceroBean.reset}"/>
-                <h:form id="editTerceroForm" >
-                    <p:outputPanel id="terceroEditPanel">
-                        <ui:include src="/pages/tercero/terceroEditInclude.xhtml"/>
-                        <div style="text-align: center; margin:10px">
-                            <p:commandButton value="#{messages.label_save}"
-                                             icon="ui-icon-disk" action="#{terceroBean.persist}"
-                                             update=":editTerceroForm:terceroEditPanel :terceroDataForm :growlForm:growl"
-                                             oncomplete="if(!args.validationFailed) PF('editTerceroDialogWidget').hide()" />
-                            <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('editTerceroDialogWidget').hide()" type="button" />
-                        </div>
-                    </p:outputPanel>
-                </h:form>
-            </p:dialog>
-
-            <p:dialog dynamic="true" id="viewTerceroDialog" header="#{messages.label_tercero_caption}" modal="true" widgetVar="viewTerceroDialogWidget" maximizable="true">
-                <p:ajax event="close" listener="#{terceroBean.reset}" />
-                <h:form id="viewTerceroForm">
-                    <ui:include src="/pages/tercero/terceroViewInclude.xhtml"/>
-                    <div style="text-align: center; margin:10px">
-                        <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('viewTerceroDialogWidget').hide()" type="button" />
-                    </div>
-                </h:form>
-            </p:dialog>
-
-            <p:dialog dynamic="true" id="createTipoIdentificacionFromEditDialog"
-                      header="#{messages.dialog_tercero_create_tipoIdentificacion}" modal="true"
-                      widgetVar="createTipoIdentificacionFromEditDialogWidget" maximizable="true">
-                <p:ajax event="close" listener="#{tipoIdentificacionBean.reset}" />
-                <p:outputPanel id="createTipoIdentificacionPanel">
-                    <h:form id="createTipoIdentificacionForm">
-                        <ui:include src="/pages/tipoIdentificacion/tipoIdentificacionEditInclude.xhtml">
-                            <ui:param name="hideTerceroSelectInput" value="true" />
-                        </ui:include>
-                        <div style="text-align: center; margin: 10px">
-                            <p:commandButton
-                                action="#{terceroBean.updateTipoIdentificacion(tipoIdentificacionBean.tipoIdentificacion)}"
-                                value="#{messages.label_save}" icon="ui-icon-disk"
-                                actionListener="#{tipoIdentificacionBean.persist}"
-                                update=":editTerceroForm:tipoIdentificacionSelectInput :createTipoIdentificacionPanel :growlForm:growl"
-                                oncomplete="if(!args.validationFailed) PF('createTipoIdentificacionFromEditDialogWidget').hide()" />
-                            <p:commandButton value="#{messages.label_close}"
-                                             icon="ui-icon-close"
-                                             onclick="PF('createTipoIdentificacionFromEditDialogWidget').hide()"
-                                             type="button" />
-                        </div>
-                    </h:form>
-                </p:outputPanel>
-            </p:dialog>
-
         </ui:define>
     </ui:composition>
 </html>

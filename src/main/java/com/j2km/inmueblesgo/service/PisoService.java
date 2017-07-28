@@ -1,19 +1,12 @@
 package com.j2km.inmueblesgo.service;
 
-
-import com.j2km.inmueblesgo.domain.Piso;
-import com.j2km.inmueblesgo.domain.TorreEntity;
 import java.io.Serializable;
-import java.util.List;
-
 import javax.inject.Named;
-import javax.transaction.Transactional;
-
 
 @Named
-public class PisoService extends BaseService<Piso> implements Serializable {
+public class PisoService implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    /*private static final long serialVersionUID = 1L;
 
     public PisoService() {
         super(Piso.class);
@@ -55,7 +48,7 @@ public class PisoService extends BaseService<Piso> implements Serializable {
 
         return lista.get(0);
 
-    }
+    }*/
     
     
 }

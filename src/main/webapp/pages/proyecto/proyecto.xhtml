@@ -7,94 +7,174 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:o="http://omnifaces.org/ui">
-    <ui:composition template="/templates/layout.xhtml">
-        <ui:define name="content">
+    <ui:composition template="/templates/layout.xhtml">        
+        <ui:define name="content">  
+            <f:metadata>                
+                <f:viewAction action="#{proyectoBean.prepareNewProyecto}"  />
+            </f:metadata>
+            <style type="text/css">
 
+            </style>
             <h:form prependId="false" id="proyectoDataForm" onkeypress="if (event.keyCode == 13) {
                         return false;
                     }">
 
-                <p:dataTable id="proyectoTable" value="#{proyectoBean.lazyModel}" var="proyecto" resizableColumns="true" paginator="true"
-                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
+                <p:growl />
+
+                <p:panel widgetVar="panelProyecto" id="panelProyecto" header="Agregar / Editar Proyectos" style="width: 100%; margin-bottom: 5px;">
+                    <div class="ui-g">
+                        <div class="ui-g-2">
+                            <h:graphicImage id="imagenProyecto" value="#{applicationBean.webCarpeta()}proyecto/#{proyectoBean.archivo.nombre}" 
+                                            width="100%" height="150"/>
+                            <p:fileUpload label="Seleccionar Imagen" 
+                                          style="border: none blue 1px;"
+                                          skinSimple="false" auto="true"
+                                          fileUploadListener="#{proyectoBean.uploadLogoProyecto}"
+                                          update="imagenProyecto"/> 
+                        </div>
+                        <div class="ui-g-10">
+                            <div class="ui-g">
+                                <div class="ui-g-3">
+                                    <h:outputText value="Código"/>
+                                    <p:inputText value="#{proyectoBean.proyecto.codigo}"/>
+                                </div>
+                                <div class="ui-g-3">   
+                                    <h:outputText value="Nombre"/>
+                                    <p:inputText value="#{proyectoBean.proyecto.nombre}"/>
+                                </div>
+                                <div class="ui-g-3"> 
+                                    <h:outputText value="Empresa"/>
+                                    <p:selectOneMenu value="#{proyectoBean.proyecto.empresa}" autoWidth="false">                            
+                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
+                                        <f:selectItems value="#{empresaBean.allEmpresaList}" 
+                                                       var="empresa"
+                                                       itemLabel="#{empresa.nombre}"
+                                                       itemValue="#{empresa}"/>
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{empresaBean.allEmpresaList}" />
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-g-3">  
+                                    <h:outputText value="Estado"/>
+                                    <p:selectOneMenu value="#{proyectoBean.proyecto.estadoProyecto}" autoWidth="false">                            
+                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
+                                        <f:selectItems value="#{proyectoBean.estadoProyectoList}" 
+                                                       var="estadoProyecto"
+                                                       itemLabel="#{estadoProyecto.nombre}"
+                                                       itemValue="#{estadoProyecto}"/>
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.estadoProyectoList}" />
+                                    </p:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="ui-g">
+                                <div class="ui-g-3">
+                                    <h:outputText value="Oferta"/>
+                                    <p:selectOneMenu value="#{proyectoBean.proyecto.oferta}" autoWidth="false">                            
+                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
+                                        <f:selectItems value="#{proyectoBean.ofertas}" 
+                                                       var="oferta"
+                                                       itemLabel="#{oferta.nombre}"
+                                                       itemValue="#{oferta}"/>
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.ofertas}" />
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputText value="Departamento"/>
+                                    <p:selectOneMenu value="#{proyectoBean.departamento}" autoWidth="false">                            
+                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
+                                        <f:selectItems value="#{proyectoBean.departamentoList}" 
+                                                       var="departamento"
+                                                       itemLabel="#{departamento.nombre}"
+                                                       itemValue="#{departamento}"/>
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.departamentoList}" />
+                                        <p:ajax event="change" update="@widgetVar(selectMunicipio) @widgetVar(selectPoblado)" listener="#{proyectoBean.departamentoChange}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputText value="Municipio"/>
+                                    <p:selectOneMenu value="#{proyectoBean.municipio}" 
+                                                     autoWidth="false" id="selectMunicipio" widgetVar="selectMunicipio">                            
+                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
+                                        <f:selectItems value="#{proyectoBean.municipioList}" 
+                                                       var="municipio"
+                                                       itemLabel="#{municipio.nombre}"
+                                                       itemValue="#{municipio}"/>
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.municipioList}" />
+                                        <p:ajax event="change" update="@widgetVar(selectPoblado)" listener="#{proyectoBean.municipioChange}"/>
+                                    </p:selectOneMenu>
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputText value="Poblado"/>
+                                    <p:selectOneMenu value="#{proyectoBean.proyecto.poblado}" autoWidth="false" id="selectPoblado" widgetVar="selectPoblado">                            
+                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
+                                        <f:selectItems value="#{proyectoBean.poblados}" 
+                                                       var="poblado"
+                                                       itemLabel="#{poblado.nombre}"
+                                                       itemValue="#{poblado}"/>
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.poblados}" />
+                                    </p:selectOneMenu>
+                                </div>                               
+                            </div>
+                            <div class="ui-g">
+                                <div class="ui-g-6">
+                                    <h:outputText value="Direccion"/>
+                                    <p:inputText value="#{proyectoBean.proyecto.direccion}"/>
+                                </div>
+                            </div>
+                            <div class="ui-g">
+                                <div class="ui-g-3">
+                                    <p:commandButton action="#{proyectoBean.persist}" value="Guardar" update="proyectoDataForm"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </p:panel>
+
+
+                <p:dataTable id="proyectoTable" value="#{proyectoBean.proyectoEntityList}" var="proyecto" resizableColumns="true"                             
                              paginatorPosition="bottom" widgetVar="proyectoTable" emptyMessage="#{messages.label_no_records_found}"
                              reflow="true">
-
-                    <f:facet name="header" >
-
-                        <p:commandButton value="#{messages.create_new_proyecto}" icon="ui-icon-plusthick" action="#{proyectoBean.prepareNewProyecto()}"
-                                         resetValues="true" update=":editProyectoDialog" oncomplete="PF('editProyectoDialogWidget').show()"
-                                         style="float:left" />
-
-                        <p:commandButton id="toggler" type="button" value="#{messages.table_select_columns}" icon="ui-icon-calculator" />
-                        <p:columnToggler datasource="proyectoTable" trigger="toggler" />
+                    <f:facet name="header">
+                        Seleccionar Empresa:
+                        <h:outputText value="Empresa"/>
+                        <p:selectOneMenu value="#{proyectoBean.empresaSeleccionada}" autoWidth="false">                            
+                            <f:selectItem noSelectionOption="true" itemLabel=""/>
+                            <f:selectItems value="#{empresaBean.allEmpresaList}" 
+                                           var="empresa"
+                                           itemLabel="#{empresa.nombre}"
+                                           itemValue="#{empresa}"/>
+                            <o:converter converterId="omnifaces.SelectItemsConverter" list="#{empresaBean.allEmpresaList}" />
+                            <p:ajax event="change" update="@widgetVar(proyectoTable)" listener="#{proyectoBean.seleccionarEmpresa}" />
+                        </p:selectOneMenu>
                     </f:facet>
 
-                    
-<p:column headerText="#{messages.field_label_proyecto_empresa}" sortBy="#{proyecto.empresa}" filterBy="#{proyecto.empresa}">
-                        <f:facet name="filter">
-                            <p:selectOneMenu  id="empresaFilter"
-                                              style="width:145px;"
-                                              onchange="PF('proyectoTable').filter(); return false;">
-                                <f:selectItem noSelectionOption="true" itemLabel="" />
-                                <f:selectItems itemLabel="#{empresa.nombre}"
-                                               value="#{proyectoBean.empresas}" 
-                                               var="empresa" 
-                                               itemValue="#{empresa}" />
-                                <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.empresas}" />
-                            </p:selectOneMenu>
-                        </f:facet>
+                    <p:column  headerText="codigo">
+                        <h:outputText value="#{proyecto.codigo}" />
+                    </p:column>
+
+                    <p:column  headerText="#{messages.field_label_proyecto_nombre}">
+                        <h:outputText value="#{proyecto.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="#{messages.field_label_proyecto_empresa}">                       
                         <h:outputText value="#{proyecto.empresa.nombre}" />
-                    </p:column>                     
-                    
-                    
-                    <p:column headerText="#{messages.field_label_proyecto_oferta}" sortBy="#{proyecto.oferta}" filterBy="#{proyecto.oferta}">
-                        <f:facet name="filter">
-                            <p:selectOneMenu  id="ofertaFilter"
-                                              style="width:145px;"
-                                              onchange="PF('proyectoTable').filter(); return false;">
-                                <f:selectItem noSelectionOption="true" itemLabel="" />
-                                <f:selectItems itemLabel="#{oferta.nombre}"
-                                               value="#{proyectoBean.ofertas}" 
-                                               var="oferta" 
-                                               itemValue="#{oferta}" />
-                                <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.ofertas}" />
-                            </p:selectOneMenu>
-                        </f:facet>
+                    </p:column>
+
+                    <p:column  headerText="Estado">
+                        <h:outputText value="#{proyecto.estadoProyecto.nombre}" />
+                    </p:column>
+
+                    <p:column headerText="#{messages.field_label_proyecto_oferta}">                        
                         <h:outputText value="#{proyecto.oferta.nombre}" />
                     </p:column>            
 
-                    <p:column  headerText="#{messages.field_label_proyecto_codigo}" sortBy="#{proyecto.codigo}" filterBy="#{proyecto.codigo}">
-                        <f:facet name="filter">
-                            <p:inputText id="codigoFilter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                                     PF('proyectoTable').filter();
-                                                     updateCodigoFilter();
-                                                     return false;
-                                                 }" >
-                                <p:remoteCommand name="updateCodigoFilter" update="proyectoTable:codigoFilter" />
-                            </p:inputText>
-                        </f:facet>
-                        <h:outputText value="#{proyecto.codigo}" />
+                    <p:column  headerText="Dirección">                        
+                        <h:outputText value="#{proyecto.direccion}" />
+                    </p:column>
+                    }
+                    <p:column  headerText="Ubicación">                        
+                        <h:outputText value="#{proyecto.poblado.nombre}" />
                     </p:column>                    
-
-                    <p:column  headerText="#{messages.field_label_proyecto_nombre}" sortBy="#{proyecto.nombre}" filterBy="#{proyecto.nombre}">
-                        <f:facet name="filter">
-                            <p:inputText id="nombreFilter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                                     PF('proyectoTable').filter();
-                                                     updateNombreFilter();
-                                                     return false;
-                                                 }" >
-                                <p:remoteCommand name="updateNombreFilter" update="proyectoTable:nombreFilter" />
-                            </p:inputText>
-                        </f:facet>
-                        <h:outputText value="#{proyecto.nombre}" />
-                    </p:column>                    
-
-
-
-
 
                     <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
 
@@ -102,16 +182,14 @@
                                          icon="ui-icon-zoomin"
                                          title="#{messages.label_view}" />
 
-
-
                         <p:commandButton rendered="#{false}" icon="ui-icon-zoomin" update=":viewProyectoDialog" oncomplete="PF('viewProyectoDialogWidget').show()" title="#{messages.label_view}">
                             <f:setPropertyActionListener value="#{proyecto}" target="#{proyectoBean.proyecto}" />
                         </p:commandButton>
 
-                        <p:commandButton icon="ui-icon-pencil" update=":editProyectoDialog"
+                        <p:commandButton icon="ui-icon-pencil" 
                                          resetValues="true" 
-                                         action="#{proyectoBean.onDialogOpen(proyecto)}"
-                                         oncomplete="PF('editProyectoDialogWidget').show()"
+                                         action="#{proyectoBean.seleccionar(proyecto)}"
+                                         update=":panelProyecto"
                                          title="#{messages.label_edit}" >
                         </p:commandButton>
 
@@ -121,145 +199,11 @@
                             <f:setPropertyActionListener value="#{proyecto}"
                                                          target="#{proyectoBean.proyecto}" />
                         </p:commandButton>
-
                     </p:column>
 
                 </p:dataTable>
 
-                <h:panelGrid columns="2">
-                    <p:panel header="#{messages.export_all_data}">
-
-                        <h:commandLink>
-                            <h:graphicImage  name="images/excel.png" alt="Excel|" />
-                            <p:dataExporter type="xls" target="proyectoTable" fileName="Proyectos"/>
-                        </h:commandLink>
-
-                        <h:commandLink>
-                            <h:graphicImage name="images/pdf.png" alt="PDF|" />
-                            <p:dataExporter type="pdf" target="proyectoTable" fileName="Proyectos"/>
-                        </h:commandLink>
-
-                        <h:commandLink>
-                            <h:graphicImage name="images/csv.png" alt="CSV" />
-                            <p:dataExporter type="csv" target="proyectoTable" fileName="Proyectos" />
-                        </h:commandLink>
-
-                    </p:panel>
-
-                    <p:panel header="#{messages.export_page_data}">
-                        <h:commandLink>
-                            <h:graphicImage name="images/excel.png" alt="Excel|" />
-                            <p:dataExporter type="xls" target="proyectoTable" fileName="Proyectos" pageOnly="true"/>
-                        </h:commandLink>
-
-                        <h:commandLink>
-                            <h:graphicImage name="images/pdf.png" alt="PDF|" />
-                            <p:dataExporter type="pdf" target="proyectoTable" fileName="Proyectos" pageOnly="true"/>
-                        </h:commandLink>
-
-                        <h:commandLink>
-                            <h:graphicImage name="images/csv.png" alt="CSV" />
-                            <p:dataExporter type="csv" target="proyectoTable" fileName="Proyectos" pageOnly="true"/>
-                        </h:commandLink>
-
-                    </p:panel>
-                </h:panelGrid>
-
             </h:form>
-
-            <p:confirmDialog id="deleteProyectoDialog" widgetVar="deleteProyectoDialogWidget"
-                             header="#{messages.label_confirm_deletion}"
-                             severity="alarm">
-                <f:facet name="message"><h:outputText value="#{messages.label_delete_record}" escape="false"/></f:facet>
-                <p:outputPanel>
-                    <h:form>
-                        <div style="text-align: center; margin:10px">
-                            <p:commandButton value="#{messages.label_yes}" action="#{proyectoBean.delete}" update=":proyectoDataForm :growlForm:growl" oncomplete="PF('deleteProyectoDialogWidget').hide()" />
-                            <p:commandButton value="#{messages.label_no}" onclick="PF('deleteProyectoDialogWidget').hide()" type="button" />
-                        </div>
-                    </h:form>
-                </p:outputPanel>
-            </p:confirmDialog>
-
-            <p:dialog dynamic="true" id="editProyectoDialog" header="#{messages.label_proyecto_caption}"
-                      modal="true" widgetVar="editProyectoDialogWidget" maximizable="true">
-                <p:ajax event="close" listener="#{proyectoBean.reset}"/>
-                <h:form id="editProyectoForm" enctype="multipart/form-data" >
-                    <p:outputPanel id="proyectoEditPanel">
-                        <ui:include src="/pages/proyecto/proyectoEditInclude.xhtml"/>
-                        <div style="text-align: center; margin:10px">
-                            <p:commandButton value="#{messages.label_save}"
-                                             ajax="false"
-                                             icon="ui-icon-disk" action="#{proyectoBean.persist}"
-                                             update=":editProyectoForm:proyectoEditPanel :proyectoDataForm :growlForm:growl"
-                                             oncomplete="if(!args.validationFailed) PF('editProyectoDialogWidget').hide()" />
-                            <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('editProyectoDialogWidget').hide()" type="button" />
-                        </div>
-                    </p:outputPanel>
-                </h:form>
-            </p:dialog>
-
-            <p:dialog dynamic="true" id="viewProyectoDialog" header="#{messages.label_proyecto_caption}" modal="true" widgetVar="viewProyectoDialogWidget" maximizable="true">
-                <p:ajax event="close" listener="#{proyectoBean.reset}" />
-                <h:form id="viewProyectoForm">
-                    <ui:include src="/pages/proyecto/proyectoViewInclude.xhtml"/>
-                    <div style="text-align: center; margin:10px">
-                        <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('viewProyectoDialogWidget').hide()" type="button" />
-                    </div>
-                </h:form>
-            </p:dialog>
-
-            <p:dialog dynamic="true" id="createOfertaFromEditDialog"
-                      header="#{messages.dialog_proyecto_create_oferta}" modal="true"
-                      widgetVar="createOfertaFromEditDialogWidget" maximizable="true">
-                <p:ajax event="close" listener="#{ofertaBean.reset}" />
-                <p:outputPanel id="createOfertaPanel">
-                    <h:form id="createOfertaForm">
-                        <ui:include src="/pages/oferta/ofertaEditInclude.xhtml">
-                            <ui:param name="hideProyectoSelectInput" value="true" />
-                        </ui:include>
-                        <div style="text-align: center; margin: 10px">
-                            <p:commandButton
-                                action="#{proyectoBean.updateOferta(ofertaBean.oferta)}"
-                                value="#{messages.label_save}" icon="ui-icon-disk"
-                                actionListener="#{ofertaBean.persist}"
-                                update=":editProyectoForm:ofertaSelectInput :createOfertaPanel :growlForm:growl"
-                                oncomplete="if(!args.validationFailed) PF('createOfertaFromEditDialogWidget').hide()" />
-                            <p:commandButton value="#{messages.label_close}"
-                                             icon="ui-icon-close"
-                                             onclick="PF('createOfertaFromEditDialogWidget').hide()"
-                                             type="button" />
-                        </div>
-                    </h:form>
-                </p:outputPanel>
-            </p:dialog>
-
-            <p:dialog dynamic="true" id="createEmpresaFromEditDialog"
-                      header="#{messages.dialog_proyecto_create_empresa}" modal="true"
-                      widgetVar="createEmpresaFromEditDialogWidget" maximizable="true">
-                <p:ajax event="close" listener="#{empresaBean.reset}" />
-                <p:outputPanel id="createEmpresaPanel">
-                    <h:form id="createEmpresaForm"  enctype="multipart/form-data">
-                        <ui:include src="/pages/empresa/empresaEditInclude.xhtml">
-                            <ui:param name="hideProyectoSelectInput" value="true" />
-                        </ui:include>
-                        <div style="text-align: center; margin: 10px">
-                            <p:commandButton
-                                action="#{proyectoBean.updateEmpresa(empresaBean.empresa)}"
-                                value="#{messages.label_save}" icon="ui-icon-disk"
-                                actionListener="#{empresaBean.persist}"
-                                update=":editProyectoForm:empresaSelectInput :createEmpresaPanel :growlForm:growl"
-                                oncomplete="if(!args.validationFailed) PF('createEmpresaFromEditDialogWidget').hide()" />
-                            <p:commandButton value="#{messages.label_close}"
-                                             icon="ui-icon-close"
-                                             onclick="PF('createEmpresaFromEditDialogWidget').hide()"
-                                             type="button" />
-                        </div>
-                    </h:form>
-                </p:outputPanel>
-            </p:dialog>            
-
-
         </ui:define>
     </ui:composition>
 </html>

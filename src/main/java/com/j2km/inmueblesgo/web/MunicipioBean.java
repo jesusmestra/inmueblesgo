@@ -2,9 +2,9 @@ package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.DepartamentoEntity;
 import com.j2km.inmueblesgo.domain.MunicipioEntity;
-import com.j2km.inmueblesgo.service.DepartamentoService;
+import com.j2km.inmueblesgo.service.DepartamentoRepository;
+import com.j2km.inmueblesgo.service.MunicipioRepository;
 import com.j2km.inmueblesgo.service.MunicipioService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
@@ -28,15 +28,13 @@ public class MunicipioBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(MunicipioBean.class.getName());
     
-    private GenericLazyDataModel<MunicipioEntity> lazyModel;
-    
     private MunicipioEntity municipio;
     
     @Inject
-    private MunicipioService municipioService;
+    private MunicipioRepository municipioService;
     
     @Inject
-    private DepartamentoService departamentoService;
+    private DepartamentoRepository departamentoService;
     
     private List<DepartamentoEntity> allDepartamentosList;
     
@@ -46,13 +44,6 @@ public class MunicipioBean implements Serializable {
         // set any default values now, if you need
         // Example: this.municipio.setAnything("test");
     }
-
-    public GenericLazyDataModel<MunicipioEntity> getLazyModel() {
-        if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(municipioService);
-        }
-        return this.lazyModel;
-    }
     
     public String persist() {
 
@@ -61,7 +52,7 @@ public class MunicipioBean implements Serializable {
         try {
             
             if (municipio.getId() != null) {
-                municipio = municipioService.update(municipio);
+                municipio = municipioService.save(municipio);
                 message = "message_successfully_updated";
             } else {
                 municipio = municipioService.save(municipio);
@@ -90,7 +81,7 @@ public class MunicipioBean implements Serializable {
         String message;
         
         try {
-            municipioService.delete(municipio);
+            municipioService.save(municipio);
             message = "message_successfully_deleted";
             reset();
         } catch (Exception e) {
@@ -119,7 +110,7 @@ public class MunicipioBean implements Serializable {
     // Get a List of all departamento
     public List<DepartamentoEntity> getDepartamentos() {
         if (this.allDepartamentosList == null) {
-            this.allDepartamentosList = departamentoService.findAllDepartamentoEntities();
+            this.allDepartamentosList = departamentoService.findAll();
         }
         return this.allDepartamentosList;
     }

@@ -15,9 +15,9 @@ import javax.transaction.Transactional;
 import org.primefaces.model.SortOrder;
 
 @Named
-public class RolService extends BaseService<RolEntity> implements Serializable {
+public class RolService implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    /*private static final long serialVersionUID = 1L;
 
     public RolService() {
         super(RolEntity.class);
@@ -41,7 +41,7 @@ public class RolService extends BaseService<RolEntity> implements Serializable {
            steps to cut dependencies to other entities */
         
         // 
-    }  
+    /*}  
     
     @Transactional
     public RolEntity findByNombre(String nombre) {
@@ -53,6 +53,6 @@ public class RolService extends BaseService<RolEntity> implements Serializable {
         }else{
             return roles.get(0);
         }
-    }
+    }*/
 
 }

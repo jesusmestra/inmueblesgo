@@ -17,9 +17,9 @@ import javax.transaction.Transactional;
 import org.primefaces.model.SortOrder;
 
 @Named
-public class NegociacionService extends BaseService<NegociacionEntity> implements Serializable {
+public class NegociacionService implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    /*private static final long serialVersionUID = 1L;
 
     public NegociacionService() {
         super(NegociacionEntity.class);
@@ -43,7 +43,7 @@ public class NegociacionService extends BaseService<NegociacionEntity> implement
         /* This is called before a Negociacion is deleted. Place here all the
            steps to cut dependencies to other entities */
         //  SI SE VA A ELIMINAR MUNICIPIOS Y POBLADOS EN CASCADA this.cutAllTipoIdentificacionTercerosAssignments(tipoIdentificacion);
-    }
+    /*}
 
     /*
     SI SE VA A ELIMINAR MUNICIPIOS Y POBLADOS EN CASCADA    
@@ -69,7 +69,7 @@ public class NegociacionService extends BaseService<NegociacionEntity> implement
     }
 
      */
-    @Transactional
+    /*@Transactional
     public NegociacionEntity findByInmueble(InmuebleEntity inmueble) {
         List<NegociacionEntity> lista = entityManager.createQuery("SELECT o FROM Negociacion o WHERE o.inmueble = :inmueble", NegociacionEntity.class).setParameter("inmueble", inmueble).getResultList();
         if (lista == null || lista.isEmpty()) {
@@ -147,6 +147,6 @@ public class NegociacionService extends BaseService<NegociacionEntity> implement
             return null;
         }
         return lista;
-    }    
+    }*/    
 
 }

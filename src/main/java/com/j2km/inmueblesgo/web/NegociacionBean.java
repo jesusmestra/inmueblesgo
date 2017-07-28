@@ -1,16 +1,23 @@
 package com.j2km.inmueblesgo.web;
 
+import com.j2km.inmueblesgo.configuracion.Constantes;
 import com.j2km.inmueblesgo.domain.InmuebleEntity;
 import com.j2km.inmueblesgo.domain.NegociacionEntity;
 import com.j2km.inmueblesgo.domain.OfertaEntity;
 import com.j2km.inmueblesgo.domain.PlanPagoEntity;
+import com.j2km.inmueblesgo.domain.ProyectoEntity;
 import com.j2km.inmueblesgo.domain.TerceroEntity;
+import com.j2km.inmueblesgo.service.EstadoProyectoRepository;
+import com.j2km.inmueblesgo.service.InmuebleRepository;
 import com.j2km.inmueblesgo.service.InmuebleService;
+import com.j2km.inmueblesgo.service.NegociacionRepository;
 import com.j2km.inmueblesgo.service.NegociacionService;
+import com.j2km.inmueblesgo.service.OfertaRepository;
 import com.j2km.inmueblesgo.service.OfertaService;
+import com.j2km.inmueblesgo.service.PlanPagoRepository;
 import com.j2km.inmueblesgo.service.PlanPagoService;
+import com.j2km.inmueblesgo.service.ProyectoRepository;
 import com.j2km.inmueblesgo.service.TerceroRepository;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
@@ -38,21 +45,15 @@ public class NegociacionBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(NegociacionBean.class.getName());
 
-    private GenericLazyDataModel<NegociacionEntity> lazyModel;
-
     private NegociacionEntity negociacion;
 
-    @Inject
-    private NegociacionService negociacionService;
-    @Inject
-    private TerceroRepository terceroService;
-    @Inject
-    private OfertaService ofertaService;
-    @Inject
-    private PlanPagoService planPagoService;
-
-    @Inject
-    private InmuebleService inmuebleService;
+    @Inject private NegociacionRepository negociacionService;
+    @Inject private TerceroRepository terceroService;
+    @Inject private OfertaRepository ofertaService;
+    @Inject private PlanPagoRepository planPagoService;
+    @Inject private InmuebleRepository inmuebleService;
+    @Inject private ProyectoRepository proyectoService;
+    @Inject private EstadoProyectoRepository estadoProyectoService;
 
     private InmuebleBean inmuebleBean;
 
@@ -61,8 +62,18 @@ public class NegociacionBean implements Serializable {
     private List<TerceroEntity> allTerceroList;
     private List<OfertaEntity> allOfertaList;
     private List<PlanPagoEntity> allPlanPagosListNegociacion;
+    private List<InmuebleEntity> inmueblesDisponiblesList;
+    private List<ProyectoEntity> proyectoList;
 
     private InmuebleEntity inmuebleInstance;
+
+    public List<InmuebleEntity> getInmueblesDisponiblesList() {
+        return inmueblesDisponiblesList;
+    }
+
+    public void setInmueblesDisponiblesList(List<InmuebleEntity> inmueblesDisponiblesList) {
+        this.inmueblesDisponiblesList = inmueblesDisponiblesList;
+    }
 
     public List<PlanPagoEntity> getAllPlanPagosListNegociacion() {
         return allPlanPagosListNegociacion;
@@ -70,6 +81,14 @@ public class NegociacionBean implements Serializable {
 
     public void setAllPlanPagosListNegociacion(List<PlanPagoEntity> allPlanPagosListNegociacion) {
         this.allPlanPagosListNegociacion = allPlanPagosListNegociacion;
+    }
+
+    public List<ProyectoEntity> getProyectoList() {
+        return proyectoList;
+    }
+
+    public void setProyectoList(List<ProyectoEntity> proyectoList) {
+        this.proyectoList = proyectoList;
     }
 
     public int getCantidadCuotas() {
@@ -97,37 +116,33 @@ public class NegociacionBean implements Serializable {
     }
 
     public void prepareNewNegociacion() {
-        System.out.println("prepareNewNegociacion...");
-        reset();
-        
+       
         this.negociacion = new NegociacionEntity();
         Calendar cal = Calendar.getInstance();
         this.negociacion.setFecha(cal.getTime());
 
         this.allTerceroList = terceroService.findAll();
-        this.allOfertaList = ofertaService.findAllOfertaEntities();
+        this.allOfertaList = ofertaService.findAll();
         this.cantidadCuotas = 0;
         this.allPlanPagosListNegociacion = null;
         // set any default values now, if you need
         // Example: this.tercero.setAnything("test");
     }
     
-    @PostConstruct
-    public void init(){
-        System.out.println("Iniciando");//+this.inmuebleBean.getInmueble());
-        
-        
+    public void inicio(){
+        this.proyectoList = proyectoService.findByEstadoProyecto(
+                estadoProyectoService.findOptionalByNombre(Constantes.PROYECTO_ACTIVO)
+        );       
     }
 
     public void nuevaNegociacion(Long inmuebleId) {
 
         System.out.println("Seleccionado inmueble...." + inmuebleId);
 
-        reset();
-        InmuebleEntity inmuebleInstance = inmuebleService.find(inmuebleId);
+        InmuebleEntity inmuebleInstance = inmuebleService.findBy(inmuebleId);
         System.out.println(inmuebleInstance);
         
-        this.negociacion = negociacionService.findByInmueble(inmuebleInstance);
+        this.negociacion = negociacionService.findOptionalByInmueble(inmuebleInstance);
     
         if (this.negociacion == null){
             this.negociacion = new NegociacionEntity();
@@ -140,20 +155,13 @@ public class NegociacionBean implements Serializable {
             this.cantidadCuotas = 0;
             this.allPlanPagosListNegociacion = null;
         }else{
-            this.allPlanPagosListNegociacion = planPagoService.findAllPlanPagoByNegociacion(this.negociacion);
+            this.allPlanPagosListNegociacion = planPagoService.findByNegociacion(this.negociacion);
             this.cantidadCuotas = allPlanPagosListNegociacion.size();
         }
         
         
         this.allTerceroList = terceroService.findAll();
-        this.allOfertaList = ofertaService.findAllOfertaEntities();
-    }
-
-    public GenericLazyDataModel<NegociacionEntity> getLazyModel() {
-        if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(negociacionService);
-        }
-        return this.lazyModel;
+        this.allOfertaList = ofertaService.findAll();
     }
 
     public String persist() {
@@ -163,7 +171,7 @@ public class NegociacionBean implements Serializable {
         try {
 
             if (negociacion.getId() != null) {
-                negociacion = negociacionService.update(negociacion);
+                negociacion = negociacionService.save(negociacion);
                 message = "message_successfully_updated";
             } else {
                 negociacion = negociacionService.save(negociacion);
@@ -192,9 +200,9 @@ public class NegociacionBean implements Serializable {
         String message;
 
         try {
-            negociacionService.delete(negociacion);
+            negociacionService.remove(negociacion);
             message = "message_successfully_deleted";
-            reset();
+       
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error occured", e);
             message = "message_delete_exception";
@@ -206,17 +214,6 @@ public class NegociacionBean implements Serializable {
         return null;
     }
 
-    public void onDialogOpen(NegociacionEntity negociacion) {
-        reset();
-        this.negociacion = negociacion;
-    }
-
-    public void reset() {
-        negociacion = null;
-
-        //allTipoIdentificacionsList = null;
-    }
-
     public NegociacionEntity getNegociacion() {
         if (this.negociacion == null) {
             prepareNewNegociacion();
@@ -226,6 +223,10 @@ public class NegociacionBean implements Serializable {
 
     public void setNegociacion(NegociacionEntity negociacion) {
         this.negociacion = negociacion;
+    }
+    
+    public void seleccionarProyecto(ProyectoEntity proyecto){
+        inmueblesDisponiblesList = inmuebleService.findByProyecto(proyecto);
     }
 
 }

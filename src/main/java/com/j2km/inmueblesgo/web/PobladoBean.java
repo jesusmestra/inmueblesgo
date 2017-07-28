@@ -3,10 +3,11 @@ package com.j2km.inmueblesgo.web;
 import com.j2km.inmueblesgo.domain.DepartamentoEntity;
 import com.j2km.inmueblesgo.domain.MunicipioEntity;
 import com.j2km.inmueblesgo.domain.PobladoEntity;
-import com.j2km.inmueblesgo.service.DepartamentoService;
+import com.j2km.inmueblesgo.service.DepartamentoRepository;
+import com.j2km.inmueblesgo.service.MunicipioRepository;
 import com.j2km.inmueblesgo.service.MunicipioService;
+import com.j2km.inmueblesgo.service.PobladoRepository;
 import com.j2km.inmueblesgo.service.PobladoService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
@@ -30,15 +31,13 @@ public class PobladoBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(PobladoBean.class.getName());
 
-    private GenericLazyDataModel<PobladoEntity> lazyModel;
-
     private PobladoEntity poblado;
 
     @Inject
-    private PobladoService pobladoService;
+    private PobladoRepository pobladoService;
 
     @Inject
-    private MunicipioService municipioService;
+    private MunicipioRepository municipioService;
 
     private List<MunicipioEntity> allMunicipiosList;
 
@@ -47,7 +46,7 @@ public class PobladoBean implements Serializable {
     private List<DepartamentoEntity> allDepartamentosList;
 
     @Inject
-    private DepartamentoService departamentoService;
+    private DepartamentoRepository departamentoService;
 
     private DepartamentoEntity departamentoBusqueda;
     private MunicipioEntity municipioBusqueda;
@@ -62,13 +61,6 @@ public class PobladoBean implements Serializable {
         // Example: this.poblado.setAnything("test");
     }
 
-    public GenericLazyDataModel<PobladoEntity> getLazyModel() {
-        if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(pobladoService);
-        }
-        return this.lazyModel;
-    }
-
     public String persist() {
 
         String message;
@@ -76,7 +68,7 @@ public class PobladoBean implements Serializable {
         try {
 
             if (poblado.getId() != null) {
-                poblado = pobladoService.update(poblado);
+                poblado = pobladoService.save(poblado);
                 message = "message_successfully_updated";
             } else {
                 poblado = pobladoService.save(poblado);
@@ -105,7 +97,7 @@ public class PobladoBean implements Serializable {
         String message;
 
         try {
-            pobladoService.delete(poblado);
+            pobladoService.remove(poblado);
             message = "message_successfully_deleted";
             reset();
         } catch (Exception e) {
@@ -127,7 +119,7 @@ public class PobladoBean implements Serializable {
             if (this.poblado.getMunicipio().getDepartamento() != null) {
                 System.out.println("Seleccionando solo deprtamento....");
                 this.departamento = this.poblado.getMunicipio().getDepartamento();
-                this.allMunicipiosList = municipioService.findMunicipiosByDepartamento(this.departamento);
+                this.allMunicipiosList = municipioService.findByDepartamento(this.departamento);
             }
 
         }
@@ -137,6 +129,7 @@ public class PobladoBean implements Serializable {
     public void reset() {
         poblado = null;
         allMunicipiosList = null;
+        allPobladosList = pobladoService.findAll();
 
     }
 
@@ -148,7 +141,7 @@ public class PobladoBean implements Serializable {
                 if (this.departamento == null) {
                     this.departamento = this.allDepartamentosList.get(0);
                 }
-                this.allMunicipiosList = municipioService.findMunicipiosByDepartamento(this.departamento);
+                this.allMunicipiosList = municipioService.findByDepartamento(this.departamento);
             }
         }
         return this.allMunicipiosList;
@@ -182,14 +175,14 @@ public class PobladoBean implements Serializable {
 
     public List<DepartamentoEntity> getDepartamentos() {
         if (this.allDepartamentosList == null) {
-            this.allDepartamentosList = departamentoService.findAllDepartamentoEntities();
+            this.allDepartamentosList = departamentoService.findAll();
         }
 
         if (this.allDepartamentosList != null || !this.allDepartamentosList.isEmpty()) {
             if (this.departamento == null) {
                 this.departamento = this.allDepartamentosList.get(0);
             }
-            this.allMunicipiosList = municipioService.findMunicipiosByDepartamento(this.departamento);
+            this.allMunicipiosList = municipioService.findByDepartamento(this.departamento);
         }
 
         return this.allDepartamentosList;
@@ -197,7 +190,7 @@ public class PobladoBean implements Serializable {
     }
 
     public void onCamiarDepartamento() {
-        this.allMunicipiosList = municipioService.findMunicipiosByDepartamento(departamento);
+        this.allMunicipiosList = municipioService.findByDepartamento(departamento);
     }
 
     public void onBuscarPoblado() {
@@ -205,15 +198,15 @@ public class PobladoBean implements Serializable {
         municipioBusqueda = null;
         pobladoBusqueda = null;
 
-        this.allDepartamentosList = departamentoService.findAllDepartamentoEntities();
+        this.allDepartamentosList = departamentoService.findAll();
         if (this.allDepartamentosList != null || !this.allDepartamentosList.isEmpty()) {
             this.departamentoBusqueda = this.allDepartamentosList.get(0);
             if (this.departamentoBusqueda != null) {
-                this.allMunicipiosList = municipioService.findMunicipiosByDepartamento(this.departamentoBusqueda);
+                this.allMunicipiosList = municipioService.findByDepartamento(this.departamentoBusqueda);
                 if (this.allMunicipiosList != null || !this.allMunicipiosList.isEmpty()) {
                     this.municipioBusqueda = allMunicipiosList.get(0);
                     if (this.municipioBusqueda != null) {
-                        this.allPobladosList = pobladoService.findPobladosByMunicipio(this.municipioBusqueda);
+                        this.allPobladosList = pobladoService.findByMunicipio(this.municipioBusqueda);
                         if (this.allPobladosList != null || !this.allPobladosList.isEmpty()) {
                             this.pobladoBusqueda = allPobladosList.get(0);
                         }
@@ -225,14 +218,14 @@ public class PobladoBean implements Serializable {
     }
 
     public void onCambiarDepartamentoBusqueda() {
-        this.allMunicipiosList = municipioService.findMunicipiosByDepartamento(this.departamentoBusqueda);
+        this.allMunicipiosList = municipioService.findByDepartamento(this.departamentoBusqueda);
         this.municipioBusqueda = null;
         this.allPobladosList = null;
         this.pobladoBusqueda = null;
     }
 
     public void onCambiarMunicipioBusqueda() {
-        this.allPobladosList = pobladoService.findPobladosByMunicipio(this.municipioBusqueda);
+        this.allPobladosList = pobladoService.findByMunicipio(this.municipioBusqueda);
         this.pobladoBusqueda = null;
     }
 

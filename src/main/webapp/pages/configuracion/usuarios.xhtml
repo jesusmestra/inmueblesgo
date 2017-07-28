@@ -32,7 +32,7 @@
                     </p:panelGrid>                   
                 </p:panel>            
              
-             <p:dataTable id="usuarioTable" value="#{usuarioBean.lazyModel}" var="usuario" resizableColumns="true" paginator="true"
+             <p:dataTable id="usuarioTable" value="#{usuarioBean.usuarioList}" var="usuario" resizableColumns="true" paginator="true"
                              paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
                              paginatorPosition="bottom" widgetVar="usuarioTable" emptyMessage="#{messages.label_no_records_found}"
@@ -69,13 +69,13 @@
                         <f:facet name="header">
                             <h:outputText value="ES ADMIN"/>
                         </f:facet>                                
-                        <h:outputText value="SI" rendered="#{usuarioService.esAdmin(usuario)}"/>
+                        <h:outputText value="SI" rendered="#{usuarioBean.admin(usuario)}"/>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
                             <h:outputText value="ES VENDEDOR"/>
                         </f:facet>                                
-                        <h:outputText value="SI" rendered="#{usuarioService.esVendedor(usuario)}"/>
+                        <h:outputText value="SI" rendered="#{usuarioBean.vendedor(usuario)}"/>
                     </p:column>
                     <p:column styleClass="action-column" headerText="Opciones" width="115" exportable="false">
                         <p:commandButton icon="ui-icon-pencil" update="formUsuario"

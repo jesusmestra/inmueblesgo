@@ -8,9 +8,10 @@ package com.j2km.inmueblesgo.web;
 import com.j2km.inmueblesgo.domain.DepartamentoEntity;
 import com.j2km.inmueblesgo.domain.MunicipioEntity;
 import com.j2km.inmueblesgo.domain.PobladoEntity;
-import com.j2km.inmueblesgo.domain.TerceroEntity;
-import com.j2km.inmueblesgo.service.DepartamentoService;
+import com.j2km.inmueblesgo.service.DepartamentoRepository;
+import com.j2km.inmueblesgo.service.MunicipioRepository;
 import com.j2km.inmueblesgo.service.MunicipioService;
+import com.j2km.inmueblesgo.service.PobladoRepository;
 import com.j2km.inmueblesgo.service.PobladoService;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -34,13 +35,13 @@ public class BuscarPobladoBean implements Serializable{
     private static final Logger logger = Logger.getLogger(BuscarPobladoBean.class.getName());
     
     @Inject 
-    private PobladoService pobladoService;
+    private PobladoRepository pobladoService;
     
     @Inject
-    private DepartamentoService departamentoService;
+    private DepartamentoRepository departamentoService;
     
     @Inject
-    private MunicipioService municipioService;
+    private MunicipioRepository municipioService;
     
     private PobladoEntity pobladoEntity;
     private List<PobladoEntity> allPoblados;
@@ -77,7 +78,7 @@ public class BuscarPobladoBean implements Serializable{
 
     public List<DepartamentoEntity> getAllDepartamentos() {
         if(this.allDepartamentos == null){
-            this.allDepartamentos = departamentoService.findAllDepartamentoEntities();
+            this.allDepartamentos = departamentoService.findAll();
         }
         return allDepartamentos;
     }
@@ -104,14 +105,14 @@ public class BuscarPobladoBean implements Serializable{
     
     public void onSeleccionarDepartamento(){
         if(this.departamentoEntity != null){
-            this.allMunicipios = municipioService.findMunicipiosByDepartamento(departamentoEntity);
+            this.allMunicipios = municipioService.findByDepartamento(departamentoEntity);
             this.allPoblados = null;
         }
     }
     
     public void onSeleccionarMunicipio(){
         if(this.municipioEntity != null){
-            this.allPoblados = pobladoService.findPobladosByMunicipio(municipioEntity);
+            this.allPoblados = pobladoService.findByMunicipio(municipioEntity);
         }
     }
     

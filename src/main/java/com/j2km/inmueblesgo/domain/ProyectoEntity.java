@@ -7,10 +7,14 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * @author jdmp
@@ -18,27 +22,46 @@ import javax.persistence.Table;
 @Entity(name = "Proyecto")
 @Table(name = "proyecto")
 @NamedQuery(name = "ProyectoEntity.findByEmpresa", query = "Select p from Proyecto p WHERE p.empresa.id = :empresa_id")
-public class ProyectoEntity extends BaseEntity implements Serializable {
+public class ProyectoEntity implements Serializable {
+    
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
+    
+    @Version
+    private int version;
 
-    @Column(name = "proyecto_nombre", unique = true)
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+    
+    @Column(name = "pry_nombre", unique = true)
     @Basic
     private String nombre;
 
-    @Column(name = "proyecto_codigo")
+    @Column(name = "pry_codigo")
     @Basic
     private String codigo;
 
-    @Column(name = "proyecto_logo")
+    @Column(name = "pry_logo")
     @Basic
-    private String logo;
-
-    @Column(name = "proyecto_latitud")
+    private String logo;    
+    
+    @Column(name = "pry_direccion")
     @Basic
-    private String latitud;
-
-    @Column(name = "proyecto_logitud")
-    @Basic
-    private String longitud;
+    private String direccion;
 
     @ManyToOne(targetEntity = EmpresaEntity.class)
     @JoinColumn(name = "EMPRESA_ID")
@@ -55,6 +78,18 @@ public class ProyectoEntity extends BaseEntity implements Serializable {
     @ManyToOne(targetEntity = EstadoProyectoEntity.class)
     @JoinColumn(name = "ESTADO_PROYECTO_ID")
     private EstadoProyectoEntity estadoProyecto;
+    
+    @ManyToOne(targetEntity = Archivo.class)
+    @JoinColumn(name = "ARCHIVO_ID")
+    private Archivo archivo;
+
+    public Archivo getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(Archivo archivo) {
+        this.archivo = archivo;
+    }
 
     public String getNombre() {
         return this.nombre;
@@ -78,23 +113,7 @@ public class ProyectoEntity extends BaseEntity implements Serializable {
 
     public void setLogo(String logo) {
         this.logo = logo;
-    }
-
-    public String getLatitud() {
-        return this.latitud;
-    }
-
-    public void setLatitud(String latitud) {
-        this.latitud = latitud;
-    }
-
-    public String getLongitud() {
-        return this.longitud;
-    }
-
-    public void setLongitud(String longitud) {
-        this.longitud = longitud;
-    }
+    }    
 
     public EmpresaEntity getEmpresa() {
         return this.empresa;
@@ -126,6 +145,35 @@ public class ProyectoEntity extends BaseEntity implements Serializable {
 
     public void setEstadoProyecto(EstadoProyectoEntity estadoProyecto) {
         this.estadoProyecto = estadoProyecto;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {return false;}
+        if (!java.util.Objects.equals(getClass(), obj.getClass())) {return false;}
+        final ProyectoEntity other = (ProyectoEntity) obj;
+        if (!java.util.Objects.equals(this.getId(), other.getId())) {        return false;        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (this.getId() != null ? this.getId().hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "ProyectoEntity{" + " id=" + id + '}';
     }
 
 }

@@ -14,9 +14,9 @@ import javax.transaction.Transactional;
 import org.primefaces.model.SortOrder;
 
 @Named
-public class PobladoService extends BaseService<PobladoEntity> implements Serializable {
+public class PobladoService implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    /*private static final long serialVersionUID = 1L;
 
     public PobladoService() {
         super(PobladoEntity.class);
@@ -39,7 +39,7 @@ public class PobladoService extends BaseService<PobladoEntity> implements Serial
 
         /* This is called before a Poblado is deleted. Place here all the
            steps to cut dependencies to other entities */
-    }
+    /*}
 
     @Transactional
     public List<PobladoEntity> findAvailablePoblados(MunicipioEntity municipio) {
@@ -118,6 +118,6 @@ public class PobladoService extends BaseService<PobladoEntity> implements Serial
         }
 
         return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+    }*/
 
 }

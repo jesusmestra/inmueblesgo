@@ -13,9 +13,9 @@ import javax.transaction.Transactional;
 import org.primefaces.model.SortOrder;
 
 @Named
-public class OfertaService extends BaseService<OfertaEntity> implements Serializable {
+public class OfertaService implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    /*private static final long serialVersionUID = 1L;
 
     public OfertaService() {
         super(OfertaEntity.class);
@@ -39,7 +39,7 @@ public class OfertaService extends BaseService<OfertaEntity> implements Serializ
         /* This is called before a Oferta is deleted. Place here all the
            steps to cut dependencies to other entities */
         //  SI SE VA A ELIMINAR MUNICIPIOS Y POBLADOS EN CASCADA this.cutAllTipoIdentificacionTercerosAssignments(tipoIdentificacion);
-    }
+    /*}
 
     @Transactional
     public OfertaEntity findByNombre(String nombre) {
@@ -78,7 +78,7 @@ public class OfertaService extends BaseService<OfertaEntity> implements Serializ
 
      */
     // This is the central method called by the DataTable
-    @Override
+    /*@Override
     @Transactional
     public List<OfertaEntity> findEntriesPagedAndFilteredAndSorted(int firstResult, int maxResults, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
@@ -152,6 +152,6 @@ public class OfertaService extends BaseService<OfertaEntity> implements Serializ
         }
 
         return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+    }*/
 
 }

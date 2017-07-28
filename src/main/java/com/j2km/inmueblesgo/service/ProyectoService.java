@@ -16,9 +16,9 @@ import javax.transaction.Transactional;
 import org.primefaces.model.SortOrder;
 
 @Named
-public class ProyectoService extends BaseService<ProyectoEntity> implements Serializable {
+public class ProyectoService implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    /*private static final long serialVersionUID = 1L;
 
     public ProyectoService() {
         super(ProyectoEntity.class);
@@ -41,7 +41,7 @@ public class ProyectoService extends BaseService<ProyectoEntity> implements Seri
 
         /* This is called before a Proyecto is deleted. Place here all the
            steps to cut dependencies to other entities */
-    }
+    /*}
 
     @Transactional
     public List<ProyectoEntity> findAvailableProyectos(OfertaEntity oferta) {
@@ -154,7 +154,7 @@ public class ProyectoService extends BaseService<ProyectoEntity> implements Seri
     
     
     /********************/
-    @Transactional
+    /*@Transactional
     public List<ProyectoEntity> findAllByEstado(EstadoProyectoEntity estado) {
 
         List<ProyectoEntity> lista = entityManager.createQuery("SELECT o FROM Proyecto o WHERE o.estadoProyecto = :estado", ProyectoEntity.class).setParameter("estado", estado).getResultList();
@@ -163,8 +163,5 @@ public class ProyectoService extends BaseService<ProyectoEntity> implements Seri
         }
 
         return lista;
-    }
-    
-    
-
+    }*/
 }

@@ -1,11 +1,12 @@
 package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.TipoPlantaEntity;
+import com.j2km.inmueblesgo.service.TipoPlantaRepository;
 import com.j2km.inmueblesgo.service.TipoPlantaService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,27 +26,31 @@ public class TipoPlantaBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(TipoPlantaBean.class.getName());
     
-    private GenericLazyDataModel<TipoPlantaEntity> lazyModel;
-    
     private TipoPlantaEntity tipoPlanta;
+    private List<TipoPlantaEntity> tipoPlantaList;
     
     @Inject
-    private TipoPlantaService tipoPlantaService;
+    private TipoPlantaRepository tipoPlantaService;
     
     
     public void prepareNewTipoPlanta() {
         reset();
         this.tipoPlanta = new TipoPlantaEntity();
+        
         // set any default values now, if you need
         // Example: this.tercero.setAnything("test");
     }
 
-    public GenericLazyDataModel<TipoPlantaEntity> getLazyModel() {
-        if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(tipoPlantaService);
-        }
-        return this.lazyModel;
+    public List<TipoPlantaEntity> getTipoPlantaList() {
+        tipoPlantaList = tipoPlantaService.findAll();
+        return tipoPlantaList;
     }
+
+    public void setTipoPlantaList(List<TipoPlantaEntity> tipoPlantaList) {
+        this.tipoPlantaList = tipoPlantaList;
+    }
+    
+    
     
     public String persist() {
 
@@ -54,7 +59,7 @@ public class TipoPlantaBean implements Serializable {
         try {
             
             if (tipoPlanta.getId() != null) {
-                tipoPlanta = tipoPlantaService.update(tipoPlanta);
+                tipoPlanta = tipoPlantaService.save(tipoPlanta);
                 message = "message_successfully_updated";
             } else {
                 tipoPlanta = tipoPlantaService.save(tipoPlanta);
@@ -83,7 +88,7 @@ public class TipoPlantaBean implements Serializable {
         String message;
         
         try {
-            tipoPlantaService.delete(tipoPlanta);
+            tipoPlantaService.remove(tipoPlanta);
             message = "message_successfully_deleted";
             reset();
         } catch (Exception e) {

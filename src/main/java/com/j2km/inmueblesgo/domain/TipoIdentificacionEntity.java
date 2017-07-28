@@ -7,21 +7,26 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * @author jdmp
  */
 @Entity(name = "TipoIdentificacion")
 @Table(name = "tipo_identificacion")
-@NamedQuery(name = "TipoIdentificacionEntity.findByCodigo", query = "Select t from TipoIdentificacion t WHERE t.codigo =:codigo")
-public class TipoIdentificacionEntity extends BaseEntity implements Serializable {
-
-    @Column(name = "tpid_codigo")
-    @Basic
-    private String codigo;
-
+public class TipoIdentificacionEntity implements Serializable {
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
+    
+    @Version
+    private int version;
+    
     @Column(name = "tpid_abreviatura")
     @Basic
     private String abreviatura;
@@ -30,13 +35,21 @@ public class TipoIdentificacionEntity extends BaseEntity implements Serializable
     @Basic
     private String nombre;
 
-    public String getCodigo() {
-        return this.codigo;
+    public Long getId() {
+        return this.id;
     }
 
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
+    public void setId(Long id) {
+        this.id = id;
     }
+
+    public int getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }    
 
     public String getAbreviatura() {
         return this.abreviatura;
@@ -52,6 +65,27 @@ public class TipoIdentificacionEntity extends BaseEntity implements Serializable
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {return false;}
+        if (!java.util.Objects.equals(getClass(), obj.getClass())) {return false;}
+        final TipoIdentificacionEntity other = (TipoIdentificacionEntity) obj;
+        if (!java.util.Objects.equals(this.getId(), other.getId())) {        return false;        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (this.getId() != null ? this.getId().hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "TipoIdentificacionEntity{" + " id=" + id + '}';
     }
 
 }

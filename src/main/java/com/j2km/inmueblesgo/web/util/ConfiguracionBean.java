@@ -49,10 +49,6 @@ public class ConfiguracionBean implements Serializable{
         }else{
             configuracion.cargarDivipola(divipola);
         }
-        
-        
-        
-        
     }
     
     

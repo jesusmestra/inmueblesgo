@@ -3,10 +3,12 @@ package com.j2km.inmueblesgo.web;
 import com.j2km.inmueblesgo.domain.TipoInmuebleEntity;
 import com.j2km.inmueblesgo.domain.TipoPlantaDetalleEntity;
 import com.j2km.inmueblesgo.domain.TipoPlantaEntity;
+import com.j2km.inmueblesgo.service.TipoInmuebleRepository;
 import com.j2km.inmueblesgo.service.TipoInmuebleService;
+import com.j2km.inmueblesgo.service.TipoPlantaDetalleRepository;
 import com.j2km.inmueblesgo.service.TipoPlantaDetalleService;
+import com.j2km.inmueblesgo.service.TipoPlantaRepository;
 import com.j2km.inmueblesgo.service.TipoPlantaService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
@@ -31,19 +33,28 @@ public class TipoPlantaBusinessBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(TipoPlantaBusinessBean.class.getName()); 
     
+    private Long tipoPlantaId;
     private TipoPlantaEntity tipoPlanta;    
     private List<TipoPlantaDetalleEntity> detalles;
     private List<TipoInmuebleEntity> tipoInmuebleList;
     
     @Inject
-    private TipoPlantaService tipoPlantaService;
+    private TipoPlantaRepository tipoPlantaService;
     
     @Inject
-    private TipoPlantaDetalleService tipoPlantaDetalleService;
+    private TipoPlantaDetalleRepository tipoPlantaDetalleService;
     
     @Inject
-    private TipoInmuebleService tipoInmuebleService;
+    private TipoInmuebleRepository tipoInmuebleService;
 
+    public Long getTipoPlantaId() {
+        return tipoPlantaId;
+    }
+
+    public void setTipoPlantaId(Long tipoPlantaId) {
+        this.tipoPlantaId = tipoPlantaId;
+    }
+    
     public TipoPlantaEntity getTipoPlanta() {
         return tipoPlanta;
     }
@@ -62,7 +73,7 @@ public class TipoPlantaBusinessBean implements Serializable {
 
     public List<TipoInmuebleEntity> getTipoInmuebleList() {
         if(tipoInmuebleList == null){
-            tipoInmuebleList = tipoInmuebleService.findAllTipoInmuebleEntities();
+            tipoInmuebleList = tipoInmuebleService.findAll();
         }
         return tipoInmuebleList;
     }
@@ -72,8 +83,9 @@ public class TipoPlantaBusinessBean implements Serializable {
     }    
     
     public void onLoad(){
-        if(this.tipoPlanta != null){
-            detalles = tipoPlantaService.findAllDetallesByTipoPlanta(tipoPlanta);
+        if(this.tipoPlantaId != null){
+            tipoPlanta = tipoPlantaService.findBy(tipoPlantaId);
+            detalles = tipoPlantaDetalleService.findByTipoPlanta(tipoPlanta);
             TipoPlantaDetalleEntity entity;
             
             if (detalles == null || detalles.isEmpty()){
@@ -91,10 +103,10 @@ public class TipoPlantaBusinessBean implements Serializable {
 
     public void guardarDetalle(){
         for (TipoPlantaDetalleEntity detalle : detalles) {
-            tipoPlantaDetalleService.update(detalle);            
+            tipoPlantaDetalleService.save(detalle);            
         }
         
-        detalles = tipoPlantaService.findAllDetallesByTipoPlanta(tipoPlanta);
+        detalles = tipoPlantaDetalleService.findByTipoPlanta(tipoPlanta);
         FacesMessage facesMsg = new FacesMessage(
                             FacesMessage.SEVERITY_INFO, 
                             "Detalle Actualizado", 

@@ -14,8 +14,8 @@ import javax.transaction.Transactional;
 import org.primefaces.model.SortOrder;
 
 @Named
-public class MunicipioService extends BaseService<MunicipioEntity> implements Serializable {
-
+public class MunicipioService  implements Serializable {
+    /*
     private static final long serialVersionUID = 1L;
 
     public MunicipioService() {
@@ -39,7 +39,7 @@ public class MunicipioService extends BaseService<MunicipioEntity> implements Se
 
         /* This is called before a Municipio is deleted. Place here all the
            steps to cut dependencies to other entities */
-    }
+    /*}
 
     @Transactional
     public List<MunicipioEntity> findAvailableMunicipios(DepartamentoEntity departamento) {
@@ -118,6 +118,6 @@ public class MunicipioService extends BaseService<MunicipioEntity> implements Se
         }
 
         return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+    }*/
 
 }

@@ -1,32 +1,26 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.j2km.inmueblesgo.configuracion;
 
-import com.j2km.inmueblesgo.domain.EmpresaEntity;
 import com.j2km.inmueblesgo.domain.EstadoInmuebleEntity;
 import com.j2km.inmueblesgo.domain.EstadoNegociacionEntity;
 import com.j2km.inmueblesgo.domain.EstadoProyectoEntity;
-import com.j2km.inmueblesgo.domain.OfertaEntity;
 import com.j2km.inmueblesgo.domain.PermisoEntity;
-import com.j2km.inmueblesgo.domain.ProyectoEntity;
 import com.j2km.inmueblesgo.domain.RolEntity;
-import com.j2km.inmueblesgo.domain.TerceroEntity;
+import com.j2km.inmueblesgo.domain.TipoFuenteInformacionEntity;
 import com.j2km.inmueblesgo.domain.TipoIdentificacionEntity;
 import com.j2km.inmueblesgo.domain.UsuarioEntity;
-import com.j2km.inmueblesgo.service.EmpresaService;
-import com.j2km.inmueblesgo.service.EstadoInmuebleService;
-import com.j2km.inmueblesgo.service.EstadoNegociacionService;
-import com.j2km.inmueblesgo.service.EstadoProyectoService;
-import com.j2km.inmueblesgo.service.OfertaService;
-import com.j2km.inmueblesgo.service.PermisoService;
-import com.j2km.inmueblesgo.service.ProyectoService;
-import com.j2km.inmueblesgo.service.RolService;
+import com.j2km.inmueblesgo.service.EmpresaRepository;
+import com.j2km.inmueblesgo.service.EstadoInmuebleRepository;
+import com.j2km.inmueblesgo.service.EstadoNegociacionRepository;
+import com.j2km.inmueblesgo.service.EstadoProyectoRepository;
+import com.j2km.inmueblesgo.service.OfertaRepository;
+import com.j2km.inmueblesgo.service.PermisoRepository;
+import com.j2km.inmueblesgo.service.ProyectoRepository;
+import com.j2km.inmueblesgo.service.RolRepository;
 import com.j2km.inmueblesgo.service.TerceroRepository;
-import com.j2km.inmueblesgo.service.TipoIdentificacionService;
-import com.j2km.inmueblesgo.service.UsuarioService;
+import com.j2km.inmueblesgo.service.TipoFuenteInformacionRepository;
+import com.j2km.inmueblesgo.service.TipoIdentificacionRepository;
+import com.j2km.inmueblesgo.service.UsuarioRepository;
+import java.util.Optional;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -37,60 +31,201 @@ import javax.inject.Inject;
 public class Inicio {
 
     @Inject
-    private UsuarioService usuarioService;
+    private UsuarioRepository usuarioService;
 
     @Inject
-    private RolService rolService;
+    private RolRepository rolService;
 
     @Inject
-    private PermisoService permisoService;
+    private PermisoRepository permisoService;
 
     @Inject
-    private TipoIdentificacionService tipoIdentificacionService;
+    private TipoIdentificacionRepository tipoIdentificacionService;
 
     @Inject
     private TerceroRepository terceroService;
 
     @Inject
-    private EmpresaService empresaService;
+    private EmpresaRepository empresaService;
 
     @Inject
-    private ProyectoService proyectoService;
+    private ProyectoRepository proyectoService;
 
     @Inject
-    private OfertaService ofertaService;
+    private OfertaRepository ofertaService;
 
     @Inject
-    private EstadoInmuebleService estadoInmuebleService;
+    private EstadoInmuebleRepository estadoInmuebleService;
 
     @Inject
-    private EstadoNegociacionService estadoNegociacionService;
+    private EstadoNegociacionRepository estadoNegociacionService;
 
     @Inject
-    private EstadoProyectoService estadoProyectoService;
+    private EstadoProyectoRepository estadoProyectoService;
+    
+    @Inject
+    private TipoFuenteInformacionRepository tipoFuenteInformacionService;
+    
+    private void iniciarTipoFuenteInformacion() {
+        String[] fuentes = {
+            Constantes.TFI_VALLA,
+            Constantes.TFI_PERIODICO,
+            Constantes.TFI_PAGINA_WEB,
+            Constantes.TFI_REDES_SOCIALES,
+            Constantes.TFI_REFERIDO,
+            Constantes.TFI_OTRA
+        };
+
+        TipoFuenteInformacionEntity tfi;
+        
+        for (String fuente : fuentes) {
+            tfi = tipoFuenteInformacionService.findOptionalByNombre(fuente);
+            
+            if(tfi == null){
+                tfi = new TipoFuenteInformacionEntity();
+                tfi.setNombre(fuente);
+                tfi = tipoFuenteInformacionService.saveAndFlush(tfi);
+            }
+        }        
+    }
+
+    private void iniciarTiposIdentificacion() {
+        String[] nombres = {
+            Constantes.TI_NIT,
+            Constantes.TI_CEDULA,
+            Constantes.TI_PASAPORTE
+        };
+        String[] abreviaturas = {
+            Constantes.TI_NIT_ABREVIATURA,
+            Constantes.TI_CEDULA_ABREVIATURA,
+            Constantes.TI_PASAPORTE_ABREVIATURA
+        };
+
+        TipoIdentificacionEntity tipoIdentificacionEntity;
+        for (int i = 0; i < nombres.length; i++) {
+            tipoIdentificacionEntity = tipoIdentificacionService.findOptionalByNombre(nombres[i]);
+
+            if (tipoIdentificacionEntity == null) {
+                tipoIdentificacionEntity = new TipoIdentificacionEntity();
+                tipoIdentificacionEntity.setAbreviatura(abreviaturas[i]);
+                tipoIdentificacionEntity.setNombre(nombres[i]);
+                tipoIdentificacionEntity = tipoIdentificacionService.saveAndFlush(tipoIdentificacionEntity);
+            }
+        }
+    }
+
+    private void iniciarEstadosProyecto() {
+        String[] estados = {Constantes.PROYECTO_ACTIVO,
+            Constantes.PROYECTO_INACTIVO};
+
+        String[] codigos = {"01", "02"};
+
+        EstadoProyectoEntity estadoProyecto;
+        int i = 0;
+        for (String estado : estados) {
+            estadoProyecto = estadoProyectoService.findOptionalByNombre(estado);
+
+            if (estadoProyecto == null) {
+                estadoProyecto = new EstadoProyectoEntity();
+                estadoProyecto.setCodigo(codigos[i]);
+                estadoProyecto.setNombre(estado);
+                estadoProyectoService.save(estadoProyecto);
+            }
+            i++;
+        }
+    }
+
+    private void iniciarEstadosInmuebles() {
+        String[] estados = {
+            Constantes.INMUEBLE_DISPONIBLE,
+            Constantes.INMUEBLE_SEPARADO,
+            Constantes.INMUEBLE_VENDIDO
+        };
+
+        String[] codigos = {"01", "02", "03"};
+
+        EstadoInmuebleEntity estadoInmueble;
+        int i = 0;
+        for (String estado : estados) {
+            estadoInmueble = estadoInmuebleService.findOptionalByNombre(estado);
+
+            if (estadoInmueble == null) {
+                estadoInmueble = new EstadoInmuebleEntity();
+                estadoInmueble.setCodigo(codigos[i]);
+                estadoInmueble.setNombre(estado);
+                estadoInmuebleService.save(estadoInmueble);
+            }
+            i++;
+        }
+    }
+
+    private void iniciarSeguridad() {
+
+        String[] roles = {
+            Constantes.ROLE_ADMIN,
+            Constantes.ROLE_VENDEDOR
+        };
+
+        RolEntity rolEntity;
+
+        for (String rol : roles) {
+            rolEntity = rolService.findOptionalByNombre(rol);
+            if (rolEntity == null) {
+                rolEntity = new RolEntity();
+                rolEntity.setNombre(rol);
+                rolService.save(rolEntity);
+            }
+        }
+
+        UsuarioEntity usuario = usuarioService.findOptionalByLogin("admin");
+
+        if (usuario == null) {
+            usuario = new UsuarioEntity();
+            usuario.setLogin("admin");
+            usuario.setPassword("admin");
+            usuario = usuarioService.save(usuario);
+        }
+
+        UsuarioEntity usuarioVendedor = usuarioService.findOptionalByLogin("vendedor");
+
+        if (usuarioVendedor == null) {
+            usuarioVendedor = new UsuarioEntity();
+            usuarioVendedor.setLogin("vendedor");
+            usuarioVendedor.setPassword("vendedor");
+            usuarioVendedor = usuarioService.save(usuarioVendedor);
+        }
+
+        RolEntity rolAdmin = rolService.findOptionalByNombre(Constantes.ROLE_ADMIN);
+        PermisoEntity permiso = permisoService.findOptionalByUsuarioAndRol(usuario, rolAdmin);
+        if (permiso == null) {
+            permiso = new PermisoEntity();
+            permiso.setUsuario(usuario);
+            permiso.setRol(rolAdmin);
+            permisoService.save(permiso);
+        }
+
+        RolEntity rolVendedor = rolService.findOptionalByNombre(Constantes.ROLE_VENDEDOR);
+
+        PermisoEntity permisoVendedor = permisoService.findOptionalByUsuarioAndRol(usuarioVendedor, rolVendedor);
+
+        if (permisoVendedor == null) {
+            permisoVendedor = new PermisoEntity();
+            permisoVendedor.setUsuario(usuarioVendedor);
+            permisoVendedor.setRol(rolVendedor);
+            permisoService.save(permisoVendedor);
+        }
+    }
 
     @PostConstruct
     public void iniciar() {
 
-        EstadoProyectoEntity estadoProyecto = estadoProyectoService.findByCodigo("01");
+        iniciarEstadosProyecto();
+        iniciarEstadosInmuebles();
+        iniciarSeguridad();
+        iniciarTiposIdentificacion();
+        iniciarTipoFuenteInformacion();
 
-        if (estadoProyecto == null) {
-            estadoProyecto = new EstadoProyectoEntity();
-            estadoProyecto.setCodigo("01");
-            estadoProyecto.setNombre("Activo");
-            estadoProyectoService.save(estadoProyecto);
-        }
-
-        estadoProyecto = estadoProyectoService.findByCodigo("02");
-
-        if (estadoProyecto == null) {
-            estadoProyecto = new EstadoProyectoEntity();
-            estadoProyecto.setCodigo("02");
-            estadoProyecto.setNombre("Inactivo");
-            estadoProyectoService.save(estadoProyecto);
-        }
-
-        EstadoNegociacionEntity estadoNegociacion = estadoNegociacionService.findByCodigo("01");
+        /*EstadoNegociacionEntity estadoNegociacion = estadoNegociacionService.findByCodigo("01");
 
         if (estadoNegociacion == null) {
             estadoNegociacion = new EstadoNegociacionEntity();
@@ -136,57 +271,7 @@ public class Inicio {
             estadoNegociacionService.save(estadoNegociacion);
         }
 
-        RolEntity rol = rolService.findByNombre("ADMIN");
-
-        if (rol == null) {
-            rol = new RolEntity();
-            rol.setNombre("ADMIN");
-            rolService.save(rol);
-        }
-
-        UsuarioEntity usuario = usuarioService.findByLogin("admin");
-
-        if (usuario == null) {
-            usuario = new UsuarioEntity();
-            usuario.setLogin("admin");
-            usuario.setPassword("admin");
-            usuarioService.save(usuario);
-        }
-
-        PermisoEntity permiso = permisoService.findByUsuarioAndRol(usuario, rol);
-
-        if (permiso == null) {
-            permiso = new PermisoEntity();
-            permiso.setUsuario(usuario);
-            permiso.setRol(rol);
-            permisoService.save(permiso);
-        }
-
-        RolEntity rolVendedor = rolService.findByNombre("VENDEDOR");
-
-        if (rolVendedor == null) {
-            rolVendedor = new RolEntity();
-            rolVendedor.setNombre("VENDEDOR");
-            rolService.save(rolVendedor);
-        }
-
-        UsuarioEntity usuarioVendedor = usuarioService.findByLogin("vendedor");
-
-        if (usuarioVendedor == null) {
-            usuarioVendedor = new UsuarioEntity();
-            usuarioVendedor.setLogin("vendedor");
-            usuarioVendedor.setPassword("vendedor");
-            usuarioService.save(usuarioVendedor);
-        }
-
-        PermisoEntity permisoVendedor = permisoService.findByUsuarioAndRol(usuarioVendedor, rolVendedor);
-
-        if (permisoVendedor == null) {
-            permisoVendedor = new PermisoEntity();
-            permisoVendedor.setUsuario(usuarioVendedor);
-            permisoVendedor.setRol(rolVendedor);
-            permisoService.save(permisoVendedor);
-        }
+        
 
         EstadoInmuebleEntity estadoInmueble = estadoInmuebleService.findByCodigo("01");
 
@@ -215,45 +300,7 @@ public class Inicio {
             estadoInmuebleService.save(estadoInmueble);
         }
 
-        TipoIdentificacionEntity tipoIdentificacion = tipoIdentificacionService.findByAbrebiatura("CC");
-
-        if (tipoIdentificacion == null) {
-            tipoIdentificacion = new TipoIdentificacionEntity();
-            tipoIdentificacion.setAbreviatura("CC");
-            tipoIdentificacion.setCodigo("01");
-            tipoIdentificacion.setNombre("Cedula de Ciudadania");
-            tipoIdentificacionService.save(tipoIdentificacion);
-        }
-
-        tipoIdentificacion = tipoIdentificacionService.findByAbrebiatura("NIT");
-
-        if (tipoIdentificacion == null) {
-            tipoIdentificacion = new TipoIdentificacionEntity();
-            tipoIdentificacion.setAbreviatura("NIT");
-            tipoIdentificacion.setCodigo("02");
-            tipoIdentificacion.setNombre("Nit");
-            tipoIdentificacionService.save(tipoIdentificacion);
-        }
-
-        tipoIdentificacion = tipoIdentificacionService.findByAbrebiatura("RC");
-
-        if (tipoIdentificacion == null) {
-            tipoIdentificacion = new TipoIdentificacionEntity();
-            tipoIdentificacion.setAbreviatura("RC");
-            tipoIdentificacion.setCodigo("03");
-            tipoIdentificacion.setNombre("Registro Civil");
-            tipoIdentificacionService.save(tipoIdentificacion);
-        }
-
-        tipoIdentificacion = tipoIdentificacionService.findByAbrebiatura("PAS");
-
-        if (tipoIdentificacion == null) {
-            tipoIdentificacion = new TipoIdentificacionEntity();
-            tipoIdentificacion.setAbreviatura("PAS");
-            tipoIdentificacion.setCodigo("04");
-            tipoIdentificacion.setNombre("Pasaporte");
-            tipoIdentificacionService.save(tipoIdentificacion);
-        }
+        
 
         /*TerceroEntity representante = terceroService.findOptionalByIdentificacion("11000531");
 
@@ -389,6 +436,5 @@ public class Inicio {
             proyecto.setEstadoProyecto(estadoProyecto);
             proyectoService.save(proyecto);
         }*/
-
     }
 }

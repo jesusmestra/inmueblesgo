@@ -4,27 +4,43 @@
 package com.j2km.inmueblesgo.domain;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Version;
 
 /**
  * @author jdmp
  */
-@MappedSuperclass
-public abstract class BaseEntity implements Serializable {
-
-    @Column(unique = true)
+@Entity(name = "Piso")
+@Table(name = "piso")
+public class PisoEntity implements Serializable {
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-
+    
     @Version
     private int version;
 
+    @Column(name = "piso_numero")
+    @Basic
+    private Integer numero;
+
+    @ManyToOne(targetEntity = TorreEntity.class)
+    @JoinColumn(name = "TORRE_ID")
+    private TorreEntity torre;
+
+    @ManyToOne(targetEntity = TipoPlantaEntity.class)
+    @JoinColumn(name = "TIPO_PLANTA_ID")
+    private TipoPlantaEntity tipoPlanta;
+    
     public Long getId() {
         return this.id;
     }
@@ -40,7 +56,7 @@ public abstract class BaseEntity implements Serializable {
     public void setVersion(int version) {
         this.version = version;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -57,9 +73,7 @@ public abstract class BaseEntity implements Serializable {
             return false;
         } else if (obj.getClass() != this.getClass()) {
             return false;
-        } else if (this.id != null && this.id.equals(((BaseEntity) obj).id)) {
-            return true;
-        } else {
+        }else {
             return false;
         }
     }
@@ -67,6 +81,30 @@ public abstract class BaseEntity implements Serializable {
     @Override
     public String toString() {
     	return String.format("%s[id=%d]", getClass().getSimpleName(), getId());
+    }
+
+    public Integer getNumero() {
+        return this.numero;
+    }
+
+    public void setNumero(Integer numero) {
+        this.numero = numero;
+    }
+
+    public TorreEntity getTorre() {
+        return this.torre;
+    }
+
+    public void setTorre(TorreEntity torre) {
+        this.torre = torre;
+    }
+
+    public TipoPlantaEntity getTipoPlanta() {
+        return this.tipoPlanta;
+    }
+
+    public void setTipoPlanta(TipoPlantaEntity tipoPlanta) {
+        this.tipoPlanta = tipoPlanta;
     }
 
 }

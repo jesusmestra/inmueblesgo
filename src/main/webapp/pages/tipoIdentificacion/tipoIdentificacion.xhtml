@@ -7,104 +7,112 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:o="http://omnifaces.org/ui">
-<ui:composition template="/templates/layout.xhtml">
-  <ui:define name="content">
+    <ui:composition template="/templates/layout.xhtml">
+        <ui:define name="content">
+            <f:metadata>                
+                <f:viewAction action="#{tipoIdentificacionBean.prepareNewTipoIdentificacion()}"  />
+            </f:metadata>
+            <h:form prependId="false" id="tipoIdentificacionDataForm" onkeypress="if (event.keyCode == 13) {
+                return false;
+            }">
 
-    <h:form prependId="false" id="tipoIdentificacionDataForm" onkeypress="if (event.keyCode == 13) {return false; }">
+                <p:dataTable id="tipoIdentificacionTable" value="#{tipoIdentificacionBean.allTipoIdentificacionsList}" var="tipoIdentificacion" resizableColumns="true" paginator="true"
+                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
+                             paginatorPosition="bottom" widgetVar="tipoIdentificacionTable" emptyMessage="#{messages.label_no_records_found}"
+                             reflow="true">
 
-        <p:dataTable id="tipoIdentificacionTable" value="#{tipoIdentificacionBean.lazyModel}" var="tipoIdentificacion" resizableColumns="true" paginator="true"
-                paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
-                paginatorPosition="bottom" widgetVar="tipoIdentificacionTable" emptyMessage="#{messages.label_no_records_found}"
-                reflow="true">
-        
-          <f:facet name="header" >
+                    <f:facet name="header" >
 
-              <p:commandButton value="#{messages.create_new_tipoIdentificacion}" icon="ui-icon-plusthick" action="#{tipoIdentificacionBean.prepareNewTipoIdentificacion()}"
-                      resetValues="true" update=":editTipoIdentificacionDialog" oncomplete="PF('editTipoIdentificacionDialogWidget').show()"
-                      style="float:left" />
-              
-              <p:commandButton id="toggler" type="button" value="#{messages.table_select_columns}" icon="ui-icon-calculator" />
-              <p:columnToggler datasource="tipoIdentificacionTable" trigger="toggler" />
-          </f:facet>
-          
-          <p:column  headerText="#{messages.field_label_tipoIdentificacion_descripcion}" sortBy="#{tipoIdentificacion.nombre}" filterBy="#{tipoIdentificacion.nombre}">
-            <f:facet name="filter">
-                <p:inputText id="descripcionFilter"
-                        onkeypress="if (event.keyCode == 13) {PF('tipoIdentificacionTable').filter(); updateDescripcionFilter(); return false; }" >
-                    <p:remoteCommand name="updateDescripcionFilter" update="tipoIdentificacionTable:descripcionFilter" />
-                </p:inputText>
-            </f:facet>
-            <h:outputText value="#{tipoIdentificacion.nombre}" />
-          </p:column>
+                        <p:commandButton value="#{messages.create_new_tipoIdentificacion}" icon="ui-icon-plusthick" action="#{tipoIdentificacionBean.prepareNewTipoIdentificacion()}"
+                                         resetValues="true" update=":editTipoIdentificacionDialog" oncomplete="PF('editTipoIdentificacionDialogWidget').show()"
+                                         style="float:left" />
 
-          <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
-            
-            <p:commandButton icon="ui-icon-zoomin" update=":viewTipoIdentificacionDialog" oncomplete="PF('viewTipoIdentificacionDialogWidget').show()" title="#{messages.label_view}">
-              <f:setPropertyActionListener value="#{tipoIdentificacion}" target="#{tipoIdentificacionBean.tipoIdentificacion}" />
-            </p:commandButton>
+                        <p:commandButton id="toggler" type="button" value="#{messages.table_select_columns}" icon="ui-icon-calculator" />
+                        <p:columnToggler datasource="tipoIdentificacionTable" trigger="toggler" />
+                    </f:facet>
 
-            <p:commandButton icon="ui-icon-pencil" update=":editTipoIdentificacionDialog"
-                resetValues="true" 
-                action="#{tipoIdentificacionBean.onDialogOpen(tipoIdentificacion)}"
-                oncomplete="PF('editTipoIdentificacionDialogWidget').show()"
-                title="#{messages.label_edit}" >
-            </p:commandButton>
+                    <p:column  headerText="#{messages.field_label_tipoIdentificacion_descripcion}" sortBy="#{tipoIdentificacion.nombre}" filterBy="#{tipoIdentificacion.nombre}">
+                        <f:facet name="filter">
+                            <p:inputText id="descripcionFilter"
+                                         onkeypress="if (event.keyCode == 13) {
+                                    PF('tipoIdentificacionTable').filter();
+                                    updateDescripcionFilter();
+                                    return false;
+                                }" >
+                                <p:remoteCommand name="updateDescripcionFilter" update="tipoIdentificacionTable:descripcionFilter" />
+                            </p:inputText>
+                        </f:facet>
+                        <h:outputText value="#{tipoIdentificacion.nombre}" />
+                    </p:column>
 
-            <p:commandButton icon="ui-icon-close" 
-                oncomplete="PF('deleteTipoIdentificacionDialogWidget').show()"
-                title="#{messages.label_delete}" >
-                <f:setPropertyActionListener value="#{tipoIdentificacion}"
-                    target="#{tipoIdentificacionBean.tipoIdentificacion}" />
-            </p:commandButton>
-    
-          </p:column>
-          
-        </p:dataTable>
-        
-    </h:form>
+                    <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
 
-    <p:confirmDialog id="deleteTipoIdentificacionDialog" widgetVar="deleteTipoIdentificacionDialogWidget"
-        header="#{messages.label_confirm_deletion}"
-        severity="alarm">
-        <f:facet name="message"><h:outputText value="#{messages.label_delete_record}" escape="false"/></f:facet>
-        <p:outputPanel>
-          <h:form>
-            <div style="text-align: center; margin:10px">
-              <p:commandButton value="#{messages.label_yes}" action="#{tipoIdentificacionBean.delete}" update=":tipoIdentificacionDataForm :growlForm:growl" oncomplete="PF('deleteTipoIdentificacionDialogWidget').hide()" />
-              <p:commandButton value="#{messages.label_no}" onclick="PF('deleteTipoIdentificacionDialogWidget').hide()" type="button" />
-            </div>
-          </h:form>
-        </p:outputPanel>
-    </p:confirmDialog>
-    
-    <p:dialog dynamic="true" id="editTipoIdentificacionDialog" header="#{messages.label_tipoIdentificacion_caption}"
-            modal="true" widgetVar="editTipoIdentificacionDialogWidget" maximizable="true">
-        <p:ajax event="close" listener="#{tipoIdentificacionBean.reset}"/>
-        <h:form id="editTipoIdentificacionForm" >
-            <p:outputPanel id="tipoIdentificacionEditPanel">
-                <ui:include src="/pages/tipoIdentificacion/tipoIdentificacionEditInclude.xhtml"/>
-                <div style="text-align: center; margin:10px">
-                    <p:commandButton value="#{messages.label_save}"
-                            icon="ui-icon-disk" action="#{tipoIdentificacionBean.persist}"
-                            update=":editTipoIdentificacionForm:tipoIdentificacionEditPanel :tipoIdentificacionDataForm :growlForm:growl"
-                            oncomplete="if(!args.validationFailed) PF('editTipoIdentificacionDialogWidget').hide()" />
-                    <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('editTipoIdentificacionDialogWidget').hide()" type="button" />
-                </div>
-            </p:outputPanel>
-        </h:form>
-    </p:dialog>
-    
-    <p:dialog dynamic="true" id="viewTipoIdentificacionDialog" header="#{messages.label_tipoIdentificacion_caption}" modal="true" widgetVar="viewTipoIdentificacionDialogWidget" maximizable="true">
-        <p:ajax event="close" listener="#{tipoIdentificacionBean.reset}" />
-        <h:form id="viewTipoIdentificacionForm">
-          <ui:include src="/pages/tipoIdentificacion/tipoIdentificacionViewInclude.xhtml"/>
-          <div style="text-align: center; margin:10px">
-              <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('viewTipoIdentificacionDialogWidget').hide()" type="button" />
-          </div>
-        </h:form>
-    </p:dialog>
-    
-  </ui:define>
-</ui:composition>
+                        <p:commandButton icon="ui-icon-zoomin" update=":viewTipoIdentificacionDialog" oncomplete="PF('viewTipoIdentificacionDialogWidget').show()" title="#{messages.label_view}">
+                            <f:setPropertyActionListener value="#{tipoIdentificacion}" target="#{tipoIdentificacionBean.tipoIdentificacion}" />
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-pencil" update=":editTipoIdentificacionDialog"
+                                         resetValues="true" 
+                                         action="#{tipoIdentificacionBean.onDialogOpen(tipoIdentificacion)}"
+                                         oncomplete="PF('editTipoIdentificacionDialogWidget').show()"
+                                         title="#{messages.label_edit}" >
+                        </p:commandButton>
+
+                        <p:commandButton icon="ui-icon-close" 
+                                         oncomplete="PF('deleteTipoIdentificacionDialogWidget').show()"
+                                         title="#{messages.label_delete}" >
+                            <f:setPropertyActionListener value="#{tipoIdentificacion}"
+                                                         target="#{tipoIdentificacionBean.tipoIdentificacion}" />
+                        </p:commandButton>
+
+                    </p:column>
+
+                </p:dataTable>
+
+            </h:form>
+
+            <p:confirmDialog id="deleteTipoIdentificacionDialog" widgetVar="deleteTipoIdentificacionDialogWidget"
+                             header="#{messages.label_confirm_deletion}"
+                             severity="alarm">
+                <f:facet name="message"><h:outputText value="#{messages.label_delete_record}" escape="false"/></f:facet>
+                <p:outputPanel>
+                    <h:form>
+                        <div style="text-align: center; margin:10px">
+                            <p:commandButton value="#{messages.label_yes}" action="#{tipoIdentificacionBean.delete}" update=":tipoIdentificacionDataForm :growlForm:growl" oncomplete="PF('deleteTipoIdentificacionDialogWidget').hide()" />
+                            <p:commandButton value="#{messages.label_no}" onclick="PF('deleteTipoIdentificacionDialogWidget').hide()" type="button" />
+                        </div>
+                    </h:form>
+                </p:outputPanel>
+            </p:confirmDialog>
+
+            <p:dialog dynamic="true" id="editTipoIdentificacionDialog" header="#{messages.label_tipoIdentificacion_caption}"
+                      modal="true" widgetVar="editTipoIdentificacionDialogWidget" maximizable="true">
+                <p:ajax event="close" listener="#{tipoIdentificacionBean.reset}"/>
+                <h:form id="editTipoIdentificacionForm" >
+                    <p:outputPanel id="tipoIdentificacionEditPanel">
+                        <ui:include src="/pages/tipoIdentificacion/tipoIdentificacionEditInclude.xhtml"/>
+                        <div style="text-align: center; margin:10px">
+                            <p:commandButton value="#{messages.label_save}"
+                                             icon="ui-icon-disk" action="#{tipoIdentificacionBean.persist}"
+                                             update=":editTipoIdentificacionForm:tipoIdentificacionEditPanel :tipoIdentificacionDataForm :growlForm:growl"
+                                             oncomplete="if(!args.validationFailed) PF('editTipoIdentificacionDialogWidget').hide()" />
+                            <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('editTipoIdentificacionDialogWidget').hide()" type="button" />
+                        </div>
+                    </p:outputPanel>
+                </h:form>
+            </p:dialog>
+
+            <p:dialog dynamic="true" id="viewTipoIdentificacionDialog" header="#{messages.label_tipoIdentificacion_caption}" modal="true" widgetVar="viewTipoIdentificacionDialogWidget" maximizable="true">
+                <p:ajax event="close" listener="#{tipoIdentificacionBean.reset}" />
+                <h:form id="viewTipoIdentificacionForm">
+                    <ui:include src="/pages/tipoIdentificacion/tipoIdentificacionViewInclude.xhtml"/>
+                    <div style="text-align: center; margin:10px">
+                        <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('viewTipoIdentificacionDialogWidget').hide()" type="button" />
+                    </div>
+                </h:form>
+            </p:dialog>
+
+        </ui:define>
+    </ui:composition>
 </html>

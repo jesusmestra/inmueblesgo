@@ -1,8 +1,8 @@
 package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.TipoInmuebleEntity;
+import com.j2km.inmueblesgo.service.TipoInmuebleRepository;
 import com.j2km.inmueblesgo.service.TipoInmuebleService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
@@ -26,12 +26,11 @@ public class TipoInmuebleBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(TipoInmuebleBean.class.getName());
     
-    private GenericLazyDataModel<TipoInmuebleEntity> lazyModel;
-    
     private TipoInmuebleEntity tipoInmueble;
+    private List<TipoInmuebleEntity> tipoInmuebleList;
     
     @Inject
-    private TipoInmuebleService tipoInmuebleService;
+    private TipoInmuebleRepository tipoInmuebleService;
     
     
     public void prepareNewTipoInmueble() {
@@ -41,12 +40,15 @@ public class TipoInmuebleBean implements Serializable {
         // Example: this.tercero.setAnything("test");
     }
 
-    public GenericLazyDataModel<TipoInmuebleEntity> getLazyModel() {
-        if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(tipoInmuebleService);
-        }
-        return this.lazyModel;
+    public List<TipoInmuebleEntity> getTipoInmuebleList() {
+        return tipoInmuebleService.findAll();
     }
+
+    public void setTipoInmuebleList(List<TipoInmuebleEntity> tipoInmuebleList) {
+        this.tipoInmuebleList = tipoInmuebleList;
+    }
+    
+    
     
     public String persist() {
 
@@ -55,7 +57,7 @@ public class TipoInmuebleBean implements Serializable {
         try {
             
             if (tipoInmueble.getId() != null) {
-                tipoInmueble = tipoInmuebleService.update(tipoInmueble);
+                tipoInmueble = tipoInmuebleService.save(tipoInmueble);
                 message = "message_successfully_updated";
             } else {
                 tipoInmueble = tipoInmuebleService.save(tipoInmueble);
@@ -84,7 +86,7 @@ public class TipoInmuebleBean implements Serializable {
         String message;
         
         try {
-            tipoInmuebleService.delete(tipoInmueble);
+            tipoInmuebleService.remove(tipoInmueble);
             message = "message_successfully_deleted";
             reset();
         } catch (Exception e) {

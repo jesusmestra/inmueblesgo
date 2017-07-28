@@ -1,8 +1,7 @@
 package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.DepartamentoEntity;
-import com.j2km.inmueblesgo.service.DepartamentoService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
+import com.j2km.inmueblesgo.service.DepartamentoRepository;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
@@ -25,12 +24,10 @@ public class DepartamentoBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(DepartamentoBean.class.getName());
     
-    private GenericLazyDataModel<DepartamentoEntity> lazyModel;
-    
     private DepartamentoEntity departamento;
     
     @Inject
-    private DepartamentoService departamentoService;
+    private DepartamentoRepository departamentoService;
     
     
     public void prepareNewDepartamento() {
@@ -38,13 +35,6 @@ public class DepartamentoBean implements Serializable {
         this.departamento = new DepartamentoEntity();
         // set any default values now, if you need
         // Example: this.tercero.setAnything("test");
-    }
-
-    public GenericLazyDataModel<DepartamentoEntity> getLazyModel() {
-        if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(departamentoService);
-        }
-        return this.lazyModel;
     }
     
     public String persist() {
@@ -54,7 +44,7 @@ public class DepartamentoBean implements Serializable {
         try {
             
             if (departamento.getId() != null) {
-                departamento = departamentoService.update(departamento);
+                departamento = departamentoService.save(departamento);
                 message = "message_successfully_updated";
             } else {
                 departamento = departamentoService.save(departamento);
@@ -83,7 +73,7 @@ public class DepartamentoBean implements Serializable {
         String message;
         
         try {
-            departamentoService.delete(departamento);
+            departamentoService.remove(departamento);
             message = "message_successfully_deleted";
             reset();
         } catch (Exception e) {

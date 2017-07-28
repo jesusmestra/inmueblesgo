@@ -7,14 +7,13 @@ package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.NegociacionEntity;
 import com.j2km.inmueblesgo.domain.NegociacionTerceroEntity;
-import com.j2km.inmueblesgo.service.NegociacionService;
-import com.j2km.inmueblesgo.service.NegociacionTerceroService;
+import com.j2km.inmueblesgo.service.NegociacionRepository;
+import com.j2km.inmueblesgo.service.NegociacionTerceroRepository;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 /**
  *
@@ -26,10 +25,10 @@ import javax.inject.Named;
 public class DashboardBean implements Serializable {
 
     @Inject
-    private NegociacionService negociacionService;
+    private NegociacionRepository negociacionService;
 
     @Inject
-    private NegociacionTerceroService nts;
+    private NegociacionTerceroRepository nts;
 
     private List<NegociacionEntity> nuevasNegociaciones;
     private int tablaActiva = 0;
@@ -45,7 +44,7 @@ public class DashboardBean implements Serializable {
     public List<NegociacionEntity> getNuevasNegociaciones() {
 
         if (nuevasNegociaciones == null) {
-            nuevasNegociaciones = negociacionService.findAllNuevas();
+            nuevasNegociaciones = negociacionService.findByEstadoNegociacion_nombre("RADICADO");
         }
         return nuevasNegociaciones;
     }
@@ -64,7 +63,7 @@ public class DashboardBean implements Serializable {
     }
 
     public List<NegociacionTerceroEntity> findAllTerceroByNegociacio(NegociacionEntity negociacionEntity) {
-        return nts.findAllNegociacionTerceroByNegociacion(negociacionEntity);
+        return nts.findByNegociacion(negociacionEntity);
     }
 
 }

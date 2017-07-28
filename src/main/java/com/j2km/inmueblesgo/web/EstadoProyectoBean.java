@@ -1,11 +1,11 @@
 package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.EstadoProyectoEntity;
-import com.j2km.inmueblesgo.service.EstadoProyectoService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
+import com.j2km.inmueblesgo.service.EstadoProyectoRepository;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,15 +22,11 @@ import javax.persistence.PersistenceException;
 public class EstadoProyectoBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    private static final Logger logger = Logger.getLogger(EstadoProyectoBean.class.getName());
-    
-    private GenericLazyDataModel<EstadoProyectoEntity> lazyModel;
-    
+    private static final Logger logger = Logger.getLogger(EstadoProyectoBean.class.getName());    
     private EstadoProyectoEntity estadoProyecto;
     
     @Inject
-    private EstadoProyectoService estadoProyectoService;
+    private EstadoProyectoRepository estadoProyectoService;
     
     
     public void prepareNewEstadoProyecto() {
@@ -38,13 +34,6 @@ public class EstadoProyectoBean implements Serializable {
         this.estadoProyecto = new EstadoProyectoEntity();
         // set any default values now, if you need
         // Example: this.tercero.setAnything("test");
-    }
-
-    public GenericLazyDataModel<EstadoProyectoEntity> getLazyModel() {
-        if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(estadoProyectoService);
-        }
-        return this.lazyModel;
     }
     
     public String persist() {
@@ -54,7 +43,7 @@ public class EstadoProyectoBean implements Serializable {
         try {
             
             if (estadoProyecto.getId() != null) {
-                estadoProyecto = estadoProyectoService.update(estadoProyecto);
+                estadoProyecto = estadoProyectoService.save(estadoProyecto);
                 message = "message_successfully_updated";
             } else {
                 estadoProyecto = estadoProyectoService.save(estadoProyecto);
@@ -83,7 +72,7 @@ public class EstadoProyectoBean implements Serializable {
         String message;
         
         try {
-            estadoProyectoService.delete(estadoProyecto);
+            estadoProyectoService.remove(estadoProyecto);
             message = "message_successfully_deleted";
             reset();
         } catch (Exception e) {

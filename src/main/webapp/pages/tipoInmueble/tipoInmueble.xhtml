@@ -14,7 +14,7 @@
                 return false;
             }">
 
-                <p:dataTable id="tipoInmuebleTable" value="#{tipoInmuebleBean.lazyModel}" var="tipoInmueble" resizableColumns="true" paginator="true"
+                <p:dataTable id="tipoInmuebleTable" value="#{tipoInmuebleBean.tipoInmuebleList}" var="tipoInmueble" resizableColumns="true" paginator="true"
                              paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
                              paginatorPosition="bottom" widgetVar="tipoInmuebleTable" emptyMessage="#{messages.label_no_records_found}"

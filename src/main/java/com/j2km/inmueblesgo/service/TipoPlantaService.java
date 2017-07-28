@@ -15,9 +15,9 @@ import javax.transaction.Transactional;
 import org.primefaces.model.SortOrder;
 
 @Named
-public class TipoPlantaService extends BaseService<TipoPlantaEntity> implements Serializable {
+public class TipoPlantaService implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    /*private static final long serialVersionUID = 1L;
 
     public TipoPlantaService() {
         super(TipoPlantaEntity.class);
@@ -42,7 +42,7 @@ public class TipoPlantaService extends BaseService<TipoPlantaEntity> implements 
            steps to cut dependencies to other entities */
         
         //  SI SE VA A ELIMINAR MUNICIPIOS Y POBLADOS EN CASCADA this.cutAllTipoIdentificacionTercerosAssignments(tipoIdentificacion);
-    }
+    //}
     
     /*
     SI SE VA A ELIMINAR MUNICIPIOS Y POBLADOS EN CASCADA    
@@ -72,7 +72,7 @@ public class TipoPlantaService extends BaseService<TipoPlantaEntity> implements 
     */
 
     // This is the central method called by the DataTable
-    @Override
+    /*@Override
     @Transactional
     public List<TipoPlantaEntity> findEntriesPagedAndFilteredAndSorted(int firstResult, int maxResults, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
@@ -134,6 +134,6 @@ public class TipoPlantaService extends BaseService<TipoPlantaEntity> implements 
         return entityManager.createQuery("SELECT o FROM TipoPlantaDetalle o where o.tipoPlanta = :tipoPlanta ", TipoPlantaDetalleEntity.class).
                 setParameter("tipoPlanta", tipoPlantaEntity).
                 getResultList();
-    }
+    }*/
 
 }

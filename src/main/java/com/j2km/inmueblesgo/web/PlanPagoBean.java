@@ -2,9 +2,10 @@ package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.NegociacionEntity;
 import com.j2km.inmueblesgo.domain.PlanPagoEntity;
+import com.j2km.inmueblesgo.service.NegociacionRepository;
 import com.j2km.inmueblesgo.service.NegociacionService;
+import com.j2km.inmueblesgo.service.PlanPagoRepository;
 import com.j2km.inmueblesgo.service.PlanPagoService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
@@ -28,15 +29,13 @@ public class PlanPagoBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(PlanPagoBean.class.getName());
     
-    private GenericLazyDataModel<PlanPagoEntity> lazyModel;
-    
     private PlanPagoEntity planPago;
     
     @Inject
-    private PlanPagoService planPagoService;
+    private PlanPagoRepository planPagoService;
     
     @Inject
-    private NegociacionService negociacionService;
+    private NegociacionRepository negociacionService;
     
     private List<NegociacionEntity> allNegociacionsList;
     
@@ -46,13 +45,6 @@ public class PlanPagoBean implements Serializable {
         // set any default values now, if you need
         // Example: this.planPago.setAnything("test");
     }
-
-    public GenericLazyDataModel<PlanPagoEntity> getLazyModel() {
-        if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(planPagoService);
-        }
-        return this.lazyModel;
-    }
     
     public String persist() {
 
@@ -61,7 +53,7 @@ public class PlanPagoBean implements Serializable {
         try {
             
             if (planPago.getId() != null) {
-                planPago = planPagoService.update(planPago);
+                planPago = planPagoService.save(planPago);
                 message = "message_successfully_updated";
             } else {
                 planPago = planPagoService.save(planPago);
@@ -90,7 +82,7 @@ public class PlanPagoBean implements Serializable {
         String message;
         
         try {
-            planPagoService.delete(planPago);
+            planPagoService.remove(planPago);
             message = "message_successfully_deleted";
             reset();
         } catch (Exception e) {
@@ -119,7 +111,7 @@ public class PlanPagoBean implements Serializable {
     // Get a List of all departamento
     public List<NegociacionEntity> getDepartamentos() {
         if (this.allNegociacionsList == null) {
-            this.allNegociacionsList = negociacionService.findAllNegociacionEntities();
+            this.allNegociacionsList = negociacionService.findAll();
         }
         return this.allNegociacionsList;
     }

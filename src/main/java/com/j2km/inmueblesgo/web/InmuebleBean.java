@@ -3,10 +3,11 @@ package com.j2km.inmueblesgo.web;
 import com.j2km.inmueblesgo.domain.EstadoInmuebleEntity;
 import com.j2km.inmueblesgo.domain.InmuebleEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
-import com.j2km.inmueblesgo.service.EstadoInmuebleService;
+import com.j2km.inmueblesgo.service.EstadoInmuebleRepository;
+import com.j2km.inmueblesgo.service.InmuebleRepository;
 import com.j2km.inmueblesgo.service.InmuebleService;
+import com.j2km.inmueblesgo.service.ProyectoRepository;
 import com.j2km.inmueblesgo.service.ProyectoService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
@@ -30,20 +31,18 @@ public class InmuebleBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(InmuebleBean.class.getName());
 
-    private GenericLazyDataModel<InmuebleEntity> lazyModel;
-
     private InmuebleEntity inmueble;
 
     @Inject
-    private InmuebleService inmuebleService;
+    private InmuebleRepository inmuebleService;
 
     @Inject
-    private ProyectoService proyectoService;
+    private ProyectoRepository proyectoService;
 
     private List<ProyectoEntity> allProyectosList;
 
     @Inject
-    private EstadoInmuebleService estadoInmuebleService;
+    private EstadoInmuebleRepository estadoInmuebleService;
 
     private List<EstadoInmuebleEntity> allEstadoInmueblesList;
 
@@ -64,13 +63,6 @@ public class InmuebleBean implements Serializable {
         // Example: this.inmueble.setAnything("test");
     }
 
-    public GenericLazyDataModel<InmuebleEntity> getLazyModel() {
-        if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(inmuebleService);
-        }
-        return this.lazyModel;
-    }
-
     public String persist() {
         System.out.println("Creanco persistencia.....");
         String message;
@@ -78,7 +70,7 @@ public class InmuebleBean implements Serializable {
         try {
 
             if (inmueble.getId() != null) {
-                inmueble = inmuebleService.update(inmueble);
+                inmueble = inmuebleService.save(inmueble);
                 message = "message_successfully_updated";
             } else {
                 inmueble = inmuebleService.save(inmueble);
@@ -107,7 +99,7 @@ public class InmuebleBean implements Serializable {
         String message;
 
         try {
-            inmuebleService.delete(inmueble);
+            inmuebleService.remove(inmueble);
             message = "message_successfully_deleted";
             reset();
         } catch (Exception e) {
@@ -137,7 +129,7 @@ public class InmuebleBean implements Serializable {
     // Get a List of all proyecto
     public List<ProyectoEntity> getProyectos() {
         if (this.allProyectosList == null) {
-            this.allProyectosList = proyectoService.findAllProyectoEntities();
+            this.allProyectosList = proyectoService.findAll();
         }
         return this.allProyectosList;
     }
@@ -152,7 +144,7 @@ public class InmuebleBean implements Serializable {
     // Get a List of all proyecto
     public List<EstadoInmuebleEntity> getEstadoInmuebles() {
         if (this.allEstadoInmueblesList == null) {
-            this.allEstadoInmueblesList = estadoInmuebleService.findAllEstadoInmuebleEntities();
+            this.allEstadoInmueblesList = estadoInmuebleService.findAll();
         }
         return this.allEstadoInmueblesList;
     }

@@ -1,8 +1,8 @@
 package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.TorreEntity;
+import com.j2km.inmueblesgo.service.TorreRepository;
 import com.j2km.inmueblesgo.service.TorreService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
@@ -25,12 +25,10 @@ public class TorreBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(TorreBean.class.getName());
     
-    private GenericLazyDataModel<TorreEntity> lazyModel;
-    
     private TorreEntity torre;
     
     @Inject
-    private TorreService torreService;
+    private TorreRepository torreService;
     
     
     public void prepareNewTorre() {
@@ -38,13 +36,6 @@ public class TorreBean implements Serializable {
         this.torre = new TorreEntity();
         // set any default values now, if you need
         // Example: this.tercero.setAnything("test");
-    }
-
-    public GenericLazyDataModel<TorreEntity> getLazyModel() {
-        if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(torreService);
-        }
-        return this.lazyModel;
     }
     
     public String persist() {
@@ -54,7 +45,7 @@ public class TorreBean implements Serializable {
         try {
             
             if (torre.getId() != null) {
-                torre = torreService.update(torre);
+                torre = torreService.save(torre);
                 message = "message_successfully_updated";
             } else {
                 torre = torreService.save(torre);
@@ -83,7 +74,7 @@ public class TorreBean implements Serializable {
         String message;
         
         try {
-            torreService.delete(torre);
+            torreService.save(torre);
             message = "message_successfully_deleted";
             reset();
         } catch (Exception e) {

@@ -21,7 +21,6 @@ import javax.persistence.Version;
 @NamedQuery(name = "TerceroEntity.findByIdentificacion", query = "Select t from Tercero t WHERE t.identificacion=:identificacion")
 public class TerceroEntity implements Serializable {
 
-    @Column(name="ter_id")
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
@@ -53,14 +52,30 @@ public class TerceroEntity implements Serializable {
     @Column(name = "ter_nombres")
     @Basic
     private String nombres;
+    
+    @Column(name = "ter_otra_fuente")
+    @Basic
+    private String otraFuente;
 
     @ManyToOne(targetEntity = TipoIdentificacionEntity.class)
-    @JoinColumn(name = "TIPO_IDENTIFICACION_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "TIPO_IDENTIFICACION_ID")
     private TipoIdentificacionEntity tipoIdentificacion;
+    
+    @ManyToOne(targetEntity = TipoFuenteInformacionEntity.class)
+    @JoinColumn(name = "TIPO_FUENTE_INFORMACION_ID")
+    private TipoFuenteInformacionEntity tipoFuenteInformacion;
 
     @ManyToOne(targetEntity = PobladoEntity.class)
     @JoinColumn(name = "LUGAR_EXPEDICION_ID")
     private PobladoEntity lugarExpedicion;
+    
+    @ManyToOne(targetEntity = PobladoEntity.class)
+    @JoinColumn(name = "LUGAR_NACIMIENTO_ID")
+    private PobladoEntity lugarNacimiento;
+    
+    @ManyToOne(targetEntity = PobladoEntity.class)
+    @JoinColumn(name = "LUGAR_RESIDENCIA_ID")
+    private PobladoEntity lugarResidencia;
 
     @ManyToOne(targetEntity = UsuarioEntity.class)
     @JoinColumn(name = "USUARIO_ID")    
@@ -157,6 +172,22 @@ public class TerceroEntity implements Serializable {
         this.lugarExpedicion = lugarExpedicion;
     }
 
+    public PobladoEntity getLugarNacimiento() {
+        return lugarNacimiento;
+    }
+
+    public void setLugarNacimiento(PobladoEntity lugarNacimiento) {
+        this.lugarNacimiento = lugarNacimiento;
+    }   
+
+    public PobladoEntity getLugarResidencia() {
+        return lugarResidencia;
+    }
+
+    public void setLugarResidencia(PobladoEntity lugarResidencia) {
+        this.lugarResidencia = lugarResidencia;
+    }
+
     public UsuarioEntity getUsuario() {
         return this.usuario;
     }
@@ -164,31 +195,42 @@ public class TerceroEntity implements Serializable {
     public void setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
     }
+
+    public TipoFuenteInformacionEntity getTipoFuenteInformacion() {
+        return tipoFuenteInformacion;
+    }
+
+    public void setTipoFuenteInformacion(TipoFuenteInformacionEntity tipoFuenteInformacion) {
+        this.tipoFuenteInformacion = tipoFuenteInformacion;
+    }
+
+    public String getOtraFuente() {
+        return otraFuente;
+    }
+
+    public void setOtraFuente(String otraFuente) {
+        this.otraFuente = otraFuente;
+    }
     
     @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {return false;}
+        if (!java.util.Objects.equals(getClass(), obj.getClass())) {return false;}
+        final TerceroEntity other = (TerceroEntity) obj;
+        if (!java.util.Objects.equals(this.getId(), other.getId())) {return false;        }
+        return true;
+    }
+
+    @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        int hash = 7;
+        hash = 41 * hash + (this.getId() != null ? this.getId().hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object obj) {
-
-    	if (this == obj) {
-    		return true;
-    	} else if (obj == null) {
-            return false;
-        } else if (obj.getClass() != this.getClass()) {
-            return false;
-        }else {
-            return false;
-        }
-    }
-
-    @Override
     public String toString() {
-    	return String.format("%s[id=%d]", getClass().getSimpleName(), getId());
+        return "TerceroEntity{" + " id=" + id + '}';
     }
 
 }

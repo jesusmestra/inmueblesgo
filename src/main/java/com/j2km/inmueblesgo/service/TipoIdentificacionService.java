@@ -14,9 +14,9 @@ import javax.transaction.Transactional;
 import org.primefaces.model.SortOrder;
 
 @Named
-public class TipoIdentificacionService extends BaseService<TipoIdentificacionEntity> implements Serializable {
+public class TipoIdentificacionService implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    /*private static final long serialVersionUID = 1L;
 
     public TipoIdentificacionService() {
         super(TipoIdentificacionEntity.class);
@@ -62,7 +62,7 @@ public class TipoIdentificacionService extends BaseService<TipoIdentificacionEnt
 
         /* This is called before a TipoIdentificacion is deleted. Place here all the
            steps to cut dependencies to other entities */
-        this.cutAllTipoIdentificacionTercerosAssignments(tipoIdentificacion);
+    /*    this.cutAllTipoIdentificacionTercerosAssignments(tipoIdentificacion);
 
     }
 
@@ -125,6 +125,6 @@ public class TipoIdentificacionService extends BaseService<TipoIdentificacionEnt
         }
 
         return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+    }*/
 
 }

@@ -14,9 +14,9 @@ import javax.transaction.Transactional;
 import org.primefaces.model.SortOrder;
 
 @Named
-public class TipoInmuebleService extends BaseService<TipoInmuebleEntity> implements Serializable {
+public class TipoInmuebleService implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    /*private static final long serialVersionUID = 1L;
 
     public TipoInmuebleService() {
         super(TipoInmuebleEntity.class);
@@ -41,7 +41,7 @@ public class TipoInmuebleService extends BaseService<TipoInmuebleEntity> impleme
            steps to cut dependencies to other entities */
         
         //  SI SE VA A ELIMINAR MUNICIPIOS Y POBLADOS EN CASCADA this.cutAllTipoIdentificacionTercerosAssignments(tipoIdentificacion);
-    }
+    //}
     
     /*
     SI SE VA A ELIMINAR MUNICIPIOS Y POBLADOS EN CASCADA    
@@ -71,7 +71,7 @@ public class TipoInmuebleService extends BaseService<TipoInmuebleEntity> impleme
     */
 
     // This is the central method called by the DataTable
-    @Override
+    /*@Override
     @Transactional
     public List<TipoInmuebleEntity> findEntriesPagedAndFilteredAndSorted(int firstResult, int maxResults, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
@@ -130,6 +130,6 @@ public class TipoInmuebleService extends BaseService<TipoInmuebleEntity> impleme
         }
 
         return q.setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
-    }
+    }*/
 
 }

@@ -9,7 +9,6 @@ import com.j2km.inmueblesgo.domain.DepartamentoEntity;
 import com.j2km.inmueblesgo.domain.MunicipioEntity;
 import com.j2km.inmueblesgo.domain.PobladoEntity;
 import com.j2km.inmueblesgo.web.ApplicationBean;
-import com.j2km.inmueblesgo.web.util.MessageFactory;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,13 +32,13 @@ public class ConfiguracionService{
     private EntityManager em;
 
     @Inject
-    private DepartamentoService df;
+    private DepartamentoRepository df;
 
     @Inject
-    private MunicipioService mf;
+    private MunicipioRepository mf;
 
     @Inject
-    private PobladoService pf;
+    private PobladoRepository pf;
     
     @Inject
     private ApplicationBean ap;
@@ -49,7 +48,7 @@ public class ConfiguracionService{
         
         System.out.println("Inicianco el cargue...");
         
-        if (df.findAllDepartamentoEntities().isEmpty()) {
+        if (df.count() == 0) {
             System.out.println("En blanco..."+divipola);
             try (InputStream is = divipola.getInputstream()) {
                 System.out.println("Lectura de archivo...");
@@ -66,20 +65,20 @@ public class ConfiguracionService{
                 DepartamentoEntity departamento = new DepartamentoEntity();
                 departamento.setCodigo(codDpto);
                 departamento.setNombre(recordInicial[3]);
-                df.save(departamento);
+                departamento = df.saveAndFlush(departamento);
 
                 MunicipioEntity municipio = new MunicipioEntity();
                 municipio.setCodigo(codMpio);
                 municipio.setNombre(recordInicial[4]);
                 municipio.setDepartamento(departamento);
 
-                mf.save(municipio);
+                municipio = mf.saveAndFlush(municipio);
 
                 PobladoEntity poblado = new PobladoEntity();
                 poblado.setCodigo(recordInicial[2]);
                 poblado.setNombre(recordInicial[5]);
                 poblado.setMunicipio(municipio);
-                pf.save(poblado);
+                poblado = pf.saveAndFlush(poblado);
 
                 while ((line = br.readLine()) != null) {
                     record = line.split(";");
@@ -88,7 +87,7 @@ public class ConfiguracionService{
                         departamento = new DepartamentoEntity();
                         departamento.setCodigo(codDpto);
                         departamento.setNombre(record[3]);
-                        df.save(departamento);
+                        departamento = df.saveAndFlush(departamento);
                     }
                     
                     if(!codMpio.equals(record[1])){
@@ -97,23 +96,21 @@ public class ConfiguracionService{
                         municipio.setCodigo(codMpio);
                         municipio.setNombre(record[4]);
                         municipio.setDepartamento(departamento);
-                        mf.save(municipio);
+                        municipio = mf.saveAndFlush(municipio);
                     }
                     
                     poblado = new PobladoEntity();
                     poblado.setCodigo(record[2]);
                     poblado.setNombre(record[5]);
                     poblado.setMunicipio(municipio);
-                    pf.save(poblado);
+                    poblado = pf.saveAndFlush(poblado);
                 }
 
             } catch (IOException ex) {
                 System.out.println(ex.toString());
             }
         }
-
-    }
-    
+    }    
     
     public String copiarArchivo(UploadedFile archivo, String nuevoNombre, String carpeta) throws FileNotFoundException, IOException {
         String resultado = "";
@@ -123,27 +120,21 @@ public class ConfiguracionService{
         String filePath = ap.rutaCarpeta() + File.separator + carpeta;
         InputStream input = archivo.getInputstream();
         String fileType = URLConnection.guessContentTypeFromStream(input);
-
-        String extension = FilenameUtils.getExtension(archivo.getFileName());
-        
+        String extension = FilenameUtils.getExtension(archivo.getFileName());        
         
         String filename = nuevoNombre +"." +extension;
-
         OutputStream output = new FileOutputStream(new File(filePath, filename));
 
         try {
             IOUtils.copy(input, output);
             resultado = filename;
-
         } catch (IOException e) {
             System.err.println("Error" + e);
         } finally {
             IOUtils.closeQuietly(input);
             IOUtils.closeQuietly(output);
         }
-
         return resultado;
-
     }
     
     

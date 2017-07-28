@@ -4,12 +4,17 @@ import java.io.Serializable;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 
 @Named
 @ApplicationScoped
 public class ApplicationBean implements Serializable {
 
+    @Inject
+    private HttpServletRequest request;
+    
     private static final long serialVersionUID = 1L;
 
     // Used on edit and create dialogs to check if a certain "add entity" dialog component exists on page
@@ -22,7 +27,9 @@ public class ApplicationBean implements Serializable {
     }
 
     public String webCarpeta() {
-        return "http://localhost:8086/archivos/inmueblesGo/";
+        return "http://"+request.getServerName()+":"+request.getServerPort()+"/archivos/inmueblesGo/";// 
+        
+        //return "http://localhost:8080/archivos/inmueblesGo/";
     }
 
 }

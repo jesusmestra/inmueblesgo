@@ -7,15 +7,42 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * @author jkelsy
  */
 @Entity(name = "EstadoNegociacion")
 @Table(name = "estado_negociacion")
-public class EstadoNegociacionEntity extends BaseEntity implements Serializable {
+public class EstadoNegociacionEntity implements Serializable {
+    
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
+    
+    @Version
+    private int version;
 
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+    
     @Column(name = "en_codigo")
     @Basic
     private String codigo;
@@ -40,4 +67,24 @@ public class EstadoNegociacionEntity extends BaseEntity implements Serializable 
         this.nombre = nombre;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {return false;}
+        if (!java.util.Objects.equals(getClass(), obj.getClass())) {return false;}
+        final EstadoNegociacionEntity other = (EstadoNegociacionEntity) obj;
+        if (!java.util.Objects.equals(this.getId(), other.getId())) {return false;}
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (this.getId() != null ? this.getId().hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "EstadoNegociacionEntity{" + " id=" + id + '}';
+    }
 }

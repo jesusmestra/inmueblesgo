@@ -1,0 +1,1244 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" pkg="com.j2km.inmueblesgo.domain" v="4.2" rws="_1493914027770183" Pws="_1493914027770183" cws="_1493914027770183" persistenceUnitName="InmueblesDS" sm="false" xs="false" id="_14939140266091" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd">
+    <jpa:entity name="EstadoProyecto" xre="false" compositePrimaryKeyClass="EstadoProyectoEntityPK" abs="false" class="EstadoProyectoEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_14939140266382">
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="codigo" ft="false" id="_14939140266415">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ep_codigo" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="nombre" ft="false" id="_14939140266416">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ep_nombre" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_14939140266403">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_14939140266414">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:table name="estado_proyecto"/>
+    </jpa:entity>
+    <jpa:entity name="NegociacionHistorico" xre="false" compositePrimaryKeyClass="NegociacionHistoricoEntityPK" abs="false" class="NegociacionHistoricoEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_14939140266477">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="java.util.Date" v="true" name="fecha" ft="false" id="_149391402664710">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="observacion" ft="false" id="_149391402664711">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:basic>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026733101" v="true" name="negociacion" ft="false" id="_149391402664712">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="NEGOCIACION_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026779173" v="true" name="estadoNegociacion" ft="false" id="_149391402664713">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="ESTADO_INMUEBLE_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026745123" v="true" name="creadoPor" ft="false" id="_149391402664714">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="CREADO_POR_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_14939140266478">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_14939140266479">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:el/>
+        <jpa:table name="negociacion_historico"/>
+    </jpa:entity>
+    <jpa:entity name="EstadoInmueble" xre="false" compositePrimaryKeyClass="EstadoInmuebleEntityPK" abs="false" class="EstadoInmuebleEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_149391402665515">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="nombre" ft="false" id="_149391402665518">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ei_nombre" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="codigo" ft="false" id="_149391402665519">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ei_codigo" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_149391402665516">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_149391402665517">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:el/>
+        <jpa:table name="estado_inmueble"/>
+    </jpa:entity>
+    <jpa:entity name="Poblado" xre="false" compositePrimaryKeyClass="PobladoEntityPK" abs="false" class="PobladoEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_149391402666420">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="codigo" ft="false" id="_149391402666423">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="pob_codigo" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="nombre" ft="false" id="_149391402666424">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="pob_nombre" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_149391402667932" v="true" name="municipio" ft="false" id="_149391402666425">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="MUNICIPIO_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_149391402666421">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_149391402666422">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:el/>
+        <jpa:table name="poblado"/>
+    </jpa:entity>
+    <jpa:entity name="Piso" xre="false" compositePrimaryKeyClass="PisoEntityPK" abs="false" class="PisoEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_149391402667226">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="numero" ft="false" id="_149391402667229">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="piso_numero" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026757144" v="true" name="torre" ft="false" id="_149391402667230">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="TORRE_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026768155" v="true" name="tipoPlanta" ft="false" id="_149391402667231">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="TIPO_PLANTA_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_149391402667227">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_149391402667228">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:el/>
+        <jpa:table name="piso"/>
+    </jpa:entity>
+    <jpa:entity name="Municipio" xre="false" compositePrimaryKeyClass="MunicipioEntityPK" abs="false" class="MunicipioEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_149391402667932">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="codigo" ft="false" id="_149391402667935">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="mun_codigo" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="nombre" ft="false" id="_149391402667936">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="mun_nombre" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026785178" v="true" name="departamento" ft="false" id="_149391402667937">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="DEPARTAMENTO_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_149391402667933">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_149391402667934">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:el/>
+        <jpa:table name="municipio"/>
+    </jpa:entity>
+    <jpa:entity name="NegociacionTercero" xre="false" compositePrimaryKeyClass="NegociacionTerceroEntityPK" abs="false" class="NegociacionTerceroEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_149391402668538">
+        <jpa:ts e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026733101" v="true" name="negociacion" ft="false" id="_149391402668541">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="NEGOCIACION_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026774160" v="true" name="tercero" ft="false" id="_149391402668542">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="TERCERO_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_149391402668539">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_149391402668540">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:el/>
+        <jpa:table name="negociacion_tercero"/>
+    </jpa:entity>
+    <jpa:entity name="PlanPago" xre="false" compositePrimaryKeyClass="PlanPagoEntityPK" abs="false" class="PlanPagoEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_149391402669143">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="Integer" v="true" name="numeroCuota" ft="false" id="_149391402669146">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="pp_numero_cuota" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" v="true" name="fechaPactada" ft="false" id="_149391402669147">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="pp_fecha_pactada" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="valorPactado" ft="false" id="_149391402669148">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="pp_valor_pactado" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="observacion" ft="false" id="_149391402669149">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="pp_observacion" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026733101" v="true" name="negociacion" ft="false" id="_149391402669150">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="NEGOCIACION_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_149391402669144">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_149391402669145">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:el/>
+        <jpa:table name="plan_pago"/>
+    </jpa:entity>
+    <jpa:entity name="Oferta" xre="false" compositePrimaryKeyClass="OfertaEntityPK" abs="false" class="OfertaEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_149391402669651">
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="Double" v="true" name="porcentaje" ft="false" id="_149391402669654">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ofer_porcentaje" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="valorSeparacion" ft="false" id="_149391402669755">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ofer_valor_separacion" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="nombre" ft="false" id="_149391402669756">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ofer_nombre" unique="true" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Integer" v="true" name="numeroCuotas" ft="false" id="_149391402669757">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ofer_numero_cuotas" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="periodicidad" ft="false" id="_149391402669758">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ofer_periodicidad" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_149391402669652">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_149391402669653">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:table name="oferta"/>
+    </jpa:entity>
+    <jpa:entity name="Proyecto" xre="false" compositePrimaryKeyClass="ProyectoEntityPK" abs="false" class="ProyectoEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_149391402670359">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="nombre" ft="false" id="_149391402670462">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="pry_nombre" unique="true" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="codigo" ft="false" id="_149391402670463">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="pry_codigo" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="logo" ft="false" id="_149391402670464">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="pry_logo" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="latitud" ft="false" id="_149391402670465">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="pry_latitud" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="longitud" ft="false" id="_149391402670466">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="pry_logitud" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026751130" v="true" name="empresa" ft="false" id="_149391402670467">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="EMPRESA_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_149391402669651" v="true" name="oferta" ft="false" id="_149391402670468">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="OFERTA_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_149391402666420" v="true" name="poblado" ft="false" id="_149391402670469">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="POBLADO_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_14939140266382" v="true" name="estadoProyecto" ft="false" id="_149391402670470">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="ESTADO_PROYECTO_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_149391402670360">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_149391402670461">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:nq e="true" name="ProyectoEntity.findByEmpresa">
+            <jpa:query>Select p from Proyecto p WHERE p.empresa.id = :empresa_id</jpa:query>
+        </jpa:nq>
+        <jpa:el/>
+        <jpa:table name="proyecto"/>
+    </jpa:entity>
+    <jpa:entity name="Inmueble" xre="false" compositePrimaryKeyClass="InmuebleEntityPK" abs="false" class="InmuebleEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_149391402671071">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="numero" ft="false" id="_149391402671074">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="inm_numero" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="area" ft="false" id="_149391402671075">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="inm_area" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="valorMetroCuadrado" ft="false" id="_149391402671076">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="inm_valor_metro_cuadrado" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="incremento" ft="false" id="_149391402671077">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="inm_incremento" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="valorSeparacion" ft="false" id="_149391402671078">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="inm_valor_separacion" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="valorTotal" ft="false" id="_149391402671079">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="inm_valor_total" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_149391402670359" v="true" name="proyecto" ft="false" id="_149391402671080">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="PROYECTO_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_149391402665515" v="true" name="estadoInmueble" ft="false" id="_149391402671081">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="ESTADO_INMUEBLE_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_149391402667226" v="true" name="piso" ft="false" id="_149391402671082">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="PISO_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_149391402671072">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_149391402671073">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:nq e="true" name="InmuebleEntity.findByProyecto">
+            <jpa:query>Select i from Inmueble i WHERE i.proyecto.id = :proyecto_id</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="true" name="InmuebleEntity.findByProyectoAndEstado">
+            <jpa:query>Select i from Inmueble i WHERE i.proyecto.id = :proyecto_id AND i.estadoInmueble.id = :estado_id</jpa:query>
+        </jpa:nq>
+        <jpa:el/>
+        <jpa:table name="inmueble"/>
+    </jpa:entity>
+    <jpa:entity name="TipoInmueble" xre="false" compositePrimaryKeyClass="TipoInmuebleEntityPK" abs="false" class="TipoInmuebleEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_149391402671683">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="descripcion" ft="false" id="_149391402671686">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ti_descripcion" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="area" ft="false" id="_149391402671687">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ti_area" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="valorMetroCuadrado" ft="false" id="_149391402671688">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ti_valor_metro_cuadrado" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="valorSeparacion" ft="false" id="_149391402671689">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ti_valor_separacion" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_149391402670359" v="true" name="proyecto" id="_1493914386043240">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="PROYECTO_ID" rc="" unique="false" nullable="true" insertable="true" updatable="true" column-definition="" table=""/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_149391402671684">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_149391402671685">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:el/>
+        <jpa:table name="tipo_inmueble"/>
+    </jpa:entity>
+    <jpa:entity name="TipoPlantaDetalle" xre="false" compositePrimaryKeyClass="TipoPlantaDetalleEntityPK" abs="false" class="TipoPlantaDetalleEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_149391402672290">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="Integer" v="true" name="numero" ft="false" id="_149391402672293">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="tpd_numero" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026768155" v="true" name="tipoPlanta" ft="false" id="_149391402672294">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="TIPO_PLANTA_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_149391402671683" v="true" name="tipoInmueble" ft="false" id="_149391402672295">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="TIPO_INMUEBLE_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_149391402672291">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_149391402672292">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:el/>
+        <jpa:table name="tipo_planta_detalle"/>
+    </jpa:entity>
+    <jpa:entity name="Permiso" xre="false" compositePrimaryKeyClass="PermisoEntityPK" abs="false" class="PermisoEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_149391402672896">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026745123" v="true" name="usuario" ft="false" id="_149391402672899">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="USUARIO_USR_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026763151" v="true" name="rol" ft="false" id="_1493914026728100">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="ROL_ROL_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_149391402672897">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_149391402672898">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:el/>
+        <jpa:table name="sec_permiso"/>
+    </jpa:entity>
+    <jpa:entity name="Negociacion" xre="false" compositePrimaryKeyClass="NegociacionEntityPK" abs="false" class="NegociacionEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_1493914026733101">
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="codigo" ft="false" id="_1493914026734104">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="neg_codigo" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="java.util.Date" v="true" name="fecha" ft="false" id="_1493914026734105">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="neg_fecha" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="valorMetroCuadrado" ft="false" id="_1493914026734106">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="neg_valor_metro_cuadrado" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="valorSeparacion" ft="false" id="_1493914026734107">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="neg_valor_separacion" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Integer" v="true" name="numeroCuotas" ft="false" id="_1493914026734108">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="neg_numero_cuotas" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="valorIncremento" ft="false" id="_1493914026734109">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="neg_valor_incremento" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="valorTotal" ft="false" id="_1493914026734110">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="neg_valor_total" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Double" v="true" name="porcentaje" ft="false" id="_1493914026734111">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="neg_porcentaje" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026745123" v="true" name="supervisor" ft="false" id="_1493914026734114">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="SUPERVISOR_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026779173" v="true" name="estadoNegociacion" ft="false" id="_1493914026734115">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="ESTADO_NEGOCIACION_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026745123" v="true" name="vendedor" ft="false" id="_1493914026734116">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="VENDEDOR_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:one-to-one own="true" primaryKey="false" connected-entity-id="_149391402671071" v="true" name="inmueble" ft="false" id="_1493914026734112">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="INMUEBLE_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:one-to-one>
+            <jpa:one-to-one own="true" primaryKey="false" connected-entity-id="_149391402669651" v="true" name="oferta" ft="false" id="_1493914026734113">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="OFERTA_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:one-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_1493914026734102">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_1493914026734103">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:table name="negociacion"/>
+    </jpa:entity>
+    <jpa:entity name="TipoIdentificacion" xre="false" compositePrimaryKeyClass="TipoIdentificacionEntityPK" abs="false" class="TipoIdentificacionEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_1493914026740117">
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="codigo" ft="false" id="_1493914026740120">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="tpid_codigo" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="abreviatura" ft="false" id="_1493914026740121">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="tpid_abreviatura" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="nombre" ft="false" id="_1493914026740122">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="tpid_nombre" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_1493914026740118">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_1493914026740119">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:nq e="true" name="TipoIdentificacionEntity.findByCodigo">
+            <jpa:query>Select t from TipoIdentificacion t WHERE t.codigo =:codigo</jpa:query>
+        </jpa:nq>
+        <jpa:table name="tipo_identificacion"/>
+    </jpa:entity>
+    <jpa:entity name="Usuario" xre="false" compositePrimaryKeyClass="UsuarioEntityPK" abs="false" class="UsuarioEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_1493914026745123">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="password" ft="false" id="_1493914026746126">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="usr_password" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="login" ft="false" id="_1493914026746127">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="usr_login" unique="true" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Boolean" v="true" name="activo" ft="false" id="_1493914026746128">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:basic>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_1493914026746124">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_1493914026746125">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:nq e="true" name="UsuarioEntity.esAdmin">
+            <jpa:query>Select e from Permiso e WHERE e.usuario = :usuario and e.rol.nombre = 'ADMIN'</jpa:query>
+        </jpa:nq>
+        <jpa:nq e="true" name="UsuarioEntity.esVendedor">
+            <jpa:query>Select e from Permiso e WHERE e.usuario = :usuario and e.rol.nombre = 'VENDEDOR'</jpa:query>
+        </jpa:nq>
+        <jpa:el/>
+        <jpa:table name="sec_usuario"/>
+    </jpa:entity>
+    <jpa:entity name="Empresa" xre="false" compositePrimaryKeyClass="EmpresaEntityPK" abs="false" class="EmpresaEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_1493914026751130">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="direccion" ft="false" id="_1493914026752133">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="emp_direccion" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="nombre" ft="false" id="_1493914026752134">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="emp_nombre" unique="true" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="emailPass" ft="false" id="_1493914026752135">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="emp_email_pass" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="nit" ft="false" id="_1493914026752136">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="emp_nit" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="logo" ft="false" id="_1493914026752137">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="emp_logo" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="emailHost" ft="false" id="_1493914026752138">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="emp_email_host" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="telefono" ft="false" id="_1493914026752139">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="emp_telefono" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="emailPort" ft="false" id="_1493914026752140">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="emp_email_port" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="email" ft="false" id="_1493914026752141">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="emp_email" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026774160" v="true" name="representante" ft="false" id="_1493914026752142">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="REPRESENTANTE_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_149391402666420" v="true" name="poblado" ft="false" id="_1493914026752143">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="POBLADO_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_1493914026751131">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_1493914026752132">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:nq e="true" name="EmpresaEntity.findByNit">
+            <jpa:query>Select e from Empresa e WHERE e.nit =:nit</jpa:query>
+        </jpa:nq>
+        <jpa:el/>
+        <jpa:table name="empresa"/>
+    </jpa:entity>
+    <jpa:entity name="Torre" xre="false" compositePrimaryKeyClass="TorreEntityPK" abs="false" class="TorreEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_1493914026757144">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="nombre" ft="false" id="_1493914026757147">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="torre_nombre" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="direccion" ft="false" id="_1493914026757148">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="torre_direccion" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="numero" ft="false" id="_1493914026757149">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="torre_numero" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_149391402670359" v="true" name="proyecto" ft="false" id="_1493914026757150">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_1493914026757145">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_1493914026757146">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:el/>
+        <jpa:table name="torre"/>
+    </jpa:entity>
+    <jpa:entity name="Rol" xre="false" compositePrimaryKeyClass="RolEntityPK" abs="false" class="RolEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_1493914026763151">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="nombre" ft="false" id="_1493914026763154">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="rol_nombre" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_1493914026763152">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_1493914026763153">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:el/>
+        <jpa:table name="sec_rol"/>
+    </jpa:entity>
+    <jpa:entity name="TipoPlanta" xre="false" compositePrimaryKeyClass="TipoPlantaEntityPK" abs="false" class="TipoPlantaEntity" v="true" m="false" rootElement="_14939140266091" id="_1493914026768155">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="descripcion" ft="false" id="_1493914026768158">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="tpl_descripcion" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="Integer" v="true" name="numeroInmuebles" ft="false" id="_1493914026768159">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="tpl_nro_inmuebles" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:many-to-one optional="true" primaryKey="false" connected-entity-id="_149391402670359" v="true" name="proyecto" id="_1493929784369195">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="PROYECTO_ID" rc="" unique="false" nullable="true" insertable="true" updatable="true" column-definition="" table=""/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_1493914026768156">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_1493914026768157">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:el/>
+        <jpa:table name="tipo_planta"/>
+    </jpa:entity>
+    <jpa:entity name="Tercero" xre="false" compositePrimaryKeyClass="TerceroEntityPK" abs="false" class="TerceroEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_1493914026774160">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="apellido2" ft="false" id="_1493914026774163">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ter_apellido2" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="apellido1" ft="false" id="_1493914026774164">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ter_apellido1" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="direccion" ft="false" id="_1493914026774165">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ter_direccion" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="identificacion" ft="false" id="_1493914026774166">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ter_identificacion" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="telefono" ft="false" id="_1493914026774167">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ter_telefono" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="email" ft="false" id="_1493914026774168">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ter_email" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="nombres" ft="false" id="_1493914026774169">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="ter_nombres" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026740117" v="true" name="tipoIdentificacion" ft="false" id="_1493914026774170">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="TIPO_IDENTIFICACION_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_149391402666420" v="true" name="lugarExpedicion" ft="false" id="_1493914026774171">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="LUGAR_EXPEDICION_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one primaryKey="false" connected-entity-id="_1493914026745123" v="true" name="usuario" ft="false" id="_1493914026774172">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:join-column name="USUARIO_ID" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_1493914026774161">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_1493914026774162">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:nq e="true" name="TerceroEntity.findByIdentificacion">
+            <jpa:query>Select t from Tercero t WHERE t.identificacion=:identificacion</jpa:query>
+        </jpa:nq>
+        <jpa:el/>
+        <jpa:table name="tercero"/>
+    </jpa:entity>
+    <jpa:entity name="EstadoNegociacion" xre="false" compositePrimaryKeyClass="EstadoNegociacionEntityPK" abs="false" class="EstadoNegociacionEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_1493914026779173">
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="codigo" ft="false" id="_1493914026779176">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="en_codigo" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="nombre" ft="false" id="_1493914026779177">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="en_nombre" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_1493914026779174">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_1493914026779175">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:table name="estado_negociacion"/>
+    </jpa:entity>
+    <jpa:entity name="Departamento" xre="false" compositePrimaryKeyClass="DepartamentoEntityPK" abs="false" class="DepartamentoEntity" v="true" gen="false" m="false" rootElement="_14939140266091" id="_1493914026785178">
+        <jpa:ts e="true"/>
+        <jpa:hc e="true"/>
+        <jpa:eq e="true"/>
+        <jpa:inf e="true" n="java.io.Serializable"/>
+        <jpa:attributes>
+            <jpa:basic attribute-type="String" v="true" name="codigo" ft="false" id="_1493914026785181">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="dpto_codigo" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:basic attribute-type="String" v="true" name="nombre" ft="false" id="_1493914026785182">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:column name="dpto_nombre" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:basic>
+            <jpa:id attribute-type="Long" v="true" name="id" ft="false" id="_1493914026785179">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+                <jpa:generated-value strategy="IDENTITY"/>
+            </jpa:id>
+            <jpa:version attribute-type="int" v="true" name="version" ft="false" id="_1493914026785180">
+                <jpa:bv/>
+                <jpa:kbv/>
+                <jpa:vbv/>
+            </jpa:version>
+        </jpa:attributes>
+        <jpa:el/>
+        <jpa:table name="departamento"/>
+    </jpa:entity>
+    <jpa:snp loc="BEFORE_PACKAGE" e="true">/**
+ * This file was generated by the Jeddict
+ */</jpa:snp>
+    <jpa:wsl>
+        <jpa:ws n="Main" id="_1493914027770183">
+            <i ref="_149391402668538" x="622" y="32">
+                <el/>
+            </i>
+            <i ref="_1493914026745123" x="1015" y="794">
+                <el/>
+            </i>
+            <i ref="_1493914026768155" x="1324" y="1144">
+                <el/>
+            </i>
+            <i ref="_149391402667932" x="532" y="1300">
+                <el/>
+            </i>
+            <i ref="_149391402667226" x="1500" y="867">
+                <el/>
+            </i>
+            <i ref="_149391402666420" x="66" y="1518">
+                <el/>
+            </i>
+            <i ref="_1493914026751130" x="1069" y="1231">
+                <el/>
+            </i>
+            <i ref="_149391402671071" x="1841" y="418">
+                <el/>
+            </i>
+            <i ref="_14939140266477" x="1667" y="70">
+                <el/>
+            </i>
+            <i ref="_149391402672290" x="1396" y="1454">
+                <el/>
+            </i>
+            <i ref="_149391402665515" x="1892" y="854">
+                <el/>
+            </i>
+            <i ref="_1493914026757144" x="69" y="518">
+                <el/>
+            </i>
+            <i ref="_1493914026733101" x="963" y="254">
+                <el/>
+            </i>
+            <i ref="_149391402669143" x="1426" y="439">
+                <el/>
+            </i>
+            <i ref="_149391402671683" x="1630" y="1176">
+                <el/>
+            </i>
+            <i ref="_1493914026740117" x="32" y="32">
+                <el/>
+            </i>
+            <i ref="_14939140266382" x="32" y="1316">
+                <el/>
+            </i>
+            <i ref="_1493914026774160" x="367" y="154">
+                <el/>
+            </i>
+            <i ref="_149391402669651" x="622" y="688">
+                <el/>
+            </i>
+            <i ref="_1493914026779173" x="1267" y="32">
+                <el/>
+            </i>
+            <i ref="_149391402672896" x="532" y="1026">
+                <el/>
+            </i>
+            <i ref="_1493914026763151" x="1324" y="1688">
+                <el/>
+            </i>
+            <i ref="_149391402670359" x="167" y="814">
+                <el/>
+            </i>
+            <i ref="_1493914026785178" x="593" y="1637">
+                <el/>
+            </i>
+        </jpa:ws>
+    </jpa:wsl>
+</jpa:entity-mappings>

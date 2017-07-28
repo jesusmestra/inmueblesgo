@@ -15,9 +15,9 @@ import javax.transaction.Transactional;
 import org.primefaces.model.SortOrder;
 
 @Named
-public class NegociacionTerceroService extends BaseService<NegociacionTerceroEntity> implements Serializable {
+public class NegociacionTerceroService implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    /*private static final long serialVersionUID = 1L;
 
     public NegociacionTerceroService() {
         super(NegociacionTerceroEntity.class);
@@ -41,7 +41,7 @@ public class NegociacionTerceroService extends BaseService<NegociacionTerceroEnt
         /* This is called before a Negociacion is deleted. Place here all the
            steps to cut dependencies to other entities */
         //  SI SE VA A ELIMINAR MUNICIPIOS Y POBLADOS EN CASCADA this.cutAllTipoIdentificacionTercerosAssignments(tipoIdentificacion);
-    }
+    /*}
 
    
 
@@ -68,6 +68,6 @@ public class NegociacionTerceroService extends BaseService<NegociacionTerceroEnt
         }
 
         return lista;
-    }
+    }*/
 
 }

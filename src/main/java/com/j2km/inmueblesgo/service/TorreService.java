@@ -17,9 +17,9 @@ import javax.transaction.Transactional;
 import org.primefaces.model.SortOrder;
 
 @Named
-public class TorreService extends BaseService<TorreEntity> implements Serializable {
+public class TorreService implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    /*private static final long serialVersionUID = 1L;
 
     public TorreService() {
         super(TorreEntity.class);
@@ -44,7 +44,7 @@ public class TorreService extends BaseService<TorreEntity> implements Serializab
            steps to cut dependencies to other entities */
         
         //  SI SE VA A ELIMINAR MUNICIPIOS Y POBLADOS EN CASCADA this.cutAllTipoIdentificacionTercerosAssignments(tipoIdentificacion);
-    }
+    //}
     
     /*
     SI SE VA A ELIMINAR MUNICIPIOS Y POBLADOS EN CASCADA    
@@ -74,7 +74,7 @@ public class TorreService extends BaseService<TorreEntity> implements Serializab
     */
 
     // This is the central method called by the DataTable
-    @Override
+    /*@Override
     @Transactional
     public List<TorreEntity> findEntriesPagedAndFilteredAndSorted(int firstResult, int maxResults, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
 
@@ -136,7 +136,7 @@ public class TorreService extends BaseService<TorreEntity> implements Serializab
         return entityManager.createQuery("SELECT o FROM Torre o WHERE o.proyecto = :proyecto", TorreEntity.class)
                 .setParameter("proyecto", proyecto)
                 .getResultList();
-    }
+    }*/
     
     
 }

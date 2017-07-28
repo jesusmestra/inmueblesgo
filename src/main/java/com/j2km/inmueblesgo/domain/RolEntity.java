@@ -7,15 +7,68 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 /**
  * @author jdmp
  */
 @Entity(name = "Rol")
 @Table(name = "sec_rol")
-public class RolEntity extends BaseEntity implements Serializable {
+public class RolEntity implements Serializable {
+    
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
+    
+    @Version
+    private int version;
 
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+    	if (this == obj) {
+    		return true;
+    	} else if (obj == null) {
+            return false;
+        } else if (obj.getClass() != this.getClass()) {
+            return false;
+        }else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+    	return String.format("%s[id=%d]", getClass().getSimpleName(), getId());
+    }
+    
     @Column(name = "rol_nombre")
     @Basic
     private String nombre;

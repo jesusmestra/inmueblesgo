@@ -17,9 +17,9 @@ import javax.transaction.Transactional;
 import org.primefaces.model.SortOrder;
 
 @Named
-public class PermisoService extends BaseService<PermisoEntity> implements Serializable {
+public class PermisoService implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    /*private static final long serialVersionUID = 1L;
 
     public PermisoService() {
         super(PermisoEntity.class);
@@ -44,7 +44,7 @@ public class PermisoService extends BaseService<PermisoEntity> implements Serial
            steps to cut dependencies to other entities */
         
         // 
-    } 
+    /*} 
     
     @Transactional
     public PermisoEntity findByUsuarioAndRol(UsuarioEntity usuario, RolEntity rol){
@@ -61,6 +61,6 @@ public class PermisoService extends BaseService<PermisoEntity> implements Serial
         }
 
         return lista.get(0);
-    }
+    }*/
 
 }

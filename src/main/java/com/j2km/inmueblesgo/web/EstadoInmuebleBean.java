@@ -1,8 +1,7 @@
 package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.EstadoInmuebleEntity;
-import com.j2km.inmueblesgo.service.EstadoInmuebleService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
+import com.j2km.inmueblesgo.service.EstadoInmuebleRepository;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
@@ -25,12 +24,10 @@ public class EstadoInmuebleBean implements Serializable {
 
     private static final Logger logger = Logger.getLogger(EstadoInmuebleBean.class.getName());
     
-    private GenericLazyDataModel<EstadoInmuebleEntity> lazyModel;
-    
     private EstadoInmuebleEntity estadoInmueble;
     
     @Inject
-    private EstadoInmuebleService estadoInmuebleService;
+    private EstadoInmuebleRepository estadoInmuebleService;
     
     
     public void prepareNewEstadoInmueble() {
@@ -38,13 +35,6 @@ public class EstadoInmuebleBean implements Serializable {
         this.estadoInmueble = new EstadoInmuebleEntity();
         // set any default values now, if you need
         // Example: this.tercero.setAnything("test");
-    }
-
-    public GenericLazyDataModel<EstadoInmuebleEntity> getLazyModel() {
-        if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(estadoInmuebleService);
-        }
-        return this.lazyModel;
     }
     
     public String persist() {
@@ -54,7 +44,7 @@ public class EstadoInmuebleBean implements Serializable {
         try {
             
             if (estadoInmueble.getId() != null) {
-                estadoInmueble = estadoInmuebleService.update(estadoInmueble);
+                estadoInmueble = estadoInmuebleService.save(estadoInmueble);
                 message = "message_successfully_updated";
             } else {
                 estadoInmueble = estadoInmuebleService.save(estadoInmueble);
@@ -83,7 +73,7 @@ public class EstadoInmuebleBean implements Serializable {
         String message;
         
         try {
-            estadoInmuebleService.delete(estadoInmueble);
+            estadoInmuebleService.remove(estadoInmueble);
             message = "message_successfully_deleted";
             reset();
         } catch (Exception e) {

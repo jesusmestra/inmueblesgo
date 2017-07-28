@@ -9,7 +9,6 @@ import com.j2km.inmueblesgo.domain.DepartamentoEntity;
 import com.j2km.inmueblesgo.domain.MunicipioEntity;
 import com.j2km.inmueblesgo.domain.PobladoEntity;
 import com.j2km.inmueblesgo.domain.TerceroEntity;
-import com.j2km.inmueblesgo.service.DepartamentoService;
 import com.j2km.inmueblesgo.service.MunicipioService;
 import com.j2km.inmueblesgo.service.PobladoService;
 import com.j2km.inmueblesgo.service.TerceroRepository;

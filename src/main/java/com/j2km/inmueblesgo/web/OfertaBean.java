@@ -1,11 +1,12 @@
 package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.domain.OfertaEntity;
+import com.j2km.inmueblesgo.service.OfertaRepository;
 import com.j2km.inmueblesgo.service.OfertaService;
-import com.j2km.inmueblesgo.web.generic.GenericLazyDataModel;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,15 +23,12 @@ import javax.persistence.PersistenceException;
 public class OfertaBean implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
-    private static final Logger logger = Logger.getLogger(OfertaBean.class.getName());
-    
-    private GenericLazyDataModel<OfertaEntity> lazyModel;
-    
+    private static final Logger logger = Logger.getLogger(OfertaBean.class.getName());    
     private OfertaEntity oferta;
+    private List<OfertaEntity> ofertaList;
     
     @Inject
-    private OfertaService ofertaService;
+    private OfertaRepository ofertaService;
     
     
     public void prepareNewOferta() {
@@ -40,13 +38,6 @@ public class OfertaBean implements Serializable {
         // Example: this.tercero.setAnything("test");
     }
 
-    public GenericLazyDataModel<OfertaEntity> getLazyModel() {
-        if (this.lazyModel == null) {
-            this.lazyModel = new GenericLazyDataModel<>(ofertaService);
-        }
-        return this.lazyModel;
-    }
-    
     public String persist() {
 
         String message;
@@ -54,7 +45,7 @@ public class OfertaBean implements Serializable {
         try {
             
             if (oferta.getId() != null) {
-                oferta = ofertaService.update(oferta);
+                oferta = ofertaService.save(oferta);
                 message = "message_successfully_updated";
             } else {
                 oferta = ofertaService.save(oferta);
@@ -83,7 +74,7 @@ public class OfertaBean implements Serializable {
         String message;
         
         try {
-            ofertaService.delete(oferta);
+            ofertaService.remove(oferta);
             message = "message_successfully_deleted";
             reset();
         } catch (Exception e) {
@@ -104,12 +95,18 @@ public class OfertaBean implements Serializable {
     
     public void reset() {
         oferta = null;
-
+        ofertaList = ofertaService.findAll();
         //allTipoIdentificacionsList = null;
         
     }
 
-    
+    public List<OfertaEntity> getOfertaList() {
+        return ofertaList;
+    }
+
+    public void setOfertaList(List<OfertaEntity> ofertaList) {
+        this.ofertaList = ofertaList;
+    }    
     
     public OfertaEntity getOferta() {
         if (this.oferta == null) {

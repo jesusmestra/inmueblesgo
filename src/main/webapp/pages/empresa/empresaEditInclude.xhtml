@@ -21,10 +21,6 @@
                 <p:ajax event="dialogReturn" listener="#{empresaBean.seleccionarPoblado}" update="labelNombrePoblado" />  
             </p:commandButton>
 
-          
-
-
-
 
             <h:outputLabel value="#{messages.field_label_empresa_representante}:" for="representanteSelectInput" rendered="#{not hideRepresentanteSelectInput}"/>
             <p:outputLabel id="labelNombreRepresentante" value="#{empresaBean.empresa.representante.identificacion} | #{empresaBean.empresa.representante.apellido1} #{empresaBean.empresa.representante.apellido2}, #{empresaBean.empresa.representante.nombres}"/>

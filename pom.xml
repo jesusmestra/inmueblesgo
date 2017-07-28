@@ -11,11 +11,9 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>        
         <deltaspike.version>1.7.2</deltaspike.version>        
     </properties>
-
     <repositories>
         <repository>
             <id>unknown-jars-temp-repo</id>

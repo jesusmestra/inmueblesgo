@@ -14,69 +14,27 @@
                         return false;
                     }">
 
-                <p:dataTable id="pobladoTable" value="#{pobladoBean.lazyModel}" var="poblado" resizableColumns="true" paginator="true"
+                <p:dataTable id="pobladoTable" value="#{pobladoBean.allPobladosList}" var="poblado" resizableColumns="true" paginator="true"
                              paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
                              paginatorPosition="bottom" widgetVar="pobladoTable" emptyMessage="#{messages.label_no_records_found}"
                              reflow="true">
 
-                    <f:facet name="header" >
-
-                        <p:commandButton value="#{messages.create_new_poblado}" icon="ui-icon-plusthick" action="#{pobladoBean.prepareNewPoblado()}"
-                                         resetValues="true" update=":editPobladoDialog" oncomplete="PF('editPobladoDialogWidget').show()"
-                                         style="float:left" />
-
-                        <p:commandButton id="toggler" type="button" value="#{messages.table_select_columns}" icon="ui-icon-calculator" />
-                        <p:columnToggler datasource="pobladoTable" trigger="toggler" />
+                    <f:facet name="header" >                       
+                        <p:outputLabel value="Listado de poblados"/>                        
                     </f:facet>
 
-                    <p:column headerText="#{messages.field_label_poblado_municipio}" sortBy="#{poblado.municipio}" filterBy="#{poblado.municipio}">
-                        <f:facet name="filter">
-                            <p:selectOneMenu  id="municipioFilter"
-                                              style="width:145px;"
-                                              onchange="PF('pobladoTable').filter(); return false;">
-                                <f:selectItem noSelectionOption="true" itemLabel="" />
-                                <f:selectItems itemLabel="#{municipio.nombre}"
-                                               value="#{pobladoBean.municipios}" 
-                                               var="municipio" 
-                                               itemValue="#{municipio}" />
-                                <o:converter converterId="omnifaces.SelectItemsConverter" list="#{pobladoBean.municipios}" />
-                            </p:selectOneMenu>
-                        </f:facet>
+                    <p:column headerText="#{messages.field_label_poblado_municipio}">                        
                         <h:outputText value="#{poblado.municipio.nombre}" />
                     </p:column>            
 
-                    <p:column  headerText="#{messages.field_label_poblado_codigo}" sortBy="#{poblado.codigo}" filterBy="#{poblado.codigo}">
-                        <f:facet name="filter">
-                            <p:inputText id="codigoFilter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                                     PF('pobladoTable').filter();
-                                                     updateCodigoFilter();
-                                                     return false;
-                                                 }" >
-                                <p:remoteCommand name="updateCodigoFilter" update="pobladoTable:codigoFilter" />
-                            </p:inputText>
-                        </f:facet>
+                    <p:column  headerText="#{messages.field_label_poblado_codigo}">                        
                         <h:outputText value="#{poblado.codigo}" />
                     </p:column>                    
 
-                    <p:column  headerText="#{messages.field_label_poblado_nombre}" sortBy="#{poblado.nombre}" filterBy="#{poblado.nombre}">
-                        <f:facet name="filter">
-                            <p:inputText id="nombreFilter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                                     PF('pobladoTable').filter();
-                                                     updateNombreFilter();
-                                                     return false;
-                                                 }" >
-                                <p:remoteCommand name="updateNombreFilter" update="pobladoTable:nombreFilter" />
-                            </p:inputText>
-                        </f:facet>
+                    <p:column  headerText="#{messages.field_label_poblado_nombre}">                        
                         <h:outputText value="#{poblado.nombre}" />
-                    </p:column>                    
-
-
-
-
+                    </p:column>
 
                     <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
 
@@ -101,45 +59,6 @@
                     </p:column>
 
                 </p:dataTable>
-
-                <h:panelGrid columns="2">
-                    <p:panel header="#{messages.export_all_data}">
-
-                        <h:commandLink>
-                            <h:graphicImage  name="images/excel.png" alt="Excel|" />
-                            <p:dataExporter type="xls" target="pobladoTable" fileName="Poblados"/>
-                        </h:commandLink>
-
-                        <h:commandLink>
-                            <h:graphicImage name="images/pdf.png" alt="PDF|" />
-                            <p:dataExporter type="pdf" target="pobladoTable" fileName="Poblados"/>
-                        </h:commandLink>
-
-                        <h:commandLink>
-                            <h:graphicImage name="images/csv.png" alt="CSV" />
-                            <p:dataExporter type="csv" target="pobladoTable" fileName="Poblados" />
-                        </h:commandLink>
-
-                    </p:panel>
-
-                    <p:panel header="#{messages.export_page_data}">
-                        <h:commandLink>
-                            <h:graphicImage name="images/excel.png" alt="Excel|" />
-                            <p:dataExporter type="xls" target="pobladoTable" fileName="Poblados" pageOnly="true"/>
-                        </h:commandLink>
-
-                        <h:commandLink>
-                            <h:graphicImage name="images/pdf.png" alt="PDF|" />
-                            <p:dataExporter type="pdf" target="pobladoTable" fileName="Poblados" pageOnly="true"/>
-                        </h:commandLink>
-
-                        <h:commandLink>
-                            <h:graphicImage name="images/csv.png" alt="CSV" />
-                            <p:dataExporter type="csv" target="pobladoTable" fileName="Poblados" pageOnly="true"/>
-                        </h:commandLink>
-
-                    </p:panel>
-                </h:panelGrid>
 
             </h:form>
 

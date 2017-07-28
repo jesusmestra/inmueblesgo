@@ -7,45 +7,35 @@ import com.j2km.inmueblesgo.domain.NegociacionEntity;
 import com.j2km.inmueblesgo.domain.NegociacionHistoricoEntity;
 import com.j2km.inmueblesgo.domain.NegociacionTerceroEntity;
 import com.j2km.inmueblesgo.domain.OfertaEntity;
-import com.j2km.inmueblesgo.domain.PermisoEntity;
 import com.j2km.inmueblesgo.domain.PlanPagoEntity;
-import com.j2km.inmueblesgo.domain.RolEntity;
 import com.j2km.inmueblesgo.domain.TerceroEntity;
 import com.j2km.inmueblesgo.domain.UsuarioEntity;
-import com.j2km.inmueblesgo.service.EstadoInmuebleService;
-import com.j2km.inmueblesgo.service.EstadoNegociacionService;
-import com.j2km.inmueblesgo.service.InmuebleService;
-import com.j2km.inmueblesgo.service.NegociacionHistoricoService;
-import com.j2km.inmueblesgo.service.NegociacionService;
-import com.j2km.inmueblesgo.service.NegociacionTerceroService;
-import com.j2km.inmueblesgo.service.OfertaService;
+import com.j2km.inmueblesgo.service.EstadoInmuebleRepository;
+import com.j2km.inmueblesgo.service.EstadoNegociacionRepository;
+import com.j2km.inmueblesgo.service.InmuebleRepository;
+import com.j2km.inmueblesgo.service.NegociacionHistoricoRepository;
+import com.j2km.inmueblesgo.service.NegociacionRepository;
+import com.j2km.inmueblesgo.service.NegociacionTerceroRepository;
+import com.j2km.inmueblesgo.service.OfertaRepository;
 import com.j2km.inmueblesgo.service.PermisoService;
-import com.j2km.inmueblesgo.service.PlanPagoService;
+import com.j2km.inmueblesgo.service.PlanPagoRepository;
 import com.j2km.inmueblesgo.service.RolService;
 import com.j2km.inmueblesgo.service.TerceroRepository;
-import com.j2km.inmueblesgo.service.UsuarioService;
+import com.j2km.inmueblesgo.service.UsuarioRepository;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 import java.io.IOException;
 import java.io.Serializable;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 
 import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.primefaces.event.SelectEvent;
 
 @Named("miNegociacionBean")
@@ -58,46 +48,58 @@ public class MiNegociacionBean implements Serializable {
     private List<TerceroEntity> allTerceroList;
     private List<OfertaEntity> allOfertaList;
     private List<PlanPagoEntity> allPlanPagosListNegociacion;
+    private Long inmuebleId;
+     private NegociacionHistoricoEntity negociacionHistoricoEntity;
+    private EstadoNegociacionEntity estadoNegociacionEntity;
+    private EstadoNegociacionEntity radicado;
 
     private List<NegociacionTerceroEntity> allListNegociacionTercero;
 
     @Inject
-    private NegociacionService negociacionService;
+    private NegociacionRepository negociacionService;
 
     @Inject
     private TerceroRepository terceroService;
 
     @Inject
-    private OfertaService ofertaService;
+    private OfertaRepository ofertaService;
 
     @Inject
-    private PlanPagoService planPagoService;
+    private PlanPagoRepository planPagoService;
 
     @Inject
-    private EstadoInmuebleService estadoInmuebleService;
+    private EstadoInmuebleRepository estadoInmuebleService;
 
     @Inject
-    private InmuebleService inmuebleService;
+    private InmuebleRepository inmuebleService;
 
     @Inject
-    private NegociacionTerceroService negociacionTerceroService;
+    private NegociacionTerceroRepository negociacionTerceroService;
 
     @Inject
     private RolService rolService;
 
     @Inject
-    private UsuarioService usuarioService;
+    private UsuarioRepository usuarioService;
 
     @Inject
     private PermisoService permisoService;
 
     @Inject
-    private NegociacionHistoricoService negociacionHistoricoService;
+    private NegociacionHistoricoRepository negociacionHistoricoService;
 
     @Inject
-    private EstadoNegociacionService estadoNegociacionService;
+    private EstadoNegociacionRepository estadoNegociacionService;
 
-    private NegociacionHistoricoEntity negociacionHistoricoEntity;
+   
+
+    public Long getInmuebleId() {
+        return inmuebleId;
+    }
+
+    public void setInmuebleId(Long inmuebleId) {
+        this.inmuebleId = inmuebleId;
+    }
 
     public NegociacionHistoricoEntity getNegociacionHistoricoEntity() {
         return negociacionHistoricoEntity;
@@ -106,11 +108,8 @@ public class MiNegociacionBean implements Serializable {
     public void setNegociacionHistoricoEntity(NegociacionHistoricoEntity negociacionHistoricoEntity) {
         this.negociacionHistoricoEntity = negociacionHistoricoEntity;
     }
-    private EstadoNegociacionEntity estadoNegociacionEntity;
 
-    private EstadoNegociacionEntity radicado;
-
-    public InmuebleEntity getInmueble() {
+    public InmuebleEntity getInmueble() {        
         return inmueble;
     }
 
@@ -150,16 +149,13 @@ public class MiNegociacionBean implements Serializable {
         this.allPlanPagosListNegociacion = allPlanPagosListNegociacion;
     }
 
-    /**
-     * ****************
-     */
-    @RolesAllowed("TutorialUser")
     public void onLoad() throws IOException {
-        this.radicado = estadoNegociacionService.findByNombre("Radicado");
+        this.inmueble = inmuebleService.findBy(inmuebleId);
+        this.radicado = estadoNegociacionService.findOptionalByNombre("RADICADO");
         //this.allTerceroList = terceroService.findAllTerceroEntities();
-        this.allOfertaList = ofertaService.findAllOfertaEntities();
+        this.allOfertaList = ofertaService.findAll();
 
-        this.negociacion = negociacionService.findByInmueble(this.inmueble);
+        this.negociacion = negociacionService.findOptionalByInmueble(this.inmueble);
         if (this.negociacion == null) {
             this.negociacion = new NegociacionEntity();
             this.negociacion.setInmueble(this.inmueble);
@@ -173,20 +169,23 @@ public class MiNegociacionBean implements Serializable {
                 this.negociacion.setValorIncremento(0D);
             }
 
+            Double porcentaje = 1D;
+            
             this.negociacion.setFecha(Calendar.getInstance().getTime());
             this.negociacion.setValorTotal(this.negociacion.getValorMetroCuadrado() * this.inmueble.getArea() + this.negociacion.getValorIncremento());
             if (this.inmueble.getProyecto().getOferta() != null) {
                 this.negociacion.setOferta(this.inmueble.getProyecto().getOferta());
                 this.negociacion.setNumeroCuotas(this.negociacion.getOferta().getNumeroCuotas());
                 this.negociacion.setPorcentaje(this.inmueble.getProyecto().getOferta().getPorcentaje());
+                porcentaje = this.negociacion.getOferta().getPorcentaje();
             }
 
             allPlanPagosListNegociacion = new ArrayList<PlanPagoEntity>();
             Double inicial = this.negociacion.getValorSeparacion();
             Double valorInmueble = this.inmueble.getValorTotal();
-            Double porcentaje = this.negociacion.getOferta().getPorcentaje();
+            
             Double valorPorcentaje = (valorInmueble * porcentaje) / 100;
-            Double valorRestante = valorPorcentaje - inicial;
+            /*Double valorRestante = valorPorcentaje - inicial;
 
             int numeroCuotas = this.negociacion.getOferta().getNumeroCuotas();
 
@@ -222,11 +221,13 @@ public class MiNegociacionBean implements Serializable {
 
             this.negociacionHistoricoEntity = new NegociacionHistoricoEntity();
             this.negociacionHistoricoEntity.setEstadoNegociacion(radicado);
+            
+            */
 
         } else {
             // SE REPITE CON LO DE SI ES IGUAL A NULL
-            this.allPlanPagosListNegociacion = planPagoService.findAllPlanPagoByNegociacion(this.negociacion);
-            this.allListNegociacionTercero = negociacionTerceroService.findAllNegociacionTerceroByNegociacion(this.negociacion);
+            this.allPlanPagosListNegociacion = planPagoService.findByNegociacion(this.negociacion);
+            this.allListNegociacionTercero = negociacionTerceroService.findByNegociacion(this.negociacion);
             this.negociacionHistoricoEntity
                     = negociacionHistoricoService.findByNegociacionAndEstado(this.negociacion, radicado);
 
@@ -274,8 +275,8 @@ public class MiNegociacionBean implements Serializable {
         } else {
 
             this.inmueble = this.negociacion.getInmueble();
-            this.allPlanPagosListNegociacion = planPagoService.findAllPlanPagoByNegociacion(this.negociacion);
-            this.allListNegociacionTercero = negociacionTerceroService.findAllNegociacionTerceroByNegociacion(this.negociacion);
+            this.allPlanPagosListNegociacion = planPagoService.findByNegociacion(this.negociacion);
+            this.allListNegociacionTercero = negociacionTerceroService.findByNegociacion(this.negociacion);
         }
     }
     
@@ -366,7 +367,7 @@ public class MiNegociacionBean implements Serializable {
 
             this.negociacion.setInmueble(inmueble);
             if (this.negociacion.getId() == null) {
-                UsuarioEntity vendedor = usuarioService.findByLogin(
+                UsuarioEntity vendedor = usuarioService.findOptionalByLogin(
                         FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
                 this.negociacion.setVendedor(vendedor);
                 this.negociacion.setEstadoNegociacion(radicado);
@@ -379,15 +380,15 @@ public class MiNegociacionBean implements Serializable {
                 negociacionHistoricoService.save(this.negociacionHistoricoEntity);
 
             } else {
-                negociacionService.update(this.negociacion);
-                negociacionHistoricoService.update(this.negociacionHistoricoEntity);
+                negociacionService.save(this.negociacion);
+                negociacionHistoricoService.save(this.negociacionHistoricoEntity);
             }
 
             /* ELIMINAMOS EL PLAN DE PAGO QUE EXISTIERA - OJO VALIDAR SI YA SE HA PAGADO*/
-            List<PlanPagoEntity> lista = planPagoService.findAllPlanPagoByNegociacion(this.negociacion);
+            List<PlanPagoEntity> lista = planPagoService.findByNegociacion(this.negociacion);
             if (lista != null) {
                 for (PlanPagoEntity p : lista) {
-                    planPagoService.delete(p);
+                    planPagoService.remove(p);
                 }
             }
 
@@ -398,24 +399,24 @@ public class MiNegociacionBean implements Serializable {
                         if (plan.getId() == null) {
                             planPagoService.save(plan);
                         } else {
-                            planPagoService.update(plan);
+                            planPagoService.save(plan);
                         }
                     }
                 }
             }
-            this.allPlanPagosListNegociacion = planPagoService.findAllPlanPagoByNegociacion(this.negociacion);
-            EstadoInmuebleEntity estadoInmueble = estadoInmuebleService.findByNombre("Separado");
+            this.allPlanPagosListNegociacion = planPagoService.findByNegociacion(this.negociacion);
+            EstadoInmuebleEntity estadoInmueble = estadoInmuebleService.findOptionalByNombre("SEPARADO");
             if (estadoInmueble != null) {
                 this.negociacion.getInmueble().setEstadoInmueble(estadoInmueble);
-                inmuebleService.update(this.negociacion.getInmueble());
+                inmuebleService.save(this.negociacion.getInmueble());
             }
 
             /* GRABACION DE LOS TERCEROS.....
             /* ELIMINAMOS TERCEROS QUE EXISTIERA */
-            List<NegociacionTerceroEntity> listaNegociacionTercero = negociacionTerceroService.findAllNegociacionTerceroByNegociacion(this.negociacion);
+            List<NegociacionTerceroEntity> listaNegociacionTercero = negociacionTerceroService.findByNegociacion(this.negociacion);
             if (listaNegociacionTercero != null) {
                 for (NegociacionTerceroEntity p : listaNegociacionTercero) {
-                    negociacionTerceroService.delete(p);
+                    negociacionTerceroService.remove(p);
                 }
             }
             if (this.allListNegociacionTercero != null) {
@@ -427,7 +428,7 @@ public class MiNegociacionBean implements Serializable {
                         }
                         negociacionTerceroService.save(negociacionTercero);
                     } else {
-                        negociacionTerceroService.update(negociacionTercero);
+                        negociacionTerceroService.save(negociacionTercero);
                     }
 
                 }
@@ -500,7 +501,7 @@ public class MiNegociacionBean implements Serializable {
             List<NegociacionTerceroEntity> negociacionTerceroListInstance = null;
             if (this.negociacion != null) {
                 if (this.negociacion.getId() != null) {
-                    negociacionTerceroListInstance = negociacionTerceroService.findAllNegociacionTerceroByNegociacionAndTercero(this.negociacion, terceroSel);
+                    negociacionTerceroListInstance = negociacionTerceroService.findByNegociacionAndTercero(this.negociacion, terceroSel);
                 }
             }
             if (negociacionTerceroListInstance == null) {
