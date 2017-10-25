@@ -43,32 +43,6 @@ public class RolEntity implements Serializable {
         this.version = version;
     }
     
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-
-    	if (this == obj) {
-    		return true;
-    	} else if (obj == null) {
-            return false;
-        } else if (obj.getClass() != this.getClass()) {
-            return false;
-        }else {
-            return false;
-        }
-    }
-
-    @Override
-    public String toString() {
-    	return String.format("%s[id=%d]", getClass().getSimpleName(), getId());
-    }
-    
     @Column(name = "rol_nombre")
     @Basic
     private String nombre;
@@ -79,6 +53,27 @@ public class RolEntity implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {return false;}
+        if (!java.util.Objects.equals(getClass(), obj.getClass())) {return false;}
+        final RolEntity other = (RolEntity) obj;
+        if (!java.util.Objects.equals(this.getId(), other.getId())) {        return false;        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (this.getId() != null ? this.getId().hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "RolEntity{" + " id=" + id + '}';
     }
 
 }

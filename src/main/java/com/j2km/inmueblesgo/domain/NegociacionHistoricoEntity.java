@@ -14,11 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
-/**
- * @author jkelsy
- */
 @Entity(name = "NegociacionHistorico")
 @Table(name = "negociacion_historico")
 public class NegociacionHistoricoEntity implements Serializable {
@@ -26,52 +22,7 @@ public class NegociacionHistoricoEntity implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    
-    @Version
-    private int version;
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getVersion() {
-        return this.version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
-    }
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-
-    	if (this == obj) {
-    		return true;
-    	} else if (obj == null) {
-            return false;
-        } else if (obj.getClass() != this.getClass()) {
-            return false;
-        }else {
-            return false;
-        }
-    }
-
-    @Override
-    public String toString() {
-    	return String.format("%s[id=%d]", getClass().getSimpleName(), getId());
-    }
-    
     @Basic
     private Date fecha;
 
@@ -89,7 +40,15 @@ public class NegociacionHistoricoEntity implements Serializable {
     @ManyToOne(targetEntity = UsuarioEntity.class)
     @JoinColumn(name = "CREADO_POR_ID")
     private UsuarioEntity creadoPor;
+    
+    public Long getId() {
+        return this.id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public Date getFecha() {
         return this.fecha;
     }
@@ -128,6 +87,27 @@ public class NegociacionHistoricoEntity implements Serializable {
 
     public void setCreadoPor(UsuarioEntity creadoPor) {
         this.creadoPor = creadoPor;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {return false;}
+        if (!java.util.Objects.equals(getClass(), obj.getClass())) {return false;}
+        final NegociacionHistoricoEntity other = (NegociacionHistoricoEntity) obj;
+        if (!java.util.Objects.equals(this.getId(), other.getId())) {return false;}
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (this.getId() != null ? this.getId().hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "NegociacionHistoricoEntity{" + " id=" + id + '}';
     }
 
 }

@@ -9,6 +9,7 @@ import com.j2km.inmueblesgo.domain.ProyectoEntity;
 import com.j2km.inmueblesgo.domain.RepresentanteEntity;
 import com.j2km.inmueblesgo.domain.TerceroEntity;
 import com.j2km.inmueblesgo.service.ArchivoRepository;
+import com.j2km.inmueblesgo.service.ArchivoService;
 import com.j2km.inmueblesgo.service.ConfiguracionService;
 import com.j2km.inmueblesgo.service.DepartamentoRepository;
 import com.j2km.inmueblesgo.service.EmpresaRepository;
@@ -47,32 +48,22 @@ public class EmpresaBean implements Serializable {
     
     private EmpresaEntity empresa;
     
-    @Inject
-    private EmpresaRepository empresaService;
+    @Inject private EmpresaRepository empresaService;
+    @Inject private PobladoRepository pobladoService;    
+    @Inject private ArchivoRepository archivoRepository;    
+    @Inject private TerceroRepository terceroService;    
+    @Inject private MunicipioRepository municipioService;    
+    @Inject private DepartamentoRepository departamentoService;    
+    @Inject private RepresentanteRepository representanteService;
+    @Inject private ConfiguracionService configuracionServiceInstance;
     
-    @Inject
-    private PobladoRepository pobladoService;
+    @Inject private ArchivoService archivoService;
     
-    @Inject
-    private ArchivoRepository archivoService;
-
-    @Inject
-    private TerceroRepository terceroService;
-    
-    @Inject
-    private MunicipioRepository municipioService;
-    
-    @Inject
-    private DepartamentoRepository departamentoService;
-    
-    @Inject
-    private RepresentanteRepository representanteService;
-    
+    private Long empresaId;
     private List<EmpresaEntity> allEmpresaList;    
     private List<PobladoEntity> allPobladosList;
     
-    private MunicipioEntity municipioBusqueda;
-    
+    private MunicipioEntity municipioBusqueda;    
     private List<MunicipioEntity> municipioList;
     private List<DepartamentoEntity> departamentoList;
     
@@ -81,11 +72,17 @@ public class EmpresaBean implements Serializable {
     private MunicipioEntity municipio;
 
     //archivo para cargar el logo
-    private Archivo archivo;
-    
-    //datos para buscar los representantes
+    private Archivo archivo;    
     private String identificacion;
     private List<RepresentanteEntity> representanteList;
+
+    public Long getEmpresaId() {
+        return empresaId;
+    }
+
+    public void setEmpresaId(Long empresaId) {
+        this.empresaId = empresaId;
+    }
 
     public List<RepresentanteEntity> getRepresentanteList() {
         return representanteList;
@@ -150,17 +147,13 @@ public class EmpresaBean implements Serializable {
         this.archivo = archivo;
     }
 
-    public List<EmpresaEntity> getAllEmpresaList() {        
-        allEmpresaList = empresaService.findAll();        
+    public List<EmpresaEntity> getAllEmpresaList() {
         return allEmpresaList;
     }
 
     public void setAllEmpresaList(List<EmpresaEntity> allEmpresaList) {
         this.allEmpresaList = allEmpresaList;
     }
-    
-    @Inject
-    private ConfiguracionService configuracionServiceInstance;
     
     public void prepareNewEmpresa() {        
         this.empresa = new EmpresaEntity();   
@@ -172,17 +165,19 @@ public class EmpresaBean implements Serializable {
         this.archivo = new Archivo();
         this.representanteList = new ArrayList<>();
     }
+    
+    public void inicioListaEmpresa() {
+        this.allEmpresaList = empresaService.findAll();        
+    }
 
     public String persist() throws IOException {
         String message;        
         try {
             empresa.setLogo(archivo);
-            empresa = empresaService.save(empresa);
-            
+            empresa = empresaService.save(empresa);            
             for (RepresentanteEntity representante : representanteList) {
                 representanteService.saveAndFlush(representante);
-            }
-            
+            }            
             message = "Empresa guardada con éxito!!!";
             prepareNewEmpresa();
             
@@ -193,23 +188,18 @@ public class EmpresaBean implements Serializable {
             FacesContext.getCurrentInstance().validationFailed();
         } catch (PersistenceException e) {
             logger.log(Level.SEVERE, "Error occured", e);
-            message = "message_save_exception";
-            // Set validationFailed to keep the dialog open
+            message = "message_save_exception";            
             FacesContext.getCurrentInstance().validationFailed();
-        }       
-        
+        }
         FacesContext.getCurrentInstance().addMessage(message, new FacesMessage(message));        
         return null;
     }
     
-    public String delete() {
-        
-        String message;
-        
+    public String delete() {        
+        String message;        
         try {
             empresaService.remove(empresa);
-            message = "message_successfully_deleted";
-            
+            message = "message_successfully_deleted";            
         } catch (Exception e) {
             logger.log(Level.SEVERE, "Error occured", e);
             message = "message_delete_exception";
@@ -274,29 +264,8 @@ public class EmpresaBean implements Serializable {
         this.empresa.setPoblado((PobladoEntity) event.getObject());
     }
     
-    public void uploadLogoEmpresa(FileUploadEvent event){
-        
-        UploadedFile archivoLogo;        
-        archivoLogo = event.getFile();
-        
-        if (null != archivoLogo) {
-            try {
-                archivo = new Archivo();
-                archivo = archivoService.save(archivo);
-                
-                String nombreLogo = configuracionServiceInstance.
-                        copiarArchivo(archivoLogo, "empresa_logo_" + archivo.getId().toString(), "empresa");                
-                
-                archivo.setNombre(nombreLogo);                
-                archivo.setExtension(FilenameUtils.getExtension(nombreLogo));
-                archivo = archivoService.save(archivo);
-                
-            } catch (IOException ex) {
-                Logger.getLogger(ProyectoBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }else{
-            System.err.println("mierda no existe");
-        }
+    public void uploadLogoEmpresa(FileUploadEvent event){        
+        archivo = archivoService.upload("imagenes", "empresa", event.getFile());
     }
     
     public void seleccionarEmpresa(EmpresaEntity empresa){
@@ -325,12 +294,29 @@ public class EmpresaBean implements Serializable {
     }
     
     public void municipioChange(){
-        allPobladosList = pobladoService.findByMunicipio(municipio);
-        System.err.println(municipio.getNombre());        
+        allPobladosList = pobladoService.findByMunicipio(municipio);              
     }
     
     public List<RepresentanteEntity> representantesPorEmpresa(EmpresaEntity empresa){
         return representanteService.findByEmpresa(empresa);
+    }
+    
+    public void inicioVistaEditar(){
+        this.departamentoList = departamentoService.findAll();
+        this.empresa = empresaService.findBy(this.empresaId);
+        this.archivo = empresa.getLogo();
+        this.representanteList = representanteService.findByEmpresa(empresa);
+        if(empresa.getPoblado() != null){
+            this.departamento = empresa.getPoblado().getMunicipio().getDepartamento();
+            this.municipio = empresa.getPoblado().getMunicipio();            
+            this.municipioList = municipioService.findByDepartamento(this.departamento);
+            this.allPobladosList = pobladoService.findByMunicipio(this.municipio);            
+        }else{
+            this.departamento = null;
+            this.municipio = null;            
+            this.municipioList = null;
+            this.allPobladosList = null; 
+        }
     }
 
 }

@@ -3,6 +3,7 @@ package com.j2km.inmueblesgo.service;
 import com.j2km.inmueblesgo.domain.PermisoEntity;
 import com.j2km.inmueblesgo.domain.RolEntity;
 import com.j2km.inmueblesgo.domain.UsuarioEntity;
+import java.util.List;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
@@ -13,4 +14,6 @@ public abstract class PermisoRepository implements EntityRepository<PermisoEntit
             UsuarioEntity usuario, 
             RolEntity rol
     );
+    
+    public abstract List<PermisoEntity> findByUsuario(UsuarioEntity usuario);
 }

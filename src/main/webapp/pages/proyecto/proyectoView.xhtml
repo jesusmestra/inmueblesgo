@@ -21,7 +21,7 @@
                             <h2>#{proyectoBean.proyecto.nombre} | #{proyectoBean.proyecto.empresa.nombre}</h2>        
                             <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
 
-                                <h:graphicImage value="#{applicationBean.webCarpeta()}proyecto/#{proyectoBean.proyecto.archivo.nombre}"
+                                <h:graphicImage value="#{applicationBean.rutaWebArchivos}/#{proyectoBean.proyecto.archivo.rutaWeb}"
                                                 width="60" height="70" />
 
                                 <p:outputPanel>
@@ -33,7 +33,7 @@
                                         <h:outputText value="#{proyectoBean.proyecto.nombre}" style="font-weight: bold"/>
 
                                         <h:outputText value="Ubicacion:" />
-                                        <h:outputText value="#{proyectoBean.proyecto.poblado.municipio.nombre}" style="font-weight: bold"/>
+                                        <h:outputText value="#{proyectoBean.proyecto.poblado.municipio.nombre} #{proyectoBean.proyecto.direccion}" style="font-weight: bold"/>
 
                                     </h:panelGrid>
                                 </p:outputPanel>
@@ -52,7 +52,7 @@
                                     <p:panelGrid>     
                                         <p:row>
                                             <p:column colspan="2">
-                                                <h:graphicImage id="imagenProyecto" value="#{proyectoBean.imagenTipoInmueble}" 
+                                                <h:graphicImage id="imagenTipoInmueble" value="#{applicationBean.rutaWebArchivos}/#{proyectoBean.archivoTipoInmueble.rutaWeb}" 
                                                                 width="100%" height="150"/>
                                             </p:column>
                                         </p:row>
@@ -62,7 +62,7 @@
                                                               style="border: none blue 1px;"
                                                               skinSimple="false" auto="true"
                                                               fileUploadListener="#{proyectoBean.uploadArchivoTipoInmueble}"
-                                                              update="imagenProyecto"/> 
+                                                              update="imagenTipoInmueble"/> 
                                             </p:column>
                                         </p:row>
                                         <p:row>
@@ -118,7 +118,7 @@
                                 <p:panel header="Listado Tipo Inmuebles" style="width: 100%">
                                     <p:dataTable id="tablaTipoInmueble" value="#{proyectoBean.tipoInmuebleList}" var="item">
                                         <p:column  headerText="Imagen">
-                                            <h:graphicImage value="#{applicationBean.webCarpeta()}proyecto/#{item.archivo.nombre}" width="100%" rendered="#{not empty item.imagen}"/>                                            
+                                            <h:graphicImage value="#{applicationBean.rutaWebArchivos}/#{item.archivo.rutaWeb}" width="100%" rendered="#{not empty item.archivo}"/>                                            
                                         </p:column>                                         
                                         <p:column  headerText="Descripción">
                                             <h:outputText value="#{item.descripcion}" />
@@ -155,7 +155,7 @@
                                     <p:panelGrid> 
                                         <p:row>
                                             <p:column colspan="2">
-                                                <h:graphicImage id="imagenTipoPlanta" value="#{proyectoBean.imagenTipoPlanta}" 
+                                                <h:graphicImage id="imagenTipoPlanta" value="#{applicationBean.rutaWebArchivos}/#{proyectoBean.archivoTipoPlanta.rutaWeb}" 
                                                                 width="100%" height="150"/>
                                             </p:column>
                                         </p:row>
@@ -200,7 +200,7 @@
                                     <p:dataTable value="#{proyectoBean.tipoPlantas}" var="item" selectionMode="single" selection="#{proyectoBean.tipoPlantaSeleccionado}" rowKey="#{item.id}">
                                         <p:ajax event="rowSelect" listener="#{proyectoBean.seleccionarTipoPlantaDetalle}" update="@widgetVar(tablaDetalleTipoPlanta)" />
                                         <p:column  headerText="Imagen">
-                                            <h:graphicImage value="#{applicationBean.webCarpeta()}proyecto/#{item.imagen.nombre}" width="100%" rendered="#{not empty item.imagen}"/>                                            
+                                            <h:graphicImage value="#{applicationBean.rutaWebArchivos}/#{item.imagen.rutaWeb}" width="100%" rendered="#{not empty item.imagen}"/>                                                                                      
                                         </p:column>
                                         <p:column  headerText="Descripción">
                                             <h:outputText value="#{item.descripcion}" />
@@ -237,11 +237,14 @@
                                             </p:selectOneMenu>    
                                         </p:column>                                
                                         <p:column  headerText="Opciones">
+                                            <p:commandButton action="#{proyectoBean.eliminarDetalleTipoPlanta(item)}" 
+                                                             icon="fa fa-remove"
+                                                             update="@widgetVar(tablaDetalleTipoPlanta)" />
                                         </p:column>
                                     </p:dataTable>
                                     <p:commandButton value="Guardar" icon="ui-icon-plusthick" 
-                                                     action="#{proyectoBean.onTipoInmuebleChange()}"
-                                                     update="@widgetVar(tablaDetalleTipoPlanta)"/>
+                                                     action="#{proyectoBean.guardarDetalleTipoPlanta}"
+                                                     update="proyectoForm @widgetVar(tablaDetalleTipoPlanta)"/>
 
                                 </p:panel>
                             </div>
@@ -250,7 +253,7 @@
 
                     </p:tab>
                     <p:tab title="Torres">                                                   
-                        <p:panel header="Agregar Torre" style="width: 100%">
+                        <p:panel header="Agregar Torre" style="width: 100%" widgetVar="panelNuevaTorre">
                             <div class="ui-g" style="float: bottom">
                                 <div class="ui-g-3">
                                     <h:outputText value="Nombre:" />
@@ -269,7 +272,7 @@
                                     <p:inputText value="#{proyectoBean.torreNueva.pisoInicial}"/>
                                 </div>
                                 <div class="ui-g-1">                    
-                                    <h:outputText value="Nro Pisos:" />
+                                    <h:outputText value="Piso Final:" />
                                     <p:inputText value="#{proyectoBean.torreNueva.numeroPisos}"/>
                                 </div>
                                 <div class="ui-g-1">
@@ -294,6 +297,7 @@
                                     <h:outputText value="#{item.direccion}" />
                                 </p:column>
                                 <p:column  headerText="Opciones">
+                                    <p:commandButton title="Modificar" icon="ui-icon-pencil" action="#{proyectoBean.seleccionarModificarTorre(item)}" update="@widgetVar(panelNuevaTorre)"/>
                                 </p:column>
                             </p:dataTable>
                         </p:panel>
@@ -317,29 +321,64 @@
                                                        itemLabel="#{tipoPlanta.descripcion}"
                                                        itemValue="#{tipoPlanta}" />
                                         <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.tipoPlantas}" />
-
+                                        <p:ajax event="change" update="proyectoForm" listener="#{proyectoBean.detallePisoSeleccionarTipoPlanta(item)}" />    
                                     </p:selectOneMenu>    
                                 </p:column>                                
                                 <p:column  headerText="Opciones">
                                     <p:commandButton value="Generar Inmuebles" icon="ui-icon-plusthick" 
                                                      action="#{proyectoBean.generarInmuebles(item)}"
-                                                     update="@widgetVar(inmuebleTable)"/>
+                                                     update="proyectoForm @widgetVar(inmuebleTable)"/>
                                 </p:column>
                             </p:dataTable>
-                            <p:commandButton value="Guardar" icon="ui-icon-plusthick" 
-                                             action="#{proyectoBean.onTipoPlantaChange()}"
-                                             update="@widgetVar(tablaPisos)"/>
+                            <p:commandButton value="Guardar" icon="ui-icon-plusthick" rendered="false"
+                                             action="#{proyectoBean.guardarDetallePisos}"
+                                             update="proyectoForm @widgetVar(tablaPisos)"/>
 
                             <div class="ui-g">
                                 <div class="ui-g-12">
-                                    <p:panel id="panelInmuebles" header="Inmuebles por Piso">
+                                    <p:panel id="panelInmuebles" widgetVar="panelInmuebles" header="Inmuebles por Piso">                                        
+                                        <div class="ui-g">
+                                            <div class="ui-g-2">
+                                                <label>Valor M2</label>
+                                                <p:inputNumber value="#{proyectoBean.inmuebleSeleccionado.valorMetroCuadrado}"  
+                                                               decimalSeparator="," thousandSeparator="." decimalPlaces="1"
+                                                               accesskey="" minValue="1" emptyValue="sign">
+                                                    <p:ajax event="keyup" listener="#{proyectoBean.valorTotal()}" update="valorTotalEditInput"/>
+                                                </p:inputNumber>
+                                            </div>
+                                            <div class="ui-g-2">
+                                                <h:outputLabel value="Valor Incremento:" />
+                                                <p:inputNumber value="#{proyectoBean.inmuebleSeleccionado.incremento}"  
+                                                               decimalSeparator="," thousandSeparator="." decimalPlaces="1"
+                                                               accesskey="" minValue="1" emptyValue="sign">
+                                                    <p:ajax event="keyup" listener="#{proyectoBean.valorTotal()}" update="valorTotalEditInput"/>
+                                                </p:inputNumber>
+                                            </div>
+                                            <div class="ui-g-2">
+                                                <h:outputLabel value="Valor Separación:" />
+                                                <p:inputNumber value="#{proyectoBean.inmuebleSeleccionado.valorSeparacion}"  
+                                                               decimalSeparator="," thousandSeparator="." decimalPlaces="1"
+                                                               accesskey="" minValue="1" emptyValue="sign">
+                                                    <p:ajax event="keyup" listener="#{proyectoBean.valorTotal()}" update="valorTotalEditInput"/>
+                                                </p:inputNumber>
+                                            </div>
+                                            <div class="ui-g-2">
+                                                <h:outputLabel value="Valor Total: "/>
+                                                <h:outputLabel value="#{proyectoBean.inmuebleSeleccionado.valorTotal}" id="valorTotalEditInput" style="font-size: 20px; font-weight: bold">
+                                                    <f:convertNumber type="currency" pattern="$#,##0" locale="es_CO" />
+                                                </h:outputLabel>
+                                            </div>
+                                            <div class="ui-g-2">
+                                                <p:commandButton value="Guardar" action="#{proyectoBean.guardarInmueble}" icon="ui-icon-pencil" update="proyectoForm @widgetVar(panelInmuebles)"/>
+                                            </div>
+                                        </div>
                                         <p:dataTable id="inmuebleTable" value="#{proyectoBean.inmuebleEntityList}" 
                                                      var="inmueble" widgetVar="inmuebleTable" emptyMessage="#{messages.label_no_records_found}"
                                                      reflow="true" rowIndexVar="i"
                                                      >
 
                                             <f:facet name="header" >
-                                                <p:outputLabel value="#{messages.label_listado_inmuebles}"/>
+                                                <p:outputLabel value="Listado de Inmuebles"/>
                                             </f:facet>
 
                                             <p:column  headerText="#{messages.label_item}" style="width: 2%;" class="derecha"  >
@@ -386,15 +425,20 @@
 
                                             <p:column styleClass="action-column" headerText="#{messages.table_actions_column}"  exportable="false" 
                                                       style="width: 5%;" >
+                                                <p:columnGroup>
+                                                    <p:column>
+                                                        <p:commandButton action="#{proyectoBean.seleccionarInmueble(inmueble)}"
+                                                                         icon="ui-icon-zoomin"
+                                                                         title="#{messages.label_view}"
+                                                                         update="@widgetVar(panelInmuebles)" />
+                                                    </p:column>
+                                                    <p:column>
 
-                                                <p:commandButton action="#{proyectoBean.redireccionaNegociacion(inmueble)}"                                         
-                                                                 icon="fa fa-shopping-cart"
-                                                                 title="#{messages.label_view}" rendered="#{inmueble.estadoInmueble.id == 1}" />
-
-                                                <p:commandButton action="#{proyectoBean.redireccionaNegociacion(inmueble)}"                                         
-                                                                 icon="fa fa-eye"
-                                                                 title="#{messages.label_view}" rendered="#{inmueble.estadoInmueble.id != 1}" />
-
+                                                        <p:commandButton action="#{proyectoBean.redireccionaNegociacion(inmueble)}"                                         
+                                                                         icon="fa fa-shopping-cart"
+                                                                         title="#{messages.label_view}" rendered="#{inmueble.estadoInmueble.id == 1}" />
+                                                    </p:column>
+                                                </p:columnGroup>
 
                                             </p:column>
 
@@ -404,6 +448,41 @@
                             </div>
 
                         </p:panel>                        
+                    </p:tab>
+                    <p:tab title="Kits">
+                        <p:panel header="Kits por proyecto" widgetVar="panelKits">
+                            <div class="ui-g" style="float: bottom">
+                                <div class="ui-g-3">
+                                    <label>Nombre</label>
+                                    <p:inputText value="#{proyectoBean.kit.nombre}"/>
+                                </div>
+                                <div class="ui-g-3">
+                                    <label>Valor</label>
+                                    <p:inputText value="#{proyectoBean.kit.valor}"/>
+                                </div>
+                                <div class="ui-g-1">
+                                    <h:outputText value="..." style="color: white"/>
+                                    
+                                    <p:commandButton value="Guardar" action="#{proyectoBean.guardarKit}" 
+                                                     update="proyectoForm @widgetVar(panelKits)"/>
+                                </div>
+                            </div>
+                            <p:dataTable value="#{proyectoBean.kitList}" var="kit" widgetVar="tableKits">
+                                <f:facet name="header">Kits</f:facet>
+                                <p:column headerText="nombre">
+                                    #{kit.nombre}
+                                </p:column>
+                                <p:column headerText="valor">
+                                    #{kit.valor}
+                                </p:column>  
+                                <p:column styleClass="action-column" headerText="#{messages.table_actions_column}"  exportable="false" 
+                                          style="width: 5%;">
+                                    <p:commandButton action="#{proyectoBean.seleccionarKit(kit)}"
+                                                     icon="ui-icon-zoomin"                                                     
+                                                     update="@widgetVar(panelKits) @widgetVar(tableKits)" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
                     </p:tab>
                 </p:tabView>
             </h:form>

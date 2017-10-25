@@ -7,6 +7,7 @@ import com.j2km.inmueblesgo.domain.EmpresaEntity;
 import com.j2km.inmueblesgo.domain.EstadoInmuebleEntity;
 import com.j2km.inmueblesgo.domain.EstadoProyectoEntity;
 import com.j2km.inmueblesgo.domain.InmuebleEntity;
+import com.j2km.inmueblesgo.domain.Kit;
 import com.j2km.inmueblesgo.domain.MunicipioEntity;
 import com.j2km.inmueblesgo.domain.NegociacionEntity;
 import com.j2km.inmueblesgo.domain.OfertaEntity;
@@ -18,12 +19,14 @@ import com.j2km.inmueblesgo.domain.TipoPlantaDetalleEntity;
 import com.j2km.inmueblesgo.domain.TipoPlantaEntity;
 import com.j2km.inmueblesgo.domain.TorreEntity;
 import com.j2km.inmueblesgo.service.ArchivoRepository;
+import com.j2km.inmueblesgo.service.ArchivoService;
 import com.j2km.inmueblesgo.service.ConfiguracionService;
 import com.j2km.inmueblesgo.service.DepartamentoRepository;
 import com.j2km.inmueblesgo.service.EmpresaRepository;
 import com.j2km.inmueblesgo.service.EstadoInmuebleRepository;
 import com.j2km.inmueblesgo.service.EstadoProyectoRepository;
 import com.j2km.inmueblesgo.service.InmuebleRepository;
+import com.j2km.inmueblesgo.service.KitRepository;
 import com.j2km.inmueblesgo.service.MunicipioRepository;
 import com.j2km.inmueblesgo.service.NegociacionRepository;
 import com.j2km.inmueblesgo.service.OfertaRepository;
@@ -50,8 +53,6 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.PersistenceException;
 import org.apache.commons.io.FilenameUtils;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
@@ -72,11 +73,14 @@ public class ProyectoBean implements Serializable {
     private TipoPlantaEntity tipoPlantaSeleccionado;
     private TorreEntity torreSeleccionada;
     private PisoEntity pisoSeleccionado;
-    
+    private InmuebleEntity inmuebleSeleccionado;
+    private Kit kit;
+
     private List<TipoPlantaDetalleEntity> tipoPlantaDetalleList;
     private List<TipoInmuebleEntity> tipoInmuebleList;
     private List<PisoEntity> pisoList;
-    
+    private List<Kit> kitList;
+
     private List<OfertaEntity> allOfertasList;
     private List<EmpresaEntity> allEmpresasList;
     private List<EstadoProyectoEntity> estadoProyectoList;
@@ -85,78 +89,67 @@ public class ProyectoBean implements Serializable {
     private List<EstadoInmuebleEntity> estadoInmuebleList;
     private EstadoInmuebleEntity estadoInmuebleSel;
     private List<InmuebleEntity> inmuebleEntityList;
-    
-    private UploadedFile archivoTipoInmueble;
-    private byte[] contentArchivoTipoInmueble;
+
     private List<PobladoEntity> allPobladosList;
     private List<MunicipioEntity> municipioList;
     private List<DepartamentoEntity> departamentoList;
     private EmpresaEntity empresaSeleccionada;
-    
+
     //para los select del poblado
     private DepartamentoEntity departamento;
     private MunicipioEntity municipio;
-    
+
     private Archivo archivo;
+
+    private Archivo archivoTipoInmueble;
+    private UploadedFile uploadedTipoInmueble;
     private String imagenTipoInmueble;
-    
+
     private Archivo archivoTipoPlanta;
     private String imagenTipoPlanta;
     private UploadedFile uploadedTipoPlanta;
-    
+
+    @Inject
+    private KitRepository kitService;
     @Inject
     private ApplicationBean applicationBean;
-
     @Inject
     private ProyectoRepository proyectoService;
-
     @Inject
     private OfertaRepository ofertaService;
-    
     @Inject
     private TorreRepository torreService;
-    
     @Inject
     private PisoRepository pisoService;
-
     @Inject
     private DepartamentoRepository departamentoService;
-    
     @Inject
     private MunicipioRepository municipioService;
-    
     @Inject
     private PobladoRepository pobladoService;
-
     @Inject
     private EmpresaRepository empresaService;
-
     @Inject
     private EstadoProyectoRepository estadoProyectoService;
-
     @Inject
     private EstadoInmuebleRepository estadoInmuebleService;
-
     @Inject
     private InmuebleRepository inmuebleService;
-
     @Inject
     private NegociacionRepository negociacionService;
-
     @Inject
     private ConfiguracionService configuracionServiceInstance;
-    
-    @Inject 
+    @Inject
     private TipoInmuebleRepository tipoInmuebleService;
-    
     @Inject
     private TipoPlantaRepository tipoPlantaService;
-    
-    @Inject 
-    private TipoPlantaDetalleRepository tipoPlantaDetalleService;
-    
     @Inject
-    private ArchivoRepository archivoService;
+    private TipoPlantaDetalleRepository tipoPlantaDetalleService;
+    @Inject
+    private ArchivoRepository archivoRepository;
+
+    @Inject
+    private ArchivoService archivoService;
 
     public Archivo getArchivoTipoPlanta() {
         return archivoTipoPlanta;
@@ -188,7 +181,15 @@ public class ProyectoBean implements Serializable {
 
     public void setProyectoId(Long proyectoId) {
         this.proyectoId = proyectoId;
-    }  
+    }
+
+    public InmuebleEntity getInmuebleSeleccionado() {
+        return inmuebleSeleccionado;
+    }
+
+    public void setInmuebleSeleccionado(InmuebleEntity inmuebleSeleccionado) {
+        this.inmuebleSeleccionado = inmuebleSeleccionado;
+    }
 
     public EmpresaEntity getEmpresaSeleccionada() {
         return empresaSeleccionada;
@@ -220,7 +221,7 @@ public class ProyectoBean implements Serializable {
 
     public void setTipoInmueble(TipoInmuebleEntity tipoInmueble) {
         this.tipoInmueble = tipoInmueble;
-    } 
+    }
 
     public TipoPlantaEntity getTipoPlanta() {
         return tipoPlanta;
@@ -236,7 +237,7 @@ public class ProyectoBean implements Serializable {
 
     public void setTipoPlantaSeleccionado(TipoPlantaEntity tipoPlantaSeleccionado) {
         this.tipoPlantaSeleccionado = tipoPlantaSeleccionado;
-    } 
+    }
 
     public List<PisoEntity> getPisoList() {
         return pisoList;
@@ -262,20 +263,12 @@ public class ProyectoBean implements Serializable {
         this.pisoSeleccionado = pisoSeleccionado;
     }
 
-    public UploadedFile getArchivoTipoInmueble() {
-        return archivoTipoInmueble;
+    public UploadedFile getUploadedTipoInmueble() {
+        return uploadedTipoInmueble;
     }
 
-    public void setArchivoTipoInmueble(UploadedFile archivoTipoInmueble) {
-        this.archivoTipoInmueble = archivoTipoInmueble;
-    }
-
-    public byte[] getContentArchivoTipoInmueble() {
-        return contentArchivoTipoInmueble;
-    }
-
-    public void setContentArchivoTipoInmueble(byte[] contentArchivoTipoInmueble) {
-        this.contentArchivoTipoInmueble = contentArchivoTipoInmueble;
+    public void setUploadedTipoInmueble(UploadedFile uploadedTipoInmueble) {
+        this.uploadedTipoInmueble = uploadedTipoInmueble;
     }
 
     public Archivo getArchivo() {
@@ -294,36 +287,80 @@ public class ProyectoBean implements Serializable {
         this.municipioList = municipioList;
     }
 
+    public Kit getKit() {
+        return kit;
+    }
+
+    public void setKit(Kit kit) {
+        this.kit = kit;
+    }
+
+    public List<Kit> getKitList() {
+        return kitList;
+    }
+
+    public void setKitList(List<Kit> kitList) {
+        this.kitList = kitList;
+    }
+
     public List<DepartamentoEntity> getDepartamentoList() {
         return departamentoList;
     }
 
     public void setDepartamentoList(List<DepartamentoEntity> departamentoList) {
         this.departamentoList = departamentoList;
-    }    
+    }
+
+    public Archivo getArchivoTipoInmueble() {
+        return archivoTipoInmueble;
+    }
+
+    public void setArchivoTipoInmueble(Archivo archivoTipoInmueble) {
+        this.archivoTipoInmueble = archivoTipoInmueble;
+    }
+    
+    public void inicioProyectos(){
+        this.proyecto = new ProyectoEntity();
+        this.proyectoEntityList = proyectoService.findAll();
+    }
 
     public void prepareNewProyecto() {
         reset();
-        this.proyecto = new ProyectoEntity();        
+        this.proyecto = new ProyectoEntity();
         this.estadoProyectoList = estadoProyectoService.findAll();
         this.departamentoList = departamentoService.findAll();
     }
+    
+    public void inicioVistaNuevo() {
+        reset();
+        this.proyecto = new ProyectoEntity();
+        this.estadoProyectoList = estadoProyectoService.findAll();
+        this.departamentoList = departamentoService.findAll();
+        this.allEmpresasList = empresaService.findAll();
+    }
 
-    public void persist(){  
-        try{
-            if((archivo!= null) && (archivo.getNombre()!= null)){
+    public void persist() {
+        
+        if(proyecto.getOferta() == null){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe seleccionar una oferta inicial","Debe seleccionar una oferta inicial"));
+            return;
+        }
+        try {
+            if ((archivo != null) && (archivo.getNombre() != null)) {
                 proyecto.setLogo(archivo.getNombre());
-                proyecto.setArchivo(archivo);                
-            }                    
+                proyecto.setArchivo(archivo);
+            }
             proyecto = proyectoService.saveAndFlush(proyecto);
             prepareNewProyecto();
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Proyecto guardado con éxito"));
 
-        }catch(Exception e){
+            FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Proyecto guardado con éxito"));
+            FacesContext.getCurrentInstance().getExternalContext().redirect("proyecto.xhtml");
+
+        } catch (Exception e) {
             System.err.println(e);
         }
-                
+
     }
 
     public String delete() {
@@ -343,7 +380,7 @@ public class ProyectoBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, MessageFactory.getMessage(message));
 
         return null;
-    }    
+    }
 
     public void reset() {
         proyecto = null;
@@ -399,7 +436,7 @@ public class ProyectoBean implements Serializable {
         allPobladosList = null;
     }
 
-    public ProyectoEntity getProyecto() {        
+    public ProyectoEntity getProyecto() {
         return this.proyecto;
     }
 
@@ -412,16 +449,19 @@ public class ProyectoBean implements Serializable {
         this.estadoProyectoList = estadoProyectoService.findAll();
         this.proyectoEntityList = null;
     }
-    
-    public void inicioVistaProyecto() {        
+
+    public void inicioVistaProyecto() {
+        this.kit = new Kit();
         this.torreNueva = new TorreEntity();
         this.tipoInmueble = new TipoInmuebleEntity();
         this.tipoPlanta = new TipoPlantaEntity();
-        this.proyecto = proyectoService.findBy(this.proyectoId);        
-        this.torreListProyecto = torreService.findByProyecto(this.proyecto);        
+        this.inmuebleSeleccionado = new InmuebleEntity();
+        this.proyecto = proyectoService.findBy(this.proyectoId);
+        this.torreListProyecto = torreService.findByProyecto(this.proyecto);
+        this.kitList = kitService.findByProyecto(this.proyecto);
         this.inmuebleEntityList = null;
-        this.imagenTipoInmueble = applicationBean.webCarpeta()+"imagenes/noimagen.png";
-        this.imagenTipoPlanta = applicationBean.webCarpeta()+"imagenes/noimagen.png";
+        this.imagenTipoInmueble = applicationBean.webCarpeta() + "imagenes/noimagen.png";
+        this.imagenTipoPlanta = applicationBean.webCarpeta() + "imagenes/noimagen.png";
     }
 
     public void inicioListaInmueble() {
@@ -430,8 +470,7 @@ public class ProyectoBean implements Serializable {
         this.estadoInmuebleSel = estadoInmuebleService.findOptionalByCodigo("01");
         this.estadoInmuebleList = estadoInmuebleService.findAll();
         this.torreListProyecto = torreService.findByProyecto(this.proyecto);
-        
-        
+
         if (this.estadoInmuebleSel == null) {
             inmuebleService.findByProyecto(proyecto);
         } else {
@@ -495,6 +534,10 @@ public class ProyectoBean implements Serializable {
             this.proyectoEntityList = proyectoService.findByEstadoProyecto(estadoProyectoSel);
         }
     }
+    
+    public String modificaNegociacion(InmuebleEntity inmueble){
+        return "/pages/vendedor/negociacion?faces-redirect=true&amp;id=".concat(inmueble.getId().toString());
+    }
 
     public String redireccionaNegociacion(InmuebleEntity inmueble) {
         String ruta = "";
@@ -520,12 +563,11 @@ public class ProyectoBean implements Serializable {
     public void setArchivoLogo(UploadedFile archivoLogo) {
         this.archivoLogo = archivoLogo;
     }*/
-    
     private ProyectoEntity proyectoTorre;
     private TorreEntity torreNueva;
     private TorreEntity torreInstance;
-    private List <TorreEntity> torreListProyecto;
- 
+    private List<TorreEntity> torreListProyecto;
+
     public TorreEntity getTorreInstance() {
         return torreInstance;
     }
@@ -549,15 +591,15 @@ public class ProyectoBean implements Serializable {
     public void setProyectoTorre(ProyectoEntity proyectoTorre) {
         this.proyectoTorre = proyectoTorre;
     }
-    
-     public void actualizarLista(SelectEvent event) {
-        inicioListaInmueble(); 
-     }
-    
-     public void cerrarDialogoCrearProyecto(){
+
+    public void actualizarLista(SelectEvent event) {
+        inicioListaInmueble();
+    }
+
+    public void cerrarDialogoCrearProyecto() {
         RequestContext.getCurrentInstance().closeDialog(null);
-     }
-     
+    }
+
     public void dialogoTorreProyecto() {
 
         Map<String, Object> options = new HashMap<String, Object>();
@@ -572,15 +614,13 @@ public class ProyectoBean implements Serializable {
         paramList.add(this.proyecto.getId().toString());
         Map<String, List<String>> paramMap = new HashMap<String, List<String>>();
         paramMap.put("id", paramList);
-        
+
         RequestContext.getCurrentInstance().openDialog("/pages/proyecto/crearTorreProyectoInclude.", options, paramMap);
-        
-        inicioListaInmueble(); 
-        
+
+        inicioListaInmueble();
+
         RequestContext.getCurrentInstance().update(":inmuebleDataForm:inmuebleTable");
-    } 
-    
-  
+    }
 
     public List<TorreEntity> getTorreListProyecto() {
         return torreListProyecto;
@@ -588,13 +628,13 @@ public class ProyectoBean implements Serializable {
 
     public void setTorreListProyecto(List<TorreEntity> torreListProyecto) {
         this.torreListProyecto = torreListProyecto;
-    }  
-    
+    }
+
     public void resetTorreProyecto() {
-        this.torreNueva = new TorreEntity();        
+        this.torreNueva = new TorreEntity();
         this.torreListProyecto = torreService.findByProyecto(this.proyecto);
     }
-    
+
     public void dialogoPisosTorre(TorreEntity t) {
 
         Map<String, Object> options = new HashMap<String, Object>();
@@ -605,293 +645,320 @@ public class ProyectoBean implements Serializable {
         options.put("contentHeight", "100%");
         //options.put("headerElement", "customheader");
         List<String> paramList = new ArrayList<String>();
-         
+
         paramList.add(t.getId().toString());
         Map<String, List<String>> paramMap = new HashMap<String, List<String>>();
         paramMap.put("id", paramList);
-        
+
         //RequestContext.getCurrentInstance().openDialog("/pages/proyecto/pisoTorreInclude.", options, paramMap);
         RequestContext.getCurrentInstance().openDialog("/pages/torre/torreViewTemplate.", options, paramMap);
-        
-    } 
-    
-    public void grabarTorre(){
+
+    }
+
+    public void grabarTorre() {
         torreNueva.setProyecto(proyecto);
         torreNueva = torreService.save(torreNueva);
-        
+
         PisoEntity piso;
-        
-        for(int i = torreNueva.getPisoInicial(); i <= torreNueva.getNumeroPisos() ; i++){
-            piso = new PisoEntity();
-            piso.setNumero(i);
-            piso.setTorre(torreNueva);
-            piso = pisoService.save(piso);
+
+        for (int i = torreNueva.getPisoInicial(); i <= torreNueva.getNumeroPisos(); i++) {
+
+            piso = pisoService.findOptionalByNumeroAndTorre(i, torreNueva);
+            if (piso == null) {
+                piso = new PisoEntity();
+                piso.setNumero(i);
+                piso.setTorre(torreNueva);
+                piso = pisoService.save(piso);
+            }
         }
-        
+
         resetTorreProyecto();
     }
-    
-    public void grabarTipoInmueble(){
-        tipoInmueble.setProyecto(proyecto);        
-        if((archivo != null) && (archivo.getId() != null)){
-            tipoInmueble.setImagen(archivo.getNombre());  
-            tipoInmueble.setArchivo(archivo);
+
+    public void grabarTipoInmueble() {
+        tipoInmueble.setProyecto(proyecto);
+        if ((archivoTipoInmueble != null) && (archivoTipoInmueble.getId() != null)) {
+            tipoInmueble.setArchivo(archivoTipoInmueble);
         }
-        tipoInmueble = tipoInmuebleService.save(tipoInmueble);
-        
-        archivo = new Archivo();
+        tipoInmueble = tipoInmuebleService.saveAndFlush(tipoInmueble);
+        archivoTipoInmueble = new Archivo();
         tipoInmueble = new TipoInmuebleEntity();
-        imagenTipoInmueble = applicationBean.webCarpeta()+"imagenes/noimagen.png";
         tipoInmuebleList = tipoInmuebleService.findByProyecto(proyecto);
-        
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Tipo Inmueble guardado con éxito"));
     }
-    
-    public void seleccionarTipoInmueble(TipoInmuebleEntity tipoInmueble){
+
+    public void seleccionarTipoInmueble(TipoInmuebleEntity tipoInmueble) {
         this.tipoInmueble = tipoInmueble;
-        this.archivo = tipoInmueble.getArchivo();
-        if(this.archivo != null){
-            this.imagenTipoInmueble =  applicationBean.webCarpeta()+"proyecto/"+archivo.getNombre();
-        }else{
-            this.imagenTipoInmueble =  applicationBean.webCarpeta()+"imagenes/noimagen.png";           
-        }        
+        this.archivoTipoInmueble = tipoInmueble.getArchivo();        
     }
 
     public List<TipoInmuebleEntity> getTipoInmuebleList() {
-        if (tipoInmuebleList == null){
+        if (tipoInmuebleList == null) {
             tipoInmuebleList = tipoInmuebleService.findByProyecto(proyecto);
-        }        
+        }
         return tipoInmuebleList;
     }
 
     public void setTipoInmuebleList(List<TipoInmuebleEntity> tipoInmuebleList) {
         this.tipoInmuebleList = tipoInmuebleList;
-    }  
-    
-    public void seleccionarTipoPlanta(TipoPlantaEntity tipoPlanta){
-        this.tipoPlanta = tipoPlanta;      
+    }
+
+    public void seleccionarTipoPlanta(TipoPlantaEntity tipoPlanta) {
+        this.tipoPlanta = tipoPlanta;
         this.tipoPlantaSeleccionado = tipoPlanta;
         this.tipoPlantaDetalleList = tipoPlantaDetalleService.findByTipoPlanta(tipoPlantaSeleccionado);
         this.archivoTipoPlanta = tipoPlanta.getImagen();
-        
-        if(this.archivoTipoPlanta != null){
-            this.imagenTipoPlanta =  applicationBean.webCarpeta()+"proyecto/"+archivoTipoPlanta.getNombre();
-        }else{
-            this.imagenTipoPlanta = applicationBean.webCarpeta()+"imagenes/noimagen.png";
+
+        if (this.archivoTipoPlanta != null) {
+            this.imagenTipoPlanta = applicationBean.webCarpeta() + "proyecto/" + archivoTipoPlanta.getNombre();
+        } else {
+            this.imagenTipoPlanta = applicationBean.webCarpeta() + "imagenes/noimagen.png";
         }
     }
-        
-    public void grabarTipoPlanta(){
-        if((archivoTipoPlanta != null) && (archivoTipoPlanta.getId() != null)){            
+
+    public void grabarTipoPlanta() {
+        if ((archivoTipoPlanta != null) && (archivoTipoPlanta.getId() != null)) {
             tipoPlanta.setImagen(archivoTipoPlanta);
         }
-        
+
         tipoPlanta.setProyecto(proyecto);
         tipoPlanta = tipoPlantaService.save(tipoPlanta);
         tipoPlantaSeleccionado = tipoPlanta;
-        
+
         TipoPlantaDetalleEntity detalle;
-        for(int i = 0; i<tipoPlanta.getNumeroInmuebles(); i++){            
-            detalle = tipoPlantaDetalleService.findOptionalByTipoPlantaAndNumero(tipoPlanta, i+1);
-            if (null == detalle){
+        for (int i = 0; i < tipoPlanta.getNumeroInmuebles(); i++) {
+            detalle = tipoPlantaDetalleService.findOptionalByTipoPlantaAndNumero(tipoPlanta, i + 1);
+            if (null == detalle) {
                 detalle = new TipoPlantaDetalleEntity();
-                detalle.setNumero(i+1);
+                detalle.setNumero(i + 1);
                 detalle.setTipoPlanta(tipoPlanta);
                 tipoPlantaDetalleService.save(detalle);
-            }                        
+            }
         }
-        
-        tipoPlantaDetalleList = tipoPlantaDetalleService.findByTipoPlanta(tipoPlantaSeleccionado);        
+
+        tipoPlantaDetalleList = tipoPlantaDetalleService.findByTipoPlanta(tipoPlantaSeleccionado);
         tipoPlanta = new TipoPlantaEntity();
-        imagenTipoPlanta = applicationBean.webCarpeta()+"imagenes/noimagen.png";
-        
+        imagenTipoPlanta = applicationBean.webCarpeta() + "imagenes/noimagen.png";
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Tipo Planta guardado con éxito"));
     }
-    
-    public List<TipoPlantaEntity> getTipoPlantas(){
+
+    public List<TipoPlantaEntity> getTipoPlantas() {
         return tipoPlantaService.findByProyecto(proyecto);
     }
 
     public List<TipoPlantaDetalleEntity> getTipoPlantaDetalleList() {
-        
+
         return tipoPlantaDetalleList;
     }
 
     public void setTipoPlantaDetalleList(List<TipoPlantaDetalleEntity> tipoPlantaDetalleList) {
         this.tipoPlantaDetalleList = tipoPlantaDetalleList;
     }
-    
-    public void seleccionarTipoPlantaDetalle(){        
-        if(tipoPlantaSeleccionado != null) {
+
+    public void seleccionarTipoPlantaDetalle() {
+        if (tipoPlantaSeleccionado != null) {
             tipoPlantaDetalleList = tipoPlantaDetalleService.findByTipoPlanta(tipoPlantaSeleccionado);
         }
     }
-    
-    public void onTipoInmuebleChange(){
-        for (TipoPlantaDetalleEntity tpde: tipoPlantaDetalleList) {
-            tpde = tipoPlantaDetalleService.save(tpde);
+
+    public void guardarDetalleTipoPlanta() {
+        
+        for (TipoPlantaDetalleEntity tpde : tipoPlantaDetalleList) {
+            tpde = tipoPlantaDetalleService.saveAndFlushAndRefresh(tpde);
+            
+           
+            
             System.err.println(tpde.getTipoInmueble());
         }
-        
+
+        this.tipoPlantaDetalleList = null;
+        //this.tipoPlantaDetalleList = tipoPlantaDetalleService.findByTipoPlanta(tipoPlantaSeleccionado);        
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Detalle Guardado con éxito"));
     }
-    
-    public void seleccionarTorre(){        
-        if(torreSeleccionada != null) {
+
+    public void seleccionarTorre() {
+        if (torreSeleccionada != null) {
             pisoList = pisoService.findByTorre(torreSeleccionada);
         }
     }
-    
-    public void onTipoPlantaChange(){
-        for (PisoEntity p: pisoList) {
+
+    public void guardarDetallePisos() {
+
+        for (PisoEntity p : pisoList) {
             p = pisoService.save(p);
             System.err.println(p);
         }
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Detalle de pisos guardado con éxito"));
+        pisoList = null;
     }
-    
-    public void generarInmuebles(PisoEntity piso){
+
+    public void generarInmuebles(PisoEntity piso) {
         List<TipoPlantaDetalleEntity> detalleList = tipoPlantaDetalleService.
                 findByTipoPlanta(piso.getTipoPlanta());
-        
+
         InmuebleEntity inmueble;
         EstadoInmuebleEntity estadoInmueble = estadoInmuebleService.
                 findOptionalByNombre(Constantes.INMUEBLE_DISPONIBLE);
-        
+
         Integer numeroInmueble;
-        
+
         //falta verificar si existe el inmueble para no crearlo nuevamente.
-        for (TipoPlantaDetalleEntity detalle: detalleList){
-            numeroInmueble = (piso.getNumero()*100)+detalle.getNumero();
-            
-            inmueble = new InmuebleEntity();
-            inmueble.setArea(detalle.getTipoInmueble().getArea());
-            inmueble.setPiso(piso);
-            inmueble.setProyecto(piso.getTorre().getProyecto());
-            inmueble.setValorMetroCuadrado(detalle.getTipoInmueble().getValorMetroCuadrado());
-            inmueble.setValorSeparacion(detalle.getTipoInmueble().getValorSeparacion());
-            inmueble.setEstadoInmueble(estadoInmueble);
-            inmueble.setNumero(numeroInmueble.toString());
-            inmueble.setTipoInmueble(detalle.getTipoInmueble());
-            inmueble.setValorTotal(detalle.getTipoInmueble().getValorMetroCuadrado() * detalle.getTipoInmueble().getArea());
-            inmueble = inmuebleService.save(inmueble);
+        for (TipoPlantaDetalleEntity detalle : detalleList) {
+            numeroInmueble = (piso.getNumero() * 100) + detalle.getNumero();
+            inmueble = inmuebleService.findOptionalByPisoAndNumero(piso, numeroInmueble.toString());
+
+            if (inmueble == null) {
+                inmueble = new InmuebleEntity();
+                inmueble.setArea(detalle.getTipoInmueble().getArea());
+                inmueble.setPiso(piso);
+                inmueble.setProyecto(piso.getTorre().getProyecto());
+                inmueble.setValorMetroCuadrado(detalle.getTipoInmueble().getValorMetroCuadrado());
+                inmueble.setValorSeparacion(detalle.getTipoInmueble().getValorSeparacion());
+                inmueble.setEstadoInmueble(estadoInmueble);
+                inmueble.setNumero(numeroInmueble.toString());
+                inmueble.setTipoInmueble(detalle.getTipoInmueble());
+                inmueble.setValorTotal(detalle.getTipoInmueble().getValorMetroCuadrado() * detalle.getTipoInmueble().getArea());
+                inmueble = inmuebleService.save(inmueble);
+            }
         }
-        
+
+        inmuebleEntityList = inmuebleService.findByPiso(piso);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Inmuebles generados con éxito!!"));
     }
-    
+
     public void seleccionarPiso() {
-        if (pisoSeleccionado != null) {            
+        if (pisoSeleccionado != null) {
             inmuebleEntityList = inmuebleService.
                     findByPiso(pisoSeleccionado);
         }
     }
-    
-    public void uploadArchivoTipoInmueble(FileUploadEvent event){
-        archivoTipoInmueble = event.getFile();
-        
-        if (null != archivoTipoInmueble) {
-            try {
-                archivo = new Archivo();
-                archivo = archivoService.save(archivo);
-                
-                String nombreTipoInmueble = configuracionServiceInstance.
-                        copiarArchivo(archivoTipoInmueble, "tipo_inmueble_" + archivo.getId().toString(), "proyecto");                
-                
-                archivo.setNombre(nombreTipoInmueble);                
-                archivo.setExtension(FilenameUtils.getExtension(nombreTipoInmueble));
-                archivo = archivoService.save(archivo);
-                imagenTipoInmueble = applicationBean.webCarpeta()+"proyecto/"+archivo.getNombre();
-            } catch (IOException ex) {
-                Logger.getLogger(ProyectoBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }else{
-            System.err.println("mierda no existe");
-        }
+
+    public void uploadArchivoTipoInmueble(FileUploadEvent event) {
+        archivoTipoInmueble = archivoService.upload("imagenes", "tipo_inmueble", event.getFile());
     }
-    
-    public void uploadArchivoTipoPlanta(FileUploadEvent event){
-        uploadedTipoPlanta = event.getFile();
-        
-        if (null != uploadedTipoPlanta) {
-            try {
-                archivoTipoPlanta = new Archivo();
-                archivoTipoPlanta = archivoService.save(archivoTipoPlanta);
-                
-                String nombreTipoPlanta = configuracionServiceInstance.
-                        copiarArchivo(uploadedTipoPlanta, "tipo_planta_" + archivoTipoPlanta.getId().toString(), "proyecto");                
-                
-                archivoTipoPlanta.setNombre(nombreTipoPlanta);                
-                archivoTipoPlanta.setExtension(FilenameUtils.getExtension(nombreTipoPlanta));
-                archivoTipoPlanta = archivoService.save(archivoTipoPlanta);
-                imagenTipoPlanta = applicationBean.webCarpeta()+"proyecto/"+archivoTipoPlanta.getNombre();
-            } catch (IOException ex) {
-                Logger.getLogger(ProyectoBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }else{
-            System.err.println("mierda no existe");
-        }
+
+    public void uploadArchivoTipoPlanta(FileUploadEvent event) {
+        archivoTipoPlanta = archivoService.upload("imagenes", "tipo_planta", event.getFile());
     }
-    
-    public void uploadLogoProyecto(FileUploadEvent event){
-        
-        UploadedFile archivoLogo;        
-        archivoLogo = event.getFile();
-        
-        if (null != archivoLogo) {
-            try {
-                archivo = new Archivo();
-                archivo = archivoService.save(archivo);                
-                String nombreLogo = configuracionServiceInstance.
-                        copiarArchivo(archivoLogo, "proyecto_logo_" + archivo.getId().toString(), "proyecto");                
-                
-                archivo.setNombre(nombreLogo);                
-                archivo.setExtension(FilenameUtils.getExtension(nombreLogo));
-                archivo = archivoService.save(archivo);
-                
-            } catch (IOException ex) {
-                Logger.getLogger(ProyectoBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }else{
-            System.err.println("mierda no existe");
-        }
+
+    public void uploadLogoProyecto(FileUploadEvent event) {
+        archivo = archivoService.upload("imagenes", "proyecto", event.getFile());
     }
-    
-    public void departamentoChange(){
+
+    public void departamentoChange() {
         municipioList = municipioService.findByDepartamento(departamento);
         municipio = null;
         allPobladosList.clear();
         allPobladosList = null;
-        System.err.println(departamento.getNombre());       
+        System.err.println(departamento.getNombre());
     }
-    
-    public void municipioChange(){
+
+    public void municipioChange() {
         allPobladosList = pobladoService.findByMunicipio(municipio);
-        System.err.println(municipio.getNombre());        
+        System.err.println(municipio.getNombre());
     }
-    
-    public void seleccionar(ProyectoEntity proyecto){
+
+    public void seleccionar(ProyectoEntity proyecto) {
         this.proyecto = proyecto;
         this.archivo = proyecto.getArchivo();
-        if(proyecto.getPoblado() != null){            
+        if (proyecto.getPoblado() != null) {
             this.departamento = proyecto.getPoblado().getMunicipio().getDepartamento();
             this.municipioList = municipioService.findByDepartamento(this.departamento);
             this.municipio = proyecto.getPoblado().getMunicipio();
-            this.allPobladosList = pobladoService.findByMunicipio(this.municipio);            
-        }else{
+            this.allPobladosList = pobladoService.findByMunicipio(this.municipio);
+        } else {
             this.departamento = null;
             this.municipioList = null;
             this.municipio = null;
-            this.allPobladosList = null;  
+            this.allPobladosList = null;
         }
-        
+
+    }
+
+    public void seleccionarEmpresa() {
+        if (this.empresaSeleccionada == null) {
+            proyectoEntityList = proyectoService.findByEmpresaIsNull();
+        } else {
+            proyectoEntityList = proyectoService.findByEmpresa(this.empresaSeleccionada);
+        }
+    }
+
+    public void detallePisoSeleccionarTipoPlanta(PisoEntity piso) {
+        piso = pisoService.saveAndFlush(piso);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Detalle piso modificado con éxito!!"));
+    }
+
+    public void seleccionarInmueble(InmuebleEntity inmuebleEntity) {
+        this.inmuebleSeleccionado = inmuebleEntity;
+    }
+
+    public void guardarInmueble() {
+        this.inmuebleSeleccionado = inmuebleService.saveAndFlush(inmuebleSeleccionado);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Inmueble guardado con éxito"));
+        this.inmuebleSeleccionado = new InmuebleEntity();
+    }
+
+    public void valorTotal() {
+
+        double tempo = inmuebleSeleccionado.getValorMetroCuadrado() * inmuebleSeleccionado.getArea();
+
+        if (inmuebleSeleccionado.getIncremento() != null) {
+            tempo += inmuebleSeleccionado.getIncremento();
+        }
+        inmuebleSeleccionado.setValorTotal(tempo);
+    }
+
+    public void seleccionarKit(Kit kit) {
+        this.kit = kit;
+    }
+
+    public void guardarKit() {
+        this.kit.setProyecto(this.proyecto);
+        this.kit = kitService.saveAndFlush(kit);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Kit guardado con éxito"));
+        this.kit = new Kit();
+        this.kitList = kitService.findByProyecto(this.proyecto);
+    }
+
+    public void seleccionarModificarTorre(TorreEntity torre) {
+        this.torreNueva = torre;
     }
     
-    public void seleccionarEmpresa(){
-        if(this.empresaSeleccionada == null){
-            proyectoEntityList = proyectoService.findByEmpresaIsNull();            
-        }else{
-            proyectoEntityList = proyectoService.findByEmpresa(this.empresaSeleccionada);
-        }               
+    public void inicioVistaEditar(){
+        this.proyecto = proyectoService.findBy(this.proyectoId); 
+        this.archivo = proyecto.getArchivo();
+        this.estadoProyectoList = estadoProyectoService.findAll();
+        this.departamentoList = departamentoService.findAll();
+        this.allEmpresasList = empresaService.findAll();
+        
+        if (proyecto.getPoblado() != null) {
+            this.departamento = proyecto.getPoblado().getMunicipio().getDepartamento();
+            this.municipioList = municipioService.findByDepartamento(this.departamento);
+            this.municipio = proyecto.getPoblado().getMunicipio();
+            this.allPobladosList = pobladoService.findByMunicipio(this.municipio);
+        } else {
+            this.departamento = null;
+            this.municipioList = null;
+            this.municipio = null;
+            this.allPobladosList = null;
+        }        
     }
+    
+    public void eliminarDetalleTipoPlanta(TipoPlantaDetalleEntity detalle){
+        tipoPlantaDetalleService.attachAndRemove(detalle);
+        tipoPlantaDetalleList = tipoPlantaDetalleService.findByTipoPlanta(tipoPlantaSeleccionado);
+    }
+    
+    public List<EmpresaEntity> getAllEmpresasList() {
+        return allEmpresasList;
+    }
+
+    public void setAllEmpresasList(List<EmpresaEntity> allEmpresasList) {
+        this.allEmpresasList = allEmpresasList;
+    }
+    
 
 }

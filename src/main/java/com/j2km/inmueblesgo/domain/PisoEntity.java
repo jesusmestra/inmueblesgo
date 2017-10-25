@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 /**
  * @author jdmp
@@ -25,9 +24,6 @@ public class PisoEntity implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    
-    @Version
-    private int version;
 
     @Column(name = "piso_numero")
     @Basic
@@ -47,14 +43,6 @@ public class PisoEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getVersion() {
-        return this.version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
     }
     
     @Override

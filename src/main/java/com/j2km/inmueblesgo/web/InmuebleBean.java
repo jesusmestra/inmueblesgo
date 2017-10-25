@@ -32,6 +32,7 @@ public class InmuebleBean implements Serializable {
     private static final Logger logger = Logger.getLogger(InmuebleBean.class.getName());
 
     private InmuebleEntity inmueble;
+    private Long inmuebleId;
 
     @Inject
     private InmuebleRepository inmuebleService;
@@ -66,15 +67,18 @@ public class InmuebleBean implements Serializable {
     public String persist() {
         System.out.println("Creanco persistencia.....");
         String message;
+        String mensaje = "";
 
         try {
 
             if (inmueble.getId() != null) {
                 inmueble = inmuebleService.save(inmueble);
                 message = "message_successfully_updated";
+                mensaje = "Inmueble modificado con éxito";
             } else {
                 inmueble = inmuebleService.save(inmueble);
                 message = "message_successfully_created";
+                mensaje = "Inmueble creado con éxito";
             }
         } catch (OptimisticLockException e) {
             logger.log(Level.SEVERE, "Error occured", e);
@@ -89,7 +93,7 @@ public class InmuebleBean implements Serializable {
         }
 
         FacesMessage facesMessage = MessageFactory.getMessage(message);
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(mensaje));
 
         return null;
     }
@@ -202,7 +206,25 @@ public class InmuebleBean implements Serializable {
     }
     
     public void valorTotal() {
-        this.inmueble.setValorTotal(this.inmueble.getIncremento() + (this.inmueble.getValorMetroCuadrado() * this.inmueble.getArea()));
+        
+        double tempo = inmueble.getValorMetroCuadrado() * inmueble.getArea();
+        
+        if (inmueble.getIncremento() != null ){
+            tempo += inmueble.getIncremento();
+        }
+        inmueble.setValorTotal(tempo);
+    }
+
+    public Long getInmuebleId() {
+        return inmuebleId;
+    }
+
+    public void setInmuebleId(Long inmuebleId) {
+        this.inmuebleId = inmuebleId;
+    }
+    
+    public void inicioVistaInmueble() {
+        this.inmueble = inmuebleService.findBy(inmuebleId);
     }
 
 }

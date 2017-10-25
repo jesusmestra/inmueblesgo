@@ -64,9 +64,6 @@ public class EmpresaEntity implements Serializable {
     @ManyToOne(targetEntity = Archivo.class)
     @JoinColumn(name = "ARCHIVO_ID")
     private Archivo logo;
-    
-    @Version
-    private int version;
 
     public Long getId() {
         return this.id;
@@ -74,14 +71,6 @@ public class EmpresaEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getVersion() {
-        return this.version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
     }
 
     public String getDireccion() {

@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 /**
  * @author jdmp
@@ -24,23 +23,12 @@ public class OfertaEntity implements Serializable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     
-    @Version
-    private int version;
-
     public Long getId() {
         return this.id;
     }
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getVersion() {
-        return this.version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
     }
 
     @Column(name = "ofer_porcentaje")

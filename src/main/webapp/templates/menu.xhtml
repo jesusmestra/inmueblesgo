@@ -1,4 +1,3 @@
-
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
@@ -6,41 +5,7 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition>
         <h:form>
-            <p:menu toggleable="true">
-                  <p:submenu label="#{messages.menu_vendedor}" rendered="#{request.isUserInRole('ADMIN') or request.isUserInRole('VENDEDOR')  }">
-                    <p:menuitem value="#{messages.menu_negociacions}" url="/pages/vendedor/proyectos.xhtml" icon="icon-negociacion" ajax="false" async="false" />
-                </p:submenu> 
-                  <p:submenu label="#{messages.menu_tabla_base}">
-                                <p:menuitem value="#{messages.menu_terceros}" url="/pages/tercero/tercero.xhtml" icon="icon-tercero" ajax="false" async="false" />
-                  </p:submenu>
-                
-                <p:submenu label="#{messages.menu_administrador}" rendered="#{request.isUserInRole('ADMIN')}" >
-                    <p:menuitem value="#{messages.menu_empresas}" url="/pages/empresa/empresa.xhtml" icon="icon-empresa" ajax="false" async="false" />
-                    <p:menuitem value="#{messages.menu_proyectos}" url="/pages/proyecto/proyecto.xhtml" icon="icon-proyecto"  ajax="false" async="false" />
-                    <p:menuitem value="#{messages.menu_tipoInmuebles}" url="/pages/tipoInmueble/tipoInmueble.xhtml" icon="fa fa-slack" ajax="false" async="false" />
-                    <p:menuitem value="#{messages.menu_tipoPlantas}" url="/pages/tipoPlanta/tipoPlanta.xhtml" icon="fa fa-institution" ajax="false" async="false" />
-                    <p:menuitem value="#{messages.menu_ofertas}" url="/pages/oferta/oferta.xhtml" icon="icon-oferta" ajax="false" async="false" />
-                </p:submenu>
-                
-
-                <p:submenu label="#{messages.menu_configuracion}" rendered="#{request.isUserInRole('ADMIN')}" expanded="false">
-                    <p:menuitem value="#{messages.menu_inmuebles}" url="/pages/inmueble/inmueble.xhtml" icon="icon-inmueble" ajax="false" async="false" />
-                    <p:menuitem value="#{messages.menu_estadoInmuebles}" url="/pages/estadoInmueble/estadoInmueble.xhtml" icon="icon-entity" ajax="false" async="false" />
-<!--                    <p:menuitem value="#{messages.menu_negociacions}" url="/pages/negociacion/negociacion.xhtml" icon="icon-negociacion" ajax="false" async="false" /> -->
-                    <p:menuitem value="#{messages.menu_tipoIdentificacions}" url="/pages/tipoIdentificacion/tipoIdentificacion.xhtml" icon="icon-entity" ajax="false" async="false" />
-                    <p:menuitem value="#{messages.menu_departamentos}" url="/pages/departamento/departamento.xhtml" icon="icon-entity" ajax="false" async="false" />
-                    <p:menuitem value="#{messages.menu_municipios}" url="/pages/municipio/municipio.xhtml" icon="icon-entity" ajax="false" async="false" />
-                    <p:menuitem value="#{messages.menu_poblados}" url="/pages/poblado/poblado.xhtml" icon="icon-entity" ajax="false" async="false" />
-<!--                    <p:menuitem value="#{messages.menu_torres}" url="/pages/torre/torre.xhtml" icon="icon-entity" ajax="false" async="false" />  -->
-                    <p:menuitem value="#{messages.menu_configuracions}" url="/pages/configuracion/divipola.xhtml" icon="icon-entity" ajax="false" async="false" />
-                </p:submenu>                
-
-
-                <p:submenu label="#{messages.menu_sesion}" >
-                    <p:menuitem rendered="#{request.isUserInRole('ADMIN')}" value="Usuarios" url="/pages/configuracion/usuarios.xhtml" icon="icon-entity" ajax="false" async="false" />
-                    <p:menuitem value="#{messages.label_salir}" action="#{loginBean.logout}"  icon="icon-entity" ajax="false" async="false" />
-                </p:submenu>
-            </p:menu>
+            
         </h:form>
     </ui:composition>
 </html>

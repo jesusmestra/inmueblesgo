@@ -17,9 +17,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-/**
- * @author jdmp
- */
 @Entity(name = "Inmueble")
 @Table(name = "inmueble")
 @NamedQueries({
@@ -34,22 +31,6 @@ public class InmuebleEntity implements Serializable {
     @Version
     private int version;
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getVersion() {
-        return this.version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
-    }
-    
     @Column(name = "inm_numero")
     @Basic
     private String numero;
@@ -89,6 +70,26 @@ public class InmuebleEntity implements Serializable {
     @ManyToOne(targetEntity = PisoEntity.class)
     @JoinColumn(name = "PISO_ID")
     private PisoEntity piso;
+    
+    @ManyToOne(targetEntity = TipoPlantaDetalleEntity.class)
+    @JoinColumn(name = "TIPO_PLANTA_DETALLE_ID")
+    private TipoPlantaDetalleEntity tipoPlantaDetalle;
+    
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getVersion() {
+        return this.version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
 
     public String getNumero() {
         return this.numero;
@@ -168,6 +169,14 @@ public class InmuebleEntity implements Serializable {
 
     public void setTipoInmueble(TipoInmuebleEntity tipoInmueble) {
         this.tipoInmueble = tipoInmueble;
+    }
+
+    public TipoPlantaDetalleEntity getTipoPlantaDetalle() {
+        return tipoPlantaDetalle;
+    }
+
+    public void setTipoPlantaDetalle(TipoPlantaDetalleEntity tipoPlantaDetalle) {
+        this.tipoPlantaDetalle = tipoPlantaDetalle;
     }
     
     @Override

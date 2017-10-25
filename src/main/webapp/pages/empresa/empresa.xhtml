@@ -11,136 +11,14 @@
     <ui:composition template="/templates/layout.xhtml">
         <ui:define name="content">
             <f:metadata>                
-                <f:viewAction action="#{empresaBean.prepareNewEmpresa}"  />
+                <f:viewAction action="#{empresaBean.inicioListaEmpresa()}"  />
             </f:metadata>
             <h:form prependId="false" id="empresaDataForm" onkeypress="if (event.keyCode == 13) {
                         return false;
                     }">
                 <p:messages closable="true"/>
-                <p:panel styleClass="ui-fluid" header="Crear / Editar Empresa" widgetVar="panelEmpresa">
-                    <div class="ui-g">
-                        <div class="ui-g-2">
-
-                            <h:graphicImage id="imagen" value="#{applicationBean.webCarpeta()}empresa/#{empresaBean.archivo.nombre}" 
-                                            width="100%" height="150"/>
-                            <p:fileUpload label="Seleccionar Imagen" 
-                                          style="border: none blue 1px;"
-                                          skinSimple="false" auto="true"
-                                          fileUploadListener="#{empresaBean.uploadLogoEmpresa}"
-                                          update="imagen"/> 
-
-                        </div>
-                        <div class="ui-g-10">
-
-                            <div class="ui-g">
-                                <div class="ui-g-2">
-                                    <h:outputLabel value="#{messages.field_label_empresa_nit}:" for="nitEditInput" />
-                                    <p:inputText value="#{empresaBean.empresa.nit}" id="nitEditInput" 
-                                                 label="#{messages.field_label_empresa_nit}" />
-                                    <p:message for="nitEditInput" display="icon" />
-                                </div>
-                                <div class="ui-g-4">
-                                    <h:outputLabel value="#{messages.field_label_empresa_nombre}:" for="nombreEditInput" />
-                                    <p:inputText value="#{empresaBean.empresa.nombre}" id="nombreEditInput" 
-                                                 label="#{messages.field_label_empresa_nombre}" />
-                                    <p:message for="nombreEditInput" display="icon" />
-                                </div>
-                            </div>
-                            <div class="ui-g">
-                                <div class="ui-g-3">
-                                    <h:outputLabel value="#{messages.field_label_empresa_direccion}:" for="direccionEditInput" />
-                                    <p:inputText value="#{empresaBean.empresa.direccion}" id="direccionEditInput" 
-                                                 label="#{messages.field_label_empresa_direccion}" />
-                                    <p:message for="direccionEditInput" display="icon" />
-                                </div>
-                                <div class="ui-g-3">
-                                    <h:outputLabel value="#{messages.field_label_empresa_telefono}:" for="telefonoEditInput" />
-                                    <p:inputText value="#{empresaBean.empresa.telefono}" id="telefonoEditInput" 
-                                                 label="#{messages.field_label_empresa_telefono}" />
-                                    <p:message for="telefonoEditInput" display="icon" />
-                                </div>
-                                <div class="ui-g-3">
-                                    <h:outputLabel value="#{messages.field_label_empresa_email}:" for="emailEditInput" />
-                                    <p:inputText value="#{empresaBean.empresa.email}" id="emailEditInput" 
-                                                 label="#{messages.field_label_empresa_email}" />
-                                    <p:message for="emailEditInput" display="icon" />
-                                </div>
-                            </div>
-                            <div class="ui-g">
-                                <div class="ui-g-3">
-                                    <h:outputText value="Departamento"/>
-                                    <p:selectOneMenu value="#{empresaBean.departamento}" autoWidth="false">                            
-                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
-                                        <f:selectItems value="#{empresaBean.departamentoList}" 
-                                                       var="departamento"
-                                                       itemLabel="#{departamento.nombre}"
-                                                       itemValue="#{departamento}"/>
-                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{empresaBean.departamentoList}" />
-                                        <p:ajax event="change" update="@widgetVar(selectMunicipio) @widgetVar(selectPoblado)" listener="#{empresaBean.departamentoChange}"/>
-                                    </p:selectOneMenu>
-                                </div>
-                                <div class="ui-g-3">
-                                    <h:outputText value="Municipio"/>
-                                    <p:selectOneMenu value="#{empresaBean.municipio}" 
-                                                     autoWidth="false" id="selectMunicipio" widgetVar="selectMunicipio">                            
-                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
-                                        <f:selectItems value="#{empresaBean.municipioList}" 
-                                                       var="municipio"
-                                                       itemLabel="#{municipio.nombre}"
-                                                       itemValue="#{municipio}"/>
-                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{empresaBean.municipioList}" />
-                                        <p:ajax event="change" update="@widgetVar(selectPoblado)" listener="#{empresaBean.municipioChange}"/>
-                                    </p:selectOneMenu>
-                                </div>
-                                <div class="ui-g-3">
-                                    <h:outputText value="Poblado"/>
-                                    <p:selectOneMenu value="#{empresaBean.empresa.poblado}" autoWidth="false" id="selectPoblado" widgetVar="selectPoblado">                            
-                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
-                                        <f:selectItems value="#{empresaBean.poblados}" 
-                                                       var="poblado"
-                                                       itemLabel="#{poblado.nombre}"
-                                                       itemValue="#{poblado}"/>
-                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{empresaBean.poblados}" />
-                                    </p:selectOneMenu>
-                                </div>
-                            </div>
-
-                            <div class="ui-g">
-                                <div class="ui-g-12">                                    
-                                    <p:panel header="Representante(s) Legal">                                        
-                                        <div class="ui-g">
-                                            <div class="ui-g-1">
-                                                <p:commandButton icon="ui-icon-search" value="Agregar"
-                                                                 actionListener="#{buscarTerceroBean.chooseTercero}">
-                                                    <p:ajax event="dialogReturn" listener="#{empresaBean.seleccionarRepresentante}" update="@widgetVar(tablaRepresentantes)"/>
-                                                </p:commandButton>
-                                            </div>                                            
-                                        </div>
-                                        <p:dataTable value="#{empresaBean.representanteList}" var="representante" widgetVar="tablaRepresentantes">
-                                            <p:column headerText="Identificación">
-                                                #{representante.tercero.identificacion}
-                                            </p:column>
-                                            <p:column headerText="Nombres">
-                                                #{representante.tercero.nombres}
-                                            </p:column>
-                                        </p:dataTable>
-                                    </p:panel>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="ui-g">
-                        <div class="ui-g-3">
-                            <p:commandButton action="#{empresaBean.persist}" value="Guardar" update="empresaDataForm"/>
-                        </div>
-                    </div>
-
-                </p:panel>
-
                 <p:panel header="Listado de Empresas">
-
+                    <p:commandButton action="empresaNueva.xhtml" value="Crear Empresa" />
                     <p:dataTable id="empresaTable" value="#{empresaBean.allEmpresaList}" var="empresa" resizableColumns="true" paginator="true"
                                  paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
@@ -173,7 +51,7 @@
 
                             <p:commandButton icon="ui-icon-pencil" update="@widgetVar(panelEmpresa)"
                                              resetValues="true" 
-                                             action="#{empresaBean.seleccionarEmpresa(empresa)}"                                      
+                                             action="#{'/pages/empresa/empresaEditar?faces-redirect=true&amp;id='.concat(empresa.id)}"                                      
                                              title="#{messages.label_edit}" >
                             </p:commandButton>
 

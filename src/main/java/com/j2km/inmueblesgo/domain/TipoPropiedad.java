@@ -1,21 +1,31 @@
 package com.j2km.inmueblesgo.domain;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table; 
+import javax.persistence.Table;
 
-@Entity(name = "NegociacionTercero")
-@Table(name = "negociacion_tercero")
-public class NegociacionTerceroEntity implements Serializable {
-    
+@Entity(name = "TipoPropiedad")
+@Table(name = "tipo_propiedad")
+public class TipoPropiedad implements Serializable {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "tp_descripcion")
+    @Basic
+    private String descripcion;    
+
+    @ManyToOne(targetEntity = ProyectoEntity.class)
+    @JoinColumn(name = "PROYECTO_ID")
+    private ProyectoEntity proyecto;
 
     public Long getId() {
         return this.id;
@@ -25,35 +35,27 @@ public class NegociacionTerceroEntity implements Serializable {
         this.id = id;
     }
 
-    @ManyToOne(targetEntity = NegociacionEntity.class)
-    @JoinColumn(name = "NEGOCIACION_ID")
-    private NegociacionEntity negociacion;
-
-    @ManyToOne(targetEntity = TerceroEntity.class)
-    @JoinColumn(name = "TERCERO_ID")
-    private TerceroEntity tercero;
-
-    public NegociacionEntity getNegociacion() {
-        return this.negociacion;
+    public String getDescripcion() {
+        return this.descripcion;
     }
 
-    public void setNegociacion(NegociacionEntity negociacion) {
-        this.negociacion = negociacion;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public TerceroEntity getTercero() {
-        return this.tercero;
+    public ProyectoEntity getProyecto() {
+        return this.proyecto;
     }
 
-    public void setTercero(TerceroEntity tercero) {
-        this.tercero = tercero;
+    public void setProyecto(ProyectoEntity proyecto) {
+        this.proyecto = proyecto;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {return false;}
         if (!java.util.Objects.equals(getClass(), obj.getClass())) {return false;}
-        final NegociacionTerceroEntity other = (NegociacionTerceroEntity) obj;
+        final TipoPropiedad other = (TipoPropiedad) obj;
         if (!java.util.Objects.equals(this.getId(), other.getId())) {return false;        }
         return true;
     }
@@ -67,7 +69,7 @@ public class NegociacionTerceroEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "NegociacionTerceroEntity{" + " id=" + id + '}';
+        return "TipoPropiedad{" + " id=" + id + '}';
     }
 
 }

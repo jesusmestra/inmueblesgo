@@ -5,10 +5,15 @@
  */
 package com.j2km.inmueblesgo.configuracion;
 
+import javax.ejb.Singleton;
+import javax.ejb.Stateless;
+import javax.inject.Named;
+
 /**
  *
  * @author jk
  */
+
 public class Constantes {
     
     //Estados de los proyectos
@@ -18,6 +23,7 @@ public class Constantes {
     //Roles en el sistema
     public static final String ROLE_ADMIN = "ADMIN";
     public static final String ROLE_VENDEDOR = "VENDEDOR";
+    public static final String ROLE_GERENTE = "GERENTE";
     
     //Estados de inmuebles
     public static final String INMUEBLE_DISPONIBLE = "DISPONIBLE";
@@ -40,7 +46,12 @@ public class Constantes {
     public static final String TFI_REFERIDO = "REFERIDO";
     public static final String TFI_OTRA = "OTRA";
     
-    
+    //Estados de la negociacion
+    public static final String NEGOCIACION_RADICADA = "RADICADA";
+    public static final String NEGOCIACION_APROBADA = "APROBADA";
+    public static final String NEGOCIACION_RECHAZADA = "RECHAZADA";
+    public static final String NEGOCIACION_FINALIZADA = "FINALIZADA";
+    public static final String NEGOCIACION_ANULADA = "ANULADA"; // ES APROBADO PERO QUEDA MAL EN LA NEGOCIACION
     
     
 }

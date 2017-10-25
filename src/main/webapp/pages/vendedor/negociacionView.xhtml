@@ -9,147 +9,141 @@
       xmlns:o="http://omnifaces.org/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="/templates/layout.xhtml">
-
+        <f:metadata>
+            <f:viewParam name="id" value="#{verNegociacion.negociacionId}"/>   
+            <f:viewAction action="#{verNegociacion.cargar()}"/>
+        </f:metadata>
         <ui:define name="content">
-            NEGOCIACION VIEW
-            <f:metadata>
-                <f:viewParam name="id" value="#{miNegociacionBean.negociacion}" 
-                             converter="#{genericEntityConverter}" />   
-                <f:viewAction action="#{miNegociacionBean.onLoadView}"/>
-            </f:metadata>
-
             <h:form id="viewInmuebleForm" >
-                <p:outputPanel>
-                    <p:outputPanel id="inmuebleViewPanel" styleClass="ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-4">
+                        <h:panelGrid columns="2">
+                            <h:outputText value="#{messages.field_label_inmueble_proyecto}:" />
+                            <h:outputText value="#{verNegociacion.negociacion.inmueble.proyecto.nombre}" />
 
-                        <h:panelGrid columns="3" styleClass="dialog" columnClasses="col1,col2, col3" >
-                            <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2">
+                            <h:outputText value="#{messages.field_label_inmueble_estadoInmueble}:" />
+                            <h:outputText value="#{verNegociacion.negociacion.inmueble.estadoInmueble.nombre}" />
 
-                                <h:outputText value="#{messages.field_label_inmueble_proyecto}:" />
-                                <h:outputText value="#{miNegociacionBean.inmueble.proyecto.nombre}" />
+                            <h:outputText value="#{messages.field_label_inmueble_numero}:" />
+                            <h:outputText value="#{verNegociacion.negociacion.inmueble.numero}" />
 
+                            <h:outputText value="#{messages.field_label_inmueble_area}:" />
+                            <h:outputText value="#{verNegociacion.negociacion.inmueble.area}" >
+                                <f:convertNumber currencySymbol="" groupingUsed="true" maxFractionDigits="2"  />
+                            </h:outputText>
 
-                                <h:outputText value="#{messages.field_label_inmueble_estadoInmueble}:" />
-                                <h:outputText value="#{miNegociacionBean.inmueble.estadoInmueble.nombre}" />
+                            <h:outputText value="Porcentaje:" />
+                            <h:outputText value="#{verNegociacion.negociacion.porcentaje}" >
+                                <f:convertNumber groupingUsed="true" maxFractionDigits="2"  />
+                            </h:outputText>
 
-                                <h:outputText value="#{messages.field_label_inmueble_numero}:" />
-                                <h:outputText value="#{miNegociacionBean.inmueble.numero}" />
+                            <h:outputText value="Número Cuotas:" />
+                            <h:outputText value="#{verNegociacion.negociacion.numeroCuotas}" >
+                                <f:convertNumber  groupingUsed="true" maxFractionDigits="2"  />
+                            </h:outputText>
 
-                                <h:outputText value="#{messages.field_label_inmueble_area}:" />
-                                <h:outputText value="#{miNegociacionBean.inmueble.area}" >
-                                    <f:convertNumber currencySymbol="" groupingUsed="true"
-                                                     maxFractionDigits="2"  />
-                                </h:outputText>
+                            <h:outputText value="#{messages.field_label_inmueble_valorMetroCuadrado}:" />
+                            <h:outputText value="#{verNegociacion.negociacion.valorMetroCuadrado}" >
+                                <f:convertNumber  groupingUsed="true" maxFractionDigits="2" type="currency" />                                
+                            </h:outputText>
 
-                                <h:outputText value="Porcentaje:" />
-                                <h:outputText value="#{miNegociacionBean.negociacion.porcentaje}" >
-                                    <f:convertNumber groupingUsed="true"
-                                                     maxFractionDigits="2"  />
+                            <h:outputText value="#{messages.field_label_inmueble_incremento}:" />
+                            <h:outputText value="#{verNegociacion.negociacion.valorIncremento}" >
+                                <f:convertNumber groupingUsed="true"
+                                                 maxFractionDigits="2" type="currency" />
+                            </h:outputText>
 
-                                </h:outputText>
+                            <h:outputText value="#{messages.field_label_inmueble_valorSeparacion}:" />
+                            <h:outputText value="#{verNegociacion.negociacion.valorSeparacion}" >
+                                <f:convertNumber  groupingUsed="true"
+                                                  maxFractionDigits="2" type="currency" />
+                            </h:outputText>
 
-                                <h:outputText value="Número Cuotas:" />
-                                <h:outputText value="#{miNegociacionBean.negociacion.numeroCuotas}" >
-                                    <f:convertNumber  groupingUsed="true"
-                                                      maxFractionDigits="2"  />
-                                </h:outputText>
+                            <h:outputText value="#{messages.field_label_inmueble_valorTotal}:" />
 
-                                <h:outputText value="#{messages.field_label_inmueble_valorMetroCuadrado}:" />
-                                <h:outputText value="#{miNegociacionBean.negociacion.valorMetroCuadrado}" >
-                                    <f:convertNumber  groupingUsed="true"
-                                                      maxFractionDigits="2" type="currency" />                                
-                                </h:outputText>
+                            <h:outputText value="#{verNegociacion.negociacion.valorTotal}" id="valorTotalEditInput">
+                                <f:convertNumber groupingUsed="true"
+                                                 maxFractionDigits="2" type="currency" />
+                            </h:outputText>                                        
 
-                                <h:outputText value="#{messages.field_label_inmueble_incremento}:" />
-                                <h:outputText value="#{miNegociacionBean.negociacion.valorIncremento}" >
-                                    <f:convertNumber groupingUsed="true"
-                                                     maxFractionDigits="2" type="currency" />
-                                </h:outputText>
+                            <h:outputText  value="#{messages.field_label_negociacion_fecha}:" />
+                            <h:outputText value="#{verNegociacion.negociacion.fecha}" id="fechaEditCalendar" 
+                                          >
+                            </h:outputText>
+                        </h:panelGrid>
+                    </div>
+                    <div class="ui-g-4">
+                        <p:panel header="Observaciones" widgetVar="panelObservaciones">
+                            <p:outputLabel value="#{verNegociacion.negociacion.observacion}"/>
+                            <c:forEach items="#{verNegociacion.observacionList}" var="obser">
+                                <hr/>
+                                #{obser.fecha} :: #{obser.usuario.login} :: #{obser.observacion}
+                            </c:forEach>
 
-                                <h:outputText value="#{messages.field_label_inmueble_valorSeparacion}:" />
-                                <h:outputText value="#{miNegociacionBean.negociacion.valorSeparacion}" >
-                                    <f:convertNumber  groupingUsed="true"
-                                                      maxFractionDigits="2" type="currency" />
-                                </h:outputText>
-
-                                <h:outputText value="#{messages.field_label_inmueble_valorTotal}:" />
-
-                                <h:outputText value="#{miNegociacionBean.negociacion.valorTotal}" id="valorTotalEditInput">
-                                    <f:convertNumber groupingUsed="true"
-                                                     maxFractionDigits="2" type="currency" />
-                                </h:outputText>                                        
-
-                                <h:outputText  value="#{messages.field_label_negociacion_fecha}:" />
-                                <h:outputText value="#{miNegociacionBean.negociacion.fecha}" id="fechaEditCalendar" 
-                                              >
-                                </h:outputText>
-                                </h:panelGrid>
-                                <h:panelGrid columns="2" width="400" styleClass="dialog" columnClasses="col1,col2">
-                                    <div style="width: 100px;">
-
-                                    </div>
-                                </h:panelGrid>
-                                <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2" rendered="#{request.isUserInRole('ADMIN')}">                                    
-                                    HISTORICO
-                                </h:panelGrid>
-                                
-                            </h:panelGrid>
-
-
-
-                            <p:dataTable id="dtTerceroNegociacion" rowIndexVar="i"   
-                                         var="negociacionTercero" value="#{miNegociacionBean.allListNegociacionTercero}">
-                                <p:column  headerText="#{messages.field_label_tercero_identificacion}">
-                                    <h:outputText value="#{negociacionTercero.tercero.identificacion}" />
-                                </p:column>
-
-                                <p:column  headerText="#{messages.field_label_tercero_apellido1}">
-                                    <h:outputText value="#{negociacionTercero.tercero.apellido1}" />
-                                </p:column>
-                                <p:column  headerText="#{messages.field_label_tercero_apellido2}">
-                                    <h:outputText value="#{negociacionTercero.tercero.apellido2}" />
-                                </p:column>
-                                <p:column  headerText="#{messages.field_label_tercero_nombres}">
-                                    <h:outputText value="#{negociacionTercero.tercero.nombres}" />
-                                </p:column>
-
-                            </p:dataTable>
+                        </p:panel>
+                    </div>
+                    <div class="ui-g-4">
+                        <p:panel header="Agregar Observación" widgetVar="panelNuevaObservacion" rendered="#{request.isUserInRole('GERENTE')}">
+                            <p:inputTextarea value="#{verNegociacion.observacion}" rows="7" />
+                            <f:facet name="footer">
+                                <p:commandButton value="Guardar Observacion" action="#{verNegociacion.agregarObservacion}" update="@widgetVar(panelObservaciones) @widgetVar(panelNuevaObservacion)"/>
+                            </f:facet>
+                        </p:panel>
+                    </div>
+                </div>
 
 
+                <p:dataTable id="dtTerceroNegociacion" rowIndexVar="i"   
+                             var="negociacionTercero" value="#{verNegociacion.negociacionTerceroList}">
+                    <f:facet name="header">Cliente(s)</f:facet>
+                    <p:column  headerText="Identificación">
+                        <h:outputText value="#{negociacionTercero.tercero.identificacion}" />
+                    </p:column>
 
-                            <p:growl id="growl" showDetail="true" sticky="true" />  
-                            <p:dataTable id="pnlGrd_numOfLbl" rowIndexVar="i"   var="planPago" value="#{miNegociacionBean.allPlanPagosListNegociacion}">
-                                <p:column headerText="#{messages.field_label_plan_pago_numero_cuota}">
-                                    <h:outputText value="#{planPago.numeroCuota}" id="numeroCuotaEditInput_#{i}" 
-                                                  />
-                                </p:column>
-                                <p:column headerText="Fecha">
-                                    <h:outputText value="#{planPago.fechaPactada}" id="fechaPactadaEditInput_#{i}" 
-                                                  />
-                                </p:column>
-                                <p:column headerText="#{messages.field_label_plan_pago_valor}">
-                                    <h:outputText value="#{planPago.valorPactado}" id="valorEditInput_#{i}" 
-                                                  >
-                                        <f:convertNumber  groupingUsed="true"
-                                                          maxFractionDigits="2" type="currency" />
+                    <p:column  headerText="1er Apellido">
+                        <h:outputText value="#{negociacionTercero.tercero.apellido1}" />
+                    </p:column>
+                    <p:column  headerText="2do Apellido">
+                        <h:outputText value="#{negociacionTercero.tercero.apellido2}" />
+                    </p:column>
+                    <p:column  headerText="Nombres">
+                        <h:outputText value="#{negociacionTercero.tercero.nombres}" />
+                    </p:column>
 
-                                    </h:outputText>
-                                </p:column>
-                                <p:column headerText="Observacion">
-                                    <h:outputText value="#{planPago.observacion}" id="observacionEditInput_#{i}" 
-                                                  />
-                                </p:column>
-
-                            </p:dataTable>
-
-                    </p:outputPanel>
-                </p:outputPanel>
+                </p:dataTable>
+                <p/>
+                <p:dataTable id="pnlGrd_numOfLbl" rowIndexVar="i"   var="planPago" value="#{verNegociacion.planPagoList}">
+                    <f:facet name="header">Plan de Pago</f:facet>    
+                    <p:column headerText="#{messages.field_label_plan_pago_numero_cuota}">
+                        <h:outputText value="#{planPago.numeroCuota}" id="numeroCuotaEditInput_#{i}"/>
+                    </p:column>
+                    <p:column headerText="Fecha">
+                        <h:outputText value="#{planPago.fechaPactada}" id="fechaPactadaEditInput_#{i}" />
+                    </p:column>
+                    <p:column headerText="#{messages.field_label_plan_pago_valor}">
+                        <h:outputText value="#{planPago.valorPactado}" id="valorEditInput_#{i}">
+                            <f:convertNumber  groupingUsed="true" maxFractionDigits="2" type="currency" />
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+                <p/>
+                <p:panel header="Opciones Gerente" rendered="#{request.isUserInRole('GERENTE')}">
+                    <p:commandButton value="Aprobar" action="#{verNegociacion.aprobar}"/>
+                    <p:commandButton value="rechazar"/>
+                </p:panel>
+                <p/>
 
             </h:form>
 
-
-
-
+            <p:panel header="Opciones Vendedor" rendered="#{request.isUserInRole('VENDEDOR')}">                
+                <form method="post" action="/inmueblesGo/FormatoSolicitudInmueble" target="_blank">                                
+                    <input type="hidden" name="id" value="#{verNegociacion.negociacion.id}"/>
+                    <input type="hidden" name="jasperUser" value="#{applicationBean.configuracion.usuarioReporte}"/>
+                    <input type="hidden" name="jasperPassword" value="#{applicationBean.configuracion.passwordReporte}"/>
+                    <input type="hidden" name="jasperUrl" value="#{applicationBean.configuracion.urlReporte}"/>                   
+                    <input type="submit" value="Imprimir" class="btn btn-success btn-xs"/>
+                </form>
+            </p:panel>
         </ui:define>
 
     </ui:composition>

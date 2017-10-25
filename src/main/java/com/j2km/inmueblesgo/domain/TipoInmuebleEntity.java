@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 @Entity(name = "TipoInmueble")
 @Table(name = "tipo_inmueble")
@@ -44,12 +43,13 @@ public class TipoInmuebleEntity implements Serializable {
     @JoinColumn(name = "PROYECTO_ID")
     private ProyectoEntity proyecto;
     
+    @ManyToOne(targetEntity = TipoPropiedad.class)
+    @JoinColumn(name = "TIPO_PROPIEDAD_ID")
+    private TipoPropiedad tipoPropiedad;
+    
     @ManyToOne(targetEntity = Archivo.class)
     @JoinColumn(name = "ARCHIVO_ID")
     private Archivo archivo;
-
-    @Version
-    private int version;
 
     public Long getId() {
         return this.id;
@@ -113,14 +113,6 @@ public class TipoInmuebleEntity implements Serializable {
 
     public void setArchivo(Archivo archivo) {
         this.archivo = archivo;
-    }
-
-    public int getVersion() {
-        return this.version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
     }
     
     @Override

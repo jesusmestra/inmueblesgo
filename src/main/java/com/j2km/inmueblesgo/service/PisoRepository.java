@@ -9,8 +9,8 @@ import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 
 @Repository
 public abstract class PisoRepository implements EntityRepository<PisoEntity, Long> , CriteriaSupport<PisoEntity> {
-    public abstract PisoEntity findByNumeroAndTorre(
-            String numero,
+    public abstract PisoEntity findOptionalByNumeroAndTorre(
+            Integer numero,
             TorreEntity torre
     );
     

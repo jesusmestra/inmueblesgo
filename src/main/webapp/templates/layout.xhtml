@@ -5,36 +5,36 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-<f:view locale="#{localeBean.locale}" contentType="text/html">
-<ui:debug hotkey="x" rendered="#{facesContext.application.projectStage eq 'Development'}"></ui:debug>
-<h:head>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <ui:insert name="header">
-    <ui:include src="header.xhtml" />
-  </ui:insert>
-</h:head>
-<h:body>   
-    
-    <h:outputStylesheet library="css" name="standard.css" />
-    <h:form prependId="false" id="growlForm">
-      <p:growl id="growl" showDetail="false" />
-    </h:form>
-
-    <div style="padding: 4px 10px">
-        <ui:include src="toolbar.xhtml" />
-    </div>
-
-    <div class="ui-fluid">
-        <p:panelGrid columns="2" columnClasses="ui-grid-col-2,ui-grid-col-10" layout="grid">
-            <ui:insert name="menu">
-              <ui:include src="menu.xhtml" />
+    <f:view locale="#{localeBean.locale}" contentType="text/html">
+        <ui:debug hotkey="x" rendered="#{facesContext.application.projectStage eq 'Development'}"></ui:debug>
+        <h:head>
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <h:outputStylesheet library="bootstrap" name="css/bootstrap.min.css"/>
+            <h:outputStylesheet library="css" name="standard.css" />
+            <h:outputScript library="bootstrap" name="js/bootstrap.js" />
+            
+            <ui:insert name="header">
+                <ui:include src="header.xhtml" />
             </ui:insert>
+        </h:head>
+        <h:body>    
 
-            <h:panelGroup>
-                <ui:insert name="content" />
-            </h:panelGroup>
-        </p:panelGrid>
-    </div>
-</h:body>
-</f:view>
+            <h:form prependId="false" id="growlForm">
+                <p:growl id="growl" showDetail="true" />
+            </h:form>
+
+            <div style="padding: 4px 10px">
+                <ui:include src="toolbar.xhtml" />
+            </div>
+
+            <div class="ui-fluid">
+                <p:panelGrid columns="1" layout="grid">
+                   
+                    <h:panelGroup>
+                        <ui:insert name="content" />
+                    </h:panelGroup>
+                </p:panelGrid>
+            </div>
+        </h:body>
+    </f:view>
 </html>

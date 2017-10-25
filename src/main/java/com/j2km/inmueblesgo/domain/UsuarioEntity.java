@@ -10,10 +10,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 /**
  * @author jkelsy
@@ -29,51 +30,6 @@ public class UsuarioEntity implements Serializable {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     
-    @Version
-    private int version;
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getVersion() {
-        return this.version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
-    }
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-
-    	if (this == obj) {
-    		return true;
-    	} else if (obj == null) {
-            return false;
-        } else if (obj.getClass() != this.getClass()) {
-            return false;
-        }else {
-            return false;
-        }
-    }
-
-    @Override
-    public String toString() {
-    	return String.format("%s[id=%d]", getClass().getSimpleName(), getId());
-    }
-
     @Column(name = "usr_password")
     @Basic
     private String password;
@@ -84,6 +40,18 @@ public class UsuarioEntity implements Serializable {
 
     @Basic
     private Boolean activo;
+    
+    @ManyToOne(targetEntity = TerceroEntity.class)
+    @JoinColumn(name = "TERCERO_ID")
+    private TerceroEntity tercero;
+    
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getPassword() {
         return this.password;
@@ -111,6 +79,35 @@ public class UsuarioEntity implements Serializable {
 
     public Boolean getActivo() {
         return this.activo;
+    }
+
+    public TerceroEntity getTercero() {
+        return tercero;
+    }
+
+    public void setTercero(TerceroEntity tercero) {
+        this.tercero = tercero;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {return false;}
+        if (!java.util.Objects.equals(getClass(), obj.getClass())) {return false;}
+        final UsuarioEntity other = (UsuarioEntity) obj;
+        if (!java.util.Objects.equals(this.getId(), other.getId())) {return false;}
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (this.getId() != null ? this.getId().hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "UsuarioEntity{" + " id=" + id + '}';
     }
 
 }

@@ -30,43 +30,22 @@ public class OfertaBean implements Serializable {
     @Inject
     private OfertaRepository ofertaService;
     
-    
-    public void prepareNewOferta() {
-        reset();
-        this.oferta = new OfertaEntity();
-        // set any default values now, if you need
-        // Example: this.tercero.setAnything("test");
-    }
 
-    public String persist() {
+    public void persist() {
 
         String message;
         
-        try {
-            
-            if (oferta.getId() != null) {
-                oferta = ofertaService.save(oferta);
-                message = "message_successfully_updated";
-            } else {
-                oferta = ofertaService.save(oferta);
-                message = "message_successfully_created";
-            }
+        try {            
+            oferta = ofertaService.save(oferta);            
+            reset();
+             FacesContext.getCurrentInstance().addMessage(
+                null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Oferta guardada con éxito", "Oferta guardada con éxito"));
         } catch (OptimisticLockException e) {
-            logger.log(Level.SEVERE, "Error occured", e);
-            message = "message_optimistic_locking_exception";
-            // Set validationFailed to keep the dialog open
-            FacesContext.getCurrentInstance().validationFailed();
+            logger.log(Level.SEVERE, "Error occured", e);           
         } catch (PersistenceException e) {
-            logger.log(Level.SEVERE, "Error occured", e);
-            message = "message_save_exception";
-            // Set validationFailed to keep the dialog open
-            FacesContext.getCurrentInstance().validationFailed();
+            logger.log(Level.SEVERE, "Error occured", e);          
         }
-        
-        FacesMessage facesMessage = MessageFactory.getMessage(message);
-        FacesContext.getCurrentInstance().addMessage(null, facesMessage);
-        
-        return null;
+
     }
     
     public String delete() {
@@ -88,13 +67,8 @@ public class OfertaBean implements Serializable {
         return null;
     }
     
-    public void onDialogOpen(OfertaEntity oferta) {
-        reset();
-        this.oferta = oferta;
-    }
-    
     public void reset() {
-        oferta = null;
+        this.oferta = new OfertaEntity();
         ofertaList = ofertaService.findAll();
         //allTipoIdentificacionsList = null;
         
@@ -108,14 +82,15 @@ public class OfertaBean implements Serializable {
         this.ofertaList = ofertaList;
     }    
     
-    public OfertaEntity getOferta() {
-        if (this.oferta == null) {
-            prepareNewOferta();
-        }
+    public OfertaEntity getOferta() {        
         return this.oferta;
     }
     
     public void setOferta(OfertaEntity oferta) {
+        this.oferta = oferta;
+    }
+    
+    public void seleccionar(OfertaEntity oferta){
         this.oferta = oferta;
     }
     

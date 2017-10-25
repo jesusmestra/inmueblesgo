@@ -3,26 +3,53 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-<ui:composition>
-  <h:form>
-    <h:link outcome="/pages/main" style="float:left">
-      <h:graphicImage name="images/logo.png" alt="logo" height="48px" style="margin-right:10px"/>
-    </h:link>
-    <span style="font-size:2em;color:#777777;height:48px;vertical-align:middle;display:table-cell;">
-        <h:outputText value="#{messages.field_label_nombreProyecto}" />
-    </span>
-    <p:toolbar style="margin-top:5px">
-      <f:facet name="left">
-        <p:button outcome="/pages/main" value="#{messages.toolbar_home}" icon="ui-icon-home" />
-        <p:commandButton value="Regresar!" onclick="window.history.back();" icon="fa fa-mail-reply" />
-            
-            
-      </f:facet>
-      <f:facet name="right">
-          <p:button value="#{request.remoteUser}"></p:button>  
-          
-      </f:facet>
-    </p:toolbar>
-  </h:form>
-</ui:composition>
+    <ui:composition>
+        <h:form>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">                   
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>                        
+                        <p:link outcome="/pages/main" value="Inmuebles" class="navbar-brand fa fa-home"/>
+                    </div>
+                    
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <li><p:link outcome="/pages/tercero/tercero.xhtml" value=" Clientes" class="fa fa-users"/></li>
+                            <li><p:link outcome="/pages/vendedor/proyectos.xhtml" value=" Negociación" class="fa fa-money"/></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle fa fa-cogs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Administrar <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><p:link outcome="/pages/empresa/empresa.xhtml" value=" Empresa" class="fa fa-university"/></li>
+                                    <li><p:link outcome="/pages/proyecto/proyecto.xhtml" value=" Proyecto" class="fa fa-building-o"/></li>
+                                    <li><p:link outcome="/pages/oferta/oferta.xhtml" value=" Planes de Venta" class="fa fa-list-ol"/></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><p:link outcome="/pages/configuracion/usuarios.xhtml" value=" Usuarios" class="fa fa-user"/></li>
+                                    <li role="separator" class="divider"></li>                                    
+                                    <li><p:link outcome="/pages/configuracion/divipola.xhtml" value=" Configuración" class="fa fa-puzzle-piece"/></li>
+                                </ul>
+                            </li>
+                        </ul>                        
+                        <ul class="nav navbar-nav navbar-right">
+                            <li><a href="#">Link</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li role="separator" class="divider"></li>                                    
+                                    <li><p:commandLink action="#{loginBean.logout}" class="fa fa-power-off"> Salir </p:commandLink></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </h:form>
+    </ui:composition>
 </html>

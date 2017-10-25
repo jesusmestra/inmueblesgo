@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.j2km.inmueblesgo.service;
 
 import com.j2km.inmueblesgo.domain.DepartamentoEntity;
@@ -28,23 +23,15 @@ import org.apache.commons.io.FilenameUtils;
 
 @Stateless
 public class ConfiguracionService{
-     @PersistenceContext(unitName = "InmueblesDS")
+    @PersistenceContext(unitName = "InmueblesDS")
     private EntityManager em;
 
-    @Inject
-    private DepartamentoRepository df;
+    @Inject private DepartamentoRepository df;
+    @Inject private MunicipioRepository mf;
+    @Inject private PobladoRepository pf;    
+    @Inject private ApplicationBean ap;
 
-    @Inject
-    private MunicipioRepository mf;
-
-    @Inject
-    private PobladoRepository pf;
-    
-    @Inject
-    private ApplicationBean ap;
-
-    public void cargarDivipola(UploadedFile divipola) { 
-        
+    public void cargarDivipola(UploadedFile divipola) {        
         
         System.out.println("Inicianco el cargue...");
         

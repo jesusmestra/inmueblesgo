@@ -133,7 +133,7 @@ public class TorreBusinessBean implements Serializable {
         for (int i = pisoInicial; i <= pisoFinal; i++) {
             //System.out.println(i);
             //System.out.println(tipoPlanta);
-            PisoEntity p = pisoService.findByNumeroAndTorre(Integer.toString(i), torre);
+            PisoEntity p = pisoService.findOptionalByNumeroAndTorre(i, torre);
 
             if (p == null) {
                 p = new PisoEntity();

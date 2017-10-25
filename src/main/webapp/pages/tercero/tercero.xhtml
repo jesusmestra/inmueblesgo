@@ -95,29 +95,50 @@
                                                  label="#{messages.field_label_tercero_nombres}" />
                                     <p:message for="nombresEditInput" display="icon" />
                                 </div>
+                                <div class="ui-g-3">
+                                    <h:outputLabel value="Sexo:" for="sexoEditInput" />
+                                    <p:selectOneMenu id="sexoEditInput" value="#{terceroBean.tercero.sexo}">
+                                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="Masculino" itemValue="M"/>
+                                        <f:selectItem itemLabel="Femenino" itemValue="F"/>
+                                        <f:selectItem itemLabel="Otro" itemValue="O"/>                                        
+                                    </p:selectOneMenu>                                    
+                                    <p:message for="sexoEditInput" display="icon" />
+                                </div>
                             </div>
                             <div class="ui-g">
-                                <div class="ui-g-4">
-                                    <h:outputLabel value="#{messages.field_label_tercero_direccion}:" for="direccionEditInput" />
-                                    <p:inputText value="#{terceroBean.tercero.direccion}" id="direccionEditInput" 
-                                                 label="#{messages.field_label_tercero_direccion}" />
-                                    <p:message for="direccionEditInput" display="icon" />
-                                </div>
+                                <div class="ui-g-2">
+                                    <h:outputLabel value="Estado Civil:" for="estadoCivilEditInput" />
+                                    <p:selectOneMenu id="estadoCivilEditInput" value="#{terceroBean.tercero.estadoCivil}">
+                                        <f:selectItem itemLabel="" itemValue="" noSelectionOption="true" />
+                                        <f:selectItem itemLabel="SOLTERO" itemValue="SOLTERO"/>
+                                        <f:selectItem itemLabel="CASADO" itemValue="CASADO"/>
+                                        <f:selectItem itemLabel="DIVORCIADO" itemValue="DIVORCIADO"/>                                        
+                                    </p:selectOneMenu>                                    
+                                    <p:message for="estadoCivilEditInput" display="icon" />
+                                </div>                                
                                 <div class="ui-g-3">
-                                    <h:outputLabel value="#{messages.field_label_tercero_telefono}:" for="telefonoEditInput" />
+                                    <h:outputLabel value="Teléfono fijo:" for="telefonoEditInput" />
                                     <p:inputText value="#{terceroBean.tercero.telefono}" id="telefonoEditInput" 
                                                  label="#{messages.field_label_tercero_telefono}" />
                                     <p:message for="telefonoEditInput" display="icon" /> 
                                 </div>
                                 <div class="ui-g-3">
+                                    <h:outputLabel value="Celular:" for="celularEditInput" />
+                                    <p:inputText value="#{terceroBean.tercero.celular}" id="celularEditInput" 
+                                                 label="Celular" />
+                                    <p:message for="celularEditInput" display="icon" /> 
+                                </div>
+                                <div class="ui-g-4">
                                     <h:outputLabel value="#{messages.field_label_tercero_email}:" for="emailEditInput" />
                                     <p:inputText value="#{terceroBean.tercero.email}" id="emailEditInput" 
                                                  label="#{messages.field_label_tercero_email}" />
                                     <p:message for="emailEditInput" display="icon" /> 
                                 </div>
+                                
                             </div>             
 
-                            <div class="ui-g">
+                            <div class="ui-g">                                
                                 <div class="ui-g-2">
                                     <h:outputText value="Lugar Residencia"/>
                                     <p:selectOneMenu value="#{terceroBean.lugarResidenciaDepartamento}" autoWidth="false" title="Departamento">                            
@@ -154,8 +175,26 @@
                                         <o:converter converterId="omnifaces.SelectItemsConverter" list="#{terceroBean.lugarResidenciaPobladoList}" />
                                     </p:selectOneMenu>
                                 </div>
+                                <div class="ui-g-4">
+                                    <h:outputLabel value="#{messages.field_label_tercero_direccion}:" for="direccionEditInput" />
+                                    <p:inputText value="#{terceroBean.tercero.direccion}" id="direccionEditInput" 
+                                                 label="#{messages.field_label_tercero_direccion}" />
+                                    <p:message for="direccionEditInput" display="icon" />
+                                </div>
                             </div>
                             <div class="ui-g">
+                                <div class="ui-g-3">
+                                    <h:outputLabel value="Barrio:" for="barrioEditInput" />
+                                    <p:inputText value="#{terceroBean.tercero.barrio}" id="barrioEditInput" 
+                                                 label="Barrio" />
+                                    <p:message for="barrioEditInput" display="icon" />
+                                </div>
+                                <div class="ui-g-3">
+                                    <h:outputLabel value="Ocupación:" for="ocupacionEditInput" />
+                                    <p:inputText value="#{terceroBean.tercero.ocupacion}" id="ocupacionEditInput" 
+                                                 label="Ocupacion" />
+                                    <p:message for="ocupacionEditInput" display="icon" />
+                                </div>
                                 <div class="ui-g-2">
                                     <h:outputLabel value="Fuente Información:" for="tipoFuenteInformacion"/>
 
@@ -210,7 +249,7 @@
                                     #{notificacion.fecha}
                                 </p:column>
                             </p:dataTable>
-                            
+
                         </p:panel>
                     </p:tab>
                 </p:tabView>

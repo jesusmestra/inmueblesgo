@@ -7,6 +7,7 @@ import com.j2km.inmueblesgo.domain.OfertaEntity;
 import com.j2km.inmueblesgo.domain.PlanPagoEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
 import com.j2km.inmueblesgo.domain.TerceroEntity;
+import com.j2km.inmueblesgo.service.EstadoInmuebleRepository;
 import com.j2km.inmueblesgo.service.EstadoProyectoRepository;
 import com.j2km.inmueblesgo.service.InmuebleRepository;
 import com.j2km.inmueblesgo.service.InmuebleService;
@@ -54,6 +55,7 @@ public class NegociacionBean implements Serializable {
     @Inject private InmuebleRepository inmuebleService;
     @Inject private ProyectoRepository proyectoService;
     @Inject private EstadoProyectoRepository estadoProyectoService;
+    @Inject private EstadoInmuebleRepository estadoInmuebleRepository;
 
     private InmuebleBean inmuebleBean;
 
@@ -226,7 +228,7 @@ public class NegociacionBean implements Serializable {
     }
     
     public void seleccionarProyecto(ProyectoEntity proyecto){
-        inmueblesDisponiblesList = inmuebleService.findByProyecto(proyecto);
+        inmueblesDisponiblesList = inmuebleService.findByProyectoAndEstadoInmueble(proyecto, estadoInmuebleRepository.findOptionalByNombre(Constantes.INMUEBLE_DISPONIBLE));
     }
 
 }

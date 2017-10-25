@@ -6,8 +6,9 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:o="http://omnifaces.org/ui">
-    
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
     <f:metadata>
         <f:viewAction action="#{usuarioBean.reset()}" />
     </f:metadata>
@@ -16,48 +17,66 @@
         <ui:define name="content">
             <h:form prependId="false" id="formUsuario" onkeypress="if (event.keyCode == 13) {
                         return false;
-                    }">    
-             <p:growl />
+                    }">
                 <p:panel>
                     <f:facet name="header">
                         <h:outputText value="Nuevo Usuario"/>
                     </f:facet>
-                    <p:panelGrid id="panelNuevoUsuario" columns="6" columnClasses="ui-g-2, ui-g-2, ui-g-1, ui-g-1, ui-g-2, ui-g-2" layout="grid" >
-                        <p:inputText value="#{usuarioBean.usuario.login}" placeholder="login"/>
-                        <p:inputText value="#{usuarioBean.usuario.password}" placeholder="password"/>
-                        <p:selectBooleanCheckbox value="#{usuarioBean.usuario.activo}" itemLabel="ACTIVO"/>
-                        <p:selectBooleanCheckbox value="#{usuarioBean.esAdmin}" itemLabel="ADMIN"/>
-                        <p:selectBooleanCheckbox value="#{usuarioBean.esVendedor}" itemLabel="VENDEDOR"/>
-                        <p:commandButton action="#{usuarioBean.nuevoUsuario}" value="Guardar" update="formUsuario growl" />
-                    </p:panelGrid>                   
-                </p:panel>            
-             
-             <p:dataTable id="usuarioTable" value="#{usuarioBean.usuarioList}" var="usuario" resizableColumns="true" paginator="true"
-                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
-                             paginatorPosition="bottom" widgetVar="usuarioTable" emptyMessage="#{messages.label_no_records_found}"
-                             reflow="true" selectionMode="single" rowKey="#{usuario.id}">
-                 
-                    <p:ajax event="rowSelect" listener="#{usuarioBean.onRowSelect}" update="formUsuario" />
-                    
-                    <p:column  headerText="Login" sortBy="#{usuario.login}" filterBy="#{usuario.login}">
-                        <f:facet name="filter">
-                            <p:inputText id="loginFilter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                    PF('usuarioTable').filter();
-                                    updateLoginFilter(); return false;
-                                }" >
-                                <p:remoteCommand name="updateLoginFilter" update="usuarioTable:loginFilter" />
-                            </p:inputText>
-                        </f:facet>
+                    <div class="ui-g">
+                        <div class="ui-g-2">
+                            <label>Login</label>
+                            <p:inputText value="#{usuarioBean.usuario.login}"/>
+                        </div>
+                        <div class="ui-g-2">
+                            <label>Password</label>
+                            <p:password id="pwd1" value="#{usuarioBean.password}"/>
+                        </div>
+                        <div class="ui-g-2">
+                            <label>Confirmar Password</label>
+                            <p:password id="pwd2" value="#{usuarioBean.confirmarPassword}" />
+                        </div>
+                        <div class="ui-g-2">
+                            <label>ACTIVO</label><br/>
+                            <p:selectBooleanCheckbox value="#{usuarioBean.usuario.activo}"/>
+                        </div>
+                    </div>    
+
+                    <div class="ui-g" style="border-top: silver solid 1px; border-bottom: solid silver 1px;">
+                        <div class="ui-g-6">
+                            <label>Tercero</label>
+                            <p:inputText id="nombreTercero" readonly="true" value="#{usuarioBean.usuario.tercero.nombres} #{usuarioBean.usuario.tercero.apellido1} #{usuarioBean.usuario.tercero.apellido2}" />
+                        </div>
+                        <div class="ui-g-1">
+                            <label>.</label>
+                            <p:commandButton icon="ui-icon-search" value="Seleccionar"
+                                             actionListener="#{buscarTerceroBean.chooseTercero}">
+                                <p:ajax event="dialogReturn" listener="#{usuarioBean.seleccionarTercero}" update="nombreTercero" />
+                            </p:commandButton>
+                        </div>
+                    </div>
+
+                    <div class="ui-g">
+                        <p:selectManyCheckbox id="grid" value="#{usuarioBean.selectedRoles}" layout="grid" columns="1">                            
+                            <f:selectItems value="#{usuarioBean.rolesList}" var="rol" itemLabel="#{rol.nombre}" itemValue="#{rol}"    />                                
+                            <o:converter converterId="omnifaces.SelectItemsConverter" list="#{usuarioBean.rolesList}" />
+                        </p:selectManyCheckbox>
+                    </div>
+                    <f:facet name="footer">
+                        <p:commandButton action="#{usuarioBean.guardarFinal}" value="Guardar" update="formUsuario growl @widgetVar(usuarioTable)" />
+                    </f:facet>
+                </p:panel>
+
+                <p:dataTable id="usuarioTable" value="#{usuarioBean.usuarioList}" var="usuario" 
+                             widgetVar="usuarioTable" emptyMessage="#{messages.label_no_records_found}"
+                             reflow="true">
+                    <p:column  headerText="Login" sortBy="#{usuario.login}">                        
                         <h:outputText value="#{usuario.login}" />
-                    </p:column>
-                 
+                    </p:column>                    
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="Password"/>
+                            <h:outputText value="Tercero"/>
                         </f:facet>
-                        <h:outputText value="#{usuario.password}"/>
+                        <h:outputText value="#{usuario.tercero.nombres} #{usuario.tercero.apellido1} #{usuario.tercero.apellido2}"/>
                     </p:column>
                     <p:column>
                         <f:facet name="header">
@@ -67,27 +86,25 @@
                     </p:column>
                     <p:column>
                         <f:facet name="header">
-                            <h:outputText value="ES ADMIN"/>
-                        </f:facet>                                
-                        <h:outputText value="SI" rendered="#{usuarioBean.admin(usuario)}"/>
-                    </p:column>
-                    <p:column>
-                        <f:facet name="header">
-                            <h:outputText value="ES VENDEDOR"/>
-                        </f:facet>                                
-                        <h:outputText value="SI" rendered="#{usuarioBean.vendedor(usuario)}"/>
-                    </p:column>
+                            <h:outputText value="PERMISOS"/>
+                        </f:facet>
+                        <ul>
+                            <p:repeat value="#{usuarioBean.rolesPorUsuario(usuario)}" var="rol">
+                                <li>#{rol.nombre}</li>
+                            </p:repeat>
+                        </ul>
+                    </p:column>                    
                     <p:column styleClass="action-column" headerText="Opciones" width="115" exportable="false">
                         <p:commandButton icon="ui-icon-pencil" update="formUsuario"
                                          resetValues="true" 
-                                         action="#{usuarioBean.seleccionarUsuario(usuario.id)}"                                     
+                                         action="#{usuarioBean.seleccionarUsuario(usuario)}"                                     
                                          title="Modificar" 
-                                         rendered="false" >
+                                         rendered="true" >
                         </p:commandButton>
                     </p:column>
                 </p:dataTable>
             </h:form>     
-            
+
         </ui:define>
     </ui:composition>
 </html>

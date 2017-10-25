@@ -9,14 +9,22 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table; 
 
-@Entity(name = "NegociacionTercero")
-@Table(name = "negociacion_tercero")
-public class NegociacionTerceroEntity implements Serializable {
+@Entity(name = "NegociacionKit")
+@Table(name = "negociacion_kit")
+public class NegociacionKit implements Serializable {
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(targetEntity = NegociacionEntity.class)
+    @JoinColumn(name = "NEGOCIACION_ID")
+    private NegociacionEntity negociacion;
+
+    @ManyToOne(targetEntity = Kit.class)
+    @JoinColumn(name = "KIT_ID")
+    private Kit kit;
+    
     public Long getId() {
         return this.id;
     }
@@ -24,14 +32,6 @@ public class NegociacionTerceroEntity implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-    @ManyToOne(targetEntity = NegociacionEntity.class)
-    @JoinColumn(name = "NEGOCIACION_ID")
-    private NegociacionEntity negociacion;
-
-    @ManyToOne(targetEntity = TerceroEntity.class)
-    @JoinColumn(name = "TERCERO_ID")
-    private TerceroEntity tercero;
 
     public NegociacionEntity getNegociacion() {
         return this.negociacion;
@@ -41,19 +41,19 @@ public class NegociacionTerceroEntity implements Serializable {
         this.negociacion = negociacion;
     }
 
-    public TerceroEntity getTercero() {
-        return this.tercero;
+    public Kit getKit() {
+        return kit;
     }
 
-    public void setTercero(TerceroEntity tercero) {
-        this.tercero = tercero;
+    public void setKit(Kit kit) {
+        this.kit = kit;
     }
     
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {return false;}
         if (!java.util.Objects.equals(getClass(), obj.getClass())) {return false;}
-        final NegociacionTerceroEntity other = (NegociacionTerceroEntity) obj;
+        final NegociacionKit other = (NegociacionKit) obj;
         if (!java.util.Objects.equals(this.getId(), other.getId())) {return false;        }
         return true;
     }
@@ -67,7 +67,7 @@ public class NegociacionTerceroEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "NegociacionTerceroEntity{" + " id=" + id + '}';
+        return "NegociacionKit{" + " id=" + id + '}';
     }
 
 }

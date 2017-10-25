@@ -18,4 +18,5 @@ public abstract class InmuebleRepository implements EntityRepository<InmuebleEnt
     );
     
     public abstract List<InmuebleEntity> findByPiso(PisoEntity piso);
+    public abstract InmuebleEntity findOptionalByPisoAndNumero(PisoEntity piso, String numero);
 }

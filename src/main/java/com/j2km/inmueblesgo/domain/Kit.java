@@ -5,32 +5,34 @@ package com.j2km.inmueblesgo.domain;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
 /**
- * @author jdmp
+ * @author jkelsy
  */
-@Entity(name = "Departamento")
-@Table(name = "departamento")
-public class DepartamentoEntity implements Serializable {
-    
+@Entity(name = "Kit")
+@Table(name = "kit")
+public class Kit implements Serializable {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "dpto_codigo")
-    @Basic
-    private String codigo;
-
-    @Column(name = "dpto_nombre")
     @Basic
     private String nombre;
+    
+    @Basic
+    private int valor;
+    
+    @ManyToOne(targetEntity = ProyectoEntity.class)
+    @JoinColumn(name = "PROYECTO_ID")
+    private ProyectoEntity proyecto;
 
     public Long getId() {
         return this.id;
@@ -38,14 +40,6 @@ public class DepartamentoEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-    
-    public String getCodigo() {
-        return this.codigo;
-    }
-
-    public void setCodigo(String codigo) {
-        this.codigo = codigo;
     }
 
     public String getNombre() {
@@ -56,11 +50,27 @@ public class DepartamentoEntity implements Serializable {
         this.nombre = nombre;
     }
 
+    public int getValor() {
+        return valor;
+    }
+
+    public void setValor(int valor) {
+        this.valor = valor;
+    }
+
+    public ProyectoEntity getProyecto() {
+        return proyecto;
+    }
+
+    public void setProyecto(ProyectoEntity proyecto) {
+        this.proyecto = proyecto;
+    }
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {return false;}
         if (!java.util.Objects.equals(getClass(), obj.getClass())) {return false;}
-        final DepartamentoEntity other = (DepartamentoEntity) obj;
+        final Kit other = (Kit) obj;
         if (!java.util.Objects.equals(this.getId(), other.getId())) {return false;}
         return true;
     }
@@ -74,6 +84,6 @@ public class DepartamentoEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "DepartamentoEntity{" + " id=" + id + '}';
+        return "Kit{" + " id=" + id + '}';
     }
 }

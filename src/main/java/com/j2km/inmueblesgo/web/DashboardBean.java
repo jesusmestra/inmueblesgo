@@ -5,61 +5,65 @@
  */
 package com.j2km.inmueblesgo.web;
 
+import com.j2km.inmueblesgo.configuracion.Constantes;
 import com.j2km.inmueblesgo.domain.NegociacionEntity;
 import com.j2km.inmueblesgo.domain.NegociacionTerceroEntity;
+import com.j2km.inmueblesgo.domain.UsuarioEntity;
 import com.j2km.inmueblesgo.service.NegociacionRepository;
 import com.j2km.inmueblesgo.service.NegociacionTerceroRepository;
+import com.j2km.inmueblesgo.service.UsuarioRepository;
 import java.io.Serializable;
 import java.util.List;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
-/**
- *
- * @author jkelsy
- */
-//@Named("dashboard")
-@ManagedBean(name = "dashboard")
-@SessionScoped
+@ViewScoped
+@Named("dashboard")
 public class DashboardBean implements Serializable {
 
-    @Inject
-    private NegociacionRepository negociacionService;
-
-    @Inject
-    private NegociacionTerceroRepository nts;
+    @Inject private NegociacionRepository negociacionService;
+    @Inject private NegociacionTerceroRepository nts;
+    @Inject private UsuarioRepository usuarioService;
 
     private List<NegociacionEntity> nuevasNegociaciones;
-    private int tablaActiva = 0;
+    private List<NegociacionEntity> negociacionesPorUsuario;
+    private List<NegociacionEntity> negociacionesAprobadasPorUsuario;
+    private UsuarioEntity usuarioActual;
 
-    public int getTablaActiva() {
-        return tablaActiva;
+    public List<NegociacionEntity> getNegociacionesAprobadasPorUsuario() {
+        return negociacionesAprobadasPorUsuario;
     }
 
-    public void setTablaActiva(int tablaActiva) {
-        this.tablaActiva = tablaActiva;
+    public void setNegociacionesAprobadasPorUsuario(List<NegociacionEntity> negociacionesAprobadasPorUsuario) {
+        this.negociacionesAprobadasPorUsuario = negociacionesAprobadasPorUsuario;
+    }
+
+    public List<NegociacionEntity> getNegociacionesPorUsuario() {
+        return negociacionesPorUsuario;
+    }
+
+    public void setNegociacionesPorUsuario(List<NegociacionEntity> negociacionesPorUsuario) {
+        this.negociacionesPorUsuario = negociacionesPorUsuario;
+    }
+    
+    public void cargar(){
+        this.usuarioActual = usuarioService.findOptionalByLogin(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
+        
+        //listado de negociaciones que verá el gerente.
+        this.nuevasNegociaciones = negociacionService.findByEstadoNegociacion_nombre(Constantes.NEGOCIACION_RADICADA);
+        this.negociacionesPorUsuario = negociacionService.findByVendedor(this.usuarioActual);
+        this.negociacionesAprobadasPorUsuario = negociacionService.findByVendedorAndEstadoNegociacion_nombre(usuarioActual, Constantes.NEGOCIACION_APROBADA);
+        
     }
 
     public List<NegociacionEntity> getNuevasNegociaciones() {
-
-        if (nuevasNegociaciones == null) {
-            nuevasNegociaciones = negociacionService.findByEstadoNegociacion_nombre("RADICADO");
-        }
-        return nuevasNegociaciones;
+        return nuevasNegociaciones;     
     }
 
     public void setNuevasNegociaciones(List<NegociacionEntity> nuevasNegociaciones) {
         this.nuevasNegociaciones = nuevasNegociaciones;
-    }
-
-    public void cargarNuevasNegociaciones(int numeroTabla) {
-        if (tablaActiva == numeroTabla) {
-            tablaActiva = 0;
-        } else {
-            tablaActiva = numeroTabla;
-        }
-
     }
 
     public List<NegociacionTerceroEntity> findAllTerceroByNegociacio(NegociacionEntity negociacionEntity) {

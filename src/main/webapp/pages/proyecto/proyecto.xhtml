@@ -10,7 +10,7 @@
     <ui:composition template="/templates/layout.xhtml">        
         <ui:define name="content">  
             <f:metadata>                
-                <f:viewAction action="#{proyectoBean.prepareNewProyecto}"  />
+                <f:viewAction action="#{proyectoBean.inicioProyectos()}"  />
             </f:metadata>
             <style type="text/css">
 
@@ -18,136 +18,17 @@
             <h:form prependId="false" id="proyectoDataForm" onkeypress="if (event.keyCode == 13) {
                         return false;
                     }">
-
+                
                 <p:growl />
-
-                <p:panel widgetVar="panelProyecto" id="panelProyecto" header="Agregar / Editar Proyectos" style="width: 100%; margin-bottom: 5px;">
-                    <div class="ui-g">
-                        <div class="ui-g-2">
-                            <h:graphicImage id="imagenProyecto" value="#{applicationBean.webCarpeta()}proyecto/#{proyectoBean.archivo.nombre}" 
-                                            width="100%" height="150"/>
-                            <p:fileUpload label="Seleccionar Imagen" 
-                                          style="border: none blue 1px;"
-                                          skinSimple="false" auto="true"
-                                          fileUploadListener="#{proyectoBean.uploadLogoProyecto}"
-                                          update="imagenProyecto"/> 
-                        </div>
-                        <div class="ui-g-10">
-                            <div class="ui-g">
-                                <div class="ui-g-3">
-                                    <h:outputText value="Código"/>
-                                    <p:inputText value="#{proyectoBean.proyecto.codigo}"/>
-                                </div>
-                                <div class="ui-g-3">   
-                                    <h:outputText value="Nombre"/>
-                                    <p:inputText value="#{proyectoBean.proyecto.nombre}"/>
-                                </div>
-                                <div class="ui-g-3"> 
-                                    <h:outputText value="Empresa"/>
-                                    <p:selectOneMenu value="#{proyectoBean.proyecto.empresa}" autoWidth="false">                            
-                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
-                                        <f:selectItems value="#{empresaBean.allEmpresaList}" 
-                                                       var="empresa"
-                                                       itemLabel="#{empresa.nombre}"
-                                                       itemValue="#{empresa}"/>
-                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{empresaBean.allEmpresaList}" />
-                                    </p:selectOneMenu>
-                                </div>
-                                <div class="ui-g-3">  
-                                    <h:outputText value="Estado"/>
-                                    <p:selectOneMenu value="#{proyectoBean.proyecto.estadoProyecto}" autoWidth="false">                            
-                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
-                                        <f:selectItems value="#{proyectoBean.estadoProyectoList}" 
-                                                       var="estadoProyecto"
-                                                       itemLabel="#{estadoProyecto.nombre}"
-                                                       itemValue="#{estadoProyecto}"/>
-                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.estadoProyectoList}" />
-                                    </p:selectOneMenu>
-                                </div>
-                            </div>
-                            <div class="ui-g">
-                                <div class="ui-g-3">
-                                    <h:outputText value="Oferta"/>
-                                    <p:selectOneMenu value="#{proyectoBean.proyecto.oferta}" autoWidth="false">                            
-                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
-                                        <f:selectItems value="#{proyectoBean.ofertas}" 
-                                                       var="oferta"
-                                                       itemLabel="#{oferta.nombre}"
-                                                       itemValue="#{oferta}"/>
-                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.ofertas}" />
-                                    </p:selectOneMenu>
-                                </div>
-                                <div class="ui-g-3">
-                                    <h:outputText value="Departamento"/>
-                                    <p:selectOneMenu value="#{proyectoBean.departamento}" autoWidth="false">                            
-                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
-                                        <f:selectItems value="#{proyectoBean.departamentoList}" 
-                                                       var="departamento"
-                                                       itemLabel="#{departamento.nombre}"
-                                                       itemValue="#{departamento}"/>
-                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.departamentoList}" />
-                                        <p:ajax event="change" update="@widgetVar(selectMunicipio) @widgetVar(selectPoblado)" listener="#{proyectoBean.departamentoChange}"/>
-                                    </p:selectOneMenu>
-                                </div>
-                                <div class="ui-g-3">
-                                    <h:outputText value="Municipio"/>
-                                    <p:selectOneMenu value="#{proyectoBean.municipio}" 
-                                                     autoWidth="false" id="selectMunicipio" widgetVar="selectMunicipio">                            
-                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
-                                        <f:selectItems value="#{proyectoBean.municipioList}" 
-                                                       var="municipio"
-                                                       itemLabel="#{municipio.nombre}"
-                                                       itemValue="#{municipio}"/>
-                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.municipioList}" />
-                                        <p:ajax event="change" update="@widgetVar(selectPoblado)" listener="#{proyectoBean.municipioChange}"/>
-                                    </p:selectOneMenu>
-                                </div>
-                                <div class="ui-g-3">
-                                    <h:outputText value="Poblado"/>
-                                    <p:selectOneMenu value="#{proyectoBean.proyecto.poblado}" autoWidth="false" id="selectPoblado" widgetVar="selectPoblado">                            
-                                        <f:selectItem noSelectionOption="true" itemLabel=""/>
-                                        <f:selectItems value="#{proyectoBean.poblados}" 
-                                                       var="poblado"
-                                                       itemLabel="#{poblado.nombre}"
-                                                       itemValue="#{poblado}"/>
-                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.poblados}" />
-                                    </p:selectOneMenu>
-                                </div>                               
-                            </div>
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <h:outputText value="Direccion"/>
-                                    <p:inputText value="#{proyectoBean.proyecto.direccion}"/>
-                                </div>
-                            </div>
-                            <div class="ui-g">
-                                <div class="ui-g-3">
-                                    <p:commandButton action="#{proyectoBean.persist}" value="Guardar" update="proyectoDataForm"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </p:panel>
-
+                
+                <p:commandButton action="/pages/proyecto/proyectoNuevo?faces-redirect=true" value="Nuevo Proyecto"/>
 
                 <p:dataTable id="proyectoTable" value="#{proyectoBean.proyectoEntityList}" var="proyecto" resizableColumns="true"                             
                              paginatorPosition="bottom" widgetVar="proyectoTable" emptyMessage="#{messages.label_no_records_found}"
                              reflow="true">
                     <f:facet name="header">
-                        Seleccionar Empresa:
-                        <h:outputText value="Empresa"/>
-                        <p:selectOneMenu value="#{proyectoBean.empresaSeleccionada}" autoWidth="false">                            
-                            <f:selectItem noSelectionOption="true" itemLabel=""/>
-                            <f:selectItems value="#{empresaBean.allEmpresaList}" 
-                                           var="empresa"
-                                           itemLabel="#{empresa.nombre}"
-                                           itemValue="#{empresa}"/>
-                            <o:converter converterId="omnifaces.SelectItemsConverter" list="#{empresaBean.allEmpresaList}" />
-                            <p:ajax event="change" update="@widgetVar(proyectoTable)" listener="#{proyectoBean.seleccionarEmpresa}" />
-                        </p:selectOneMenu>
+                        Listado de proyectos
                     </f:facet>
-
                     <p:column  headerText="codigo">
                         <h:outputText value="#{proyecto.codigo}" />
                     </p:column>
@@ -181,23 +62,12 @@
                         <p:commandButton action="#{'/pages/proyecto/proyectoView?faces-redirect=true&amp;id='.concat(proyecto.id)}"
                                          icon="ui-icon-zoomin"
                                          title="#{messages.label_view}" />
-
-                        <p:commandButton rendered="#{false}" icon="ui-icon-zoomin" update=":viewProyectoDialog" oncomplete="PF('viewProyectoDialogWidget').show()" title="#{messages.label_view}">
-                            <f:setPropertyActionListener value="#{proyecto}" target="#{proyectoBean.proyecto}" />
-                        </p:commandButton>
+                        
 
                         <p:commandButton icon="ui-icon-pencil" 
                                          resetValues="true" 
-                                         action="#{proyectoBean.seleccionar(proyecto)}"
-                                         update=":panelProyecto"
+                                         action="#{'/pages/proyecto/proyectoEditar?faces-redirect=true&amp;id='.concat(proyecto.id)}"
                                          title="#{messages.label_edit}" >
-                        </p:commandButton>
-
-                        <p:commandButton icon="ui-icon-close" 
-                                         oncomplete="PF('deleteProyectoDialogWidget').show()"
-                                         title="#{messages.label_delete}" >
-                            <f:setPropertyActionListener value="#{proyecto}"
-                                                         target="#{proyectoBean.proyecto}" />
                         </p:commandButton>
                     </p:column>
 

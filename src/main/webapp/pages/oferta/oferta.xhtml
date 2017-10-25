@@ -9,159 +9,89 @@
       xmlns:o="http://omnifaces.org/ui">
     <ui:composition template="/templates/layout.xhtml">
         <ui:define name="content">
-
+            <f:metadata>                
+                <f:viewAction action="#{ofertaBean.reset()}"  />
+            </f:metadata>
             <h:form prependId="false" id="ofertaDataForm" onkeypress="if (event.keyCode == 13) {
                 return false;
             }">
-
-                <p:dataTable id="ofertaTable" value="#{ofertaBean.ofertaList}" var="oferta" resizableColumns="true" paginator="true"
-                             paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="5,10,25,50" rows="10" draggableColumns="true" lazy="true"
-                             paginatorPosition="bottom" widgetVar="ofertaTable" emptyMessage="#{messages.label_no_records_found}"
+                <p:growl/>
+                <p:panel widgetVar="panelNuevaOferta">
+                    <f:facet name="header">Nueva Oferta</f:facet>
+                    <div class="ui-g">
+                        <div class="ui-g-2">
+                            <label>Nombre</label>
+                            <p:inputText value="#{ofertaBean.oferta.nombre}"/>
+                        </div>
+                        <div class="ui-g-2">
+                            <label>Valor Separación</label>
+                            <p:inputText value="#{ofertaBean.oferta.valorSeparacion}"/>
+                        </div>
+                        <div class="ui-g-2">
+                            <label>Porcentaje</label>
+                            <p:inputText value="#{ofertaBean.oferta.porcentaje}"/>
+                        </div>
+                        <div class="ui-g-2">
+                            <label>Número Cuotas</label>
+                            <p:inputText value="#{ofertaBean.oferta.numeroCuotas}"/>
+                        </div>
+                        <div class="ui-g-2">
+                            <label>Periodicidad</label>
+                            <p:inputText value="#{ofertaBean.oferta.periodicidad}"/>
+                        </div>
+                    </div>
+                    <f:facet name="footer">
+                        <p:commandButton action="#{ofertaBean.persist}" value="Guardar Oferta"
+                                         update="ofertaDataForm"/>
+                    </f:facet>
+                </p:panel>
+                <p/>
+                <p:dataTable id="ofertaTable" value="#{ofertaBean.ofertaList}" var="oferta"
+                             widgetVar="ofertaTable" emptyMessage="#{messages.label_no_records_found}"
                              reflow="true">
 
-                    <f:facet name="header" >
-
-                        <p:commandButton value="#{messages.create_new_oferta}" icon="ui-icon-plusthick" action="#{ofertaBean.prepareNewOferta()}"
-                                         resetValues="true" update=":editOfertaDialog" oncomplete="PF('editOfertaDialogWidget').show()"
-                                         style="float:left" />
-
-                        <p:commandButton id="toggler" type="button" value="#{messages.table_select_columns}" icon="ui-icon-calculator" />
-                        <p:columnToggler datasource="ofertaTable" trigger="toggler" />
-                    </f:facet>
+                    <f:facet name="header">Listado de Ofertas</f:facet>
 
 
-                    <p:column  headerText="#{messages.field_label_oferta_nombre}" sortBy="#{oferta.nombre}" filterBy="#{oferta.nombre}">
-                        <f:facet name="filter">
-                            <p:inputText id="nombreFilter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                    PF('ofertaTable').filter();
-                                    updateNombreFilter(); return false;
-                                }" >
-                                <p:remoteCommand name="updateNombreFilter" update="ofertaTable:nombreFilter" />
-                            </p:inputText>
-                        </f:facet>
+                    <p:column  headerText="#{messages.field_label_oferta_nombre}">
+                        
                         <h:outputText value="#{oferta.nombre}" />
                     </p:column>
                     
-                    <p:column  headerText="#{messages.field_label_oferta_valorSeparacion}" sortBy="#{oferta.valorSeparacion}" filterBy="#{oferta.valorSeparacion}">
-                        <f:facet name="filter">
-                            <p:inputText id="valorSeparacionFilter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                    PF('ofertaTable').filter();
-                                    updateValorSeparacionFilter(); return false;
-                                }" >
-                                <p:remoteCommand name="updateValorSeparacionFilter" update="ofertaTable:valorSeparacionFilter" />
-                            </p:inputText>
-                        </f:facet>
-                        <h:outputText value="#{oferta.valorSeparacion}" />
+                    <p:column  headerText="#{messages.field_label_oferta_valorSeparacion}">                        
+                        <h:outputText value="#{oferta.valorSeparacion}">
+                            <f:convertNumber type="currency" pattern="$#,##0" locale="es_CO"/>
+                        </h:outputText>
                     </p:column>                    
                     
-                    <p:column  headerText="#{messages.field_label_oferta_porcentaje}" sortBy="#{oferta.porcentaje}" filterBy="#{oferta.porcentaje}">
-                        <f:facet name="filter">
-                            <p:inputText id="porcentajeFilter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                    PF('ofertaTable').filter();
-                                    updatePorcentajeFilter(); return false;
-                                }" >
-                                <p:remoteCommand name="updatePorcentajeFilter" update="ofertaTable:porcentajeFilter" />
-                            </p:inputText>
-                        </f:facet>
+                    <p:column  headerText="#{messages.field_label_oferta_porcentaje}">
+                        
                         <h:outputText value="#{oferta.porcentaje}" />
                     </p:column>                      
                     
-                    <p:column  headerText="#{messages.field_label_oferta_numeroCuotas}" sortBy="#{oferta.numeroCuotas}" filterBy="#{oferta.numeroCuotas}">
-                        <f:facet name="filter">
-                            <p:inputText id="numeroCuotasFilter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                    PF('ofertaTable').filter();
-                                    updateNumeroCuotasFilter(); return false;
-                                }" >
-                                <p:remoteCommand name="updateNumeroCuotasFilter" update="ofertaTable:numeroCuotasFilter" />
-                            </p:inputText>
-                        </f:facet>
+                    <p:column  headerText="#{messages.field_label_oferta_numeroCuotas}">
+                        
                         <h:outputText value="#{oferta.numeroCuotas}" />
                     </p:column>   
 
-                                        <p:column  headerText="#{messages.field_label_oferta_periodicidad}" sortBy="#{oferta.periodicidad}" filterBy="#{oferta.periodicidad}">
-                        <f:facet name="filter">
-                            <p:inputText id="periodicidadFilter"
-                                         onkeypress="if (event.keyCode == 13) {
-                                    PF('ofertaTable').filter();
-                                    updatePeriodicidadFilter(); return false;
-                                }" >
-                                <p:remoteCommand name="updatePeriodicidadFilter" update="ofertaTable:periodicidadFilter" />
-                            </p:inputText>
-                        </f:facet>
+                    <p:column  headerText="#{messages.field_label_oferta_periodicidad}">
+                        
                         <h:outputText value="#{oferta.periodicidad}" />
                     </p:column>  
 
                     <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
 
-                        <p:commandButton icon="ui-icon-zoomin" update=":viewOfertaDialog" oncomplete="PF('viewOfertaDialogWidget').show()" title="#{messages.label_view}">
-                            <f:setPropertyActionListener value="#{oferta}" target="#{ofertaBean.oferta}" />
-                        </p:commandButton>
-
-                        <p:commandButton icon="ui-icon-pencil" update=":editOfertaDialog"
+                        <p:commandButton icon="ui-icon-pencil" 
                                          resetValues="true" 
-                                         action="#{ofertaBean.onDialogOpen(oferta)}"
-                                         oncomplete="PF('editOfertaDialogWidget').show()"
-                                         title="#{messages.label_edit}" >
+                                         action="#{ofertaBean.seleccionar(oferta)}"                                         
+                                         title="Editar Oferta"
+                                         update="@widgetVar(panelNuevaOferta)">
                         </p:commandButton>
-
-                        <p:commandButton icon="ui-icon-close" 
-                                         oncomplete="PF('deleteOfertaDialogWidget').show()"
-                                         title="#{messages.label_delete}" >
-                            <f:setPropertyActionListener value="#{oferta}"
-                                                         target="#{ofertaBean.oferta}" />
-                        </p:commandButton>
-
                     </p:column>
 
                 </p:dataTable>
 
             </h:form>
-
-            <p:confirmDialog id="deleteOfertaDialog" widgetVar="deleteOfertaDialogWidget"
-                             header="#{messages.label_confirm_deletion}"
-                             severity="alarm">
-                <f:facet name="message"><h:outputText value="#{messages.label_delete_record}" escape="false"/></f:facet>
-                <p:outputPanel>
-                    <h:form>
-                        <div style="text-align: center; margin:10px">
-                            <p:commandButton value="#{messages.label_yes}" action="#{ofertaBean.delete}" update=":ofertaDataForm :growlForm:growl" oncomplete="PF('deleteOfertaDialogWidget').hide()" />
-                            <p:commandButton value="#{messages.label_no}" onclick="PF('deleteOfertaDialogWidget').hide()" type="button" />
-                        </div>
-                    </h:form>
-                </p:outputPanel>
-            </p:confirmDialog>
-
-            <p:dialog dynamic="true" id="editOfertaDialog" header="#{messages.label_oferta_caption}"
-                      modal="true" widgetVar="editOfertaDialogWidget" maximizable="true">
-                <p:ajax event="close" listener="#{ofertaBean.reset}"/>
-                <h:form id="editOfertaForm" >
-                    <p:outputPanel id="ofertaEditPanel">
-                        <ui:include src="/pages/oferta/ofertaEditInclude.xhtml"/>
-                        <div style="text-align: center; margin:10px">
-                            <p:commandButton value="#{messages.label_save}"
-                                             icon="ui-icon-disk" action="#{ofertaBean.persist}"
-                                             update=":editOfertaForm:ofertaEditPanel :ofertaDataForm :growlForm:growl"
-                                             oncomplete="if(!args.validationFailed) PF('editOfertaDialogWidget').hide()" />
-                            <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('editOfertaDialogWidget').hide()" type="button" />
-                        </div>
-                    </p:outputPanel>
-                </h:form>
-            </p:dialog>
-
-            <p:dialog dynamic="true" id="viewOfertaDialog" header="#{messages.label_oferta_caption}" modal="true" widgetVar="viewOfertaDialogWidget" maximizable="true">
-                <p:ajax event="close" listener="#{ofertaBean.reset}" />
-                <h:form id="viewOfertaForm">
-                    <ui:include src="/pages/oferta/ofertaViewInclude.xhtml"/>
-                    <div style="text-align: center; margin:10px">
-                        <p:commandButton value="#{messages.label_close}" icon="ui-icon-close" onclick="PF('viewOfertaDialogWidget').hide()" type="button" />
-                    </div>
-                </h:form>
-            </p:dialog>
 
         </ui:define>
     </ui:composition>

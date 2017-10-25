@@ -44,6 +44,10 @@ public class TerceroEntity implements Serializable {
     @Column(name = "ter_telefono")
     @Basic
     private String telefono;
+    
+    @Column(name = "ter_celular")
+    @Basic
+    private String celular;
 
     @Column(name = "ter_email")
     @Basic
@@ -52,6 +56,22 @@ public class TerceroEntity implements Serializable {
     @Column(name = "ter_nombres")
     @Basic
     private String nombres;
+    
+    @Column(name = "ter_sexo")
+    @Basic
+    private String sexo;
+    
+    @Column(name = "ter_estado_civil")
+    @Basic
+    private String estadoCivil;
+    
+    @Column(name = "ter_barrio")
+    @Basic
+    private String barrio;
+    
+    @Column(name = "ter_ocupacion")
+    @Basic
+    private String ocupacion;
     
     @Column(name = "ter_otra_fuente")
     @Basic
@@ -210,6 +230,46 @@ public class TerceroEntity implements Serializable {
 
     public void setOtraFuente(String otraFuente) {
         this.otraFuente = otraFuente;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public String getEstadoCivil() {
+        return estadoCivil;
+    }
+
+    public void setEstadoCivil(String estadoCivil) {
+        this.estadoCivil = estadoCivil;
+    }
+
+    public String getCelular() {
+        return celular;
+    }
+
+    public void setCelular(String celular) {
+        this.celular = celular;
+    }
+
+    public String getBarrio() {
+        return barrio;
+    }
+
+    public void setBarrio(String barrio) {
+        this.barrio = barrio;
+    }
+
+    public String getOcupacion() {
+        return ocupacion;
+    }
+
+    public void setOcupacion(String ocupacion) {
+        this.ocupacion = ocupacion;
     }
     
     @Override

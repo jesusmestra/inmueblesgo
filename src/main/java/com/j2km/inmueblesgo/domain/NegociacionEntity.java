@@ -15,11 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
-/**
- * @author jkelsy
- */
 @Entity(name = "Negociacion")
 @Table(name = "negociacion")
 public class NegociacionEntity implements Serializable {
@@ -27,51 +23,6 @@ public class NegociacionEntity implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    
-    @Version
-    private int version;
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getVersion() {
-        return this.version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
-    }
-    
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-
-    	if (this == obj) {
-    		return true;
-    	} else if (obj == null) {
-            return false;
-        } else if (obj.getClass() != this.getClass()) {
-            return false;
-        }else {
-            return false;
-        }
-    }
-
-    @Override
-    public String toString() {
-    	return String.format("%s[id=%d]", getClass().getSimpleName(), getId());
-    }
 
     @Column(name = "neg_codigo")
     @Basic
@@ -80,6 +31,10 @@ public class NegociacionEntity implements Serializable {
     @Column(name = "neg_fecha")
     @Basic
     private Date fecha;
+    
+    @Column(name = "neg_fecha_primera_cuota")
+    @Basic
+    private Date fechaPrimeraCuota;
 
     @Column(name = "neg_valor_metro_cuadrado")
     @Basic
@@ -104,6 +59,14 @@ public class NegociacionEntity implements Serializable {
     @Column(name = "neg_porcentaje")
     @Basic
     private Double porcentaje;
+    
+    @Column(name = "neg_valor_porcentaje")
+    @Basic
+    private Double valorPorcentaje;
+    
+    @Column(name = "neg_observacion")
+    @Basic
+    private String observacion;
 
     @OneToOne(targetEntity = InmuebleEntity.class)
     @JoinColumn(name = "INMUEBLE_ID")
@@ -124,6 +87,14 @@ public class NegociacionEntity implements Serializable {
     @ManyToOne(targetEntity = UsuarioEntity.class)
     @JoinColumn(name = "VENDEDOR_ID")
     private UsuarioEntity vendedor;
+    
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getCodigo() {
         return this.codigo;
@@ -139,6 +110,14 @@ public class NegociacionEntity implements Serializable {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public Date getFechaPrimeraCuota() {
+        return fechaPrimeraCuota;
+    }
+
+    public void setFechaPrimeraCuota(Date fechaPrimeraCuota) {
+        this.fechaPrimeraCuota = fechaPrimeraCuota;
     }
 
     public Double getValorMetroCuadrado() {
@@ -189,6 +168,14 @@ public class NegociacionEntity implements Serializable {
         this.porcentaje = porcentaje;
     }
 
+    public Double getValorPorcentaje() {
+        return valorPorcentaje;
+    }
+
+    public void setValorPorcentaje(Double valorPorcentaje) {
+        this.valorPorcentaje = valorPorcentaje;
+    }
+
     public InmuebleEntity getInmueble() {
         return this.inmueble;
     }
@@ -227,6 +214,35 @@ public class NegociacionEntity implements Serializable {
 
     public void setVendedor(UsuarioEntity vendedor) {
         this.vendedor = vendedor;
+    }
+
+    public String getObservacion() {
+        return observacion;
+    }
+
+    public void setObservacion(String observacion) {
+        this.observacion = observacion;
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {return false;}
+        if (!java.util.Objects.equals(getClass(), obj.getClass())) {return false;}
+        final NegociacionEntity other = (NegociacionEntity) obj;
+        if (!java.util.Objects.equals(this.getId(), other.getId())) {return false;}
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + (this.getId() != null ? this.getId().hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return "NegociacionEntity{" + " id=" + id + '}';
     }
 
 }

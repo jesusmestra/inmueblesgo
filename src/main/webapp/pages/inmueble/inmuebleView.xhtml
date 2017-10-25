@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+    <ui:composition template="/templates/layout.xhtml">
+        <ui:define name="content">
+            <f:metadata>
+                <f:viewParam name="id" value="#{inmuebleBean.inmuebleId}" />
+                <f:viewAction action="#{inmuebleBean.inicioVistaInmueble}"  />
+            </f:metadata>
+            <h:form id="formInmueble">
+                <p:growl/>
+                <p:panel header="Datos del Inmueble">
+                    <div class="ui-g">
+                        <div class="ui-g-3">
+                            <label>Número:</label>
+                            #{inmuebleBean.inmueble.numero}
+                        </div>
+                        <div class="ui-g-3">
+                            <label>Proyecto:</label>
+                            #{inmuebleBean.inmueble.proyecto.nombre}
+                        </div>
+                        <div class="ui-g-3">
+                            <label>Estado:</label>
+                            #{inmuebleBean.inmueble.estadoInmueble.nombre}
+                        </div>
+                        <div class="ui-g-3">
+                            <label>Area:</label>
+                            #{inmuebleBean.inmueble.area} M2
+                        </div>
+                    </div>
+                    <div class="ui-g">
+                        <div class="ui-g-3">
+                            <label>Valor M2</label>
+                            <p:inputNumber value="#{inmuebleBean.inmueble.valorMetroCuadrado}"  
+                                           decimalSeparator="," thousandSeparator="." decimalPlaces="1"
+                                           accesskey="" minValue="1" emptyValue="sign">
+                                <p:ajax event="keyup" listener="#{inmuebleBean.valorTotal()}" update="valorTotalEditInput"/>
+                            </p:inputNumber>
+                        </div>
+                        <div class="ui-g-3">
+                           <h:outputLabel value="Valor Incremento:" />
+                           <p:inputNumber value="#{inmuebleBean.inmueble.incremento}"  
+                                           decimalSeparator="," thousandSeparator="." decimalPlaces="1"
+                                           accesskey="" minValue="1" emptyValue="sign">
+                                <p:ajax event="keyup" listener="#{inmuebleBean.valorTotal()}" update="valorTotalEditInput"/>
+                            </p:inputNumber>
+                        </div>
+                        <div class="ui-g-3">
+                            <h:outputLabel value="Valor Separación:" />
+                            <p:inputNumber value="#{inmuebleBean.inmueble.valorSeparacion}"  
+                                           decimalSeparator="," thousandSeparator="." decimalPlaces="1"
+                                           accesskey="" minValue="1" emptyValue="sign">
+                                <p:ajax event="keyup" listener="#{inmuebleBean.valorTotal()}" update="valorTotalEditInput"/>
+                            </p:inputNumber>
+                        </div>
+                        <div class="ui-g-3">
+                            <h:outputLabel value="Valor Total: "/>
+                            <h:outputLabel value="#{inmuebleBean.inmueble.valorTotal}" id="valorTotalEditInput" style="font-size: 20px; font-weight: bold">
+                                <f:convertNumber type="currency" pattern="$#,##0" locale="es_CO" />
+                            </h:outputLabel>
+                        </div>
+                    </div>
+                    <div class="ui-g">
+                        <div class="ui-g-3">
+                            <p:commandButton value="Guardar" action="#{inmuebleBean.persist}" icon="ui-icon-pencil" update="formInmueble"/>
+                        </div>
+                    </div>
+                </p:panel>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

@@ -7,195 +7,229 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:o="http://omnifaces.org/ui"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-    <ui:composition template="/templates/layout.xhtml">
-
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:of="http://omnifaces.org/functions">
+    <ui:composition template="/templates/layout.xhtml">        
         <ui:define name="content">
-
             <f:metadata>
                 <f:viewParam name="id" value="#{miNegociacionBean.inmuebleId}"/>
                 <f:viewAction action="#{miNegociacionBean.onLoad}"  />
             </f:metadata>
-
-            <p:panel  header="#{miNegociacionBean.inmueble.proyecto.nombre} |  #{miNegociacionBean.inmueble.proyecto.empresa.nombre}" style="margin-bottom:10px;">
-
-                <h:panelGrid columns="2" style="width:100%" columnClasses="logo,detail">
-                    <h:graphicImage name="images/proyecto/proyecto_#{miNegociacionBean.inmueble.proyecto.id}.gif"  />
-
+            <p:panel>
+                <h:panelGrid columns="4" style="width:100%">  
                     <p:outputPanel>
-                        <h:panelGrid columns="2" cellpadding="5">
-                            <h:outputText value="Codigo:" />
-                            <h:outputText value="#{miNegociacionBean.inmueble.proyecto.codigo}" style="font-weight: bold"/>
-
-                            <h:outputText value="Nombre:" />
-                            <h:outputText value="#{miNegociacionBean.inmueble.proyecto.nombre}" style="font-weight: bold"/>
+                        <h:panelGrid columns="2">                            
+                            <h:outputText value="Número:" />
+                            <h:outputText value="#{miNegociacionBean.inmueble.numero}" style="font-size: 20px; font-weight: bolder"/> 
 
                             <h:outputText value="Ubicacion:" />
-                            <h:outputText value="#{miNegociacionBean.inmueble.proyecto.poblado.municipio.nombre}" style="font-weight: bold"/>
+                            <h:outputText value="#{miNegociacionBean.inmueble.proyecto.poblado.municipio.nombre} :: #{miNegociacionBean.inmueble.proyecto.direccion} " style="font-weight: bold"/>
+
+                            <h:outputText value="Area:" />                            
+                            #{of:formatNumberDefaultForLocale(miNegociacionBean.inmueble.area, 'es_CO')} M2
+                            <h:outputText value="Valor M2:" />
+                            $ #{of:formatNumberDefaultForLocale(miNegociacionBean.negociacion.valorMetroCuadrado, 'es_CO')}
+                            
+                            <h:outputText value="Incremento:" />
+                            $ #{of:formatNumberDefaultForLocale(miNegociacionBean.negociacion.valorIncremento, 'es_CO')}
+                            
+
                         </h:panelGrid>
                     </p:outputPanel>
+                    <h:panelGrid>
+                        <p:row>
+                            <label>Proyecto</label>
+                        </p:row>
+                        <p:row>
+                            <h:graphicImage value="#{applicationBean.rutaWebArchivos}/#{miNegociacionBean.inmueble.proyecto.archivo.rutaWeb}" width="150" rendered="#{not empty miNegociacionBean.inmueble.proyecto.archivo}"/>                         
+                        </p:row>
+                    </h:panelGrid>
+
+                    <h:panelGrid>
+                        <p:row>
+                            <label>Tipo Planta</label>
+                        </p:row>
+                        <p:row>
+                            <h:graphicImage value="#{applicationBean.rutaWebArchivos}/#{miNegociacionBean.inmueble.piso.tipoPlanta.imagen.rutaWeb}" width="150" rendered="#{not empty miNegociacionBean.inmueble.piso.tipoPlanta.imagen}"/>                         
+                        </p:row>
+                    </h:panelGrid>
+
+                    <h:panelGrid>
+                        <p:row>
+                            <label>Tipo Inmueble</label>
+                        </p:row>
+                        <p:row>
+                            <h:graphicImage value="#{applicationBean.rutaWebArchivos}/#{miNegociacionBean.inmueble.tipoInmueble.archivo.rutaWeb}" width="150" rendered="#{not empty miNegociacionBean.inmueble.tipoInmueble.archivo}"/>                         
+                        </p:row>
+                    </h:panelGrid>
                 </h:panelGrid>
             </p:panel>
 
-            <h:form id="viewInmuebleForm" >
-                <p:outputPanel>
-                    <p:outputPanel id="inmuebleViewPanel" styleClass="ui-fluid">
-                        <h:panelGrid columns="3" styleClass="dialog" columnClasses="col1,col2, col3" >
-                            <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2">
-
-                                <h:outputText value="#{messages.field_label_inmueble_estadoInmueble}:" />
-                                <h:outputText value="#{miNegociacionBean.inmueble.estadoInmueble.nombre}" />
-
-                                <h:outputText value="#{messages.field_label_inmueble_numero}:" />
-                                <h:outputText value="#{miNegociacionBean.inmueble.numero}" />
-
-                                <h:outputText value="#{messages.field_label_inmueble_area}:" />
-                                <h:outputText value="#{miNegociacionBean.inmueble.area}" >
-                                    <f:convertNumber currencySymbol="" groupingUsed="true" maxFractionDigits="0" type="currency" />
-                                </h:outputText>
-
-                                <h:outputText value="Porcentaje:" />
-                                <p:inputNumber id="txtProcentaje" value="#{miNegociacionBean.negociacion.porcentaje}"  
-                                               decimalSeparator="," thousandSeparator="." decimalPlaces="2"
-                                               minValue="1" emptyValue="sign">
-                                    <p:ajax event="change" update="pnlGrd_numOfLbl valorTotalEditInput" 
-                                            listener="#{miNegociacionBean.onCambioOfetra}" />
-                                </p:inputNumber>                                
-
-                                <h:outputText value="Número Cuotas:" />
-                               
-                                <p:inputNumber value="#{miNegociacionBean.negociacion.numeroCuotas}"  
-                                               decimalSeparator="," thousandSeparator="." decimalPlaces="0"
-                                               minValue="1" emptyValue="sign">
-                                    <p:ajax event="change" update="pnlGrd_numOfLbl valorTotalEditInput" 
-                                            listener="#{miNegociacionBean.onCambioOfetra}" />
-                                </p:inputNumber>
-                                
-
-                                <h:outputText value="#{messages.field_label_inmueble_valorMetroCuadrado}:" />
-                                <p:inputNumber value="#{miNegociacionBean.negociacion.valorMetroCuadrado}"  
-                                               decimalSeparator="," thousandSeparator="." decimalPlaces="0" symbol="$"
-                                               emptyValue="zero">
-                                                     
-                                    <p:ajax event="change" update="pnlGrd_numOfLbl valorTotalEditInput" 
-                                            listener="#{miNegociacionBean.onCambioOfetra}" />
-                                </p:inputNumber>
-
-                                <h:outputText value="#{messages.field_label_inmueble_incremento}:" />
-                                <p:inputNumber value="#{miNegociacionBean.negociacion.valorIncremento}"  
-                                               decimalSeparator="," thousandSeparator="." decimalPlaces="0" symbol="$"
-                                               emptyValue="zero">
-                                                     
-                                    <p:ajax event="change" update="pnlGrd_numOfLbl valorTotalEditInput" 
-                                            listener="#{miNegociacionBean.onCambioOfetra}" />
-                                </p:inputNumber>                              
-
-                                <h:outputText value="#{messages.field_label_inmueble_valorSeparacion}:" />
-                                <p:inputNumber id="txtValorSeparacion" value="#{miNegociacionBean.negociacion.valorSeparacion}"  
-                                               decimalSeparator="," thousandSeparator="." decimalPlaces="0" symbol="$"
-                                               emptyValue="zero">
-                                                     
-                                    <p:ajax event="change" update="pnlGrd_numOfLbl valorTotalEditInput" 
-                                            listener="#{miNegociacionBean.onCambioOfetra}" />
-                                </p:inputNumber>
-
-                                <h:outputText value="#{messages.field_label_inmueble_valorTotal}:" />
-
-                                <h:outputText value="#{miNegociacionBean.negociacion.valorTotal}" id="valorTotalEditInput">
-                                    <f:convertNumber groupingUsed="true"
-                                                     maxFractionDigits="2" type="currency" />
-                                </h:outputText>                                        
-
-                                <h:outputText  value="#{messages.field_label_negociacion_fecha}:" />
-                                <p:calendar value="#{miNegociacionBean.negociacion.fecha}" id="fechaEditCalendar" 
-                                            label="#{messages.field_label_negociacion_fecha}"  >
-
-
-                                    <p:ajax event="dateSelect" listener="#{miNegociacionBean.onCambioFecha }"
-                                            update="pnlGrd_numOfLbl"
-                                            />
-
-                                </p:calendar>
-                            </h:panelGrid>
-                            <h:panelGrid columns="2" width="400" styleClass="dialog" columnClasses="col1,col2">
-                                <div style="width: 100px;">
-
+            <h:form id="formNegociacion" >
+                <p:panel id="panelNegociacion">
+                    <p:growl id="growl" showDetail="true" sticky="true" />  
+                    <f:facet name="header">
+                        Datos de la negociación
+                    </f:facet>
+                    <div class="ui-g">
+                        <div class="ui-g-3" style="border: solid silver 1px;">
+                            <div class="ui-g" style="border-bottom: solid silver 1px;">
+                                <div class="ui-g-12">
+                                    Kits:
+                                </div>                                
+                            </div>
+                            <p:selectManyCheckbox id="grid" value="#{miNegociacionBean.selectedKits}" layout="grid" columns="1">
+                                <p:ajax listener="#{miNegociacionBean.onKitSeleccionado}" update="panelNegociacion"/>
+                                <f:selectItems value="#{miNegociacionBean.kitList}" var="kit" itemLabel="#{kit.nombre}: #{kit.valor}" itemValue="#{kit}"    />                                
+                                <o:converter converterId="omnifaces.SelectItemsConverter" list="#{miNegociacionBean.kitList}" />
+                            </p:selectManyCheckbox>
+                        </div>
+                        <div class="ui-g-4" style="border: solid silver 1px;">
+                            
+                            <div class="ui-g" style="border-bottom: solid silver 1px;">
+                                <div class="ui-g-6">
+                                    Total:
                                 </div>
-                            </h:panelGrid>
-                            <h:panelGrid columns="2" styleClass="dialog" columnClasses="col1,col2" rendered="#{request.isUserInRole('ADMIN')}">                                    
-                                <p:editor value="#{miNegociacionBean.negociacionHistoricoEntity.observacion}"/>
-                            </h:panelGrid>
-                        </h:panelGrid>
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{miNegociacionBean.negociacion.valorTotal}" id="valorTotalEditInput" style="font-weight: bolder" >
+                                        <f:convertNumber currencySymbol="" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                                    </h:outputText>
+                                </div>
+                            </div>
 
+                            <div class="ui-g" style="border-bottom: solid silver 1px;">
+                                <div class="ui-g-6">
+                                    Fecha Primera Cuota:
+                                </div>
+                                <div class="ui-g-6">                                   
+                                    <p:calendar value="#{miNegociacionBean.negociacion.fechaPrimeraCuota}" id="fechaEditCalendar" 
+                                                label="Fecha Primera Cuota"  pattern="dd/MM/yyyy">
+                                        <p:ajax event="dateSelect" listener="#{miNegociacionBean.onCambioFecha }"
+                                                update="panelNegociacion"/>
+                                    </p:calendar>
+                                </div>
+                            </div>
+                            
+                            <div class="ui-g" style="border-bottom: solid silver 1px;">
+                                <div class="ui-g-6">
+                                    Valor Separación:
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputNumber id="txtValorSeparacion" value="#{miNegociacionBean.negociacion.valorSeparacion}"  
+                                                   decimalSeparator="," thousandSeparator="." decimalPlaces="0" symbol="$"
+                                                   emptyValue="zero">
 
-                        <p:dataTable id="dtTerceroNegociacion" rowIndexVar="i"   
-                                     var="negociacionTercero" value="#{miNegociacionBean.allListNegociacionTercero}">
-                            <p:column  headerText="#{messages.field_label_tercero_identificacion}">
-                                <h:outputText value="#{negociacionTercero.tercero.identificacion}" />
-                            </p:column>
+                                        <p:ajax event="change" update="panelNegociacion" 
+                                                listener="#{miNegociacionBean.onCambioOfetra}" />
+                                    </p:inputNumber>
+                                </div>
+                            </div>
 
-                            <p:column  headerText="#{messages.field_label_tercero_apellido1}">
-                                <h:outputText value="#{negociacionTercero.tercero.apellido1}" />
-                            </p:column>
-                            <p:column  headerText="#{messages.field_label_tercero_apellido2}">
-                                <h:outputText value="#{negociacionTercero.tercero.apellido2}" />
-                            </p:column>
-                            <p:column  headerText="#{messages.field_label_tercero_nombres}">
-                                <h:outputText value="#{negociacionTercero.tercero.nombres}" />
-                            </p:column>
+                            <div class="ui-g" style="border-bottom: solid silver 1px;">
+                                <div class="ui-g-6">
+                                    Porcentaje:
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputNumber id="txtProcentaje" value="#{miNegociacionBean.negociacion.porcentaje}"  
+                                                   decimalSeparator="," thousandSeparator="." decimalPlaces="2"
+                                                   minValue="1" emptyValue="sign">
+                                        <p:ajax event="change" update="panelNegociacion" 
+                                                listener="#{miNegociacionBean.onCambioOfetra}" />
+                                    </p:inputNumber>
+                                </div>
+                            </div>
 
-                        </p:dataTable>
+                            <div class="ui-g" style="border-bottom: solid silver 1px;">
+                                <div class="ui-g-6">
+                                    Número Cuotas:
+                                </div>
+                                <div class="ui-g-6">
+                                    <p:inputNumber value="#{miNegociacionBean.negociacion.numeroCuotas}"  
+                                                   decimalSeparator="," thousandSeparator="." decimalPlaces="0"
+                                                   minValue="" emptyValue="1">
+                                        <p:ajax event="change" update="panelNegociacion" 
+                                                listener="#{miNegociacionBean.onCambioOfetra}" />
+                                    </p:inputNumber>
+                                </div>
+                            </div>
 
+                            <div class="ui-g" style="border-bottom: solid silver 1px;">
+                                <div class="ui-g-6">
+                                    Total Negociacion:
+                                </div>
+                                <div class="ui-g-6">
+                                    <h:outputText value="#{miNegociacionBean.negociacion.valorPorcentaje}" id="valorPorcentaje">
+                                        <f:convertNumber currencySymbol="" groupingUsed="true" maxFractionDigits="0" type="currency" />
+                                    </h:outputText>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="ui-g-5" style="border: solid silver 1px;">
+                            <p:dataTable widgetVar="tablaPlanPago" id="pnlGrd_numOfLbl" rowIndexVar="i"   var="planPago" value="#{miNegociacionBean.allPlanPagosListNegociacion}">
+                                <p:column headerText="#{messages.field_label_plan_pago_numero_cuota}">
+                                    <p:inputText value="#{planPago.numeroCuota}" id="numeroCuotaEditInput_#{i}" 
+                                                 label="#{field_label_plan_pago_numero_cuota}" />
+                                </p:column>
+                                <p:column headerText="Fecha">
+                                    <p:calendar value="#{planPago.fechaPactada}" id="fechaPactadaEditInput_#{i}" pattern="dd/MM/yyyy" 
+                                                label="#{messages.field_label_plan_pago_fecha_pactada}"  />
+                                </p:column>
+                                <p:column headerText="Valor">
+                                    <p:inputNumber value="#{planPago.valorPactado}" id="valorEditInput_#{i}" label="#{messages.field_label_plan_pago_valor}"
+                                                   decimalSeparator="," thousandSeparator="." decimalPlaces="0" symbol="$"
+                                                   emptyValue="zero">
+                                        <p:ajax event="change" update=":formNegociacion:txtProcentaje :formNegociacion:txtValorSeparacion" 
+                                                listener="#{miNegociacionBean.onCambioValorCuota}"/>  
+                                    </p:inputNumber>
+                                </p:column> 
+                                <p:column headerText="Opciones">
+                                    <p:commandButton icon="fa fa-remove" 
+                                                     action="#{miNegociacionBean.eliminarCuota(planPago)}"
+                                                     update="@widgetVar(tablaPlanPago)" />
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </div>
+                    <div class="ui-g">
+                        <div class="ui-g-6" style="border: solid silver 1px;">
+                            <p:dataTable value="#{miNegociacionBean.terceroList}" var="cliente" widgetVar="tablaClientes" rowHover="true">
 
+                                <f:facet name="header">
+                                    Cliente(s):  
+                                    <p:commandButton icon="ui-icon-search" value="Agregar"
+                                                     actionListener="#{buscarTerceroBean.chooseTercero}">
+                                        <p:ajax event="dialogReturn" listener="#{miNegociacionBean.seleccionarTercero}" update="@widgetVar(tablaClientes)" />
+                                    </p:commandButton>                                  
+                                </f:facet>
+                                <p:column headerText="Identificación">
+                                    #{cliente.identificacion}
+                                </p:column>
+                                <p:column headerText="Nombres">
+                                    #{cliente.nombres}
+                                </p:column>
+                                <p:column headerText="Apellidos">
+                                    #{cliente.apellido1} #{cliente.apellido2}
+                                </p:column>
+                                <p:column headerText="...">
+                                    <p:commandButton icon="fa fa-remove" action="#{miNegociacionBean.eliminarTercero(cliente)}" update="@widgetVar(tablaClientes)" />
+                                </p:column>
+                            </p:dataTable>
 
-                        <p:commandButton icon="ui-icon-search" title="#{messages.label_create}" value="#{messages.label_tercero_caption}" 
-                                         actionListener="#{buscarTerceroBean.chooseTercero}">
-                            <p:ajax event="dialogReturn" listener="#{miNegociacionBean.seleccionarTercero}"  
-                                    update="dtTerceroNegociacion"
-                                    />  
-                        </p:commandButton>
-                        <p:commandButton action="#{miNegociacionBean.onGrabarPlanPago}" 
-                                         value="Grabar" />
+                        </div>
+                        <div class="ui-g-6" style="border: solid silver 1px;">
+                            Observaciones:
+                            <p:inputTextarea value="#{miNegociacionBean.negociacion.observacion}" style=""/>                            
+                        </div>  
+                    </div>
+                    <div class="ui-g">
+                        <div class="ui-g-12" style="border: solid silver 1px;">
+                            <p:commandButton action="#{miNegociacionBean.onGrabarPlanPago}" value="Grabar" update="formNegociacion"/>
+                        </div>  
 
-                        <p:commandButton actionListener="#{miNegociacionBean.onAgregarFilaPago}" 
-                                         value="Agregar fila" update="growl pnlGrd_numOfLbl" />
-
-                        <p:growl id="growl" showDetail="true" sticky="true" />  
-                        <p:dataTable id="pnlGrd_numOfLbl" rowIndexVar="i"   var="planPago" value="#{miNegociacionBean.allPlanPagosListNegociacion}">
-                            <p:column headerText="#{messages.field_label_plan_pago_numero_cuota}">
-                                <p:inputText value="#{planPago.numeroCuota}" id="numeroCuotaEditInput_#{i}" 
-                                             label="#{field_label_plan_pago_numero_cuota}" />
-                            </p:column>
-                            <p:column headerText="Fecha">
-                                <p:calendar value="#{planPago.fechaPactada}" id="fechaPactadaEditInput_#{i}" 
-                                            label="#{messages.field_label_plan_pago_fecha_pactada}"  />
-                            </p:column>
-                            <p:column headerText="#{messages.field_label_plan_pago_valor}">
-                                
-                                <p:inputNumber value="#{planPago.valorPactado}" id="valorEditInput_#{i}" label="#{messages.field_label_plan_pago_valor}"
-                                               decimalSeparator="," thousandSeparator="." decimalPlaces="0" symbol="$"
-                                               emptyValue="zero">
-                                                     
-                                    <p:ajax event="change" update=":viewInmuebleForm:txtProcentaje :viewInmuebleForm:txtValorSeparacion" 
-                                            listener="#{miNegociacionBean.onCambioValorCuota}"/>  
-                                </p:inputNumber>
-                                
-                            </p:column>
-                            <p:column headerText="Observacion">
-                                <p:inputText value="#{planPago.observacion}" id="observacionEditInput_#{i}" 
-                                             label="#{messages.field_label_negociacion_nombre}" />
-                            </p:column>
-
-
-                        </p:dataTable>
-
-                    </p:outputPanel>
-                </p:outputPanel>
-
+                    </div>
+                </p:panel>
             </h:form>
-
-
-
 
         </ui:define>
 

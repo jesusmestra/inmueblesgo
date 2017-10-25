@@ -3,6 +3,7 @@ package com.j2km.inmueblesgo.service;
 import com.j2km.inmueblesgo.domain.EstadoNegociacionEntity;
 import com.j2km.inmueblesgo.domain.NegociacionEntity;
 import com.j2km.inmueblesgo.domain.NegociacionHistoricoEntity;
+import java.util.List;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Repository;
 import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
@@ -14,4 +15,6 @@ public abstract class NegociacionHistoricoRepository implements EntityRepository
             NegociacionEntity negociacion, 
             EstadoNegociacionEntity estado
     );
+    
+    public abstract List<NegociacionHistoricoEntity> findByNegocacion(NegociacionEntity negociacion);
 }

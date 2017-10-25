@@ -8,19 +8,18 @@
       xmlns:o="http://omnifaces.org/ui">
 
         <p:outputPanel styleClass="ui-fluid">
-
             <p:panelGrid columns="3" columnClasses="ui-grid-col-4,ui-grid-col-6,ui-grid-col-2" layout="grid" style="max-width:400px">
             
                 <h:outputLabel value="#{messages.field_label_oferta_nombre}:" for="nombreEditInput" />
                 <p:inputText value="#{ofertaBean.oferta.nombre}" id="nombreEditInput" 
                              label="#{messages.field_label_oferta_nombre}" />
                 <p:message for="nombreEditInput" display="icon" />
-
-
- 
+                
                 <h:outputLabel value="#{messages.field_label_oferta_valorSeparacion}:" for="valorSeparacionEditInput" />
                 <p:inputText value="#{ofertaBean.oferta.valorSeparacion}" id="valorSeparacionEditInput" 
-                             label="#{messages.field_label_oferta_valorSeparacion}" />
+                             label="#{messages.field_label_oferta_valorSeparacion}">
+                    <f:convertNumber type="currency" pattern="#,##0" locale="es_CO"/>
+                </p:inputText>
                 <p:message for="valorSeparacionEditInput" display="icon" />
                 
                  
@@ -40,9 +39,6 @@
                 <p:inputText value="#{ofertaBean.oferta.periodicidad}" id="periodicidadEditInput" 
                              label="#{messages.field_label_oferta_periodicidad}" />
                 <p:message for="periodicidadEditInput" display="icon" />
-                
-        
-                
                 
             </p:panelGrid>
 
