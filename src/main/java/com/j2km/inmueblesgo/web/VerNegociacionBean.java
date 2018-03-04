@@ -133,4 +133,22 @@ public class VerNegociacionBean implements Serializable {
         
     }
     
+    public String rechazar(){
+        EstadoNegociacionEntity estado = estadoNegociacionRepository.findOptionalByNombre(Constantes.NEGOCIACION_RECHAZADA);
+        this.negociacion.setEstadoNegociacion(estado);
+        this.negociacion = negociacionRepository.saveAndFlush(this.negociacion);
+        
+        NegociacionHistoricoEntity nhe = new NegociacionHistoricoEntity();
+        nhe.setCreadoPor(usuarioService.findOptionalByLogin(
+                        FacesContext.getCurrentInstance().getExternalContext().getRemoteUser()));
+        nhe.setNegociacion(this.negociacion);
+        nhe.setFecha(new Date());
+        nhe.setEstadoNegociacion(estado);
+        nhe.setObservacion("");
+        nhe = negociacionHistoricoRepository.saveAndFlush(nhe);        
+        
+        return "/pages/main?faces-redirect=true&amp";
+        
+    }
+    
 }

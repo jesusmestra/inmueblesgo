@@ -125,25 +125,24 @@
                     </p:column>
                     <p:column headerText="#{messages.field_label_plan_pago_valor}">
                         <h:outputText value="#{planPago.valorPactado}" id="valorEditInput_#{i}">
-                            <f:convertNumber  groupingUsed="true" maxFractionDigits="2" type="currency" />
+                            <f:convertNumber groupingUsed="true" maxFractionDigits="2" type="currency" />
                         </h:outputText>
                     </p:column>
                 </p:dataTable>
                 <p/>
                 <p:panel header="Opciones Gerente" rendered="#{request.isUserInRole('GERENTE')}">
-                    <p:commandButton value="Aprobar" action="#{verNegociacion.aprobar}"/>
-                    <p:commandButton value="rechazar"/>
+                    
+                    <p:commandButton value="Aprobar" action="#{verNegociacion.aprobar}" 
+                                     rendered="#{!verNegociacion.negociacion.estadoNegociacion.nombre.equals('APROBADA')}"/>
+                    <p:commandButton value="rechazar" action="#{verNegociacion.rechazar}"/>
                 </p:panel>
                 <p/>
 
             </h:form>
-
+                
             <p:panel header="Opciones Vendedor" rendered="#{request.isUserInRole('VENDEDOR')}">                
                 <form method="post" action="/inmueblesGo/SolicitudInmuebleItext" target="_blank">                                
-                    <input type="hidden" name="id" value="#{verNegociacion.negociacion.id}"/>
-                    <input type="hidden" name="jasperUser" value="#{applicationBean.configuracion.usuarioReporte}"/>
-                    <input type="hidden" name="jasperPassword" value="#{applicationBean.configuracion.passwordReporte}"/>
-                    <input type="hidden" name="jasperUrl" value="#{applicationBean.configuracion.urlReporte}"/>                   
+                    <input type="hidden" name="id" value="#{verNegociacion.negociacion.id}"/>                     
                     <input type="submit" value="Imprimir" class="btn btn-success btn-xs"/>
                 </form>
             </p:panel>
