@@ -112,10 +112,10 @@ public class ConfiguracionService{
         String filename = nuevoNombre +"." +extension;
         OutputStream output = new FileOutputStream(new File(filePath, filename));
 
-        try {
+       try {
             IOUtils.copy(input, output);
             resultado = filename;
-        } catch (IOException e) {
+        } catch (IOException e) {            
             System.err.println("Error" + e);
         } finally {
             IOUtils.closeQuietly(input);

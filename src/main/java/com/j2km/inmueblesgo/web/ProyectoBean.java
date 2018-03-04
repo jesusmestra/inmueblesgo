@@ -805,9 +805,10 @@ public class ProyectoBean implements Serializable {
 
         Integer numeroInmueble;
 
-        //falta verificar si existe el inmueble para no crearlo nuevamente.
         for (TipoPlantaDetalleEntity detalle : detalleList) {
             numeroInmueble = (piso.getNumero() * 100) + detalle.getNumero();
+            
+            //verificamos si el inmueble existe...
             inmueble = inmuebleService.findOptionalByPisoAndNumero(piso, numeroInmueble.toString());
 
             if (inmueble == null) {

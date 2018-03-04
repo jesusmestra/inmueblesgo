@@ -215,9 +215,7 @@ public class Inicio {
         List<InmuebleEntity> inmuebleList = inmuebleRepository.findAll();
         
         for(InmuebleEntity inmueble: inmuebleList){
-            if (inmueble.getTipoPlantaDetalle() == null){
-                
-            }
+            
         }
     }
     

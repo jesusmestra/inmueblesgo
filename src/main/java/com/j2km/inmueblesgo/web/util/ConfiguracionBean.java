@@ -62,12 +62,6 @@ public class ConfiguracionBean implements Serializable{
         this.archivo = archivo;
     }
     
-    
-    
-    
-    
-    
-//    public void saveFile(InputStream uploadedInputStream, String serverLocation) {
     public void saveFile() throws FileNotFoundException, IOException {
         
         

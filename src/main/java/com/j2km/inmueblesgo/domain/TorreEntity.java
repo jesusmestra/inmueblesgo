@@ -17,6 +17,7 @@ import javax.persistence.Version;
 /**
  * @author jdmp
  */
+
 @Entity(name = "Torre")
 @Table(name = "torre")
 public class TorreEntity implements Serializable {

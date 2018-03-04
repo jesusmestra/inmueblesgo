@@ -67,9 +67,12 @@
                             </h:outputText>                                        
 
                             <h:outputText  value="#{messages.field_label_negociacion_fecha}:" />
-                            <h:outputText value="#{verNegociacion.negociacion.fecha}" id="fechaEditCalendar" 
-                                          >
+                            <h:outputText value="#{verNegociacion.negociacion.fecha}" id="fechaEditCalendar">
                             </h:outputText>
+                            <h:outputText value="Estado"/>
+                            
+                            <h:outputText value="#{verNegociacion.negociacion.estadoNegociacion.nombre}"
+                                          style="font-weight: bold;"/>
                         </h:panelGrid>
                     </div>
                     <div class="ui-g-4">
@@ -136,7 +139,7 @@
             </h:form>
 
             <p:panel header="Opciones Vendedor" rendered="#{request.isUserInRole('VENDEDOR')}">                
-                <form method="post" action="/inmueblesGo/FormatoSolicitudInmueble" target="_blank">                                
+                <form method="post" action="/inmueblesGo/SolicitudInmuebleItext" target="_blank">                                
                     <input type="hidden" name="id" value="#{verNegociacion.negociacion.id}"/>
                     <input type="hidden" name="jasperUser" value="#{applicationBean.configuracion.usuarioReporte}"/>
                     <input type="hidden" name="jasperPassword" value="#{applicationBean.configuracion.passwordReporte}"/>

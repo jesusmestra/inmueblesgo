@@ -9,6 +9,7 @@ import javax.persistence.PersistenceContext;
  *
  */
 public class EntityManagerProducer {
+    
     @Produces
     @PersistenceContext(unitName = "InmueblesDS")
     private EntityManager em;

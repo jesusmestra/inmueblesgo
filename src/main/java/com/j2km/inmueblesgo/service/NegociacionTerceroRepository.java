@@ -14,6 +14,8 @@ public abstract class NegociacionTerceroRepository extends AbstractEntityReposit
     
     public abstract List<NegociacionTerceroEntity> findByNegociacion(NegociacionEntity negociacion);
     
+    public abstract List<NegociacionTerceroEntity> findByTercero(TerceroEntity tercero);
+    
     public abstract List<NegociacionTerceroEntity> findByNegociacionAndTercero(
             NegociacionEntity negociacion,
             TerceroEntity tercero

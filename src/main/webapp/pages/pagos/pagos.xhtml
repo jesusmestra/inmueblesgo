@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="/templates/layout.xhtml">
+        <ui:define name="content">
+
+            <h:form prependId="false" id="pagosDataForm" onkeypress="if (event.keyCode == 13) {
+                        return false;
+                    }">
+
+                <p:panel header="Gestionar Pagos" widgetVar="panelPagos">
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <div>.</div>
+                            <p:commandButton icon="ui-icon-search" value="Cliente"
+                                             actionListener="#{buscarTerceroBean.chooseTercero}">
+                                <p:ajax event="dialogReturn" listener="#{pagoBean.seleccionarTercero}" update="@widgetVar(panelPagos)" />
+                            </p:commandButton>
+                        </div>
+                        <div class="col-lg-2">
+                            <div><label>Nombre Cliente</label></div>
+                            #{pagoBean.cliente.nombres} 
+                            #{pagoBean.cliente.apellido1} 
+                            #{pagoBean.cliente.apellido2}                            
+                        </div>
+                        <div class="col-lg-2">
+                            <label>Inmueble</label>
+                            <p:selectOneMenu value="#{pagoBean.negociacion}">     
+                                <p:ajax event="change" update="@widgetVar(tablaPagos) @widgetVar(tablaPlanPago)"
+                                        listener="#{pagoBean.cargarPagos}" />
+                                <f:selectItem itemLabel="" itemValue="" noSelectionOption="true"/>     
+                                <f:selectItems value="#{pagoBean.negociaciones}" var="it"
+                                               itemLabel="#{it.negociacion.inmueble.numero}"
+                                               itemValue="#{it.negociacion}"/>
+
+                                <o:converter converterId="omnifaces.SelectItemsConverter" list="#{pagoBean.negociaciones}" />
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="col-lg-2">
+                            <label>Valor</label>
+                            <p:inputNumber value="#{pagoBean.pago.valor}" decimalSeparator="," thousandSeparator="." decimalPlaces="0" />
+                        </div>  
+                        <div class="col-lg-3">
+                            <label>Observacion</label>
+                            <p:inputText value="#{pagoBean.pago.observacion}"/>
+                        </div>
+                        <div class="col-lg-2">
+                            <div><label>..</label></div>
+                            <p:commandButton action="#{pagoBean.guardarPago}" 
+                                             update="@widgetVar(tablaPagos) @widgetVar(panelPagos)" 
+                                             value="guardar" />
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <p:dataTable value="#{pagoBean.planPagoList}" var="plan" widgetVar="tablaPlanPago">
+                                <f:facet name="header">PLan de Pago</f:facet>
+                                <p:column headerText="numero cuota">
+                                    <h:outputText value="#{plan.numeroCuota}"/>    
+                                </p:column>
+                                <p:column headerText="fecha pactada">
+                                    <h:outputText value="#{plan.fechaPactada}"/>    
+                                </p:column>
+                                <p:column headerText="valor pactado">
+                                    <h:outputText value="#{plan.valorPactado}">
+                                        <f:convertNumber  groupingUsed="true" currencySymbol="$" maxFractionDigits="0" type="currency" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="observacion">
+                                    <h:outputText value="#{plan.observacion}"/>    
+                                </p:column>
+                            </p:dataTable>    
+                        </div>
+                        <div class="col-lg-6">
+                            <p:dataTable value="#{pagoBean.pagos}" var="pago" widgetVar="tablaPagos" sortBy="#{pago.negociacion.id}">
+                                <f:facet name="header">Pagos realizados</f:facet>
+                                <p:column headerText="fecha">
+                                    <h:outputText value="#{pago.fecha}"/>    
+                                </p:column>                                
+                                <p:column headerText="observacion">
+                                    <h:outputText value="#{pago.observacion}"/>    
+                                </p:column>
+                                <p:column headerText="valor">
+                                    <h:outputText value="#{pago.valor}">
+                                        <f:convertNumber  groupingUsed="true" currencySymbol="$" maxFractionDigits="0" type="currency" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Opciones">
+                                    <p:commandButton icon="fa fa-edit" action="#{pagoBean.setPago(pago)}" update="@widgetVar(panelPagos)"/>    
+                                </p:column>
+                                <p:summaryRow>
+                                    <p:column colspan="2" style="text-align:right">
+                                        <h:outputText value="Total:" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{pagoBean.totalPagado()}">
+                                            <f:convertNumber type="currency" currencySymbol="$" />
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column></p:column>
+                                </p:summaryRow>
+                            </p:dataTable>
+                        </div>
+                    </div>
+
+
+
+
+                </p:panel>
+
+
+
+            </h:form>
+
+        </ui:define>
+    </ui:composition>
+</html>
