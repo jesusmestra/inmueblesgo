@@ -55,7 +55,6 @@ public class DashboardBean implements Serializable {
         this.nuevasNegociaciones = negociacionService.findByEstadoNegociacion_nombre(Constantes.NEGOCIACION_RADICADA);
         this.negociacionesPorUsuario = negociacionService.findByVendedor(this.usuarioActual);
         this.negociacionesAprobadasPorUsuario = negociacionService.findByVendedorAndEstadoNegociacion_nombre(usuarioActual, Constantes.NEGOCIACION_APROBADA);
-        
     }
 
     public List<NegociacionEntity> getNuevasNegociaciones() {

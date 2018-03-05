@@ -19,7 +19,7 @@ public class PromesaBean implements Serializable {
     private static final Logger logger = Logger.getLogger(PromesaBean.class.getName());
     
     public void generar(){
-        promesaService.generar();
+        //promesaService.generar();
     }
 
 }

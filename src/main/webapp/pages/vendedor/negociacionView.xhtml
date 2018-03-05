@@ -135,16 +135,20 @@
                     <p:commandButton value="Aprobar" action="#{verNegociacion.aprobar}" 
                                      rendered="#{!verNegociacion.negociacion.estadoNegociacion.nombre.equals('APROBADA')}"/>
                     <p:commandButton value="rechazar" action="#{verNegociacion.rechazar}"/>
+                
                 </p:panel>
                 <p/>
-
-            </h:form>
-                
+            </h:form>            
             <p:panel header="Opciones Vendedor" rendered="#{request.isUserInRole('VENDEDOR')}">                
                 <form method="post" action="/inmueblesGo/SolicitudInmuebleItext" target="_blank">                                
                     <input type="hidden" name="id" value="#{verNegociacion.negociacion.id}"/>                     
                     <input type="submit" value="Imprimir" class="btn btn-success btn-xs"/>
                 </form>
+                
+                <form method="post" action="/inmueblesGo/PromesaCompraventa">
+                    <input type="hidden" name="id" value="#{verNegociacion.negociacion.id}"/>      
+                    <input type="submit" value="Promesa Compraventa" class="btn btn-success btn-xs"/>
+                 </form>
             </p:panel>
         </ui:define>
 

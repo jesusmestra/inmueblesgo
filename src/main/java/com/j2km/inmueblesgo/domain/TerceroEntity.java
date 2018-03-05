@@ -292,5 +292,17 @@ public class TerceroEntity implements Serializable {
     public String toString() {
         return "TerceroEntity{" + " id=" + id + '}';
     }
+    
+    public String getNombreCompleto() {
+        String tempo = "";        
+        
+        tempo += (nombres!=null)?nombres:"";
+        tempo += " ";
+        tempo += (apellido1!=null)?apellido1:"";
+        tempo += " ";
+        tempo += (apellido2!=null)?apellido2:"";
+        
+        return tempo.toUpperCase(); 
+    }
 
 }

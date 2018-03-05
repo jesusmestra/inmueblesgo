@@ -33,7 +33,7 @@ public class Constantes {
     //Tipos de identificacion
     public static final String TI_NIT = "NIT";
     public static final String TI_NIT_ABREVIATURA = "NIT";
-    public static final String TI_CEDULA = "CEDULA";
+    public static final String TI_CEDULA = "CÉDULA DE CIUDADANÍA";
     public static final String TI_CEDULA_ABREVIATURA = "CC";
     public static final String TI_PASAPORTE = "PASAPORTE";
     public static final String TI_PASAPORTE_ABREVIATURA = "PAS";

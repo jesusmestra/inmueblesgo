@@ -26,6 +26,7 @@ import com.j2km.inmueblesgo.service.TipoFuenteInformacionRepository;
 import com.j2km.inmueblesgo.service.TipoIdentificacionRepository;
 import com.j2km.inmueblesgo.service.TipoPlantaDetalleRepository;
 import com.j2km.inmueblesgo.service.UsuarioRepository;
+import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
@@ -34,7 +35,7 @@ import javax.inject.Inject;
 
 @Startup
 @Singleton
-public class Inicio {
+public class Inicio implements Serializable{
 
     @Inject private UsuarioRepository usuarioService;
     @Inject private RolRepository rolService;
