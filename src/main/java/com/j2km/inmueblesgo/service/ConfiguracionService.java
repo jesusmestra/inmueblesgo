@@ -15,16 +15,12 @@ import java.io.OutputStream;
 import java.net.URLConnection;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import org.apache.poi.util.IOUtils;
 import org.primefaces.model.UploadedFile;
 import org.apache.commons.io.FilenameUtils;
 
 @Stateless
 public class ConfiguracionService{
-    @PersistenceContext(unitName = "InmueblesDS")
-    private EntityManager em;
 
     @Inject private DepartamentoRepository df;
     @Inject private MunicipioRepository mf;

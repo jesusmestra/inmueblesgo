@@ -119,6 +119,16 @@
                                     <h:outputText value="Direccion"/>
                                     <p:inputText value="#{proyectoBean.proyecto.direccion}"/>
                                 </div>
+                                <div class="ui-g-6">
+                                    <h:outputText value="Promesa"/>
+                                    <p:link id="linkPromesa"
+                                        href="#{applicationBean.rutaWebArchivos}/#{proyectoBean.proyecto.promesa.rutaWeb}">Ver Promesa</p:link>
+                                    <p:fileUpload label="Seleccionar Promesa" 
+                                          style="border: none blue 1px;"
+                                          skinSimple="false" auto="true"
+                                          fileUploadListener="#{proyectoBean.uploadPromesaProyecto}"
+                                          update="linkPromesa"/> 
+                                </div>
                             </div>
                             <div class="ui-g">
                                 <div class="ui-g-3">

@@ -3,9 +3,7 @@ package com.j2km.inmueblesgo.web;
 import com.j2km.inmueblesgo.domain.NegociacionEntity;
 import com.j2km.inmueblesgo.domain.PlanPagoEntity;
 import com.j2km.inmueblesgo.service.NegociacionRepository;
-import com.j2km.inmueblesgo.service.NegociacionService;
 import com.j2km.inmueblesgo.service.PlanPagoRepository;
-import com.j2km.inmueblesgo.service.PlanPagoService;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;

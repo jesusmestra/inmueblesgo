@@ -14,9 +14,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-/**
- * @author jdmp
- */
 @Entity(name = "TipoIdentificacion")
 @Table(name = "tipo_identificacion")
 public class TipoIdentificacionEntity implements Serializable {

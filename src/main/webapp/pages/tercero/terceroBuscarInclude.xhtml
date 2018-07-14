@@ -7,20 +7,20 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:o="http://omnifaces.org/ui">
     <h:head>
-
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
     </h:head>
     <h:body>
         <h:outputStylesheet library="css" name="standard.css" />
         <f:metadata>
-
             <f:viewAction action="#{buscarTerceroBean.resetBuscar}" />
         </f:metadata>
         <h:form>
+             <p:remoteCommand name="buscarTercero" 
+                                         actionListener="#{buscarTerceroBean.buscarTercero}" 
+                                         update="terceroTable"/>
             <p:outputPanel styleClass="ui-fluid">
 
-                <p:panelGrid columns="9" columnClasses="ui-grid-col-4, ui-grid-col-6, ui-grid-col-2, ui-grid-col-4, ui-grid-col-6, ui-grid-col-2, ui-grid-col-4, ui-grid-col-6, ui-grid-col-2" layout="grid" >
-
-
+                <p:panel header="buscar por...">
 
                     <h:outputLabel value="#{messages.field_label_tercero_identificacion}:" for="identificacionEditInput" />
                     <p:inputText value="#{buscarTerceroBean.terceroEntity.identificacion}" id="identificacionEditInput" 
@@ -30,39 +30,16 @@
                                              return false;
                                          }" >
 
-
-                        <p:remoteCommand name="buscarTercero" 
-                                         actionListener="#{buscarTerceroBean.buscarTercero}" 
-                                         update="terceroTable"/>
-
-
-                    </p:inputText> 
-                    <p:message for="identificacionEditInput" display="icon" />
-
-
-                    <p:message for="identificacionEditInput" display="icon" />
-                    <p:message for="identificacionEditInput" display="icon" />
-                    <p:message for="identificacionEditInput" display="icon" />
-
-
-                    <p:message for="identificacionEditInput" display="icon" /><p:message for="identificacionEditInput" display="icon" />
-                    <p:message for="identificacionEditInput" display="icon" />
-
+                    </p:inputText>
+                    
                     <h:outputLabel value="#{messages.field_label_tercero_apellido1}:" for="apellido1EditInput" />
                     <p:inputText value="#{buscarTerceroBean.terceroEntity.apellido1}" id="apellido1EditInput" 
                                  label="#{messages.field_label_tercero_apellido1}"  onkeypress="if (event.keyCode == 13) {
                                              buscarTercero();
                                              return false;
                                          }" >
-
-
-                        <p:remoteCommand name="buscarTercero" 
-                                         actionListener="#{buscarTerceroBean.buscarTercero}" 
-                                         update="terceroTable"/>
-
-
                     </p:inputText>  
-                    <p:message for="apellido1EditInput" display="icon" />
+                  
 
                     <h:outputLabel value="#{messages.field_label_tercero_apellido2}:" for="apellido2EditInput" />
                     <p:inputText value="#{buscarTerceroBean.terceroEntity.apellido2}" id="apellido2EditInput" 
@@ -71,14 +48,7 @@
                                              return false;
                                          }" >
 
-
-                        <p:remoteCommand name="buscarTercero" 
-                                         actionListener="#{buscarTerceroBean.buscarTercero}" 
-                                         update="terceroTable"/>
-
-
-                    </p:inputText>      
-                    <p:message for="apellido2EditInput" display="icon" />
+                    </p:inputText>
 
                     <h:outputLabel value="#{messages.field_label_tercero_nombres}:" for="nombresEditInput" />
                     <p:inputText value="#{buscarTerceroBean.terceroEntity.nombres}" id="nombresEditInput" 
@@ -86,18 +56,10 @@
                                              buscarTercero();
                                              return false;
                                          }" >
-
-
-                        <p:remoteCommand name="buscarTercero" 
-                                         actionListener="#{buscarTerceroBean.buscarTercero}" 
-                                         update="terceroTable"/>
-
-
                     </p:inputText>      
-                    <p:message for="nombresEditInput" display="icon" />
+                    <p:commandButton value="buscar" actionListener="#{buscarTerceroBean.buscarTercero}" update="terceroTable"/>
 
-
-                </p:panelGrid>
+                </p:panel>
 
 
                 <p:dataTable id="terceroTable" value="#{buscarTerceroBean.allTerceros}" var="tercero" resizableColumns="true" paginator="true"
@@ -122,7 +84,7 @@
                     <p:column headerText="#{messages.field_label_tercero_apellido2}" >
                         <h:outputText value="#{tercero.apellido2}" />
                     </p:column> 
-                    <p:column style="width:32px;text-align: center">
+                    <p:column>
                         <p:commandButton icon="ui-icon-search" actionListener="#{buscarTerceroBean.selectTerceroFromDialog(tercero)}" />
                     </p:column>
                 </p:dataTable>

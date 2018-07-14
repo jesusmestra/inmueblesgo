@@ -39,9 +39,6 @@ public class TipoPlantaEntity implements Serializable {
     @JoinColumn(name = "IMAGEN_ID")
     private Archivo imagen;
 
-    @Version
-    private int version;
-
     public Long getId() {
         return this.id;
     }
@@ -80,14 +77,6 @@ public class TipoPlantaEntity implements Serializable {
 
     public void setImagen(Archivo imagen) {
         this.imagen = imagen;
-    }
-
-    public int getVersion() {
-        return this.version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
     }
     
     @Override

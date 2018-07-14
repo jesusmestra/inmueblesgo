@@ -34,23 +34,19 @@ public class InmuebleEntity implements Serializable {
 
     @Column(name = "inm_area")
     @Basic
-    private Double area;
+    private Double area = 0d;
 
     @Column(name = "inm_valor_metro_cuadrado")
     @Basic
-    private Double valorMetroCuadrado;
+    private Double valorMetroCuadrado = 0d;
 
     @Column(name = "inm_incremento")
     @Basic
-    private Double incremento;
+    private Double incremento = 0d;
 
     @Column(name = "inm_valor_separacion")
     @Basic
-    private Double valorSeparacion;
-
-    @Column(name = "inm_valor_total")
-    @Basic
-    private Double valorTotal;
+    private Double valorSeparacion = 0d;
 
     @ManyToOne(targetEntity = ProyectoEntity.class)
     @JoinColumn(name = "PROYECTO_ID")
@@ -71,6 +67,10 @@ public class InmuebleEntity implements Serializable {
     @ManyToOne(targetEntity = TipoPlantaEntity.class)
     @JoinColumn(name = "TIPO_PLANTA_ID")
     private TipoPlantaEntity tipoPlanta;
+    
+    @ManyToOne(targetEntity = TipoPropiedad.class)
+    @JoinColumn(name = "TIPO_PROPIEDAD_ID")
+    private TipoPropiedad tipoPropiedad;
     
     public Long getId() {
         return this.id;
@@ -136,14 +136,6 @@ public class InmuebleEntity implements Serializable {
         this.valorSeparacion = valorSeparacion;
     }
 
-    public Double getValorTotal() {
-        return this.valorTotal;
-    }
-
-    public void setValorTotal(Double valorTotal) {
-        this.valorTotal = valorTotal;
-    }
-
     public ProyectoEntity getProyecto() {
         return this.proyecto;
     }
@@ -174,9 +166,15 @@ public class InmuebleEntity implements Serializable {
 
     public void setTipoInmueble(TipoInmuebleEntity tipoInmueble) {
         this.tipoInmueble = tipoInmueble;
+    }    
+
+    public TipoPropiedad getTipoPropiedad() {
+        return tipoPropiedad;
     }
 
-    
+    public void setTipoPropiedad(TipoPropiedad tipoPropiedad) {
+        this.tipoPropiedad = tipoPropiedad;
+    }
     
     @Override
     public boolean equals(Object obj) {
@@ -197,6 +195,23 @@ public class InmuebleEntity implements Serializable {
     @Override
     public String toString() {
         return "InmuebleEntity{" + " id=" + id + '}';
+    }
+    
+    public Double getValorTotal(){
+        if(tipoPropiedad == null){
+            return 0d;
+        }
+        Double tempo = 0d;
+        if("APARTAMENTO".equals(tipoPropiedad.getDescripcion())){
+            tempo = valorMetroCuadrado * area;
+        }else if("CASA".equals(tipoPropiedad.getDescripcion())){
+            tempo = valorMetroCuadrado;
+        }
+        
+        if(incremento != null){
+            tempo = tempo + incremento;
+        }
+        return tempo ;
     }
 
 }

@@ -8,23 +8,13 @@ package com.j2km.inmueblesgo.servlet;
 import com.j2km.inmueblesgo.domain.NegociacionEntity;
 import com.j2km.inmueblesgo.service.NegociacionRepository;
 import com.j2km.inmueblesgo.service.PromesaService;
-import com.j2km.inmueblesgo.service.TerceroRepository;
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.MediaType;
-import org.apache.commons.io.IOUtils;
-import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 @WebServlet(name = "PromesaCompraventa", urlPatterns = {"/PromesaCompraventa"})
 public class PromesaCompraventa extends HttpServlet {
@@ -35,13 +25,12 @@ public class PromesaCompraventa extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        String id = request.getParameter("id");
-        NegociacionEntity negociacion =  nr.findBy(Long.parseLong(id));      
-        
-        response.setHeader("Content-disposition", "attachment; filename=promesa_compraventa"+id+".docx");                
-        response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");                
-        response.getOutputStream().write(ps.generar(negociacion));
+            String id = request.getParameter("id");
+            NegociacionEntity negociacion =  nr.findBy(Long.parseLong(id));
             
+            response.setHeader("Content-disposition", "attachment; filename=promesa_compraventa"+id+".rtf");
+            response.setContentType("application/rtf");            
+            response.getOutputStream().write(ps.generar(negociacion));
         
     }
 

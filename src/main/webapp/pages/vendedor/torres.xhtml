@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+    <ui:composition template="/templates/layout.xhtml">        
+        <ui:define name="content">
+            <f:metadata>                
+                <f:viewParam name="id" value="#{negociacionBean.proyectoId}"/>
+                <f:viewAction action="#{negociacionBean.inicioTorres()}"  />
+            </f:metadata>
+            <style type="text/css">
+
+            </style>
+            <h1>Listado de Torres por Proyecto</h1>
+            <h:form prependId="false" id="proyectoDataForm" onkeypress="if (event.keyCode == 13) {
+                        return false;
+                    }">
+                <p:messages closable="true"/>
+
+                <p:dataTable id="proyectoTable" value="#{negociacionBean.torreList}" var="torre" resizableColumns="true"                             
+                             paginatorPosition="bottom" widgetVar="torreTable" emptyMessage="#{messages.label_no_records_found}"
+                             reflow="true">
+                    <f:facet name="header">
+                        Listado de torres / manzanas
+                    </f:facet>
+
+                    <p:column  headerText="nombre">
+                        <h:outputText value="#{torre.nombre}" />
+                    </p:column>
+
+                    <p:column  headerText="direccion">
+                        <h:outputText value="#{torre.direccion}" />
+                    </p:column>
+
+                    
+                    <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
+                        <p:commandButton action="#{negociacionBean.seleccionarTorre(torre)}"
+                                         icon="ui-icon-zoomin"                                      
+                                         title="#{messages.label_view}" />
+                    </p:column>
+                </p:dataTable>
+
+                
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

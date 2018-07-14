@@ -7,6 +7,7 @@ import com.j2km.inmueblesgo.domain.OfertaEntity;
 import com.j2km.inmueblesgo.domain.PlanPagoEntity;
 import com.j2km.inmueblesgo.domain.ProyectoEntity;
 import com.j2km.inmueblesgo.domain.TerceroEntity;
+import com.j2km.inmueblesgo.domain.TorreEntity;
 import com.j2km.inmueblesgo.service.EstadoInmuebleRepository;
 import com.j2km.inmueblesgo.service.EstadoProyectoRepository;
 import com.j2km.inmueblesgo.service.InmuebleRepository;
@@ -19,6 +20,7 @@ import com.j2km.inmueblesgo.service.PlanPagoRepository;
 import com.j2km.inmueblesgo.service.PlanPagoService;
 import com.j2km.inmueblesgo.service.ProyectoRepository;
 import com.j2km.inmueblesgo.service.TerceroRepository;
+import com.j2km.inmueblesgo.service.TorreRepository;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 
 import java.io.Serializable;
@@ -37,6 +39,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
+import org.primefaces.event.SelectEvent;
 
 @Named("negociacionBean")
 @ViewScoped
@@ -56,18 +59,64 @@ public class NegociacionBean implements Serializable {
     @Inject private ProyectoRepository proyectoService;
     @Inject private EstadoProyectoRepository estadoProyectoService;
     @Inject private EstadoInmuebleRepository estadoInmuebleRepository;
+    @Inject private TorreRepository torreRepository;
 
     private InmuebleBean inmuebleBean;
 
     private int cantidadCuotas;
+    private Long proyectoId;
+    private Long torreId;
 
     private List<TerceroEntity> allTerceroList;
     private List<OfertaEntity> allOfertaList;
     private List<PlanPagoEntity> allPlanPagosListNegociacion;
     private List<InmuebleEntity> inmueblesDisponiblesList;
     private List<ProyectoEntity> proyectoList;
-
+    private List<TorreEntity> torreList;
+    
     private InmuebleEntity inmuebleInstance;
+    private TorreEntity torre;
+    private ProyectoEntity proyecto;
+
+    public TorreEntity getTorre() {
+        return torre;
+    }
+
+    public void setTorre(TorreEntity torre) {
+        this.torre = torre;
+    }
+
+    public ProyectoEntity getProyecto() {
+        return proyecto;
+    }
+
+    public void setProyecto(ProyectoEntity proyecto) {
+        this.proyecto = proyecto;
+    }
+
+    public Long getTorreId() {
+        return torreId;
+    }
+
+    public void setTorreId(Long torreId) {
+        this.torreId = torreId;
+    }
+
+    public Long getProyectoId() {
+        return proyectoId;
+    }
+
+    public void setProyectoId(Long proyectoId) {
+        this.proyectoId = proyectoId;
+    }
+
+    public List<TorreEntity> getTorreList() {
+        return torreList;
+    }
+
+    public void setTorreList(List<TorreEntity> torreList) {
+        this.torreList = torreList;
+    }   
 
     public List<InmuebleEntity> getInmueblesDisponiblesList() {
         return inmueblesDisponiblesList;
@@ -133,8 +182,7 @@ public class NegociacionBean implements Serializable {
     
     public void inicio(){
         this.proyectoList = proyectoService.findByEstadoProyecto(
-                estadoProyectoService.findOptionalByNombre(Constantes.PROYECTO_ACTIVO)
-        );       
+                estadoProyectoService.findOptionalByNombre(Constantes.PROYECTO_ACTIVO));
     }
 
     public void nuevaNegociacion(Long inmuebleId) {
@@ -227,8 +275,23 @@ public class NegociacionBean implements Serializable {
         this.negociacion = negociacion;
     }
     
-    public void seleccionarProyecto(ProyectoEntity proyecto){
-        inmueblesDisponiblesList = inmuebleService.findByProyectoAndEstadoInmueble(proyecto, estadoInmuebleRepository.findOptionalByNombre(Constantes.INMUEBLE_DISPONIBLE));
+    public void inicioTorres(){        
+        proyecto = proyectoService.findBy(proyectoId);
+        torreList = torreRepository.findByProyecto(proyecto);
     }
-
+    
+    public void inicioInmuebles(){        
+        torre = torreRepository.findBy(torreId);
+        inmueblesDisponiblesList = inmuebleService.findByTorre(torre);
+    }
+    
+    public String seleccionarProyecto(ProyectoEntity proyecto){
+        return "/pages/vendedor/torres?faces-redirect=true&amp;id=".concat(proyecto.getId().toString());       
+    }
+    
+    public String seleccionarTorre(TorreEntity torre){
+        return "/pages/vendedor/inmuebles?faces-redirect=true&amp;id=".concat(torre.getId().toString());       
+    }
+  
+    
 }

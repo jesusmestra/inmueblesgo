@@ -5,12 +5,7 @@
  */
 package com.j2km.inmueblesgo.web;
 
-import com.j2km.inmueblesgo.domain.DepartamentoEntity;
-import com.j2km.inmueblesgo.domain.MunicipioEntity;
-import com.j2km.inmueblesgo.domain.PobladoEntity;
 import com.j2km.inmueblesgo.domain.TerceroEntity;
-import com.j2km.inmueblesgo.service.MunicipioService;
-import com.j2km.inmueblesgo.service.PobladoService;
 import com.j2km.inmueblesgo.service.TerceroRepository;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -21,11 +16,6 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.context.RequestContext;
-
-/**
- *
- * @author jkelsy
- */
 
 @ViewScoped
 @Named("buscarTerceroBean")

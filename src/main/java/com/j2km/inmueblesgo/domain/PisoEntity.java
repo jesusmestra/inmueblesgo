@@ -14,9 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-/**
- * @author jdmp
- */
 @Entity(name = "Piso")
 @Table(name = "piso")
 public class PisoEntity implements Serializable {

@@ -12,11 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
-
-/**
- * @author jdmp
- */
 
 @Entity(name = "Torre")
 @Table(name = "torre")
@@ -25,9 +20,6 @@ public class TorreEntity implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    
-    @Version
-    private int version;
 
     @Column(name = "torre_nombre")
     @Basic
@@ -51,6 +43,9 @@ public class TorreEntity implements Serializable {
 
     @ManyToOne(targetEntity = ProyectoEntity.class)
     private ProyectoEntity proyecto;
+    
+    @ManyToOne(targetEntity = TipoPropiedad.class)
+    private TipoPropiedad tipoPropiedad;
 
     public Long getId() {
         return this.id;
@@ -58,14 +53,6 @@ public class TorreEntity implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public int getVersion() {
-        return this.version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
     }
     
     @Override
@@ -141,6 +128,13 @@ public class TorreEntity implements Serializable {
     public void setNumeroPisos(Integer numeroPisos) {
         this.numeroPisos = numeroPisos;
     }
-    
+
+    public TipoPropiedad getTipoPropiedad() {
+        return tipoPropiedad;
+    }
+
+    public void setTipoPropiedad(TipoPropiedad tipoPropiedad) {
+        this.tipoPropiedad = tipoPropiedad;
+    }    
 
 }

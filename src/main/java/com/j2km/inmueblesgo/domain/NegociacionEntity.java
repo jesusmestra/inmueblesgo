@@ -64,6 +64,10 @@ public class NegociacionEntity implements Serializable {
     @Basic
     private Double valorPorcentaje;
     
+    @Column(name = "neg_valor_descuento")
+    @Basic
+    private Double valorDescuento;
+    
     @Column(name = "neg_observacion")
     @Basic
     private String observacion;
@@ -222,6 +226,14 @@ public class NegociacionEntity implements Serializable {
 
     public void setObservacion(String observacion) {
         this.observacion = observacion;
+    }
+
+    public Double getValorDescuento() {
+        return valorDescuento;
+    }
+
+    public void setValorDescuento(Double valorDescuento) {
+        this.valorDescuento = valorDescuento;
     }
     
     @Override

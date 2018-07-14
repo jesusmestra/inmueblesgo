@@ -28,12 +28,12 @@
     </repositories>
 
     <dependencies>      
-        <!--dependency>
+        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>4.3.1.Final</version>
             <scope>provided</scope>            
-        </dependency-->
+        </dependency>
         <dependency>
             <groupId>unknown.binary</groupId>
             <artifactId>hibernate-jpamodelgen-4.3.1.Final</artifactId>
@@ -83,10 +83,7 @@
             <version>2.25.1</version>
         </dependency>
 
-        <dependency>
-            <!--  Latest iText release under the MPL & GPL license is 2.1.7.
-            Newer releases are available under the AGPL license.
-            We need iText for PrimeFaces PDF exporter. -->
+        <dependency>           
             <groupId>com.lowagie</groupId>
             <artifactId>itext</artifactId>
             <version>2.1.7</version>
@@ -112,22 +109,17 @@
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>3.9</version>
-        </dependency>      
-        
-       
-        
+        </dependency>
     </dependencies>
     
     <build>
         <finalName>Inmueblesgo</finalName>
-        <plugins>
-            
+        <plugins>           
             <!--plugin>
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>1.0.2.Final</version>
-            </plugin-->
-            
+            </plugin-->            
         </plugins>
     </build>
 </project>

@@ -205,14 +205,16 @@ public class InmuebleBean implements Serializable {
         return null;
     }
     
-    public void valorTotal() {
+    public double valorTotal() {
         
         double tempo = inmueble.getValorMetroCuadrado() * inmueble.getArea();
         
         if (inmueble.getIncremento() != null ){
             tempo += inmueble.getIncremento();
         }
-        inmueble.setValorTotal(tempo);
+        //inmueble.setValorTotal(tempo);
+        
+        return 0;
     }
 
     public Long getInmuebleId() {

@@ -13,9 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-/**
- * @author jdmp
- */
 @Entity(name = "Rol")
 @Table(name = "sec_rol")
 public class RolEntity implements Serializable {

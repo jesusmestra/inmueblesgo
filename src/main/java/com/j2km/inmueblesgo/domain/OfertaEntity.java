@@ -12,9 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * @author jdmp
- */
 @Entity(name = "Oferta")
 @Table(name = "oferta")
 public class OfertaEntity implements Serializable {

@@ -275,6 +275,19 @@
                                     <h:outputText value="Piso Final:" />
                                     <p:inputText value="#{proyectoBean.torreNueva.numeroPisos}"/>
                                 </div>
+                                <div class="ui-g-2">                    
+                                    <h:outputText value="Tipo Propiedad:" />
+                                    <p:selectOneMenu value="#{proyectoBean.torreNueva.tipoPropiedad}"
+                                                     id="tipoPlantaSelectInput">
+
+                                        <f:selectItem noSelectionOption="true" itemLabel="" />
+                                        <f:selectItems value="#{proyectoBean.tipoPropiedades}" 
+                                                       var="tipoPropiedad" 
+                                                       itemLabel="#{tipoPropiedad.descripcion}"
+                                                       itemValue="#{tipoPropiedad}" />
+                                        <o:converter converterId="omnifaces.SelectItemsConverter" list="#{proyectoBean.tipoPropiedades}" />                                           
+                                    </p:selectOneMenu>
+                                </div>
                                 <div class="ui-g-1">
                                     <h:outputText value="..." style="color: white"/>
                                     <p:commandButton value="Crear" icon="ui-icon-plusthick" 
@@ -338,12 +351,24 @@
                                 <div class="ui-g-12">
                                     <p:panel id="panelInmuebles" widgetVar="panelInmuebles" header="Inmuebles por Piso">                                        
                                         <div class="ui-g">
+                                            <div class="ui-g-1">
+                                                <label>Nro</label><br/>
+                                                <h:outputLabel value="#{proyectoBean.inmuebleSeleccionado.numero}" style="font-size: 20px; font-weight: bold"/>
+                                            </div>
+                                             <div class="ui-g-1">
+                                                <label>Área</label>
+                                                <p:inputNumber value="#{proyectoBean.inmuebleSeleccionado.area}"  
+                                                               decimalSeparator="," thousandSeparator="." decimalPlaces="1"
+                                                               accesskey="" minValue="0" emptyValue="sign">
+                                                    <p:ajax event="valueChange" update="valorTotalEditInput"/>
+                                                </p:inputNumber>
+                                            </div>
                                             <div class="ui-g-2">
                                                 <label>Valor M2</label>
                                                 <p:inputNumber value="#{proyectoBean.inmuebleSeleccionado.valorMetroCuadrado}"  
                                                                decimalSeparator="," thousandSeparator="." decimalPlaces="1"
                                                                accesskey="" minValue="1" emptyValue="sign">
-                                                    <p:ajax event="keyup" listener="#{proyectoBean.valorTotal()}" update="valorTotalEditInput"/>
+                                                    <p:ajax event="valueChange" update="valorTotalEditInput"/>
                                                 </p:inputNumber>
                                             </div>
                                             <div class="ui-g-2">
@@ -351,23 +376,36 @@
                                                 <p:inputNumber value="#{proyectoBean.inmuebleSeleccionado.incremento}"  
                                                                decimalSeparator="," thousandSeparator="." decimalPlaces="1"
                                                                accesskey="" minValue="1" emptyValue="sign">
-                                                    <p:ajax event="keyup" listener="#{proyectoBean.valorTotal()}" update="valorTotalEditInput"/>
+                                                    <p:ajax event="valueChange" update="valorTotalEditInput"/>
                                                 </p:inputNumber>
                                             </div>
                                             <div class="ui-g-2">
                                                 <h:outputLabel value="Valor Separación:" />
                                                 <p:inputNumber value="#{proyectoBean.inmuebleSeleccionado.valorSeparacion}"  
                                                                decimalSeparator="," thousandSeparator="." decimalPlaces="1"
-                                                               accesskey="" minValue="1" emptyValue="sign">
-                                                    <p:ajax event="keyup" listener="#{proyectoBean.valorTotal()}" update="valorTotalEditInput"/>
+                                                               accesskey="" minValue="1" emptyValue="sign">                                                    
                                                 </p:inputNumber>
                                             </div>
                                             <div class="ui-g-2">
-                                                <h:outputLabel value="Valor Total: "/>
+                                                <h:outputLabel value="Estado Inmueble: "/>
+                                                <p:selectOneMenu value="#{proyectoBean.inmuebleSeleccionado.estadoInmueble}"
+                                                                id="estadoInmuebleSelectInput">
+                                                   <f:selectItem noSelectionOption="true" itemLabel="" />
+                                                   <f:selectItems value="#{inmuebleBean.estadoInmuebles}" 
+                                                                  var="estadoInmueble" 
+                                                                  itemLabel="#{estadoInmueble.nombre}"
+                                                                  itemValue="#{estadoInmueble}" />
+                                                   <o:converter converterId="omnifaces.SelectItemsConverter" list="#{inmuebleBean.estadoInmuebles}" />
+
+                                               </p:selectOneMenu>
+                                            </div>
+                                            <div class="ui-g-2">
+                                                <h:outputLabel value="Total: "/>
                                                 <h:outputLabel value="#{proyectoBean.inmuebleSeleccionado.valorTotal}" id="valorTotalEditInput" style="font-size: 20px; font-weight: bold">
                                                     <f:convertNumber type="currency" pattern="$#,##0" locale="es_CO" />
                                                 </h:outputLabel>
                                             </div>
+                                            
                                             <div class="ui-g-2">
                                                 <p:commandButton value="Guardar" action="#{proyectoBean.guardarInmueble}" icon="ui-icon-pencil" update="proyectoForm @widgetVar(panelInmuebles)"/>
                                             </div>
@@ -432,12 +470,12 @@
                                                                          title="#{messages.label_view}"
                                                                          update="@widgetVar(panelInmuebles)" />
                                                     </p:column>
-                                                    <p:column>
+                                                    <!--p:column>
 
                                                         <p:commandButton action="#{proyectoBean.redireccionaNegociacion(inmueble)}"                                         
                                                                          icon="fa fa-shopping-cart"
                                                                          title="#{messages.label_view}" rendered="#{inmueble.estadoInmueble.id == 1}" />
-                                                    </p:column>
+                                                    </p:column-->
                                                 </p:columnGroup>
 
                                             </p:column>

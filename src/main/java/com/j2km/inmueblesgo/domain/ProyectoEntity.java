@@ -14,11 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
-/**
- * @author jdmp
- */
+
 @Entity(name = "Proyecto")
 @Table(name = "proyecto")
 @NamedQuery(name = "ProyectoEntity.findByEmpresa", query = "Select p from Proyecto p WHERE p.empresa.id = :empresa_id")
@@ -27,26 +24,7 @@ public class ProyectoEntity implements Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    
-    @Version
-    private int version;
 
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getVersion() {
-        return this.version;
-    }
-
-    public void setVersion(int version) {
-        this.version = version;
-    }
-    
     @Column(name = "pry_nombre", unique = true)
     @Basic
     private String nombre;
@@ -82,6 +60,18 @@ public class ProyectoEntity implements Serializable {
     @ManyToOne(targetEntity = Archivo.class)
     @JoinColumn(name = "ARCHIVO_ID")
     private Archivo archivo;
+    
+    @ManyToOne(targetEntity = Archivo.class)
+    @JoinColumn(name = "PROMESA_ID")
+    private Archivo promesa;
+    
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Archivo getArchivo() {
         return archivo;
@@ -153,6 +143,14 @@ public class ProyectoEntity implements Serializable {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public Archivo getPromesa() {
+        return promesa;
+    }
+
+    public void setPromesa(Archivo promesa) {
+        this.promesa = promesa;
     }
     
     @Override

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:o="http://omnifaces.org/ui">
+    <ui:composition template="/templates/layout.xhtml">        
+        <ui:define name="content">
+            <f:metadata>                
+                <f:viewParam name="id" value="#{negociacionBean.torreId}"/>
+                <f:viewAction action="#{negociacionBean.inicioInmuebles()}"  />
+            </f:metadata>
+            <style type="text/css">
+
+            </style>
+            <h1>#{negociacionBean.torre.proyecto.nombre} #{negociacionBean.torre.nombre}</h1>
+            <h:form prependId="false" id="proyectoDataForm" onkeypress="if (event.keyCode == 13) {
+                        return false;
+                    }">
+                <p:messages closable="true"/>
+
+                <p:panel id="panelInmuebles" header="Inmuebles por Torre">
+                    <p:dataTable id="inmuebleTable" value="#{negociacionBean.inmueblesDisponiblesList}" 
+                                 var="inmueble" widgetVar="inmuebleTable" emptyMessage="#{messages.label_no_records_found}"
+                                 reflow="true" rowIndexVar="i"
+                                 >
+
+                        <f:facet name="header" >
+                            <p:outputLabel value="#{messages.label_listado_inmuebles}"/>
+                        </f:facet>
+
+                        <p:column  headerText="#{messages.label_item}" class="derecha"  >
+                            <h:outputText value="#{i+1}" />
+                        </p:column>
+
+                        <p:column  headerText="#{messages.field_label_inmueble_numero}"  >
+                            <h:outputText value="#{inmueble.numero}" />
+                        </p:column>                
+
+                        <p:column  headerText="#{messages.field_label_inmueble_area}" class="derecha">
+                            <h:outputText value="#{inmueble.area}" >
+                                <f:convertNumber type="number"  />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="#{messages.field_label_inmueble_valorMetroCuadrado}" class="derecha" >
+                            <h:outputText value="#{inmueble.valorMetroCuadrado}" rendered="#{inmueble.estadoInmueble.nombre.equals('DISPONIBLE')}" >
+                                <f:convertNumber type="currency" currencySymbol="$" />
+                            </h:outputText>
+                        </p:column>  
+
+                        <p:column  headerText="#{messages.field_label_inmueble_incremento}" class="derecha" >
+                            <h:outputText value="#{inmueble.incremento}" rendered="#{inmueble.estadoInmueble.nombre.equals('DISPONIBLE')}">
+                                <f:convertNumber type="currency" currencySymbol="$" />
+                            </h:outputText>
+                        </p:column> 
+
+                        <p:column  headerText="#{messages.field_label_inmueble_valorSeparacion}" class="derecha" >
+                            <h:outputText value="#{inmueble.valorSeparacion}" rendered="#{inmueble.estadoInmueble.nombre.equals('DISPONIBLE')}">
+                                <f:convertNumber type="currency" currencySymbol="$" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column  headerText="#{messages.field_label_inmueble_valorTotal}" class="derecha">
+                            <h:outputText value="#{inmueble.valorTotal}" rendered="#{inmueble.estadoInmueble.nombre.equals('DISPONIBLE')}">
+                                <f:convertNumber type="currency" currencySymbol="$" />
+                            </h:outputText>
+                        </p:column>                      
+
+                        <p:column headerText="#{messages.field_label_inmueble_estadoInmueble}"  >
+                            <h:outputText value="#{inmueble.estadoInmueble.nombre}" />
+                        </p:column>
+
+                        <p:column styleClass="action-column" headerText="#{messages.table_actions_column}"  exportable="false">
+
+                            <p:commandButton action="#{proyectoBean.redireccionaNegociacion(inmueble)}"                                         
+                                             icon="fa fa-shopping-cart"
+                                             title="#{messages.label_view}" rendered="#{inmueble.estadoInmueble.id == 1}" />
+
+                            <p:commandButton action="#{proyectoBean.redireccionaNegociacion(inmueble)}"                                         
+                                             icon="fa fa-eye"
+                                             title="#{messages.label_view}" rendered="#{inmueble.estadoInmueble.id != 1}" />
+
+                        </p:column>
+
+                    </p:dataTable>
+                </p:panel>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

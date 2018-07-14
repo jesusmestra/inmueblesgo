@@ -53,80 +53,10 @@
 
                     <p:column styleClass="action-column" headerText="#{messages.table_actions_column}" width="115" exportable="false">
                         <p:commandButton action="#{negociacionBean.seleccionarProyecto(proyecto)}"
-                                         icon="ui-icon-zoomin"
-                                         update="@widgetVar(inmuebleTable)"
+                                         icon="ui-icon-zoomin"                                         
                                          title="#{messages.label_view}" />
                     </p:column>
                 </p:dataTable>
-
-                <p:panel id="panelInmuebles" header="Inmuebles por Proyecto">
-                    <p:dataTable id="inmuebleTable" value="#{negociacionBean.inmueblesDisponiblesList}" 
-                                 var="inmueble" widgetVar="inmuebleTable" emptyMessage="#{messages.label_no_records_found}"
-                                 reflow="true" rowIndexVar="i"
-                                 >
-
-                        <f:facet name="header" >
-                            <p:outputLabel value="#{messages.label_listado_inmuebles}"/>
-                        </f:facet>
-
-                        <p:column  headerText="#{messages.label_item}" style="width: 2%;" class="derecha"  >
-                            <h:outputText value="#{i+1}" />
-                        </p:column>
-
-                        <p:column  headerText="#{messages.field_label_inmueble_numero}"  >
-                            <h:outputText value="#{inmueble.numero}" />
-                        </p:column>                
-
-                        <p:column  headerText="#{messages.field_label_inmueble_area}" class="derecha">
-                            <h:outputText value="#{inmueble.area}" >
-                                <f:convertNumber type="number"  />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column  headerText="#{messages.field_label_inmueble_valorMetroCuadrado}" class="derecha" >
-                            <h:outputText value="#{inmueble.valorMetroCuadrado}" >
-                                <f:convertNumber type="currency" currencySymbol="$" />
-                            </h:outputText>
-                        </p:column>  
-
-                        <p:column  headerText="#{messages.field_label_inmueble_incremento}" class="derecha" >
-                            <h:outputText value="#{inmueble.incremento}" >
-                                <f:convertNumber type="currency" currencySymbol="$" />
-                            </h:outputText>
-                        </p:column> 
-
-                        <p:column  headerText="#{messages.field_label_inmueble_valorSeparacion}" class="derecha" >
-                            <h:outputText value="#{inmueble.valorSeparacion}" >
-                                <f:convertNumber type="currency" currencySymbol="$" />
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column  headerText="#{messages.field_label_inmueble_valorTotal}" class="derecha">
-                            <h:outputText value="#{inmueble.valorTotal}">
-                                <f:convertNumber type="currency" currencySymbol="$" />
-                            </h:outputText>
-                        </p:column>                      
-
-                        <p:column headerText="#{messages.field_label_inmueble_estadoInmueble}"  >
-                            <h:outputText value="#{inmueble.estadoInmueble.nombre}" />
-                        </p:column>
-
-                        <p:column styleClass="action-column" headerText="#{messages.table_actions_column}"  exportable="false" 
-                                  style="width: 5%;" >
-
-                            <p:commandButton action="#{proyectoBean.redireccionaNegociacion(inmueble)}"                                         
-                                             icon="fa fa-shopping-cart"
-                                             title="#{messages.label_view}" rendered="#{inmueble.estadoInmueble.id == 1}" />
-
-                            <p:commandButton action="#{proyectoBean.redireccionaNegociacion(inmueble)}"                                         
-                                             icon="fa fa-eye"
-                                             title="#{messages.label_view}" rendered="#{inmueble.estadoInmueble.id != 1}" />
-
-                        </p:column>
-
-                    </p:dataTable>
-                </p:panel>
-
             </h:form>
         </ui:define>
     </ui:composition>

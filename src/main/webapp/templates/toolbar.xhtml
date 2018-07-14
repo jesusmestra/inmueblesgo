@@ -19,33 +19,42 @@
                     
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <ul class="nav navbar-nav">
-                            <li><p:link outcome="/pages/tercero/tercero.xhtml" value=" Clientes" class="fa fa-users"/></li>
-                            <li><p:link outcome="/pages/vendedor/proyectos.xhtml" value=" Negociación" class="fa fa-money"/></li>
-                            <li><p:link outcome="/pages/pagos/pagos.xhtml" value=" Pagos" class="fa fa-money"/></li>
+                            <li><p:link outcome="/pages/tercero/tercero.xhtml" value=" Clientes" class="fa fa-users"/></li>                            
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle fa fa-cogs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Administrar <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle fa fa-cogs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Negociación <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
-                                    <li><p:link outcome="/pages/empresa/empresa.xhtml" value=" Empresa" class="fa fa-university"/></li>
-                                    <li><p:link outcome="/pages/proyecto/proyecto.xhtml" value=" Proyecto" class="fa fa-building-o"/></li>
-                                    <li><p:link outcome="/pages/oferta/oferta.xhtml" value=" Planes de Venta" class="fa fa-list-ol"/></li>
-                                    <li role="separator" class="divider"></li>
-                                    <li><p:link outcome="/pages/configuracion/usuarios.xhtml" value=" Usuarios" class="fa fa-user"/></li>
-                                    <li role="separator" class="divider"></li>                                    
-                                    <li><p:link outcome="/pages/configuracion/divipola.xhtml" value=" Configuración" class="fa fa-puzzle-piece"/></li>
+                                    <li><p:link outcome="/pages/vendedor/proyectos.xhtml" value=" Nueva" class="fa fa-money"/></li>
+                                    <li><p:link outcome="/pages/negociacion/buscar.xhtml" value=" Buscar..." class="fa fa-building-o"/></li>                                   
                                 </ul>
                             </li>
-                            
+                            <ui:fragment rendered="#{request.isUserInRole('ADMIN')}">
+                                <li><p:link outcome="/pages/pagos/pagos.xhtml" value=" Pagos" class="fa fa-money"/></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle fa fa-cogs" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> Administrar <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><p:link outcome="/pages/empresa/empresa.xhtml" value=" Empresa" class="fa fa-university"/></li>
+                                        <li><p:link outcome="/pages/proyecto/proyecto.xhtml" value=" Proyecto" class="fa fa-building-o"/></li>
+                                        <li><p:link outcome="/pages/oferta/oferta.xhtml" value=" Planes de Venta" class="fa fa-list-ol"/></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><p:link outcome="/pages/configuracion/usuarios.xhtml" value=" Usuarios" class="fa fa-user"/></li>
+                                        <li role="separator" class="divider"></li>                                    
+                                        <li><p:link outcome="/pages/configuracion/divipola.xhtml" value=" Configuración" class="fa fa-puzzle-piece"/></li>
+                                    </ul>
+                                </li>
+                            </ui:fragment>
                         </ul>                        
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#">Link</a></li>
+                            <!--li><a href="#">Link</a></li-->
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    #{request.userPrincipal.name} <span class="caret"></span>
+                                </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="#">Action</a></li>
                                     <li><a href="#">Another action</a></li>
                                     <li><a href="#">Something else here</a></li>
                                     <li role="separator" class="divider"></li>                                    
-                                    <li><p:commandLink action="#{loginBean.logout}" class="fa fa-power-off"> Salir </p:commandLink></li>
+                                    <li><p:commandLink action="#{loginBean.logout}" class="fa fa-power-off" ajax="false"> Salir </p:commandLink></li>
                                 </ul>
                             </li>
                         </ul>

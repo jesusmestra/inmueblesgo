@@ -7,8 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity(name = "TipoPropiedad")
@@ -22,10 +20,6 @@ public class TipoPropiedad implements Serializable {
     @Column(name = "tp_descripcion")
     @Basic
     private String descripcion;    
-
-    @ManyToOne(targetEntity = ProyectoEntity.class)
-    @JoinColumn(name = "PROYECTO_ID")
-    private ProyectoEntity proyecto;
 
     public Long getId() {
         return this.id;
@@ -41,14 +35,6 @@ public class TipoPropiedad implements Serializable {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public ProyectoEntity getProyecto() {
-        return this.proyecto;
-    }
-
-    public void setProyecto(ProyectoEntity proyecto) {
-        this.proyecto = proyecto;
     }
 
     @Override

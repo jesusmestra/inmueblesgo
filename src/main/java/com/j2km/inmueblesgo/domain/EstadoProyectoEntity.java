@@ -13,9 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-/**
- * @author jdmp
- */
 @Entity(name = "EstadoProyecto")
 @Table(name = "estado_proyecto")
 public class EstadoProyectoEntity implements Serializable {   

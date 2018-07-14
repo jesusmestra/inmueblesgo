@@ -6,6 +6,7 @@
 package com.j2km.inmueblesgo.web;
 
 import com.j2km.inmueblesgo.configuracion.Constantes;
+import com.j2km.inmueblesgo.configuracion.Inicio;
 import com.j2km.inmueblesgo.domain.NegociacionEntity;
 import com.j2km.inmueblesgo.domain.NegociacionTerceroEntity;
 import com.j2km.inmueblesgo.domain.UsuarioEntity;
@@ -49,6 +50,7 @@ public class DashboardBean implements Serializable {
     }
     
     public void cargar(){
+        
         this.usuarioActual = usuarioService.findOptionalByLogin(FacesContext.getCurrentInstance().getExternalContext().getRemoteUser());
         
         //listado de negociaciones que verá el gerente.

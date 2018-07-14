@@ -1,24 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.j2km.inmueblesgo.web.util;
 
 import com.j2km.inmueblesgo.service.ConfiguracionService;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.apache.poi.util.IOUtils;
 import org.primefaces.model.UploadedFile;
 
 @Named(value = "configuracionBean")
@@ -51,7 +39,6 @@ public class ConfiguracionBean implements Serializable{
         }
     }
     
-    
     private UploadedFile archivo;
 
     public UploadedFile getArchivo() {
@@ -59,31 +46,6 @@ public class ConfiguracionBean implements Serializable{
     }
 
     public void setArchivo(UploadedFile archivo) {
-        this.archivo = archivo;
+        this.archivo = archivo;        
     }
-    
-    public void saveFile() throws FileNotFoundException, IOException {
-        
-        
-        String filePath ="/home/jdmp/programacion/Proyectos/inmueblesgo/src/main/webapp/resources/images/proyecto/"+File.separator;
-
-    String filename = archivo.getFileName();
-    InputStream input = archivo.getInputstream();
-    OutputStream output = new FileOutputStream(new File(filePath, filename));
-
-    try {
-        IOUtils.copy(input, output);
-    } finally {
-        IOUtils.closeQuietly(input);
-        IOUtils.closeQuietly(output);
-    }
-        
-        
-        
-        
-
-}
-    
-    
-    
 }

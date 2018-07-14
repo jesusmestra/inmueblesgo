@@ -1,19 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.j2km.inmueblesgo.service;
 
+import com.j2km.inmueblesgo.domain.Archivo;
 import com.j2km.inmueblesgo.domain.NegociacionEntity;
+import com.j2km.inmueblesgo.domain.PlanPagoEntity;
 import com.j2km.inmueblesgo.domain.TerceroEntity;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import com.j2km.inmueblesgo.web.ApplicationBean;
+import com.j2km.inmueblesgo.web.util.NumeroALetras;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -21,87 +18,100 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Inject;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
 
 public class PromesaService implements Serializable {
     
     @Inject private NegociacionRepository nr;
     @Inject private TerceroRepository terceroRepository;
+    @Inject private PlanPagoRepository planPagoRepository;
+    @Inject private ApplicationBean applicationBean;
     
     private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    private DateFormat fechaLarga = new SimpleDateFormat("dd 'de' MMMM 'de' yyyy");
     private DecimalFormat formatea = new DecimalFormat("###,###.##");
-
-    public byte[] generar(NegociacionEntity negociacion) {
+    
+    public byte[] generar(NegociacionEntity negociacion) {        
         List<TerceroEntity> clientes = terceroRepository.findByNegociacion(negociacion);
-        FileInputStream fis = null;
-        try {
-            File file = new File("/home/files/inmueblesGo/documentos/promesa.docx");
-            fis = new FileInputStream(file);
-
-            XWPFDocument document = new XWPFDocument(fis);
+        Archivo archivo = negociacion.getInmueble().getProyecto().getPromesa();
+        
+        NumeroALetras numeroALetras = new NumeroALetras();
+        
+        List<PlanPagoEntity> planPagoList = planPagoRepository.findByNegociacionOrderByFechaPactadaAsc(negociacion);
+        
+        if (archivo == null){
+            return null;
+        }        
+        try {            
             
+            String strClientes = "";    
             
+            String direccionCliente="";
+            String barrioCliente="";
+            String ciudadCliente="";
+            String telefonoCliente="";
+            String emailCliente="";
             
-            for (XWPFParagraph paragraph : document.getParagraphs()) {
+            int contador = 0;
+            for (TerceroEntity cliente : clientes) {
+                strClientes +=cliente.getNombreCompleto();
+                strClientes +=" con "+cliente.getTipoIdentificacion().getNombre().toLowerCase();
+                strClientes +=" número "+cliente.getIdentificacion();
+                strClientes +=" de "+cliente.getLugarExpedicion().getNombre()+ ", ";
                 
-                List<XWPFRun> runs = paragraph.getRuns();
-                if (runs != null) {
-                    for (XWPFRun r : runs) {
-                        String text = r.getText(0);
-                        //Colocar los datos de la empresa-----------------------------------------
-                        if (text != null && text.contains("[[empresa]]")) {
-                            text = text.replace("[[empresa]]", 
-                                    negociacion.getInmueble().getProyecto().getEmpresa().getNombre());
-                            r.setText(text, 0);
-                        }
-                        
-                        if (text != null && text.contains("[[nit]]")) {
-                            text = text.replace("[[nit]]", 
-                                    negociacion.getInmueble().getProyecto().getEmpresa().getNit());
-                            r.setText(text, 0);
-                        }
-                        //----------------------Apartamento ----------------------------------
-                        if (text != null && text.contains("[[apartamento_numero]]")) {
-                            text = text.replace("[[apartamento_numero]]", 
-                                    negociacion.getInmueble().getNumero());
-                            r.setText(text, 0);
-                        }
-                        
-                        if (text != null && text.contains("[[apartamento_area]]")) {
-                            text = text.replace("[[apartamento_area]]", 
-                                    formatea.format(negociacion.getInmueble().getArea()));
-                            r.setText(text, 0);
-                        }
-                        
-                        // ------------------- COMPRADORES ------------------------------------
-                        String strClientes = "";
-                        for (TerceroEntity cliente : clientes) {
-                            strClientes +=cliente.getNombreCompleto();
-                            strClientes +=" con "+cliente.getTipoIdentificacion().getNombre().toLowerCase();
-                            strClientes +=" número "+cliente.getIdentificacion();
-                            strClientes +=" de "+cliente.getLugarExpedicion().getNombre()+ ", ";
-                        }
-                        
-                        if (text != null && text.contains("[[compradores]]")) {
-                            text = text.replace("[[compradores]]",strClientes);
-                            r.setText(text, 0);
-                        }
-                        
-                        /**
-                         * --------------------------- 
-                         * con cedula de ciudadanía número
-                         * ------------------------------, ----------------, 
-                         * mayor de edad y vecino(a) de esta ciudad
-                         */
-                    }
+                if(contador == 0){
+                    if(cliente.getDireccion() != null)
+                        direccionCliente = cliente.getDireccion();
+                    
+                    if(cliente.getBarrio() != null)
+                        barrioCliente = cliente.getBarrio();
+                    
+                    if(cliente.getLugarResidencia() != null)
+                        ciudadCliente = cliente.getLugarResidencia().getNombre();
+                    
+                    if(cliente.getTelefono()!= null)
+                        telefonoCliente = cliente.getTelefono();
+                    
+                    if(cliente.getCelular()!= null)
+                        telefonoCliente += " " +cliente.getCelular();
+                    
+                    if(cliente.getEmail()!= null)
+                        emailCliente = cliente.getEmail();
                 }
+                contador++;
             }
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            document.write(baos);
-            return baos.toByteArray();
-            //document.write(new FileOutputStream("/home/files/inmueblesGo/documentos/promesa2.docx"));
+            
+            String strPlanPago = "";
+            for (PlanPagoEntity pagoEntity: planPagoList){
+                strPlanPago+="el "+fechaLarga.format(pagoEntity.getFechaPactada())
+                            +" la suma de "+numeroALetras.numero_a_letras(pagoEntity.getValorPactado()).toUpperCase()+" PESOS" 
+                            +" (\\$"+formatea.format(pagoEntity.getValorPactado())+")"
+                            +"; ";                            
+            }
+            
+            String temp = new String(Files.readAllBytes(Paths.get(archivo.getRutaFisica())));
+            System.err.println(negociacion.getValorTotal());
+            temp = temp
+                    .replaceAll("xxempresaxx", negociacion.getInmueble().getProyecto().getEmpresa().getNombre())
+                    .replaceAll("xxnitxx", negociacion.getInmueble().getProyecto().getEmpresa().getNit())
+                    .replaceAll("xxcompradoresxx",strClientes)
+                    .replaceAll("xxnumeroxx", negociacion.getInmueble().getNumero())
+                    .replaceAll("xxtorrenumeroxx", negociacion.getInmueble().getPiso().getTorre().getNumero())                    
+                    .replaceAll("xxareaxx", formatea.format(negociacion.getInmueble().getArea()))
+                    .replaceAll("xxvalorinmueblexx", formatea.format(negociacion.getValorTotal()))
+                    .replaceAll("xxletrasvalorinmueblexx", numeroALetras.numero_a_letras(negociacion.getValorTotal()).toUpperCase())
+                    .replaceAll("xxvalornegociacionxx", formatea.format(negociacion.getValorPorcentaje()))
+                    .replaceAll("xxletrasvalornegociacionxx", numeroALetras.numero_a_letras(negociacion.getValorPorcentaje()).toUpperCase())
+                    .replaceAll("xxplandepagoxx", strPlanPago)
+                    .replaceAll("xxpagobancoxx", formatea.format(negociacion.getValorTotal()-negociacion.getValorPorcentaje()))
+                    .replaceAll("xxletraspagobancoxx", numeroALetras.numero_a_letras(negociacion.getValorTotal()-negociacion.getValorPorcentaje()).toUpperCase())
+                    .replaceAll("xxdireccionclientexx", direccionCliente)
+                    .replaceAll("xxbarrioclientexx", barrioCliente)
+                    .replaceAll("xxciudadclientexx", ciudadCliente)
+                    .replaceAll("xxtelefonoclientexx", telefonoCliente)
+                    .replaceAll("xxemailclientexx", emailCliente);
+           
+            return temp.getBytes("ISO-8859-1");
+            
 
         } catch (FileNotFoundException ex ) {
             System.err.println(ex.getMessage());
@@ -109,14 +119,9 @@ public class PromesaService implements Serializable {
         } catch (IOException ex) {
             System.err.println(ex.getMessage());
             Logger.getLogger(PromesaService.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                fis.close();
-            } catch (IOException ex) {
-                Logger.getLogger(PromesaService.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        } catch (Exception ex) {
+            Logger.getLogger(PromesaService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-
 }

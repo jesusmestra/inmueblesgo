@@ -15,9 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-/**
- * @author jdmp
- */
 @Entity(name = "Municipio")
 @Table(name = "municipio")
 public class MunicipioEntity implements Serializable {

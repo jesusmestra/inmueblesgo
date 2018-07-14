@@ -139,16 +139,21 @@
                 </p:panel>
                 <p/>
             </h:form>            
-            <p:panel header="Opciones Vendedor" rendered="#{request.isUserInRole('VENDEDOR')}">                
-                <form method="post" action="/inmueblesGo/SolicitudInmuebleItext" target="_blank">                                
-                    <input type="hidden" name="id" value="#{verNegociacion.negociacion.id}"/>                     
-                    <input type="submit" value="Imprimir" class="btn btn-success btn-xs"/>
-                </form>
-                
-                <form method="post" action="/inmueblesGo/PromesaCompraventa">
-                    <input type="hidden" name="id" value="#{verNegociacion.negociacion.id}"/>      
-                    <input type="submit" value="Promesa Compraventa" class="btn btn-success btn-xs"/>
-                 </form>
+            <p:panel header="Opciones Vendedor" rendered="#{request.isUserInRole('VENDEDOR')}">  
+                <div class="ui-g">
+                    <div class="ui-g-3">
+                        <form method="post" action="/inmueblesGo/SolicitudInmuebleItext" target="_blank">                                
+                            <input type="hidden" name="id" value="#{verNegociacion.negociacion.id}"/>                     
+                            <input type="submit" value="Formato Solicitud Inmueble" class="btn btn-success btn-xs"/>
+                        </form>
+                    </div>
+                    <div class="ui-g-3">
+                        <form method="post" action="/inmueblesGo/PromesaCompraventa">
+                            <input type="hidden" name="id" value="#{verNegociacion.negociacion.id}"/>      
+                            <input type="submit" value="Promesa Compraventa" class="btn btn-success btn-xs"/>
+                        </form>
+                    </div>
+                </div>                   
             </p:panel>
         </ui:define>
 

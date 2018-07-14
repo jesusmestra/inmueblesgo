@@ -23,7 +23,10 @@
                         <div class="panel-title">Negociaciones esperando aprobación</div>
                     </div>
                     <div class="panel-body">
-                        <p:dataTable value="#{dashboard.nuevasNegociaciones}" var="negociacion" rendered="#{request.isUserInRole('GERENTE')}">
+                        <p:dataTable value="#{dashboard.nuevasNegociaciones}" 
+                                     var="negociacion" 
+                                     rendered="#{request.isUserInRole('GERENTE')}"
+                                     reflow="true">
 
                             <p:column headerText="Fecha">
                                 <h:outputText value="#{negociacion.fecha}"/>
@@ -53,7 +56,7 @@
                 </div>
                 <p/>
 
-                <div class="panel panel-success">
+                <!--div class="panel panel-success">
                     <div class="panel-heading">
                         <div class="panel-title">Negociaciones Aprobadas</div>
                     </div>
@@ -84,9 +87,11 @@
                             </p:column>
                         </p:dataTable>
                     </div>
-                </div>
+                </div-->
 
-                <p:dataTable value="#{dashboard.negociacionesPorUsuario}" var="negociacion" rendered="#{request.isUserInRole('GERENTE')}">
+                <p:dataTable value="#{dashboard.negociacionesPorUsuario}" 
+                             var="negociacion" rendered="#{request.isUserInRole('GERENTE')}"
+                             reflow="true">
                     <f:facet name="header">
                         Nuevas negociaciones por Usuario
                     </f:facet>

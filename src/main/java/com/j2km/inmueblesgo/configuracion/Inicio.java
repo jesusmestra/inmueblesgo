@@ -9,6 +9,7 @@ import com.j2km.inmueblesgo.domain.PermisoEntity;
 import com.j2km.inmueblesgo.domain.RolEntity;
 import com.j2km.inmueblesgo.domain.TipoFuenteInformacionEntity;
 import com.j2km.inmueblesgo.domain.TipoIdentificacionEntity;
+import com.j2km.inmueblesgo.domain.TipoPropiedad;
 import com.j2km.inmueblesgo.domain.UsuarioEntity;
 import com.j2km.inmueblesgo.service.ConfiguracionRepository;
 import com.j2km.inmueblesgo.service.EmpresaRepository;
@@ -25,6 +26,7 @@ import com.j2km.inmueblesgo.service.TerceroRepository;
 import com.j2km.inmueblesgo.service.TipoFuenteInformacionRepository;
 import com.j2km.inmueblesgo.service.TipoIdentificacionRepository;
 import com.j2km.inmueblesgo.service.TipoPlantaDetalleRepository;
+import com.j2km.inmueblesgo.service.TipoPropiedadRepository;
 import com.j2km.inmueblesgo.service.UsuarioRepository;
 import java.io.Serializable;
 import java.util.List;
@@ -33,10 +35,13 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
 
+
 @Startup
 @Singleton
 public class Inicio implements Serializable{
-
+    
+    //private static org.slf4j.Logger logger = LoggerFactory.getLogger(Inicio.class);
+ 
     @Inject private UsuarioRepository usuarioService;
     @Inject private RolRepository rolService;
     @Inject private PermisoRepository permisoService;
@@ -53,6 +58,7 @@ public class Inicio implements Serializable{
     @Inject private ConfiguracionRepository configuracionRepository;
     @Inject private InmuebleRepository inmuebleRepository;
     @Inject private TipoPlantaDetalleRepository tipoPlantaDetalleRepository;
+    @Inject private TipoPropiedadRepository tipoPropiedadRepository;
 
     private void iniciarTipoFuenteInformacion() {
         String[] fuentes = {
@@ -231,8 +237,30 @@ public class Inicio implements Serializable{
         }        
     }
 
+    private void iniciarLogs(){       
+       //por hacer
+    }
+    
+    private void iniciarTipoPropiedad(){
+        TipoPropiedad tp = tipoPropiedadRepository.findOptionalByDescripcion("CASA");
+        if(tp == null){
+            tp = new TipoPropiedad();
+            tp.setDescripcion("CASA");
+            tipoPropiedadRepository.saveAndFlush(tp);
+        }
+        
+        tp = tipoPropiedadRepository.findOptionalByDescripcion("APARTAMENTO");
+        if(tp == null){
+            tp = new TipoPropiedad();
+            tp.setDescripcion("APARTAMENTO");
+            tipoPropiedadRepository.saveAndFlush(tp);
+        }
+    }
+    
     @PostConstruct
-    public void iniciar() {
+    public void iniciar() {        
+        iniciarLogs();
+        iniciarTipoPropiedad();
         iniciarEstadosProyecto();
         iniciarEstadosInmuebles();
         iniciarSeguridad();

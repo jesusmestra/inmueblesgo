@@ -17,6 +17,7 @@ import com.j2km.inmueblesgo.domain.ProyectoEntity;
 import com.j2km.inmueblesgo.domain.TipoInmuebleEntity;
 import com.j2km.inmueblesgo.domain.TipoPlantaDetalleEntity;
 import com.j2km.inmueblesgo.domain.TipoPlantaEntity;
+import com.j2km.inmueblesgo.domain.TipoPropiedad;
 import com.j2km.inmueblesgo.domain.TorreEntity;
 import com.j2km.inmueblesgo.service.ArchivoRepository;
 import com.j2km.inmueblesgo.service.ArchivoService;
@@ -36,6 +37,7 @@ import com.j2km.inmueblesgo.service.ProyectoRepository;
 import com.j2km.inmueblesgo.service.TipoInmuebleRepository;
 import com.j2km.inmueblesgo.service.TipoPlantaDetalleRepository;
 import com.j2km.inmueblesgo.service.TipoPlantaRepository;
+import com.j2km.inmueblesgo.service.TipoPropiedadRepository;
 import com.j2km.inmueblesgo.service.TorreRepository;
 import com.j2km.inmueblesgo.web.util.MessageFactory;
 import java.io.IOException;
@@ -108,7 +110,9 @@ public class ProyectoBean implements Serializable {
     private Archivo archivoTipoPlanta;
     private String imagenTipoPlanta;
     private UploadedFile uploadedTipoPlanta;
-
+    
+    private Archivo archivoPromesa;
+    
     @Inject
     private KitRepository kitService;
     @Inject
@@ -147,6 +151,8 @@ public class ProyectoBean implements Serializable {
     private TipoPlantaDetalleRepository tipoPlantaDetalleService;
     @Inject
     private ArchivoRepository archivoRepository;
+    @Inject
+    private TipoPropiedadRepository tipoPropiedadRepository;
 
     @Inject
     private ArchivoService archivoService;
@@ -349,6 +355,10 @@ public class ProyectoBean implements Serializable {
             if ((archivo != null) && (archivo.getNombre() != null)) {
                 proyecto.setLogo(archivo.getNombre());
                 proyecto.setArchivo(archivo);
+            }
+            
+            if ((archivoPromesa != null) && (archivoPromesa.getNombre() != null)) {                
+                proyecto.setPromesa(archivoPromesa);
             }
             proyecto = proyectoService.saveAndFlush(proyecto);
             prepareNewProyecto();
@@ -656,6 +666,25 @@ public class ProyectoBean implements Serializable {
     }
 
     public void grabarTorre() {
+        
+        if(torreNueva.getNombre()== null){
+             FacesContext.getCurrentInstance().addMessage(
+                     null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar el nombre de la torre", "Debe ingresar el nombre de la torre"));
+             return;
+        }
+        
+        if(torreNueva.getPisoInicial() == null){
+            FacesContext.getCurrentInstance().addMessage(
+                     null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar el piso inicial de apartamentos", "Debe ingresar el piso inicial de apartamentos"));
+             return;
+        }
+        
+        if(torreNueva.getNumeroPisos() == null){
+            FacesContext.getCurrentInstance().addMessage(
+                     null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Debe ingresar el piso final de apartamentos", "Debe ingresar el piso final de apartamentos"));
+             return;
+        }
+        
         torreNueva.setProyecto(proyecto);
         torreNueva = torreService.save(torreNueva);
 
@@ -806,7 +835,11 @@ public class ProyectoBean implements Serializable {
         Integer numeroInmueble;
 
         for (TipoPlantaDetalleEntity detalle : detalleList) {
-            numeroInmueble = (piso.getNumero() * 100) + detalle.getNumero();
+            
+            if("APARTAMENTO".equals(piso.getTorre().getTipoPropiedad().getDescripcion()))
+                numeroInmueble = (piso.getNumero() * 100) + detalle.getNumero();
+            else
+               numeroInmueble = detalle.getNumero();
             
             //verificamos si el inmueble existe...
             inmueble = inmuebleService.findOptionalByPisoAndNumero(piso, numeroInmueble.toString());
@@ -821,7 +854,8 @@ public class ProyectoBean implements Serializable {
                 inmueble.setEstadoInmueble(estadoInmueble);
                 inmueble.setNumero(numeroInmueble.toString());
                 inmueble.setTipoInmueble(detalle.getTipoInmueble());
-                inmueble.setValorTotal(detalle.getTipoInmueble().getValorMetroCuadrado() * detalle.getTipoInmueble().getArea());
+                inmueble.setTipoPropiedad(piso.getTorre().getTipoPropiedad());
+                //inmueble.setValorTotal(detalle.getTipoInmueble().getValorMetroCuadrado() * detalle.getTipoInmueble().getArea());
                 inmueble = inmuebleService.save(inmueble);
             }
         }
@@ -847,6 +881,10 @@ public class ProyectoBean implements Serializable {
 
     public void uploadLogoProyecto(FileUploadEvent event) {
         archivo = archivoService.upload("imagenes", "proyecto", event.getFile());
+    }
+    
+    public void uploadPromesaProyecto(FileUploadEvent event) {
+        archivoPromesa = archivoService.upload("documentos", "promesa", event.getFile());
     }
 
     public void departamentoChange() {
@@ -902,16 +940,6 @@ public class ProyectoBean implements Serializable {
         this.inmuebleSeleccionado = new InmuebleEntity();
     }
 
-    public void valorTotal() {
-
-        double tempo = inmuebleSeleccionado.getValorMetroCuadrado() * inmuebleSeleccionado.getArea();
-
-        if (inmuebleSeleccionado.getIncremento() != null) {
-            tempo += inmuebleSeleccionado.getIncremento();
-        }
-        inmuebleSeleccionado.setValorTotal(tempo);
-    }
-
     public void seleccionarKit(Kit kit) {
         this.kit = kit;
     }
@@ -959,6 +987,10 @@ public class ProyectoBean implements Serializable {
 
     public void setAllEmpresasList(List<EmpresaEntity> allEmpresasList) {
         this.allEmpresasList = allEmpresasList;
+    }
+    
+    public List<TipoPropiedad> getTipoPropiedades() {
+        return tipoPropiedadRepository.findAll();
     }
     
 

@@ -187,7 +187,7 @@ public class SolicitudInmuebleItext extends HttpServlet {
             
             table.addCell(celda(negociacion.getInmueble().getProyecto().getNombre(),BaseColor.WHITE, Element.ALIGN_CENTER,10f));
             table.addCell(celda(negociacion.getInmueble().getNumero(),BaseColor.WHITE, Element.ALIGN_CENTER,10f));
-            table.addCell(celda(formatea.format(negociacion.getInmueble().getValorTotal()),BaseColor.WHITE, Element.ALIGN_CENTER,10f));
+            table.addCell(celda(formatea.format(negociacion.getValorTotal()),BaseColor.WHITE, Element.ALIGN_CENTER,10f));
 
             document.add(table);
             
@@ -213,15 +213,32 @@ public class SolicitudInmuebleItext extends HttpServlet {
             
             tableClientes(document, clientes);            
             
+            tablaPlanPago(document, planPago);   
+            
             table = new PdfPTable(1);
             table.setSpacingAfter(5f);
             table.setWidthPercentage(100);
-            table.addCell(celda("OBSERVACION",grisOscuro, Element.ALIGN_CENTER, 8f));
+            table.addCell(celda("OBSERVACION",grisOscuro, Element.ALIGN_CENTER, 10f));
             table.addCell(celda(negociacion.getObservacion(),BaseColor.WHITE, Element.ALIGN_JUSTIFIED, 8f));
             document.add(table);
             
-            tablaPlanPago(document, planPago);            
-            tablaCondiciones(document);            
+            tablaCondiciones(document); 
+            
+            table = new PdfPTable(2);
+            table.setSpacingBefore(1f);
+            table.setWidthPercentage(100);
+            PdfPCell celda = celda("FIRMAS",grisOscuro, Element.ALIGN_CENTER,10f);
+            celda.setColspan(2);
+            table.addCell(celda);
+            
+            for (TerceroEntity cliente : clientes) {
+                celda = celda("\n\n\n\n"+cliente.getNombreCompleto(), BaseColor.WHITE, Element.ALIGN_CENTER, 8f);
+                table.addCell(celda);
+            }
+            table.completeRow();
+            document.add(table);
+            
+            
            
             document.close();
 

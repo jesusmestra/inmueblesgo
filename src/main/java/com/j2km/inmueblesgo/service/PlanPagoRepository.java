@@ -10,4 +10,5 @@ import org.apache.deltaspike.data.api.criteria.CriteriaSupport;
 @Repository
 public abstract class PlanPagoRepository implements EntityRepository<PlanPagoEntity, Long> , CriteriaSupport<PlanPagoEntity> {
     public abstract List<PlanPagoEntity> findByNegociacion(NegociacionEntity negociacion);
+    public abstract List<PlanPagoEntity> findByNegociacionOrderByFechaPactadaAsc(NegociacionEntity negociacion);
 }

@@ -170,7 +170,12 @@ public class MiNegociacionBean implements Serializable {
             if (this.negociacion.getValorIncremento() == null) {
                 this.negociacion.setValorIncremento(0d);
             }
-            this.negociacion.setValorTotal(this.negociacion.getValorIncremento() + (this.negociacion.getValorMetroCuadrado() * this.inmueble.getArea()));
+            
+            if (this.negociacion.getValorDescuento()== null) {
+                this.negociacion.setValorDescuento(0d);
+            }
+            
+            this.negociacion.setValorTotal(this.negociacion.getInmueble().getValorTotal()-this.negociacion.getValorDescuento());
             this.negociacion.setValorPorcentaje((this.negociacion.getValorTotal() * this.negociacion.getPorcentaje()) / 100);
         }
 
@@ -185,7 +190,7 @@ public class MiNegociacionBean implements Serializable {
     }
 
     private void calcularValorTotal() {
-        this.negociacion.setValorTotal(this.negociacion.getValorIncremento() + (this.negociacion.getValorMetroCuadrado() * this.inmueble.getArea()));
+        this.negociacion.setValorTotal(this.negociacion.getInmueble().getValorTotal()-this.negociacion.getValorDescuento());
 
         for (Kit kit : selectedKits) {
             this.negociacion.setValorTotal(this.negociacion.getValorTotal() + kit.getValor());

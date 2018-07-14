@@ -151,9 +151,6 @@ public class TorreBusinessBean implements Serializable {
                     inmueble.setValorSeparacion(detalle.getTipoInmueble().getValorSeparacion());
                     inmueble.setEstadoInmueble(estadoInmuebleService.findOptionalByCodigo("01"));
                     inmueble.setNumero(i + " " + detalle.getNumero());
-                    inmueble.setValorTotal(
-                            detalle.getTipoInmueble().getValorMetroCuadrado() * detalle.getTipoInmueble().getArea());
-                    inmueble.setPiso(p);
                     inmuebleService.save(inmueble);
 
                     System.out.println(detalle.getTipoInmueble());
